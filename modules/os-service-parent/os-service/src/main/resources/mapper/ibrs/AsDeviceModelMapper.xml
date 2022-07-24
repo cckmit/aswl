@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsDeviceModelMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.aswl.as.asos.modules.ibrs.entity.AsDeviceModel">
+        <id column="id"  property="id" />
+        <id column="device_model_name"  property="deviceModelName" />
+        <id column="device_type"  property="deviceType" />
+        <id column="acpower_number"  property="acpowerNumber" />
+        <id column="dcpower_number"  property="dcpowerNumber" />
+        <id column="rj45_number"  property="rj45Number" />
+        <id column="fibre_optical_number"  property="fibreOpticalNumber" />
+        <id column="max_temperature"  property="maxTemperature" />
+        <id column="max_voltage1"  property="maxVoltage1" />
+        <id column="max_voltage2"  property="maxVoltage2" />
+        <id column="max_voltage3"  property="maxVoltage3" />
+        <id column="max_voltage4"  property="maxVoltage4" />
+        <id column="max_voltage5"  property="maxVoltage5" />
+        <id column="min_temperature"  property="minTemperature" />
+        <id column="min_voltage1"  property="minVoltage1" />
+        <id column="min_voltage2"  property="minVoltage2" />
+        <id column="min_voltage3"  property="minVoltage3" />
+        <id column="min_voltage4"  property="minVoltage4" />
+        <id column="min_voltage5"  property="minVoltage5" />
+        <id column="creator"  property="creator" />
+        <id column="create_date"  property="createDate" />
+        <id column="create_terminal"  property="createTerminal" />
+        <id column="modifier"  property="modifier" />
+        <id column="modify_date"  property="modifyDate" />
+        <id column="modify_terminal"  property="modifyTerminal" />
+        <id column="del_flag"  property="delFlag" />
+        <id column="pic_url" property="picUrl"/>
+        <id column="description" property="description"/>
+        <id column="doc_file" property="docFile"/>
+        <id column="person_in_charge" property="personInCharge" />
+        <id column="linkman" property="linkman" />
+        <id column="tel_num" property="telNum" />
+        <id column="manufacturer" property="manufacturer"/>
+        <id column="after_sales_tel" property="afterSalesTel"/>
+        <id column="after_sales_support" property="afterSalesSupport"/>
+        <id column="remark"  property="remark" />
+
+        <result column="device_kind_id" jdbcType="VARCHAR" property="deviceKindId" />
+        <result column="device_kind_name" jdbcType="VARCHAR" property="deviceKindName" />
+        <result column="device_type_name" jdbcType="VARCHAR" property="deviceTypeName" />
+
+    </resultMap>
+
+    <!--  外连角色和部门表 -->
+    <select id="countDeviceModels" resultType="java.lang.Integer" >
+        select count(1)
+        from as_device_model m
+        left join as_device_type t on t.device_type=m.device_type
+        left join as_device_kind k on k.id=t.device_kind_id
+        where m.del_flag='0'
+        <!-- 此处模糊查询 -->
+        <if test="deviceModelName != null and deviceModelName !=''">
+            and device_model_name like concat('%',#{deviceModelName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="deviceType != null and deviceType !=''">
+            and m.device_type = #{deviceType,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- resultType="com.aswl.as.asos.modules.sys.entity.SysUserEntity" -->
+    <select id="queryDeviceModels" resultMap="BaseResultMap" >
+        select m.id as id,m.device_model_name as device_model_name,t.device_kind_id as device_kind_id,k.device_kind_name as device_kind_name,
+        t.device_type_name as device_type_name,m.remark as remark,m.device_type as device_type,
+        m.fibre_optical_number AS fibre_optical_number,
+        m.person_in_charge AS personInCharge,
+        m.linkman AS linkman,
+        m.tel_num AS telNum,
+        m.manufacturer AS manufacturer,
+        m.after_sales_tel AS afterSalesTel,
+        m.after_sales_support AS afterSalesSupport
+        from as_device_model m
+        left join as_device_type t on t.device_type=m.device_type
+        left join as_device_kind k on k.id=t.device_kind_id
+        where m.del_flag='0'
+        <!-- 此处模糊查询 -->
+        <if test="deviceModelName != null and deviceModelName !=''">
+            and m.device_model_name like concat('%',#{deviceModelName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="deviceType != null and deviceType !=''">
+            and m.device_type = #{deviceType,jdbcType=VARCHAR}
+        </if>
+        limit #{limit1},#{limit2}
+    </select>
+
+</mapper>

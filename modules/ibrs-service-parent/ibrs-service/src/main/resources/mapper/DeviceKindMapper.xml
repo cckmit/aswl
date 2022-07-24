@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceKindMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceKindResultMap" type="com.aswl.as.ibrs.api.module.DeviceKind">
+			<id column="id"  property="id" />
+			<id column="device_kind_name"  property="deviceKindName" />
+			<id column="connect_type"  property="connectType" />
+			<id column="is_edit"  property="isEdit" />
+			<id column="modifier"  property="modifier" />
+			<id column="modify_date"  property="modifyDate" />
+			<id column="modify_terminal"  property="modifyTerminal" />
+			<id column="creator"  property="creator" />
+			<id column="create_date"  property="createDate" />
+			<id column="create_terminal"  property="createTerminal" />
+			<id column="del_flag"  property="delFlag" />
+			<id column="remark"  property="remark" />
+	</resultMap>
+
+	<sql id="deviceKindColumns">
+		id, device_kind_name, connect_type, is_edit, modifier, modify_date, modify_terminal, creator, create_date, create_terminal, del_flag, remark
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+				<if test="deviceKindName  != null and deviceKindName != ''" >
+					and device_kind_name LIKE CONCAT('%', #{deviceKindName},'%')
+				</if>
+				<if test="connectType  != null and connectType != ''" >
+					and connect_type = #{connectType}
+				</if>
+				<if test="isEdit != null" >
+					and is_edit = #{isEdit}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					and modifier = #{modifier}
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''" >
+					and modify_date = #{modifyDate}
+				</if>
+				<if test="modifyTerminal  != null and modifyTerminal != ''" >
+					and modify_terminal = #{modifyTerminal}
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator = #{creator}
+				</if>
+				<if test="createDate  != null and createDate != ''" >
+					and create_date = #{createDate}
+				</if>
+				<if test="createTerminal  != null and createTerminal != ''" >
+					and create_terminal = #{createTerminal}
+				</if>
+				<if test="delFlag  != null and delFlag != ''" >
+					and del_flag = #{delFlag}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark = #{remark}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceKindResultMap">
+		SELECT
+		<include refid="deviceKindColumns"/>
+		FROM as_device_kind
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="deviceKindResultMap">
+		SELECT
+		<include refid="deviceKindColumns"/>
+		FROM as_device_kind
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceKindResultMap">
+		SELECT
+		<include refid="deviceKindColumns"/>
+		FROM as_device_kind
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_kind
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceKindName != null">
+                    device_kind_name,
+                </if>
+                <if test="connectType != null">
+                    connect_type,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="modifyTerminal != null">
+                    modify_terminal,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="createTerminal != null">
+                    create_terminal,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="deviceKindName != null">
+                    #{deviceKindName},
+                </if>
+                <if test="connectType != null">
+                    #{connectType},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="modifyTerminal != null">
+                    #{modifyTerminal},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="createTerminal != null">
+                    #{createTerminal},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_kind
+		<set>
+				<if test="deviceKindName != null">
+					device_kind_name = #{deviceKindName},
+				</if>
+				<if test="connectType != null">
+					connect_type = #{connectType},
+				</if>
+				<if test="modifier != null">
+					modifier = #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date = #{modifyDate},
+				</if>
+				<if test="modifyTerminal != null">
+					modify_terminal = #{modifyTerminal},
+				</if>
+				<if test="creator != null">
+					creator = #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date = #{createDate},
+				</if>
+				<if test="createTerminal != null">
+					create_terminal = #{createTerminal},
+				</if>
+				<if test="delFlag != null">
+					del_flag = #{delFlag},
+				</if>
+				<if test="remark != null">
+					remark = #{remark},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_device_kind
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_device_kind
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+</mapper>

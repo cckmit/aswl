@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.ConfigMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="configResultMap" type="com.aswl.as.user.api.module.Config">
+			<id column="id"   property="id" />
+			<id column="param_key"   property="paramKey" />
+			<id column="param_value"   property="paramValue" />
+			<id column="status"   property="status" />
+			<id column="remark"   property="remark" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="configColumns">
+		id, param_key, param_value, status, remark, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="paramKey  != null and paramKey != ''" >
+					AND param_key like CONCAT('%',#{paramKey},'%')
+				</if>
+				<if test="paramValue  != null and paramValue != ''" >
+					AND param_value like CONCAT('%',#{paramValue},'%')
+				</if>
+				<if test="status  != null and status != ''">
+					AND status = #{status}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					AND remark like CONCAT('%',#{remark},'%')
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="configResultMap">
+		SELECT
+		<include refid="configColumns"/>
+		FROM sys_config
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="configResultMap">
+		SELECT
+		<include refid="configColumns"/>
+		FROM sys_config
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="configResultMap">
+		SELECT
+		<include refid="configColumns"/>
+		FROM sys_config
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO sys_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="paramKey != null">
+                    param_key,
+                </if>
+                <if test="paramValue != null">
+                    param_value,
+                </if>
+                <if test="status != null">
+                    status,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="paramKey != null">
+                    #{paramKey},
+                </if>
+                <if test="paramValue != null">
+                    #{paramValue},
+                </if>
+                <if test="status != null">
+                    #{status},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE sys_config
+		<set>
+				<if test="paramKey != null">
+					param_key =  #{paramKey},
+				</if>
+				<if test="paramValue != null">
+					param_value =  #{paramValue},
+				</if>
+				<if test="status != null">
+					status =  #{status},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  sys_config
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  sys_config
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+    <delete id="deleteByTenantCode">
+		DELETE FROM  sys_config
+		WHERE tenant_code  = #{tenantCode}
+		
+	</delete>
+    <select id="findIsCloud" resultType="java.lang.Integer">
+	SELECT COUNT(*) as count FROM sys_config
+	 WHERE param_key='IS_CLOUD' AND param_value=1
+	 AND tenant_code = #{tenantCode}
+	</select>
+
+</mapper>

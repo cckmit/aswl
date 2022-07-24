@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.CityOnlineStatisticsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="cityOnlineStatisticsResultMap" type="com.aswl.as.ibrs.api.module.CityOnlineStatistics">
+			<id column="id"   property="id" />
+			<id column="city_code"   property="cityCode" />
+			<id column="statistics_date"   property="statisticsDate" />
+			<id column="device_kind"   property="deviceKind" />
+			<id column="device_model_id"   property="deviceModelId" />
+			<id column="online_num"   property="onlineNum" />
+			<id column="intact_num" property="intactNum"/>
+			<id column="device_num"   property="deviceNum" />
+			<id column="project_id"   property="projectId" />
+	</resultMap>
+
+	<sql id="cityOnlineStatisticsColumns">
+		id, city_code, statistics_date, device_kind, device_model_id, online_num, intact_num, device_num, project_id
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="cityCode  != null and cityCode != ''" >
+					AND city_code like CONCAT('%',#{cityCode},'%')
+				</if>
+				<if test="statisticsDate != null">
+					AND statistics_date = #{statisticsDate}
+				</if>
+				<if test="deviceKind  != null and deviceKind != ''" >
+					AND device_kind like CONCAT('%',#{deviceKind},'%')
+				</if>
+				<if test="deviceModelId  != null and deviceModelId != ''" >
+					AND device_model_id like CONCAT('%',#{deviceModelId},'%')
+				</if>
+				<if test="onlineNum  != null and onlineNum != ''">
+					AND online_num = #{onlineNum}
+				</if>
+				<if test="intactNum  != null and intactNum != ''">
+					AND intact_num = #{intactNum}
+				</if>
+				<if test="deviceNum  != null and deviceNum != ''">
+					AND device_num = #{deviceNum}
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id like CONCAT('%',#{projectId},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="cityOnlineStatisticsResultMap">
+		SELECT
+		<include refid="cityOnlineStatisticsColumns"/>
+		FROM as_city_online_statistics
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="cityOnlineStatisticsResultMap">
+		SELECT
+		<include refid="cityOnlineStatisticsColumns"/>
+		FROM as_city_online_statistics
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="cityOnlineStatisticsResultMap">
+		SELECT
+		<include refid="cityOnlineStatisticsColumns"/>
+		FROM as_city_online_statistics
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_city_online_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="cityCode != null">
+                    city_code,
+                </if>
+                <if test="statisticsDate != null">
+                    statistics_date,
+                </if>
+                <if test="deviceKind != null">
+                    device_kind,
+                </if>
+                <if test="deviceModelId != null">
+                    device_model_id,
+                </if>
+                <if test="onlineNum != null">
+                    online_num,
+                </if>
+				<if test="intactNum != null">
+					intact_num,
+				</if>
+                <if test="deviceNum != null">
+                    device_num,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="cityCode != null">
+                    #{cityCode},
+                </if>
+                <if test="statisticsDate != null">
+                    #{statisticsDate},
+                </if>
+                <if test="deviceKind != null">
+                    #{deviceKind},
+                </if>
+                <if test="deviceModelId != null">
+                    #{deviceModelId},
+                </if>
+                <if test="onlineNum != null">
+                    #{onlineNum},
+                </if>
+				<if test="intactNum != null">
+					#{intactNum},
+				</if>
+                <if test="deviceNum != null">
+                    #{deviceNum},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_city_online_statistics
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="cityCode != null">
+					city_code =  #{cityCode},
+				</if>
+				<if test="statisticsDate != null">
+					statistics_date =  #{statisticsDate},
+				</if>
+				<if test="deviceKind != null">
+					device_kind =  #{deviceKind},
+				</if>
+				<if test="deviceModelId != null">
+					device_model_id =  #{deviceModelId},
+				</if>
+				<if test="onlineNum != null">
+					online_num =  #{onlineNum},
+				</if>
+				<if test="intactNum != null">
+					intact_num =  #{intactNum},
+				</if>
+				<if test="deviceNum != null">
+					device_num =  #{deviceNum},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_city_online_statistics
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_city_online_statistics
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findByCondition" resultType="com.aswl.as.ibrs.api.module.CityOnlineStatistics">
+		SELECT <include refid="cityOnlineStatisticsColumns"/>
+		FROM as_city_online_statistics where 1 = 1
+		<if test="statisticsDate != null">
+			and statistics_date = #{statisticsDate,jdbcType=DATE}
+		</if>
+		<if test="deviceKind != null">
+			and device_kind = #{deviceKind}
+		</if>
+		<if test="cityCode != null ">
+			and city_code = #{cityCode}
+		</if>
+		<if test="projectId != null ">
+			and project_Id = #{projectId}
+		</if>
+		<if test="deviceModelId != null">
+			and device_model_id = #{deviceModelId}
+		</if>
+	</select>
+
+    <select id="onlineRate" resultType="map">
+          SELECT
+            IFNULL(sum(case device_kind when '2' then IFNULL(device_num,0) else 0 end),0) AS boxTotalNum,
+            IFNULL(sum(case device_kind when '3' then IFNULL(device_num,0) else 0 end),0) AS camTotalNum,
+            IFNULL(sum(case device_kind when '2' then IFNULL(online_num,0) else 0 end),0) AS boxOnlineNum,
+            IFNULL(sum(case device_kind when '3' then IFNULL(online_num,0) else 0 end),0) AS camOnlineNum,
+			IFNULL(sum(case device_kind when '2' then IFNULL(intact_num,0) else 0 end),0) AS boxIntactNum,
+			IFNULL(sum(case device_kind when '3' then IFNULL(intact_num,0) else 0 end),0) AS camIntactNum
+            from as_city_online_statistics
+            where 1 = 1
+            <if test="cityCode != null and cityCode != ''">
+                and city_code like concat(#{cityCode},'%')
+            </if>
+            <if test="projectId != null and projectId != ''">
+                and project_id = #{projectId}
+            </if>
+            <if test="startTime != null and endTime != null">
+               and (statistics_date between #{startTime} and #{endTime})
+            </if>
+    </select>
+</mapper>

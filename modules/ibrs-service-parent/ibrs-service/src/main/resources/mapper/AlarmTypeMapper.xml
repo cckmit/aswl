@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmTypeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmTypeResultMap" type="com.aswl.as.ibrs.api.module.AlarmType">
+			<id column="id"   property="id" />
+			<id column="alarm_type"   property="alarmType" />
+			<id column="alarm_type_name"   property="alarmTypeName" />
+			<id column="alarm_type_name_en" property="alarmTypeNameEn"/>
+			<id column="priority"   property="priority" />
+			<id column="alarm_level"   property="alarmLevel" />
+			<id column="status_name"   property="statusName" />
+			<id column="status_value"   property="statusValue" />
+			<id column="relevancy_status"   property="relevancyStatus" />
+			<id column="veto"   property="veto" />
+			<id column="kind"   property="kind" />
+			<id column="icon_path"   property="iconPath" />
+			<id column="event_metadata_id"   property="eventMetadataId" />
+			<id column="page_show"   property="pageShow" />
+			<id column="code"   property="code" />
+			<id column="code_cn"   property="codeCn" />
+			<id column="remark"   property="remark" />
+		    <id column="remark_en" property="remarkEn"/>
+			<id column="statusGroupId" property="statusGroupId"/>
+	</resultMap>
+	<sql id="alarmTypeColumns">
+		id, alarm_type, alarm_type_name,alarm_type_name_en, priority, alarm_level, status_name, status_value, relevancy_status, veto, kind, icon_path, event_metadata_id, page_show, code, code_cn, remark,remark_en
+	</sql>
+
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="alarmType  != null and alarmType != ''" >
+					and alarm_type like CONCAT('%',#{alarmType},'%')
+				</if>
+				<if test="alarmTypeName  != null and alarmTypeName != ''" >
+					and alarm_type_name like CONCAT('%',#{alarmTypeName},'%')
+				</if>
+				<if test="priority  != null and priority != ''">
+					and priority = #{priority}
+				</if>
+				<if test="alarmLevel  != null and alarmLevel != ''">
+					and alarm_level = #{alarmLevel}
+				</if>
+				<if test="statusName  != null and statusName != ''" >
+					and status_name like CONCAT('%',#{statusName},'%')
+				</if>
+				<if test="statusValue  != null and statusValue != ''">
+					and status_value = #{statusValue}
+				</if>
+				<if test="relevancyStatus  != null and relevancyStatus != ''" >
+					and relevancy_status like CONCAT('%',#{relevancyStatus},'%')
+				</if>
+				<if test="veto  != null and veto != ''">
+					and veto = #{veto}
+				</if>
+				<if test="kind  != null and kind != ''" >
+					and kind like CONCAT('%',#{kind},'%')
+				</if>
+				<if test="iconPath  != null and iconPath != ''" >
+					and icon_path like CONCAT('%',#{iconPath},'%')
+				</if>
+				<if test="eventMetadataId  != null and eventMetadataId != ''" >
+					and event_metadata_id= #{eventMetadataId}
+				</if>
+				<if test="pageShow  != null and pageShow != ''">
+					and page_show = #{pageShow}
+				</if>
+				<if test="code  != null and code != ''" >
+					and code like CONCAT('%',#{code},'%')
+				</if>
+				<if test="codeCn  != null and codeCn != ''" >
+					and code_cn like CONCAT('%',#{codeCn},'%')
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+		     ORDER BY alarm_level 
+	</sql>
+
+	<select id="get" resultMap="alarmTypeResultMap">
+		SELECT
+		<include refid="alarmTypeColumns"/>
+		FROM as_alarm_type
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmTypeResultMap">
+		SELECT
+		<include refid="alarmTypeColumns"/>
+		FROM as_alarm_type
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmTypeResultMap">
+		SELECT
+		<include refid="alarmTypeColumns"/>
+		FROM as_alarm_type
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null ">
+                    id,
+                </if>
+                <if test="alarmType != null ">
+                    alarm_type,
+                </if>
+                <if test="alarmTypeName != null ">
+                    alarm_type_name,
+                </if>
+				<if test="alarmTypeNameEn != null">
+					alarm_type_name_en,
+				</if>
+                <if test="priority != null ">
+                    priority,
+                </if>
+                <if test="alarmLevel != null">
+                    alarm_level,
+                </if>
+                <if test="statusName != null">
+                    status_name,
+                </if>
+                <if test="statusValue != null">
+                    status_value,
+                </if>
+                <if test="relevancyStatus != null">
+                    relevancy_status,
+                </if>
+                <if test="veto != null ">
+                    veto,
+                </if>
+                <if test="kind != null ">
+                    kind,
+                </if>
+                <if test="iconPath != null ">
+                    icon_path,
+                </if>
+                <if test="eventMetadataId != null ">
+                    event_metadata_id,
+                </if>
+                <if test="pageShow != null">
+                    page_show,
+                </if>
+                <if test="code != null ">
+                    code,
+                </if>
+                <if test="codeCn != null">
+                    code_cn,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+			   <if test="remarkEn!= null">
+				remark_en,
+			 </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null ">
+                    #{id},
+                </if>
+                <if test="alarmType != null">
+                    #{alarmType},
+                </if>
+                <if test="alarmTypeName != null">
+                    #{alarmTypeName},
+                </if>
+			<if test="alarmTypeNameEn != null">
+				#{alarmTypeNameEn},
+			</if>
+                <if test="priority != null">
+                    #{priority},
+                </if>
+                <if test="alarmLevel != null">
+                    #{alarmLevel},
+                </if>
+                <if test="statusName != null">
+                    #{statusName},
+                </if>
+                <if test="statusValue != null">
+                    #{statusValue},
+                </if>
+                <if test="relevancyStatus != null">
+                    #{relevancyStatus},
+                </if>
+                <if test="veto != null">
+                    #{veto},
+                </if>
+                <if test="kind != null">
+                    #{kind},
+                </if>
+                <if test="iconPath != null">
+                    #{iconPath},
+                </if>
+                <if test="eventMetadataId != null">
+                    #{eventMetadataId},
+                </if>
+                <if test="pageShow != null">
+                    #{pageShow},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+                <if test="codeCn != null">
+                    #{codeCn},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+			<if test="remarkEn!= null">
+				#{remarkEn},
+			</if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_type
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="alarmType != null">
+					alarm_type =  #{alarmType},
+				</if>
+				<if test="alarmTypeName != null">
+					alarm_type_name =  #{alarmTypeName},
+				</if>
+				<if test="alarmTypeNameEn != null">
+					alarm_type_name_en = #{alarmTypeNameEn},
+				</if>
+				<if test="priority != null">
+					priority =  #{priority},
+				</if>
+				<if test="alarmLevel != null">
+					alarm_level =  #{alarmLevel},
+				</if>
+				<if test="statusName != null">
+					status_name =  #{statusName},
+				</if>
+				<if test="statusValue != null">
+					status_value =  #{statusValue},
+				</if>
+				<if test="relevancyStatus != null">
+					relevancy_status =  #{relevancyStatus},
+				</if>
+				<if test="veto != null">
+					veto =  #{veto},
+				</if>
+				<if test="kind != null">
+					kind =  #{kind},
+				</if>
+				<if test="iconPath != null">
+					icon_path =  #{iconPath},
+				</if>
+				<if test="eventMetadataId != null">
+					event_metadata_id =  #{eventMetadataId},
+				</if>
+				<if test="pageShow != null">
+					page_show =  #{pageShow},
+				</if>
+				<if test="code != null">
+					code =  #{code},
+				</if>
+				<if test="codeCn != null">
+					code_cn =  #{codeCn},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="remarkEn!= null">
+					remark_en = #{remarkEn},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM as_alarm_type
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_alarm_type
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findAlarmType" resultType="com.aswl.as.ibrs.api.vo.AlarmTypeVo">
+        SELECT COALESCE (g.`name`,m.fld_name,"single") AS groupName ,t.alarm_type_name AS alarmTypeName,t.alarm_type AS alarmType,t.kind AS kind,t.alarm_level AS alarmLevel,CONCAT(m.tab_code,m.fld_code) AS flag,t.priority AS priority,
+        CASE
+        m.is_status_group WHEN 1 THEN true WHEN 0 THEN false END AS isGroup
+        FROM as_event_uc_status_group g RIGHT JOIN as_event_uc_metadata m
+        ON g.id = m.event_status_group_id RIGHT JOIN as_alarm_type t
+        ON m.id = t.event_metadata_id
+        <if test="alarmLevels != null and alarmLevels!=''" >
+        WHERE t.alarm_level in
+		<foreach item="item" index="index" collection="alarmLevels" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		</if>
+    </select>
+
+	<select id="findAlarmByMetadataId" resultType="com.aswl.as.ibrs.api.vo.StatusGroupAlarmTypeVo">
+		SELECT
+		t1.id as id,
+		t1.status_name as statusName,
+		t1.status_value as statusValue,
+		t1.alarm_type as alarmType,
+		 t1.alarm_type_name as alarmTypeName,
+		 t1.code as code,
+		 t1.code_cn as codeCN,
+		 t1.icon_path as iconPath,
+		 t2.fld_code as fldCode,
+		 t2.fld_name as fldName,
+		 t2.fld_unit fldUnit,
+		 t2.create_date as createDate,
+		 t2.event_status_group_id as statusGroupId,
+		 t1.alarm_level as alarmLevel
+		FROM as_alarm_type as t1
+		LEFT JOIN as_event_uc_metadata as t2
+		ON t1.event_metadata_id=t2.id
+		WHERE t1.event_metadata_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND t1.status_value=#{statusValue}
+
+	</select>
+	<select id="findDeviceAlarmType" resultType="com.aswl.as.ibrs.api.vo.AlarmTypeVo">
+		SELECT DISTINCT COALESCE (g.`name`,m.fld_name,"single") AS groupName ,t.alarm_type_name AS alarmTypeName,t.alarm_type AS alarmType,t.kind AS kind,CONCAT(m.tab_code,m.fld_code) AS flag,m.priority AS priority,
+		CASE
+		m.is_status_group WHEN 1 THEN true WHEN 0 THEN false END AS isGroup
+		FROM as_event_uc_status_group g RIGHT JOIN as_event_uc_metadata m
+		ON g.id = m.event_status_group_id RIGHT JOIN as_alarm_type t
+		ON m.id = t.event_metadata_id  LEFT JOIN as_event_uc_metadata_model mm
+		ON mm.event_metadata_id = m.id  LEFT JOIN as_device_model dm
+		ON dm.id = mm.device_model_id  JOIN as_device d
+		ON d.device_model_id = dm.id  JOIN as_device_type dt
+		ON dt.device_type = dm.device_type  JOIN as_device_kind k
+		ON k.id = dt.device_kind_id
+		WHERE d.id = #{id}
+		<if test="kind !=null and kind !=''">
+			AND k.type = #{kind}
+		</if>
+		<if test="alarmLevels != null and alarmLevels!=''" >
+			AND  t.alarm_level in
+			<foreach item="item" index="index" collection="alarmLevels" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+
+	</select>
+
+	<select id="findTypes" resultType="string">
+		SELECT GROUP_CONCAT(alarm_type)
+		FROM as_alarm_type WHERE alarm_type like concat(#{prefix},'%')
+	</select>
+
+    <select id="loadMinAlarmLevel" resultType="java.lang.Integer">
+        SELECT MIN(alarm_level) FROM as_alarm_type
+        WHERE 1=2
+        <if test="alarmTypes != null and alarmTypes.size > 0" >
+            OR alarm_type IN
+            <foreach item="item" index="index" collection="alarmTypes" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+	<select id="findAlarmTypeListInfo" resultType="com.aswl.as.ibrs.api.vo.AlarmTypeVo">
+		SELECT
+		aat.id as id,
+		aat.alarm_type as alarmType ,
+		aat.alarm_type_name as alarmTypeName,
+		aat.alarm_type_name_en as alarmTypeNameEn,
+		aat.alarm_level AS alarmLevel,
+		aeus.status_group_name as groupName,
+		aeus.name as name,
+		aeus.name_en as nameEn,
+		aeum.vector_type as vectorType ,
+		aat.code_cn as codeCn,
+		aeum.is_status_group as isGroup,
+		aat.kind as kind,
+		aat.priority as priority,
+		aat.code as code,
+		aat.page_show as pageShow,
+		aat.status_value as statusValue,
+        aat.icon_path as iconPath
+		FROM as_alarm_type aat
+		LEFT JOIN as_event_uc_metadata aeum
+		ON aat.event_metadata_id =aeum.id
+		LEFT JOIN as_event_uc_status_group aeus
+		ON aeus.id = aeum.event_status_group_id
+		WHERE 1=1 AND aat.event_metadata_id IS NOT NULL AND aat.event_metadata_id != ''
+		<if test="alarmType  != null and alarmType != ''">
+			and aat.alarm_type like CONCAT('%',#{alarmType},'%')
+		</if>
+		<if test="alarmTypeName  != null and alarmTypeName != ''">
+			and aat.alarm_type_name like CONCAT('%',#{alarmTypeName},'%')
+		</if>
+		<if test="priority  != null and priority != ''">
+			and aat.priority = #{priority}
+		</if>
+		<if test="alarmLevel  != null and alarmLevel != ''">
+			and aat.alarm_level = #{alarmLevel}
+		</if>
+		<if test="eventMetadataId  != null and eventMetadataId != ''">
+			and aat.event_metadata_id = #{eventMetadataId}
+		</if>
+		ORDER BY aat.alarm_level
+	</select>
+</mapper>

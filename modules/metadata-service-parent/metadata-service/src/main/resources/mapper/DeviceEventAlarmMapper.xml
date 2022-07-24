@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.DeviceEventAlarmMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceEventAlarmResultMap" type="com.aswl.as.ibrs.api.module.DeviceEventAlarm">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="is_alarm"   property="isAlarm" />
+			<id column="alarm_level"   property="alarmLevel" />
+			<id column="alarm_types"   property="alarmTypes" />
+			<id column="alarm_types_des"   property="alarmTypesDes" />
+			<id column="alarm_levels"   property="alarmLevels" />
+			<id column="alarm_dates"   property="alarmDates" />
+			<id column="prompt_types"   property="promptTypes" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="deviceEventAlarmColumns">
+		id, u_event_id, device_id, rec_time, is_alarm, alarm_level, alarm_types, alarm_types_des, alarm_levels, alarm_dates, prompt_types, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null">
+					and u_event_id = #{uEventId}
+				</if>
+                <if test="deviceId  != null" >
+                    and device_id like CONCAT('%',#{deviceId},'%')
+                </if>
+				<if test="regionNo  != null" >
+					and region_no #{regionNo}
+				</if>
+				<if test="recTime  != null">
+					and rec_time = #{recTime}
+				</if>
+				<if test="isAlarm  != null">
+					and is_alarm = #{isAlarm}
+				</if>
+				<if test="alarmLevel  != null">
+					and alarm_level = #{alarmLevel}
+				</if>
+				<if test="alarmTypes  != null" >
+					and alarm_types like CONCAT('%',#{alarmTypes},'%')
+				</if>
+				<if test="alarmTypesDes  != null" >
+					and alarm_types_des like CONCAT('%',#{alarmTypesDes},'%')
+				</if>
+				<if test="alarmLevels  != null">
+					and alarm_levels = #{alarmLevels}
+				</if>
+				<if test="alarmDates  != null" >
+					and alarm_dates like CONCAT('%',#{alarmDates},'%')
+				</if>
+				<if test="promptTypes  != null" >
+					and prompt_types like CONCAT('%',#{promptTypes},'%')
+				</if>
+				<if test="storeTime  != null">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceEventAlarmResultMap">
+		SELECT
+		<include refid="deviceEventAlarmColumns"/>
+		FROM as_device_event_alarm
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="deviceEventAlarmResultMap">
+		SELECT
+		<include refid="deviceEventAlarmColumns"/>
+		FROM as_device_event_alarm
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceEventAlarmResultMap">
+		SELECT
+		<include refid="deviceEventAlarmColumns"/>
+		FROM as_device_event_alarm
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_event_alarm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionNo  != null" >
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="isAlarm != null">
+                    is_alarm,
+                </if>
+                <if test="alarmLevel != null">
+                    alarm_level,
+                </if>
+                <if test="alarmTypes != null">
+                    alarm_types,
+                </if>
+                <if test="alarmTypesDes != null">
+                    alarm_types_des,
+                </if>
+                <if test="alarmLevels != null">
+                    alarm_dates,
+                </if>
+                <if test="alarmDates != null">
+                    alarm_levels,
+                </if>
+                <if test="promptTypes != null">
+                    prompt_types,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo  != null" >
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="isAlarm != null">
+                    #{isAlarm},
+                </if>
+                <if test="alarmLevel != null">
+                    #{alarmLevel},
+                </if>
+                <if test="alarmTypes != null">
+                    #{alarmTypes},
+                </if>
+                <if test="alarmTypesDes != null">
+                    #{alarmTypesDes},
+                </if>
+                <if test="alarmLevels != null">
+                    #{alarmLevels},
+                </if>
+                <if test="alarmDates != null">
+                    #{alarmDates},
+                </if>
+                <if test="promptTypes != null">
+                    #{promptTypes},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_event_alarm
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+                <if test="regionNo  != null" >
+                    region_no = #{regionNo},
+                </if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="isAlarm != null">
+					is_alarm =  #{isAlarm},
+				</if>
+				<if test="alarmLevel != null">
+					alarm_level =  #{alarmLevel},
+				</if>
+				<if test="alarmTypes != null">
+					alarm_types =  #{alarmTypes},
+				</if>
+				<if test="alarmTypesDes != null">
+					alarm_types_des =  #{alarmTypesDes},
+				</if>
+				<if test="alarmLevels != null">
+					alarm_levels =  #{alarmLevels},
+				</if>
+				<if test="alarmDates != null">
+					alarm_dates =  #{alarmDates},
+				</if>
+				<if test="promptTypes != null">
+					prompt_types =  #{promptTypes},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_device_event_alarm SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_device_event_alarm SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getAlarmLevelCounts" resultType="java.util.Map">
+	SELECT
+	COUNT(*) AS counts FROM
+	as_device_event_alarm
+	WHERE is_alarm=1
+	<if test="regionCode!=null and regionCode!=''">
+		AND region_no LIKE CONCAT('%',#{regionCode},'%')
+	</if>
+	<if test="alarmLevel!=null and alarmLevel!=''">
+		AND alarm_level=#{alarmLevel}
+	</if>
+	</select>
+
+	<select id="getAlarmTypeCounts" resultType="java.util.Map">
+		SELECT
+		COUNT(*) AS counts FROM
+		as_device_event_alarm
+		WHERE is_alarm=1
+		<if test="regionCode!=null and regionCode!=''">
+			AND region_no LIKE CONCAT('%',#{regionCode},'%')
+		</if>
+		<if test="alarmType  != null and alarmType != ''" >
+			AND alarm_types like CONCAT('%',#{alarmType},'%')
+		</if>
+	</select>
+
+	<select id="getHealthyDataCounts" resultType="java.util.Map">
+
+SELECT SUM(t1.allsum) AS counts  FROM
+(
+SELECT model_count.device_num AS t,
+mmodel.metadata_num,
+mmodel.device_model_id,
+(model_count.device_num * mmodel.metadata_num) allsum
+  FROM
+(SELECT COUNT(device_model_id) metadata_num, device_model_id FROM as_event_uc_metadata_model GROUP BY device_model_id) mmodel
+INNER JOIN (SELECT COUNT(device_model_id) device_num, device_model_id FROM as_device GROUP BY device_model_id) model_count ON mmodel.device_model_id=model_count.device_model_id
+
+) t1
+</select>
+
+<select id="getAlarmDataCounts" resultType="java.lang.Integer">
+	SELECT
+	COUNT(*) AS alarmCount
+	FROM as_device_event_alarm
+	WHERE is_alarm=1
+	AND alarm_level=1 OR alarm_level=2
+	<if test="regionCode!=null and regionCode!=''">
+		AND region_no LIKE CONCAT(#{regionCode},'%')
+	</if>
+</select>
+
+	<select id="getHistoryAlarm" resultType="com.aswl.as.ibrs.api.vo.DeviceEventAlarmVo">
+	SELECT
+	adea.device_id AS deviceId,
+	adea.store_time AS storeTime,
+	adea.alarm_level AS alarmLevel,
+	adea.alarm_types AS alarmTypes,
+	adea.alarm_types_des AS alarmTypesDes,
+	afr.run_status AS STATUS
+	FROM
+	 as_device_event_alarm adea
+	 LEFT JOIN as_flow_run  afr
+	 ON adea.device_id=afr.begin_device_id
+	WHERE adea.device_id=#{deviceId}
+</select>
+
+</mapper>

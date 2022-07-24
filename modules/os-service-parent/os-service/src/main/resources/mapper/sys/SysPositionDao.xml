@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.sys.dao.SysPositionDao">
+
+    <resultMap id="BaseResultMap" type="com.aswl.as.asos.modules.sys.entity.SysPositionEntity">
+        <id column="position_id" jdbcType="VARCHAR" property="positionId" />
+        <result column="position_parent_id" jdbcType="VARCHAR" property="positionParentId" />
+        <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+        <result column="position_des" jdbcType="VARCHAR" property="positionDes" />
+        <result column="post_id" jdbcType="VARCHAR" property="postId" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+
+        <!-- 下面字段只作查询 -->
+        <result column="position_parent_name" jdbcType="VARCHAR" property="positionParentName" />
+    </resultMap>
+
+    <!--  外连角色和部门表 -->
+    <select id="countPositions" resultType="java.lang.Integer" >
+        select count(1)
+        from as_os_sys_position p
+        left join as_os_sys_position tmp on p.position_parent_id=tmp.position_id
+        where p.del_flag='0'
+        <!-- 此处模糊查询 -->
+        <if test="positionName != null and positionName !=''">
+            and position_name like concat('%',#{positionName,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <select id="queryPositions" resultMap="BaseResultMap" >
+        select p.position_id as position_id,p.position_parent_id as position_parent_id,p.position_name as position_name,p.position_des as position_des,
+        p.post_id as post_id,p.sort as sort,p.creator as creator,p.create_date as create_date,p.modifier as modifier,p.modify_date as modify_date,p.del_flag as del_flag,
+        tmp.position_name as position_parent_name
+        from as_os_sys_position p
+        left join as_os_sys_position tmp on p.position_parent_id=tmp.position_id
+        where p.del_flag='0'
+        <!-- 此处模糊查询 -->
+        <if test="positionName != null and positionName !=''">
+            and position_name like concat('%',#{positionName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="limit1 != null">
+            limit #{limit1},#{limit2}
+        </if>
+    </select>
+
+</mapper>

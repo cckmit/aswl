@@ -1,0 +1,2195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="deviceResultMap" type="com.aswl.as.ibrs.api.module.Device">
+        <id column="id" property="id"/>
+        <id column="device_code" property="deviceCode"/>
+        <id column="device_name" property="deviceName"/>
+        <id column="address" property="address"/>
+        <id column="rj45_no" property="rj45No"/>
+        <id column="fibre_optical_no" property="fibreOpticalNo"/>
+        <id column="ip" property="ip"/>
+        <id column="port" property="port"/>
+        <id column="mac" property="mac"/>
+        <id column="latitude" property="latitude"/>
+        <id column="latitude_a" property="latitudeA"/>
+        <id column="longitude" property="longitude"/>
+        <id column="longitude_a" property="longitudeA"/>
+        <id column="parent_acpower_no" property="parentAcpowerNo"/>
+        <id column="parent_dcpower_no" property="parentDcpowerNo"/>
+        <id column="parent_fibre_optical_no" property="parentFibreOpticalNo"/>
+        <id column="parent_rj45_no" property="parentRj45No"/>
+        <id column="parent_slot_o" property="parentSlotO"/>
+        <id column="device_model_id" property="deviceModelId"/>
+        <id column="parent_device_id" property="parentDeviceId"/>
+        <id column="region_id" property="regionId"/>
+        <id column="region_code" property="regionCode"/>
+        <id column="user_name" property="userName"/>
+        <id column="password" property="password"/>
+        <id column="purchase_date" property="purchaseDate"/>
+        <id column="produce_date" property="produceDate"/>
+        <id column="guarantee_time" property="guaranteeTime"/>
+        <id column="modifier" property="modifier"/>
+        <id column="modify_date" property="modifyDate"/>
+        <id column="modify_terminal" property="modifyTerminal"/>
+        <id column="creator" property="creator"/>
+        <id column="create_date" property="createDate"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="create_terminal" property="createTerminal"/>
+        <id column="remark" property="remark"/>
+        <id column="debug" property="debug"/>
+        <id column="debug_duration" property="debugDuration"/>
+        <id column="debug_deadline" property="debugDeadline"/>
+        <id column="project_id" property="projectId"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <resultMap id="deviceAlarmVo" type="com.aswl.as.ibrs.api.vo.DeviceAlarmVo">
+        <id column="id" property="id"/>
+        <result column="projectId" property="projectId"/>
+        <result column="regionId" property="regionId"/>
+        <result column="deviceName" property="deviceName"/>
+        <result column="ip" property="ip"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="parentId" property="parentId"/>
+        <result column="address" property="address"/>
+        <result column="regionName" property="regionName"/>
+        <result column="regionCode" property="regionCode"/>
+        <result column="alarmTypeName" property="alarmTypeName"/>
+        <result column="type" property="type"/>
+        <result column="alarmLevel" property="alarmLevel"/>
+        <result column="alarmLevelName" property="alarmLevelName"/>
+        <result column="isOnline" property="isOnline"/>
+        <result column="picUrl" property="picUrl"/>
+        <result column="deviceModelName" property="deviceModelName"/>
+        <result column="isVideo" property="isVideo"/>
+        <result column="alarmTime" property="alarmTime"/>
+        <result column="juli" property="juli"/>
+        <result column="parentDcpowerNo" property="parentDcpowerNo"/>
+        <result column="parentRj45No" property="parentRj45No"/>
+        <result column="parentFibreOpticalNo" property="parentFibreOpticalNo"/>
+        <result column="debug" property="debug"/>
+        <result column="rj45Number" property="rj45Number"/>
+        <association property="deviceRJ45InfoVo" javaType="com.aswl.as.ibrs.api.vo.DeviceRJ45InfoVo">
+            <result column="rj45_fld01" property="fld01"/>
+            <result column="rj45_fld02" property="fld02"/>
+            <result column="rj45_fld03" property="fld03"/>
+            <result column="rj45_fld04" property="fld04"/>
+            <result column="rj45_fld05" property="fld05"/>
+            <result column="rj45_fld06" property="fld06"/>
+            <result column="rj45_fld07" property="fld07"/>
+            <result column="rj45_fld08" property="fld08"/>
+            <result column="rj45_fld09" property="fld09"/>
+            <result column="rj45_fld10" property="fld10"/>
+            <result column="rj45_fld11" property="fld11"/>
+            <result column="rj45_fld12" property="fld12"/>
+            <result column="rj45_fld13" property="fld13"/>
+            <result column="rj45_fld14" property="fld14"/>
+            <result column="rj45_fld15" property="fld15"/>
+            <result column="rj45_fld16" property="fld16"/>
+        </association>
+    </resultMap>
+
+    <sql id="deviceColumns">
+		id, device_code, device_name, address,rj45_no, fibre_optical_no, ip, port, mac, latitude, latitude_a, longitude, longitude_a, parent_acpower_no, parent_dcpower_no, parent_fibre_optical_no, parent_rj45_no, parent_slot_o, device_model_id, parent_device_id, region_id,region_code, user_name, password, purchase_date,produce_date, guarantee_time, modifier, modify_date, modify_terminal, creator, create_date, del_flag, create_terminal, remark, debug, debug_duration, debug_deadline, project_id, application_code, tenant_code
+	</sql>
+    <!-- where 条件 -->
+    <sql id="whereColumnList">
+        <if test="deviceCode  != null and deviceCode != ''">
+            and device_code LIKE CONCAT(#{deviceCode},'%')
+        </if>
+        <if test="deviceName  != null and deviceName != ''">
+            and device_name LIKE CONCAT ('%',#{deviceName},'%')
+        </if>
+        <if test="address  != null and address != ''">
+            and address = #{address}
+        </if>
+        <if test="rj45No  != null and rj45No != ''">
+            and rj45_no = #{rj45No}
+        </if>
+        <if test="fibreOpticalNo  != null and fibreOpticalNo != ''">
+            and fibre_optical_no = #{fibreOpticalNo}
+        </if>
+        <if test="ip  != null and ip != ''">
+            and ip = #{ip}
+        </if>
+        <if test="port  != null and port != ''">
+            and port = #{port}
+        </if>
+        <if test="mac  != null and mac != ''">
+            and mac = #{mac}
+        </if>
+        <if test="latitude  != null and latitude != ''">
+            and latitude = #{latitude}
+        </if>
+        <if test="latitudeA  != null and latitudeA != ''">
+            and latitude_a = #{latitudeA}
+        </if>
+        <if test="longitude  != null and longitude != ''">
+            and longitude = #{longitude}
+        </if>
+        <if test="longitudeA  != null and longitudeA != ''">
+            and longitude_a = #{longitudeA}
+        </if>
+        <if test="parentAcpowerNo  != null and parentAcpowerNo != ''">
+            and parent_acpower_no = #{parentAcpowerNo}
+        </if>
+        <if test="parentDcpowerNo  != null and parentDcpowerNo != ''">
+            and parent_dcpower_no = #{parentDcpowerNo}
+        </if>
+        <if test="parentFibreOpticalNo  != null and parentFibreOpticalNo != ''">
+            and parent_fibre_optical_no = #{parentFibreOpticalNo}
+        </if>
+        <if test="parentRj45No  != null and parentRj45No != ''">
+            and parent_rj45_no = #{parentRj45No}
+        </if>
+        <if test="parentSlotO  != null and parentSlotO != ''">
+            and parent_slot_o = #{parentSlotO}
+        </if>
+        <if test="deviceModelId  != null and deviceModelId != ''">
+            and device_model_id = #{deviceModelId}
+        </if>
+        <if test="parentDeviceId  != null and parentDeviceId != ''">
+            and parent_device_id = #{parentDeviceId}
+        </if>
+        <if test="regionId  != null and regionId != ''">
+            and region_id = #{regionId}
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and region_code LIKE CONCAT ( #{regionCode},'%')
+        </if>
+        <if test="userName  != null and userName != ''">
+            and user_name = #{userName}
+        </if>
+        <if test="password  != null and password != ''">
+            and password = #{password}
+        </if>
+        <if test="purchaseDate  != null and purchaseDate != ''">
+            and purchase_date = #{purchaseDate}
+        </if>
+        <if test="produceDate != null and produceDate !=''">
+            and produce_date = #{produceDate}
+        </if>
+        <if test="guaranteeTime  != null and guaranteeTime != ''">
+            and guarantee_time = #{guaranteeTime}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier = #{modifier}
+        </if>
+        <if test="modifyDate  != null and modifyDate != ''">
+            and modify_date = #{modifyDate}
+        </if>
+        <if test="modifyTerminal  != null and modifyTerminal != ''">
+            and modify_terminal = #{modifyTerminal}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator = #{creator}
+        </if>
+        <if test="createDate  != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="delFlag  != null and delFlag != ''">
+            and del_flag = #{delFlag}
+        </if>
+        <if test="createTerminal  != null and createTerminal != ''">
+            and create_terminal = #{createTerminal}
+        </if>
+        <if test="remark  != null and remark != ''">
+            and remark = #{remark}
+        </if>
+        <if test="debug  != null">
+            and debug = #{debug}
+        </if>
+        <if test="debugDuration != null">
+            and debug_duration = #{debugDuration}
+        </if>
+        <if test="debugDeadline != null and debug_deadline != ''">
+            and debug_deadline = #{debugDeadline}
+        </if>
+            <if test="projectId != null and projectId !='' ">
+                AND project_id in
+                <foreach item="item" index="index" collection="projectId.split(',')" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        <if test="applicationCode  != null and applicationCode != ''">
+            and application_code = #{applicationCode}
+        </if>
+        <if test="tenantCode  != null and tenantCode != ''">
+            and tenant_code = #{tenantCode}
+        </if>
+    </sql>
+
+    <select id="findById" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        ad.id AS id,
+		ad.device_name AS deviceName,
+		dk.id AS deviceKindId,
+		dk.device_kind_name AS deviceKindName,
+		dk.connect_type as connectType,
+		dt.id AS deviceTypeId,
+		dt.device_type_name AS deviceTypeName,
+		dt.device_type as deviceType,
+		dm.id AS deviceModelId,
+		dm.device_model_name AS deviceModelName,
+		ad.region_id as regionId,
+		ar.region_name AS regionName,
+		ad.region_code as regionCode,
+		ad.ip AS ip,
+		ad.rj45_no AS rj45No,
+		ad.fibre_optical_no AS fibreOpticalNo,
+		ad.device_code AS deviceCode,
+		ad.address AS address,
+		ad.port AS port,
+        ad.mac AS mac,
+		ad.latitude AS latitude,
+		ad.latitude_a AS latitudeA,
+		ad.longitude AS longitude,
+		ad.longitude_a AS longitudeA,
+		ad.parent_acpower_no AS parentAcpowerNo,
+		ad.parent_dcpower_no AS parentDcpowerNo,
+		ad.parent_fibre_optical_no AS parentFibreOpticalNo,
+		ad.parent_rj45_no AS parentRj45No,
+		ad.parent_slot_o AS parentSlotO,
+		ad.parent_device_id AS parentDeviceId,
+		ad.user_name AS userName,
+		ad.password AS password,
+		ad.purchase_date AS purchaseDate,
+		ad.guarantee_time AS guaranteeTime,
+		ad.remark AS remark,
+		ad.tenant_code as tenantCode,
+		ad.project_id as projectId,
+		p.project_code as projectCode,
+		p.project_name as projectName,
+		ad.create_date,
+		dm.acpower_number AS acpowerNumber,
+		dm.dcpower_number AS dcpowerNumber,
+		dm.fibre_optical_number AS fibreOpticalNumber,
+		dm.rj45_number AS rj45Number,
+        debug as debug,
+        debug_duration as debugDuration,
+        debug_deadline as debugDeadline
+        FROM as_device ad JOIN as_device_model dm ON ad.device_model_id=dm.id
+        JOIN as_device_type dt ON dt.device_type=dm.device_type
+        JOIN as_device_kind dk ON dk.id=dt.device_kind_id
+        JOIN as_region ar ON ar.id=ad.region_id
+        LEFT JOIN as_project p ON ad.project_id=p.project_id
+        WHERE ad.id = #{id}
+    </select>
+
+    <select id="findList" resultMap="deviceResultMap">
+        SELECT
+        <include refid="deviceColumns"/>
+        FROM as_device
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findDeviceInfo" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        ad.id AS id,
+        ad.device_name AS deviceName,
+        dk.id AS deviceKindId,
+        dk.device_kind_name AS deviceKindName,
+        dk.connect_type as connectType,
+        dt.id AS deviceTypeId,
+        dt.device_type_name AS deviceTypeName,
+        dt.device_type as deviceType,
+        dm.id AS deviceModelId,
+        dm.device_model_name AS deviceModelName,
+        ad.region_id as regionId,
+        ad.region_code AS regionCode,
+        ar.region_name AS regionName,
+        ad.ip AS ip,
+        ad.rj45_no AS rj45No,
+        ad.fibre_optical_no AS fibreOpticalNo,
+        ad.device_code AS deviceCode,
+        ad.address AS address,
+        ad.port AS port,
+        ad.mac AS mac,
+        ad.latitude AS latitude,
+        ad.latitude_a AS latitudeA,
+        ad.longitude AS longitude,
+        ad.longitude_a AS longitudeA,
+        ad.parent_acpower_no AS parentAcpowerNo,
+        ad.parent_dcpower_no AS parentDcpowerNo,
+        ad.parent_fibre_optical_no AS parentFibreOpticalNo,
+        ad.parent_rj45_no AS parentRj45No,
+        ad.parent_slot_o AS parentSlotO,
+        ad.parent_device_id AS parentDeviceId,
+        ad.user_name AS userName,
+        ad.password AS password,
+        date_format(ad.purchase_date,'%Y-%m-%d') AS purchaseDate,
+        ad.guarantee_time AS guaranteeTime,
+        ad.remark AS remark,
+        ad.tenant_code as tenantCode,
+        ad.project_id as projectId,
+        p.project_name as projectName,
+        ad.create_date,
+        <if test="latitude != null and longitude != null">
+            IFNULL(ROUND(
+            6378.138 * 2 * ASIN(
+            SQRT(
+            POW(
+            SIN(
+            (
+            ${latitude} * PI() / 180 - ad.latitude * PI() / 180
+            ) / 2
+            ),
+            2
+            ) + COS(${latitude} * PI() / 180) * COS(ad.latitude * PI() / 180) * POW(
+            SIN(
+            (
+            ${longitude} * PI() / 180 - ad.longitude * PI() / 180
+            ) / 2
+            ),
+            2
+            )
+            )
+            ) * 1000
+            ),0) AS juli,
+        </if>
+        dm.dcpower_number as dcpowerNumber,
+        dm.rj45_number as rj45Number,
+        dm.fibre_optical_number as fibreOpticalNumber,
+        debug as debug,
+        debug_duration as debugDuration,
+        debug_deadline as debugDeadline
+        FROM as_device ad
+        LEFT JOIN as_device_model dm ON ad.device_model_id=dm.id
+        LEFT JOIN as_device_type dt ON dt.device_type=dm.device_type
+        LEFT JOIN as_device_kind dk ON dk.id=dt.device_kind_id
+        LEFT JOIN as_region ar ON ar.id=ad.region_id
+        LEFT JOIN as_project p on ad.project_id = p.project_id
+        WHERE ad.del_flag=0
+        <if test="id!=null and id!=''">
+            and ad.id=#{id}
+        </if>
+        <if test="ids!=null and ids!=''">
+            and ad.id IN
+            <foreach collection="ids.split(',')" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceKindId!=null and deviceKindId!=''">
+            and dk.id=#{deviceKindId}
+        </if>
+        <if test="deviceType!=null and deviceType!=''">
+            and dt.device_type=#{deviceType}
+        </if>
+        <if test="deviceModelId!=null and deviceModelId!=''">
+            and dm.id=#{deviceModelId}
+        </if>
+        <if test="regionId!= null and regionId!=''">
+            and ad.region_id = #{regionId}
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and ad.region_code LIKE CONCAT ( #{regionCode},'%')
+        </if>
+        <if test="deviceName  != null and deviceName != ''">
+            and ad.device_name LIKE CONCAT ('%',#{deviceName},'%')
+        </if>
+        <if test="deviceCode  != null and deviceCode != ''">
+            and ad.device_code LIKE CONCAT(#{deviceCode},'%')
+        </if>
+        <if test="ip  != null and ip != ''">
+            and ad.ip = #{ip}
+        </if>
+        <if test="tenantCode  != null and tenantCode != ''">
+            and ad.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND ad.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kind != null and kind !=''">
+            and dk.type = #{kind}
+        </if>
+        <if test="model != null and model !=''">
+            and dm.device_model_name = #{model}
+        </if>
+        <if test="type != null and type !=''">
+        and dt.device_type_name = #{type}
+    </if>
+        <if test="query != null and query !=''">
+            and (ad.device_name LIKE CONCAT ('%',#{query},'%') or  ad.device_code LIKE CONCAT(#{query},'%') or ad.ip = #{query})
+        </if>
+        <choose>
+            <when test='factoryCode =="app"'>
+               and dk.type = 2  and factory_code is null  ORDER BY ad.address DESC ,ad.device_name IS NULL,juli
+            </when>
+            <otherwise>
+                ORDER BY ad.device_name is null ,ad.region_code,ad.id
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="findListById" resultMap="deviceResultMap">
+        SELECT
+        <include refid="deviceColumns"/>
+        FROM as_device
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceCode != null">
+                device_code,
+            </if>
+            <if test="deviceName != null">
+                device_name,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="rj45No != null">
+                rj45_no,
+            </if>
+            <if test="fibreOpticalNo != null">
+                fibre_optical_no,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="port != null">
+                port,
+            </if>
+            <if test="mac != null">
+                mac,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="latitudeA != null">
+                latitude_a,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="longitudeA != null">
+                longitude_a,
+            </if>
+            <if test="parentAcpowerNo != null">
+                parent_acpower_no,
+            </if>
+            <if test="parentDcpowerNo != null">
+                parent_dcpower_no,
+            </if>
+            <if test="parentFibreOpticalNo != null">
+                parent_fibre_optical_no,
+            </if>
+            <if test="parentRj45No != null">
+                parent_rj45_no,
+            </if>
+            <if test="parentSlotO != null">
+                parent_slot_o,
+            </if>
+            <if test="deviceModelId != null">
+                device_model_id,
+            </if>
+            <if test="parentDeviceId != null">
+                parent_device_id,
+            </if>
+            <if test="regionId != null">
+                region_id,
+            </if>
+            <if test="regionCode != null">
+                region_code,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="purchaseDate != null">
+                purchase_date,
+            </if>
+            <if test="produceDate != null">
+                produce_date,
+            </if>
+            <if test="guaranteeTime != null">
+                guarantee_time,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="modifyTerminal != null">
+                modify_terminal,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTerminal != null">
+                create_terminal,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="debug  != null">
+                debug,
+            </if>
+            <if test="debugDuration != null">
+                debug_duration,
+            </if>
+            <if test="debugDeadline != null">
+                debug_deadline,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="deviceCode != null">
+                #{deviceCode},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="rj45No != null">
+                #{rj45No},
+            </if>
+            <if test="fibreOpticalNo != null">
+                #{fibreOpticalNo},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="port != null">
+                #{port},
+            </if>
+            <if test="mac != null">
+                #{mac},
+            </if>
+            <if test="latitude != null">
+                #{latitude},
+            </if>
+            <if test="latitudeA != null">
+                #{latitudeA},
+            </if>
+            <if test="longitude != null">
+                #{longitude},
+            </if>
+            <if test="longitudeA != null">
+                #{longitudeA},
+            </if>
+            <if test="parentAcpowerNo != null">
+                #{parentAcpowerNo},
+            </if>
+            <if test="parentDcpowerNo != null">
+                #{parentDcpowerNo},
+            </if>
+            <if test="parentFibreOpticalNo != null">
+                #{parentFibreOpticalNo},
+            </if>
+            <if test="parentRj45No != null">
+                #{parentRj45No},
+            </if>
+            <if test="parentSlotO != null">
+                #{parentSlotO},
+            </if>
+            <if test="deviceModelId != null">
+                #{deviceModelId},
+            </if>
+            <if test="parentDeviceId != null">
+                #{parentDeviceId},
+            </if>
+            <if test="regionId != null">
+                #{regionId},
+            </if>
+            <if test="regionCode != null">
+                #{regionCode},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="purchaseDate != null">
+                #{purchaseDate},
+            </if>
+            <if test="produceDate != null">
+                #{produceDate},
+            </if>
+            <if test="guaranteeTime != null">
+                #{guaranteeTime},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate},
+            </if>
+            <if test="modifyTerminal != null">
+                #{modifyTerminal},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag},
+            </if>
+            <if test="createTerminal != null">
+                #{createTerminal},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="debug != null">
+                #{debug},
+            </if>
+            <if test="debugDuration != null">
+                #{debugDuration},
+            </if>
+            <if test="debugDeadline != null">
+                #{debugDeadline},
+            </if>
+            <if test="projectId != null">
+                #{projectId},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_device
+        <set>
+            <if test="deviceCode != null">
+                device_code = #{deviceCode},
+            </if>
+            <if test="deviceName != null">
+                device_name = #{deviceName},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="rj45No != null">
+                rj45_no = #{rj45No},
+            </if>
+            <if test="fibreOpticalNo != null">
+                fibre_optical_no = #{fibreOpticalNo},
+            </if>
+            <if test="ip != null">
+                ip = #{ip},
+            </if>
+            <if test="port != null">
+                port = #{port},
+            </if>
+            <if test="mac != null">
+                mac = #{mac},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="latitudeA != null">
+                latitude_a = #{latitudeA},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="longitudeA != null">
+                longitude_a = #{longitudeA},
+            </if>
+            <if test="parentAcpowerNo != null">
+                parent_acpower_no = #{parentAcpowerNo},
+            </if>
+            <if test="parentDcpowerNo != null">
+                parent_dcpower_no = #{parentDcpowerNo},
+            </if>
+            <if test="parentFibreOpticalNo != null">
+                parent_fibre_optical_no = #{parentFibreOpticalNo},
+            </if>
+            <if test="parentRj45No != null">
+                parent_rj45_no = #{parentRj45No},
+            </if>
+            <if test="parentSlotO != null">
+                parent_slot_o = #{parentSlotO},
+            </if>
+            <if test="deviceModelId != null">
+                device_model_id = #{deviceModelId},
+            </if>
+            <if test="parentDeviceId != null">
+                parent_device_id = #{parentDeviceId},
+            </if>
+            <if test="regionId != null">
+                region_id = #{regionId},
+            </if>
+            <if test="regionCode != null">
+                region_code = #{regionCode},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="purchaseDate != null">
+                purchase_date = #{purchaseDate},
+            </if>
+            <if test="produceDate != null">
+                produce_date= #{produceDate},
+            </if>
+            <if test="guaranteeTime != null">
+                guarantee_time = #{guaranteeTime},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+            <if test="modifyTerminal != null">
+                modify_terminal = #{modifyTerminal},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="createTerminal != null">
+                create_terminal = #{createTerminal},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="debug != null">
+                debug = #{debug},
+            </if>
+            <choose>
+                <when test="debugDuration != null">
+                    debug_duration = #{debugDuration},
+                </when>
+                <otherwise>
+                    debug_duration = null,
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="debugDeadline != null">
+                    debug_deadline = #{debugDeadline},
+                </when>
+                <otherwise>
+                    debug_deadline = null,
+                </otherwise>
+            </choose>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="relationDevice">
+        UPDATE as_device set factory_code = #{factoryCode} WHERE id =#{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM  as_device
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM  as_device
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+
+    <select id="getSuperiorDevice" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+
+        SELECT
+        ad.id AS id,
+		ad.device_name AS deviceName,
+		dk.id AS deviceKindId,
+		dk.device_kind_name AS deviceKindName,
+		dk.connect_type as connectType,
+		dt.id AS deviceTypeId,
+		dt.device_type_name AS deviceTypeName,
+		dt.device_type as deviceType,
+		dm.id AS deviceModelId,
+		dm.device_model_name AS deviceModelName,
+		ad.region_id as regionId,
+		ar.region_name AS regionName,
+		ad.ip AS ip,
+		ad.rj45_no AS rj45No,
+		ad.fibre_optical_no AS fibreOpticalNo,
+		ad.device_code AS deviceCode,
+		ad.address AS address,
+		ad.port AS port,
+		ad.mac AS mac,
+		ad.latitude AS latitude,
+		ad.latitude_a AS latitudeA,
+		ad.longitude AS longitude,
+		ad.longitude_a AS longitudeA,
+		ad.parent_acpower_no AS parentAcpowerNo,
+		ad.parent_dcpower_no AS parentDcpowerNo,
+		ad.parent_fibre_optical_no AS parentFibreOpticalNo,
+		ad.parent_rj45_no AS parentRj45No,
+		ad.parent_slot_o AS parentSlotO,
+		ad.parent_device_id AS parentDeviceId,
+		ad.user_name AS userName,
+		ad.password AS password,
+		ad.purchase_date AS purchaseDate,
+		ad.guarantee_time AS guaranteeTime,
+		ad.remark AS remark,
+		ad.project_id AS projectId,
+		ad.create_date
+        FROM as_device ad
+        JOIN as_device_model dm
+        ON ad.device_model_id=dm.id
+        JOIN as_device_type dt
+        ON dt.device_type=dm.device_type
+        JOIN as_device_kind dk
+        ON dk.id=dt.device_kind_id
+        JOIN as_region ar
+        ON ar.id=ad.region_id
+        WHERE ad.del_flag=0
+        and ad.id=#{parentId}
+    </select>
+
+    <select id="getSubordinateDevice" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+
+        SELECT
+        ad.id AS id,
+		ad.device_name AS deviceName,
+		dk.id AS deviceKindId,
+		dk.device_kind_name AS deviceKindName,
+		dk.connect_type as connectType,
+		dt.id AS deviceTypeId,
+		dt.device_type_name AS deviceTypeName,
+		dt.device_type as deviceType,
+		dm.id AS deviceModelId,
+		dm.device_model_name AS deviceModelName,
+		ad.region_id as regionId,
+		ar.region_name AS regionName,
+		ad.ip AS ip,
+		ad.rj45_no AS rj45No,
+		ad.fibre_optical_no AS fibreOpticalNo,
+		ad.device_code AS deviceCode,
+		ad.address AS address,
+		ad.port AS port,
+		ad.mac AS mac,
+		ad.latitude AS latitude,
+		ad.latitude_a AS latitudeA,
+		ad.longitude AS longitude,
+		ad.longitude_a AS longitudeA,
+		ad.parent_acpower_no AS parentAcpowerNo,
+		ad.parent_dcpower_no AS parentDcpowerNo,
+		ad.parent_fibre_optical_no AS parentFibreOpticalNo,
+		ad.parent_rj45_no AS parentRj45No,
+		ad.parent_slot_o AS parentSlotO,
+		ad.parent_device_id AS parentDeviceId,
+		ad.user_name AS userName,
+		ad.password AS password,
+		ad.purchase_date AS purchaseDate,
+		ad.guarantee_time AS guaranteeTime,
+		ad.remark AS remark,
+		ad.project_id as projectId,
+		ad.create_date
+        FROM as_device ad
+        JOIN as_device_model dm
+        ON ad.device_model_id=dm.id
+        JOIN as_device_type dt
+        ON dt.device_type=dm.device_type
+        JOIN as_device_kind dk
+        ON dk.id=dt.device_kind_id
+        JOIN as_region ar
+        ON ar.id=ad.region_id
+        WHERE ad.del_flag=0
+        and ad.parent_device_id=#{id}
+    </select>
+
+    <select id="getDevicesByIds" resultMap="deviceResultMap">
+		SELECT id FROM as_device
+		WHERE id in  (${ids})
+	</select>
+    <select id="findByCondition" resultMap="deviceResultMap">
+        SELECT
+        <include refid="deviceColumns"/>
+        FROM as_device
+        where del_flag =0
+        <if test="query  != null and query != ''">
+            and device_name LIKE CONCAT('%',#{query},'%')
+        </if>
+        ORDER BY create_date DESC
+    </select>
+
+    <select id="getDevicesByLonLat" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        t1.id as id,
+        t1.device_name as deviceName,
+        t1.ip as ip,
+        t1.mac as mac,
+        t1.address as address,
+        t1.longitude as longitude,
+        t1.latitude as latitude,
+        t3.region_name as regionName,
+        t3.full_name as fullName,
+        t2.network_state as networkState,
+        t4.alarm_types as alarmTypes,
+        t4.alarm_types_des as alarmTypesDes,
+        t4.is_alarm as isAlarm,
+        t6.device_type as deviceType,
+        t6.id as deviceTypeId,
+        t6.device_type_name as deviceTypeName,
+        t7.type as type,
+        t4.alarm_level AS alarmLevel,
+        t1.debug as debug
+        FROM
+        as_device t1
+        LEFT JOIN as_event_network t2
+        ON t2.device_id=t1.id
+        LEFT JOIN as_region t3
+        ON t3.id=t1.region_id
+        LEFT JOIN as_device_event_alarm t4
+        ON t4.device_id=t1.id
+        LEFT JOIN as_device_model t5
+        ON t5.id=t1.device_model_id
+        LEFT JOIN as_device_type t6
+        ON t6.device_type=t5.device_type
+        LEFT JOIN as_device_kind t7
+        ON t7.id=t6.device_kind_id
+        WHERE t1.del_flag=0
+        AND t1.device_name IS NOT NULL
+        <if test="lonMin!=null and lonMax!=null ">
+         and t1.longitude between #{lonMin} and #{lonMax}
+        </if>
+        <if test="latMin!=null and latMax!=null ">
+          and   t1.latitude between #{latMin} and #{latMax}
+        </if>
+        <if test="regionCode!=null and regionCode!=''">
+            and t1.region_code LIKE CONCAT(#{regionCode},'%')
+        </if>
+        <if test="devType!=null and devType!=''">
+            and t6.device_type IN (${devType})
+        </if>
+        <if test="query!=null and query!='' ">
+            and t1.device_name LIKE CONCAT('%',#{query},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            and t1.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND t1.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kind!= null and kind !=''">
+            and t7.type = #{kind}
+        </if>
+        <if test="(alarmLevels != null and alarmLevels.length != 0) or (offlineFlag != null and offlineFlag != '') or (queryDebug != null and queryDebug!='')">
+            AND ( 1=2
+            <if test="alarmLevels != null and alarmLevels.length != 0">
+                OR t4.alarm_level in
+                <foreach collection="alarmLevels" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test='offlineFlag != null and offlineFlag == "0"'>
+                OR t2.network_state != 1
+            </if>
+            <if test='offlineFlag != null and offlineFlag == "1"'>
+                OR t2.network_state = 1
+            </if>
+            <if test='queryDebug != null and queryDebug!="" '>
+                OR t1.debug = 1
+            </if>
+            )
+        </if>
+    </select>
+
+    <!-- 获取在线状态，为了显示摄像头在线 -->
+    <select id="getDeviceNetworkState" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        select device_id as id,network_state as networkState from
+        as_event_network where device_id in (${ids})
+    </select>
+
+    <select id="getDevicesCount" resultType="java.lang.Integer">
+         SELECT COUNT(*) AS deviceCount
+         FROM as_device
+         WHERE del_flag=0
+         <if test="regionCode!=null and regionCode!=''">
+             AND region_code LIKE CONCAT(#{regionCode},'%')
+         </if>
+         <if test="tenantCode!=null and tenantCode!='' ">
+             AND tenant_code = #{tenantCode}
+         </if>
+         <if test="projectId!=null and projectId!='' ">
+             AND project_id IN
+             <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                 #{item}
+             </foreach>
+         </if>
+    </select>
+
+    <select id="findVideoVo" resultType="com.aswl.as.ibrs.api.vo.VideoStreamVo">
+        SELECT d.id AS id,d.user_name AS userName,d.password AS password,d.ip AS ip,d.port AS port,d.device_name AS deviceName,n.network_state AS isOnline,
+        d.tenant_code as tenantCode,p.project_code as projectCode, m.device_type as deviceType
+        FROM as_device d
+        LEFT JOIN as_event_network n ON n.device_id = d.id
+        LEFT JOIN as_device_model m ON m.id = d.device_model_id
+        LEFT JOIN as_project as p on d.project_id = p.project_id
+        WHERE parent_device_id = #{id}
+    </select>
+
+    <select id="findVideoStreamVo" resultType="com.aswl.as.ibrs.api.vo.VideoStreamVo">
+        SELECT d.id AS id,d.user_name AS userName,d.password AS password,d.ip AS ip,d.port AS port,d.device_name AS deviceName,n.network_state AS isOnline,
+        d.tenant_code as tenantCode,p.project_code as projectCode, m.device_type as deviceType
+        FROM as_device d
+        LEFT JOIN as_event_network n ON n.device_id = d.id
+        LEFT JOIN as_device_model m ON m.id = d.device_model_id
+        LEFT JOIN as_project as p on d.project_id = p.project_id
+        WHERE d.id = #{id}
+    </select>
+
+    <select id="updateParentDeviceId" resultType="java.lang.Integer" >
+       UPDATE as_device set parent_device_id=NULL where id=#{id}
+    </select>
+
+    <select id="findUniqueDeviceCode" resultMap="deviceResultMap">
+        SELECT
+        <include refid="deviceColumns"/>
+        FROM  as_device
+        WHERE device_code=#{deviceCode}
+        AND project_id=#{projectId}
+        limit 1
+    </select>
+
+    <select id="findUniqueIp" resultType="java.lang.Integer">
+        SELECT
+        count(1) count
+        FROM  as_device
+        WHERE ip=#{ip}
+        AND project_id=#{projectId}
+        <if test="deviceId != null and deviceId != ''">
+          AND id != #{deviceId}
+        </if>
+    </select>
+
+    <select id="findDeviceIdsByRegionAndKind" resultType="java.lang.String">
+        SELECT t1.id FROM as_region t0 left join as_device t1 on t0.id = t1.region_id
+        LEFT JOIN as_device_model t2 ON t1.device_model_id = t2.id
+        LEFT JOIN as_device_type t3 ON t2.device_type = t3.device_type left join as_device_kind t4 on t3.device_kind_id = t4.id
+        WHERE t4.type = #{deviceKind} and t1.region_code = #{regionCode}
+    </select>
+
+    <select id="openDeviceList" resultType="java.util.LinkedHashMap">
+        SELECT
+        ad.id AS deviceId,
+        ad.device_name AS deviceName,
+        dk.id AS deviceKindId,
+        dk.type AS type,
+        dk.device_kind_name AS deviceKindName,
+        dt.id AS deviceTypeId,
+        dt.device_type_name AS deviceTypeName,
+        dt.device_type as deviceType,
+        dm.id AS deviceModelId,
+        dm.device_model_name AS deviceModelName,
+        ad.region_id as regionId,
+        ad.region_code AS regionCode,
+        ar.region_name AS regionName,
+        ar.full_name AS fullName,
+        ad.ip AS ip,
+        ad.device_code AS deviceCode,
+        ad.address AS address,
+        ad.port AS port,
+        ad.latitude AS latitude,
+        ad.longitude AS longitude,
+        ad.parent_device_id AS parentDeviceId,
+        ad.user_name AS userName,
+        ad.password AS password,
+        DATE_FORMAT(ad.purchase_date,'%Y-%m-%d %H:%i:%s') AS purchaseDate,
+        ad.guarantee_time AS guaranteeTime
+        FROM as_device ad
+        LEFT JOIN as_device_model dm ON ad.device_model_id=dm.id
+        LEFT JOIN as_device_type dt ON dt.device_type=dm.device_type
+        LEFT JOIN as_device_kind dk ON dk.id=dt.device_kind_id
+        LEFT JOIN as_region ar ON ar.id=ad.region_id
+        LEFT JOIN as_device_event_alarm al on al.device_id = ad.id
+        WHERE ad.del_flag=0
+        <if test="id!=null and id!=''">
+            and ad.id=#{id}
+        </if>
+        <if test="deviceKindId!=null and deviceKindId!=''">
+            and dk.id=#{deviceKindId}
+        </if>
+        <if test="deviceType!=null and deviceType!=''">
+            and dt.device_type=#{deviceType}
+        </if>
+        <if test="deviceModelId!=null and deviceModelId!=''">
+            and dm.id=#{deviceModelId}
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and ad.region_code LIKE CONCAT ( #{regionCode},'%')
+        </if>
+        <if test="keywords  != null and keywords != ''">
+            AND (
+            ad.device_name LIKE CONCAT ('%',#{keywords},'%')
+            OR  ad.device_code LIKE CONCAT('%',#{keywords},'%')
+            OR ad.ip = #{keywords}
+            )
+        </if>
+
+    </select>
+
+    <select id="getDeviceCount" resultType="long">
+        select count(1) as deviceCount
+        from as_device as a LEFT JOIN as_device_model as b
+        on a.device_model_id = b.id
+        LEFT JOIN as_device_type as c
+        on b.device_type = c.device_type
+        LEFT JOIN as_device_kind as d
+        on c.device_kind_id = d.id
+        where 1=1
+        <if test="regionCode != null and regionCode != ''">
+            AND a.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="deviceKind != null and deviceKind != ''">
+            AND d.type = #{deviceKind}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+        <if test="model != null and model != ''">
+            AND a.device_model_id = #{model}
+        </if>
+    </select>
+
+    <select id="findByRegionIds" resultType="string">
+      SELECT a.id FROM as_device as a
+      LEFT JOIN as_device_model as b on a.device_model_id = b.id
+      LEFT JOIN as_device_type as c on b.device_type = c.device_type
+      LEFT JOIN as_device_kind as d on c.device_kind_id = d.id
+      where d.type = 2 and (a.region_id in
+      <foreach collection="regionIds" open="(" close="))" item="item" separator=",">
+          #{item}
+      </foreach>
+    </select>
+
+    <select id="get" resultMap="deviceResultMap">
+        SELECT
+        <include refid="deviceColumns"/>
+        FROM as_device
+        WHERE id = #{id}
+    </select>
+
+    <select id="getDevicesBoxCount" resultType="integer">
+        SELECT COUNT(1) AS deviceCount
+        FROM as_device as t1
+        LEFT JOIN as_device_model as t2 on t1.device_model_id = t2.id
+        LEFT JOIN as_device_type as t3 on t2.device_type = t3.device_type
+        LEFT JOIN as_device_kind as t4 on t3.device_kind_id = t4.id
+        WHERE t1.del_flag=0
+        <if test="regionCode!=null and regionCode!=''">
+            AND t1.region_code LIKE CONCAT(#{regionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND t1.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND t1.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kind != null and kind != ''">
+            AND t4.type = #{kind}
+        </if>
+    </select>
+
+    <select id="getDeviceModelByProjectId" resultType="string">
+        SELECT t2.device_model_name as deviceModelName FROM
+        as_device as t1 RIGHT JOIN as_device_model as t2
+        on t1.device_model_id = t2.id
+        where 1 = 1
+        <if test="projectId  != null and projectId != ''" >
+            AND t1.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by deviceModelName
+    </select>
+
+    <select id="monitorDeviceList" resultMap="deviceAlarmVo"><!--resultType="com.aswl.as.ibrs.api.vo.DeviceAlarmVo"-->
+        select
+          t1.id,
+          t1.project_id as projectId,
+          t1.region_id as regionId,
+          t1.device_name as deviceName,
+          t1.ip as ip,
+          t1.latitude as latitude,
+          t1.longitude as longitude,
+          t1.parent_device_id as parentId,
+          t1.address AS address,
+          t2.region_name as regionName,
+          t2.region_code as regionCode,
+          t3.alarm_types_des as alarmTypeName,
+          t7.type as type,
+          t8.alarm_level as alarmLevel,
+          t8.alarm_level_name as alarmLevelName,
+          t4.network_state as isOnline,
+          t5.pic_url AS picUrl,
+          t5.device_model_name AS deviceModelName,
+          CASE WHEN t7.type = 3 and t4.network_state = 1 THEN 1 ELSE 0 end as isVideo,
+          CASE WHEN t3.is_alarm = 1 THEN substring_index(t3.alarm_dates,';',1) ELSE NULL END as alarmTime,
+        <if test="deviceAlarmConditionDto.latitude != null and deviceAlarmConditionDto.longitude != null">
+        IFNULL(ROUND(
+        6378.138 * 2 * ASIN(
+        SQRT(
+        POW(
+        SIN(
+        (
+        ${deviceAlarmConditionDto.latitude} * PI() / 180 - t1.latitude * PI() / 180
+        ) / 2
+        ),
+        2
+        ) + COS(${deviceAlarmConditionDto.latitude} * PI() / 180) * COS(t1.latitude * PI() / 180) * POW(
+        SIN(
+        (
+        ${deviceAlarmConditionDto.longitude} * PI() / 180 - t1.longitude * PI() / 180
+        ) / 2
+        ),
+        2
+        )
+        )
+        ) * 1000
+        ),0) AS juli,
+        </if>
+        t1.parent_dcpower_no AS parentDcpowerNo ,
+        t1.parent_rj45_no AS  parentRj45No,
+        t1.parent_fibre_optical_no AS parentFibreOpticalNo,
+        t1.debug AS debug,
+        t5.rj45_number as rj45Number,
+        aee.fld01 AS rj45_fld01, aee.fld02 AS rj45_fld02, aee.fld03 AS rj45_fld03, aee.fld04 AS rj45_fld04, aee.fld05 AS rj45_fld05, aee.fld06 AS rj45_fld06,
+        aee.fld07 AS rj45_fld07, aee.fld08 AS rj45_fld08, aee.fld09 AS rj45_fld09, aee.fld10 AS rj45_fld10, aee.fld11 AS rj45_fld11, aee.fld12 AS rj45_fld12,
+        aee.fld13 AS rj45_fld13, aee.fld14 AS rj45_fld14, aee.fld15 AS rj45_fld15, aee.fld16 AS rj45_fld16,
+        CASE WHEN t4.network_state=1 THEN t8.alarm_level ELSE 0 END AS appLevelOrder
+        from as_device t1 LEFT JOIN as_region t2 on t1.region_id = t2.id
+        LEFT JOIN as_device_event_alarm t3 on t1.id = t3.device_id
+        LEFT JOIN as_event_network t4 on t1.id = t4.device_id
+        LEFT JOIN as_device_model as t5 on t1.device_model_id = t5.id
+        LEFT JOIN as_device_type as t6 on t5.device_type = t6.device_type
+        LEFT JOIN as_device_kind as t7 on t6.device_kind_id = t7.id
+        LEFT JOIN as_alarm_level as t8 on t3.alarm_level = t8.alarm_level and t3.tenant_code = t8.tenant_code
+        LEFT JOIN as_event_eoutlet aee ON aee.device_id = t1.id
+        WHERE 1 = 1
+        <if test="deviceAlarmConditionDto.kind != null and deviceAlarmConditionDto.kind != ''">
+           AND t7.type = #{deviceAlarmConditionDto.kind}
+        </if>
+        <if test="deviceAlarmConditionDto.query != null and deviceAlarmConditionDto.query != ''">
+          AND (t1.device_name like concat('%',#{deviceAlarmConditionDto.query},'%') OR t1.ip like concat('%',#{deviceAlarmConditionDto.query},'%') OR t1.address like concat('%',#{deviceAlarmConditionDto.query},'%'))
+        </if>
+        <if test="deviceAlarmConditionDto.regionCode != null and deviceAlarmConditionDto.regionCode != ''">
+          AND t1.region_code like concat(#{deviceAlarmConditionDto.regionCode},'%')
+        </if>
+        <if test='parentOrChildren != null and parentOrChildren == "parent"'>
+          AND (t1.parent_device_id is null or t1.parent_device_id = '')
+        </if>
+        <if test='parentOrChildren != null and parentOrChildren == "children"'>
+          AND (t1.parent_device_id is not null and t1.parent_device_id != '')
+        </if>
+        <if test="deviceAlarmConditionDto.tenantCode != null and deviceAlarmConditionDto.tenantCode != ''">
+          AND t1.tenant_code = #{deviceAlarmConditionDto.tenantCode}
+        </if>
+        <if test="deviceAlarmConditionDto.projectId != null and deviceAlarmConditionDto.projectId != ''">
+            AND t1.project_id in
+            <foreach collection="deviceAlarmConditionDto.projectId.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="(deviceAlarmConditionDto.alarmLevels != null and deviceAlarmConditionDto.alarmLevels.length != 0) or (deviceAlarmConditionDto.offlineFlag != null and deviceAlarmConditionDto.offlineFlag != '') or (deviceAlarmConditionDto.queryDebug != null and deviceAlarmConditionDto.queryDebug!='')">
+            AND ( 1=2 
+            <if test="deviceAlarmConditionDto.alarmLevels != null and deviceAlarmConditionDto.alarmLevels.length != 0">
+                OR t3.alarm_level in
+                <foreach collection="deviceAlarmConditionDto.alarmLevels" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            
+            <if test='deviceAlarmConditionDto.offlineFlag != null and deviceAlarmConditionDto.offlineFlag == "0"'>
+                OR t4.network_state != 1
+            </if>
+            <if test='deviceAlarmConditionDto.offlineFlag != null and deviceAlarmConditionDto.offlineFlag == "1"'>
+                OR t4.network_state = 1
+            </if>
+            <if test='deviceAlarmConditionDto.queryDebug != null and deviceAlarmConditionDto.queryDebug!="" '>
+                OR t1.debug = 1
+            </if>
+            )
+            <if test='deviceAlarmConditionDto.queryDebug == null or deviceAlarmConditionDto.queryDebug == "" '>
+                AND (t1.debug != 1 OR t1.debug is null)
+            </if>
+        </if>
+        <choose>
+            <when test="deviceAlarmConditionDto.latitude != null and deviceAlarmConditionDto.longitude != null">
+                ORDER BY t1.device_name IS NULL,appLevelOrder DESC,juli
+            </when>
+            <otherwise>
+                ORDER BY t1.device_name IS NULL ,t3.rec_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getCurrentAlarm" resultType="com.aswl.as.ibrs.api.vo.DeviceAlarmVo">
+        SELECT
+        t1.id as id,
+        t1.ip as ip,
+        t1.device_name as deviceName,
+        t1.device_code as deviceCode,
+        t2.region_name as regionName,
+        CONCAT(t3.device_model_name,'/',t4.device_type_name,'/',t5.device_kind_name) as deviceModelKind,
+        t3.device_model_name as deviceModelName,
+        t4.device_type_name as deviceTypeName,
+        t5.device_kind_name as deviceKindName,
+        substring_index(t6.alarm_dates,';',1) as alarmTime,
+        TIMESTAMPDIFF(SECOND,substring_index(t6.alarm_dates,';',1),now()) as intervalTime,
+        t6.alarm_dates as alarmTimes,
+        t6.alarm_levels as alarmLevelNames,
+        t6.alarm_types_des as alarmTypeName,
+        GROUP_CONCAT(aat.alarm_type_name_en SEPARATOR ';') as alarmTypeNameEn,
+        t6.alarm_types as alarmTypes,
+        t6.is_alarm as status,
+        t7.alarm_level as alarmLevel,
+        t7.alarm_level_name as alarmLevelName,
+        t7.alarm_level_name_en as alarmLevelNameEn,
+        t6.u_event_id as uEventId,
+        t1.debug as debug,
+        t1.debug_duration as debugDuration,
+        t1.debug_deadline as debugDeadline,
+        p.project_name as projectName,
+        p.project_id as projectId,
+        IFNULL(((LENGTH(t6.alarm_types) - LENGTH(REPLACE(t6.alarm_types, ',', '')))+1),0) - IFNULL(((LENGTH(GROUP_CONCAT(run.alarm_type)) - LENGTH(REPLACE(GROUP_CONCAT(run.alarm_type), ',', '')))+1),0) AS alarmNum
+        from
+        as_device as t1 LEFT JOIN as_region as t2 on t1.region_id = t2.id
+        LEFT JOIN as_device_model as t3 on t1.device_model_id = t3.id
+        LEFT JOIN as_device_type as t4 on t3.device_type = t4.device_type
+        LEFT JOIN as_device_kind as t5 on t4.device_kind_id = t5.id
+        LEFT JOIN as_device_event_alarm as t6 on t1.id = t6.device_id
+        LEFT JOIN as_alarm_level as t7 on t6.alarm_level = t7.alarm_level and t6.tenant_code = t7.tenant_code
+        LEFT JOIN as_project p on t1.project_id = p.project_id
+        LEFT JOIN as_flow_run run
+        ON run.begin_device_id = t6.device_id AND LOCATE (run.begin_u_event_id,t6.u_event_id) AND LOCATE (run.alarm_type,t6.alarm_types)
+        LEFT JOIN as_alarm_type aat ON LOCATE(aat.alarm_type,t6.alarm_types)
+        where t1.del_flag = 0 AND t6.is_alarm = 1 AND (t1.debug != 1 or t1.debug is NULL)
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t1.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId != null and projectId != ''">
+            AND t1.project_id in
+            <foreach collection="projectId.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND t1.device_name like concat('%',#{deviceName},'%')
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            AND t1.device_code like concat('%',#{deviceCode},'%')
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND t1.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="kind != null and kind != ''">
+            AND t5.type = #{kind}
+        </if>
+        <if test="model != null and model != ''">
+            AND t3.device_model_name = #{model}
+        </if>
+        <if test="type != null and model != ''">
+            AND t4.device_type_name = #{type}
+        </if>
+
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND t6.alarm_level = #{alarmLevel}
+        </if>
+        <if test="ip != null and ip != ''">
+            AND t1.ip like concat('%',#{ip},'%')
+        </if>
+        <if test="query!= null and query !=''">
+            AND (t1.device_name like concat('%',#{query},'%') or t1.device_code like concat('%',#{query},'%') or t1.ip
+            like concat('%',#{query},'%'))
+        </if>
+        <if test="filter != null and filter == 0">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                <foreach collection="alarmTypeNames" item="item">
+                    AND LOCATE(#{item},t6.alarm_types)
+                </foreach>
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                <foreach collection="alarmTypeNameGroups" item="item">
+                    AND
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},t6.alarm_types)
+                    </foreach>
+                </foreach>
+            </if>
+        </if>
+        <if test="filter != null and filter == 1">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                AND (
+                <foreach collection="alarmTypeNames" item="item" separator="OR">
+                    LOCATE(#{item},t6.alarm_types)
+                </foreach>
+                )
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                AND (
+                <foreach collection="alarmTypeNameGroups" item="item" separator="OR">
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},t6.alarm_types)
+                    </foreach>
+                </foreach>
+                )
+            </if>
+        </if>
+        GROUP BY t6.device_id
+        <if test="isPage!= null and isPage!= ''">
+            HAVING alarmNum !=0
+        </if>
+        order by alarmNum desc
+    </select>
+
+    <select id="getCurrentStatus" resultType="com.aswl.as.ibrs.api.vo.DeviceAlarmVo">
+        SELECT tmp.*,group_concat(aat.alarm_type_name SEPARATOR ';') as promptTypes FROM (
+        SELECT
+        t1.id,
+        t1.ip as ip,
+        t1.device_name as deviceName,
+        t1.device_code as deviceCode,
+        t2.region_name as regionName,
+        CONCAT(t3.device_model_name,'/',t4.device_type_name,'/',t5.device_kind_name) as deviceModelKind,
+        t3.device_model_name as deviceModelName,
+        t4.device_type_name as deviceTypeName,
+        t5.device_kind_name as deviceKindName,
+        case t6.is_alarm when 0 then '' ELSE substring_index(t6.alarm_dates,';',1) end as alarmTime,
+        t7.alarm_level_name AS alarmLevelName,
+        t7.alarm_level AS alarmLevel,
+        t6.alarm_levels as alarmLevelNames,
+        t6.alarm_types_des as alarmTypeName,
+        t6.alarm_dates as alarmTimes,
+        t6.prompt_types AS promptType,
+        t6.u_event_id AS uEventId,
+        t1.debug as debug,
+        t1.debug_duration as debugDuration,
+        t1.debug_deadline as debugDeadline,
+        p.project_name as projectName,
+        p.project_id as projectId
+        FROM
+        as_device as t1 LEFT JOIN as_region as t2 on t1.region_id = t2.id
+        LEFT JOIN as_device_model as t3 on t1.device_model_id = t3.id
+        LEFT JOIN as_device_type as t4 on t3.device_type = t4.device_type
+        LEFT JOIN as_device_kind as t5 on t4.device_kind_id = t5.id
+        LEFT JOIN as_device_event_alarm as t6 on t1.id = t6.device_id
+        LEFT JOIN as_alarm_level as t7 on t6.alarm_level = t7.alarm_level and t6.tenant_code = t7.tenant_code
+        LEFT JOIN as_project as p on t1.project_id = p.project_id
+        where t1.del_flag = 0
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t1.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId != null and projectId != ''">
+            AND t1.project_id in
+            <foreach collection="projectId.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND t1.device_name like concat('%',#{deviceName},'%')
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            AND t1.device_code like concat('%',#{deviceCode},'%')
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND t1.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND t6.alarm_level = #{alarmLevel} AND (t1.debug !=1 OR t1.debug is null)
+        </if>
+        <if test="kind != null and kind != ''">
+            AND t5.type = #{kind}
+        </if>
+        <if test="model != null and model != ''">
+            AND t4.device_type = #{model}
+        </if>
+        <if test="type != null and type != ''">
+            AND t3.device_model_name = #{type}
+        </if>
+        <if test="ip != null and ip != ''">
+            AND t1.ip like concat('%',#{ip},'%')
+        </if>
+        <if test="query!= null and query !=''">
+            AND (t1.device_name like concat('%',#{query},'%') or  t1.device_code like concat('%',#{query},'%') or  t1.ip like concat('%',#{query},'%'))
+        </if>
+        <if test="filter != null and filter == 0">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                <foreach collection="alarmTypeNames" item="item">
+                    AND LOCATE(#{item},concat(ifnull(t6.alarm_types,''),',',ifnull(t6.prompt_types,'')))
+                </foreach>
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                <foreach collection="alarmTypeNameGroups" item="item" >
+                    AND
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},concat(ifnull(t6.alarm_types,''),',',ifnull(t6.prompt_types,'')))
+                    </foreach>
+                </foreach>
+            </if>
+        </if>
+        <if test="filter != null and filter == 1">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                AND (
+                <foreach collection="alarmTypeNames" item="item" separator="OR">
+                    LOCATE(#{item},concat(ifnull(t6.alarm_types,''),',',ifnull(t6.prompt_types,'')))
+                </foreach>
+                )
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                AND (
+                <foreach collection="alarmTypeNameGroups" item="item" separator="OR">
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},concat(ifnull(t6.alarm_types,''),',',ifnull(t6.prompt_types,'')))
+                    </foreach>
+                </foreach>
+                )
+            </if>
+        </if>
+        <if test="queryDebug != null">
+            AND t1.debug = #{queryDebug}
+        </if>
+        order by alarmTime desc) as tmp LEFT JOIN as_alarm_type as aat on locate(aat.alarm_type,tmp.promptType)
+        <choose>
+            <when test='isManager != null and isManager == "1" '>
+                group by tmp.projectId,tmp.id
+            </when>
+            <otherwise>
+                group by tmp.id
+                ORDER BY tmp.alarmLevel ASC ,tmp.alarmTime DESC
+            </otherwise>
+        </choose>
+       
+    </select>
+
+    <select id="getHistoryAlarm" resultType="com.aswl.as.ibrs.api.vo.DeviceAlarmVo">
+        SELECT
+        t2.id,
+        t2.ip as ip,
+        t2.device_name as deviceName,
+        t2.device_code as deviceCode,
+        t3.region_name as regionName,
+        CONCAT(t4.device_model_name,'/',t5.device_type_name,'/',t6.device_kind_name) as deviceModelKind,
+        t4.device_model_name as deviceModelName,
+        t5.device_type_name as deviceTypeName,
+        t6.device_kind_name as deviceKindName,
+        FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d %H:%i:%s') as alarmTime,
+        TIMESTAMPDIFF(SECOND,FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d %H:%i:%s'),now()) as intervalTime,
+        t7.alarm_level as alarmLevel,
+        t7.alarm_level_name as alarmLevelName,
+        t1.alarm_types_des as alarmTypeName,
+        group_concat(case aat.alarm_level when 1 then '故障' when 2 then '预警' when 3 then '正常' END SEPARATOR ';') as alarmLevelNames,
+        t1.u_event_id as uEventId,
+        t2.debug as debug,
+        t2.debug_duration as debugDuration,
+        t2.debug_deadline as debugDeadline,
+        t8.run_no,
+        t8.run_status,
+        CASE
+        WHEN LOCATE(t1.alarm_types,cur.alarm_types) =0 THEN 2
+        WHEN t8.run_status IS NOT NULL THEN 1
+        ELSE 0
+        END dispatchOrderStatus,
+        p.project_name as projectName,
+        p.project_id as projectId
+        FROM (
+        <foreach collection="tableNames" separator="union all" item="item">
+            SELECT id,u_event_id,device_id,rec_time,is_alarm,alarm_level,alarm_types,alarm_types_des,tenant_code FROM ${item}
+        </foreach>
+        ) as t1
+        LEFT JOIN as_device as t2 on t1.device_id = t2.id
+        LEFT JOIN as_region as t3 on t2.region_id = t3.id
+        LEFT JOIN as_device_model as t4 on t2.device_model_id = t4.id
+        LEFT JOIN as_device_type as t5 on t4.device_type = t5.device_type
+        LEFT JOIN as_device_kind as t6 on t5.device_kind_id = t6.id
+        LEFT JOIN as_alarm_level as t7 on t1.alarm_level = t7.alarm_level and t1.tenant_code = t7.tenant_code
+        LEFT JOIN as_alarm_type as aat on locate(aat.alarm_type,t1.alarm_types)
+        LEFT JOIN as_flow_run t8
+        ON t8.begin_u_event_id =t1.u_event_id
+        LEFT JOIN as_device_event_alarm cur
+        ON cur.device_id =t1.device_id
+        LEFT JOIN  as_project as p on t2.project_id = p.project_id
+        where t2.del_flag = 0 and t1.is_alarm = 1
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t2.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId != null and projectId != ''">
+            AND t2.project_id in
+            <foreach collection="projectId.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND t2.device_name like concat('%',#{deviceName},'%')
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            AND t2.device_code like concat('%',#{deviceCode},'%')
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND t2.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND t1.alarm_level = #{alarmLevel}
+        </if>
+        <if test="kind != null and kind != ''">
+            AND t6.type = #{kind}
+        </if>
+        <if test="model != null and model != ''">
+            AND t5.device_type = #{model}
+        </if>
+        <if test="type != null and type != ''">
+            AND t4.device_model_name = #{type}
+        </if>
+        <if test="ip != null and ip != ''">
+            AND t2.ip like concat('%',#{ip},'%')
+        </if>
+        <if test="query!= null and query!=''">
+            AND (t2.device_name like concat('%',#{query},'%') OR t2.device_code like concat('%',#{query},'%') OR  t2.ip like concat('%',#{query},'%') )
+        </if>
+        <if test="filter != null and filter == 0">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                <foreach collection="alarmTypeNames" item="item">
+                    AND LOCATE(#{item},t1.alarm_types)
+                </foreach>
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                <foreach collection="alarmTypeNameGroups" item="item" >
+                    AND
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},t1.alarm_types)
+                    </foreach>
+                </foreach>
+            </if>
+        </if>
+        <if test="filter != null and filter == 1">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                AND (
+                <foreach collection="alarmTypeNames" item="item" separator="OR">
+                    LOCATE(#{item},t1.alarm_types)
+                </foreach>
+                )
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                AND (
+                <foreach collection="alarmTypeNameGroups" item="item" separator="OR">
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},t1.alarm_types)
+                    </foreach>
+                </foreach>
+                )
+            </if>
+        </if>
+        AND FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d') between #{startTime} and #{endTime}
+        group by t1.id
+        <if test="workOrderFilter != null and workOrderFilter !=''">
+           HAVING dispatchOrderStatus = 0
+        </if>
+        <choose>
+            <when test="order!= null and order == 'dispatchOrder'">
+                ORDER BY dispatchOrderStatus
+            </when>
+            <otherwise>
+                 ORDER BY alarmTime DESC
+            </otherwise>
+        </choose>
+        
+    </select>
+
+    <select id="getHistoryStatus" resultType="com.aswl.as.ibrs.api.vo.DeviceAlarmVo">
+        SELECT
+        t2.id,
+        t2.ip as ip,
+        t2.device_name as deviceName,
+        t2.device_code as deviceCode,
+        t3.region_name as regionName,
+        CONCAT(t4.device_model_name,'/',t5.device_type_name,'/',t6.device_kind_name) as deviceModelKind,
+        t4.device_model_name as deviceModelName,
+        t5.device_type_name as deviceTypeName,
+        t6.device_kind_name as deviceKindName,
+        FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d %H:%i:%s') as alarmTime,
+        TIMESTAMPDIFF(SECOND,FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d %H:%i:%s'),now()) as intervalTime,
+        t7.alarm_level as alarmLevel,
+        t7.alarm_level_name as alarmLevelName,
+        t1.alarm_types_des as alarmTypeName,
+        group_concat(case aat.alarm_level when 1 then '故障' when 2 then '预警' when 3 then '正常' END SEPARATOR ';') as alarmLevelNames,
+        t1.u_event_id as uEventId,
+        t2.debug as debug,
+        t2.debug_duration as debugDuration,
+        t2.debug_deadline as debugDeadline,
+        p.project_name as projectName,
+        p.project_id as projectId,
+        t1.id as hisAlarmId
+        FROM (
+        <foreach collection="tableNames" separator="union all" item="item">
+            SELECT id,u_event_id,device_id,rec_time,is_alarm,alarm_level,alarm_types,alarm_types_des,tenant_code FROM ${item}
+        </foreach>
+        ) as t1
+        LEFT JOIN as_device as t2 on t1.device_id = t2.id
+        LEFT JOIN as_region as t3 on t2.region_id = t3.id
+        LEFT JOIN as_device_model as t4 on t2.device_model_id = t4.id
+        LEFT JOIN as_device_type as t5 on t4.device_type = t5.device_type
+        LEFT JOIN as_device_kind as t6 on t5.device_kind_id = t6.id
+        LEFT JOIN as_alarm_level as t7 on t1.alarm_level = t7.alarm_level and t1.tenant_code = t7.tenant_code
+        LEFT JOIN as_alarm_type as aat on locate(aat.alarm_type,t1.alarm_types)
+        LEFT JOIN as_project as p on t2.project_id =p.project_id
+        where t2.del_flag = 0
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t2.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId != null and projectId != ''">
+            AND t2.project_id in
+            <foreach collection="projectId.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND t2.device_name like concat('%',#{deviceName},'%')
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            AND t2.device_code like concat('%',#{deviceCode},'%')
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND t2.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND t1.alarm_level = #{alarmLevel}
+        </if>
+        <if test="kind != null and kind != ''">
+            AND t6.type = #{kind}
+        </if>
+        <if test="model != null and model != ''">
+            AND t5.device_type = #{model}
+        </if>
+        <if test="type != null and type != ''">
+            AND t4.device_model_name = #{type}
+        </if>
+        <if test="ip != null and ip != ''">
+            AND t2.ip like concat('%',#{ip},'%')
+        </if>
+        <if test="filter != null and filter == 0">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                <foreach collection="alarmTypeNames" item="item">
+                    AND LOCATE(#{item},t1.alarm_types)
+                </foreach>
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                <foreach collection="alarmTypeNameGroups" item="item" >
+                    AND
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},t1.alarm_types)
+                    </foreach>
+                </foreach>
+            </if>
+        </if>
+        <if test="filter != null and filter == 1">
+            <if test="alarmTypeNames != null and alarmTypeNames.size() > 0">
+                AND (
+                <foreach collection="alarmTypeNames" item="item" separator="OR">
+                    LOCATE(#{item},t1.alarm_types)
+                </foreach>
+                )
+            </if>
+            <if test="alarmTypeNameGroups != null and alarmTypeNameGroups.size() > 0">    <!-- 告警类型区分后的查询方式 -->
+                AND (
+                <foreach collection="alarmTypeNameGroups" item="item" separator="OR">
+                    <foreach collection="item.split(',')" item="subItem" open="(" separator="OR" close=")">
+                        LOCATE(#{subItem},t1.alarm_types)
+                    </foreach>
+                </foreach>
+                )
+            </if>
+        </if>
+        <if test="queryDebug != null">
+            AND t2.debug = #{queryDebug}
+        </if>
+        AND FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d %H:%i:%s') between #{startTime} and #{endTime}
+        group by t1.id
+        order by alarmTime desc
+    </select>
+
+    <select id="getByDeviceCode" resultType="com.aswl.iot.dto.Device">
+        SELECT
+          a.id,
+          a.device_code as deviceCode,
+          a.device_name as deviceName,
+          a.ip,
+          a.tenant_code as tenantCode,
+          b.project_code as projectCode
+          FROM as_device a LEFT JOIN as_project b on a.project_id = b.project_id where device_code = #{deviceCode}
+    </select>
+
+    <select id="getTenantCodeByIds" resultType="map">
+        SELECT
+        a.tenant_code as tenantCode,
+        b.project_code as projectCode,
+        group_concat(a.id) as ids
+        FROM as_device a LEFT JOIN as_project b on a.project_id = b.project_id
+        WHERE a.id in
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        group by a.tenant_code,b.project_code
+    </select>
+
+    <select id="portDevice" resultType="map">
+        SELECT ${port} as port,device_name as deviceName,ip
+        FROM as_device where parent_device_id = #{id} and ${port} &lt;= #{number}
+    </select>
+
+    <select id="findModelStatistics" resultType="com.aswl.as.ibrs.api.vo.ModelStatisticsVo">
+        SELECT
+        DATE_FORMAT(a.produce_date,'%Y-%m-%d') AS produceDate,
+        b.device_model_name AS deviceModelName,
+        COUNT(*) AS deviceCount
+        FROM as_device a
+        LEFT JOIN as_device_model b
+        ON a.device_model_id =b.id
+        WHERE a.project_id = #{projectId}
+        GROUP BY produce_date
+        ORDER BY deviceCount DESC
+
+    </select>
+
+
+
+    <select id="findSubsetDevice" resultType="com.aswl.as.ibrs.api.module.Device">
+        SELECT <include refid="deviceColumns"/>
+        FROM as_device
+        where parent_device_id = #{id}
+        AND ${port} = #{portNum}
+    </select>
+    <select id="findDeviceByQrCode" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        b.id AS id,
+        b.device_name deviceName,
+        b.device_code AS deviceCode,
+        b.address AS address,
+        b.ip AS ip,
+        b.port AS port,
+        b.latitude AS latitude,
+        b.longitude AS longitude
+         FROM  as_device_qrcode a
+        INNER JOIN as_device b
+        ON a.factory_code =b.factory_code
+        WHERE a.qr_code = #{qrcode}
+    </select>
+
+    <select id="getMapDeviceCount" resultType="java.util.Map">
+        SELECT
+        COUNT(t1.id) AS total,
+        IFNULL(SUM(CASE WHEN t4.network_state != 1 AND (t1.debug  != 1 OR t1.debug is null) THEN 1 ELSE 0 END),0) offLineCount,
+        IFNULL(SUM(CASE WHEN t3.alarm_level = 1 AND (t1.debug  != 1 OR t1.debug is null) THEN 1 ELSE 0 END),0) faultCount,
+        IFNULL(SUM(CASE WHEN t3.alarm_level = 2 AND (t1.debug  != 1 OR t1.debug is null) THEN 1 ELSE 0 END),0) warningCount,
+        IFNULL(SUM(CASE WHEN t3.alarm_level = 3 AND (t1.debug  != 1 OR t1.debug is null) THEN 1 ELSE 0 END),0) normalCount,
+        IFNULL(SUM(CASE WHEN t1.debug = 1 THEN 1 ELSE 0 END),0) debugCount
+        FROM as_device t1 LEFT JOIN as_region t2 ON t1.region_id = t2.id
+        LEFT JOIN as_device_event_alarm t3 ON t1.id = t3.device_id
+        LEFT JOIN as_event_network t4 ON t1.id = t4.device_id
+        LEFT JOIN as_device_model AS t5 ON t1.device_model_id = t5.id
+        LEFT JOIN as_device_type AS t6 ON t5.device_type = t6.device_type
+        LEFT JOIN as_device_kind AS t7 ON t6.device_kind_id = t7.id
+        WHERE 1=1
+        <if test="deviceAlarmConditionDto.kind != null and deviceAlarmConditionDto.kind != ''">
+            AND t7.type in
+            <foreach collection="deviceAlarmConditionDto.kind.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceAlarmConditionDto.regionCode != null and deviceAlarmConditionDto.regionCode != ''">
+            AND t1.region_code like concat(#{deviceAlarmConditionDto.regionCode},'%')
+        </if>
+        <if test="deviceAlarmConditionDto.query != null and deviceAlarmConditionDto.query != ''">
+            AND  (t1.device_name like concat(#{deviceAlarmConditionDto.query},'%') OR t1.ip like concat('%',#{deviceAlarmConditionDto.query},'%') OR t3.alarm_types_des like CONCAT('%',#{deviceAlarmConditionDto.query},'%'))
+        </if>
+        <if test="deviceAlarmConditionDto.projectId != null and deviceAlarmConditionDto.projectId != ''">
+            AND t1.project_id in
+            <foreach collection="deviceAlarmConditionDto.projectId.split(',')" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="deviceAlarmConditionDto.tenantCode != null and deviceAlarmConditionDto.tenantCode != ''">
+            AND t1.tenant_code = #{deviceAlarmConditionDto.tenantCode}
+        </if>
+        <if test="(deviceAlarmConditionDto.alarmLevels != null and deviceAlarmConditionDto.alarmLevels.length != 0) or (deviceAlarmConditionDto.offlineFlag != null and deviceAlarmConditionDto.offlineFlag != '') or (deviceAlarmConditionDto.queryDebug != null and deviceAlarmConditionDto.queryDebug!='')">
+            AND ( 1=2
+            <if test="deviceAlarmConditionDto.alarmLevels != null and deviceAlarmConditionDto.alarmLevels.length != 0">
+                OR t3.alarm_level in
+                <foreach collection="deviceAlarmConditionDto.alarmLevels" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test='deviceAlarmConditionDto.offlineFlag != null and deviceAlarmConditionDto.offlineFlag == "0"'>
+                OR t4.network_state != 1
+            </if>
+            <if test='deviceAlarmConditionDto.offlineFlag != null and deviceAlarmConditionDto.offlineFlag == "1"'>
+                OR t4.network_state = 1
+            </if>
+            <if test='deviceAlarmConditionDto.queryDebug != null and deviceAlarmConditionDto.queryDebug!="" '>
+                OR t1.debug = 1
+            </if>
+            )
+            <if test='deviceAlarmConditionDto.queryDebug == null or deviceAlarmConditionDto.queryDebug == "" '>
+                AND (t1.debug != 1 OR t1.debug is null)
+            </if>
+        </if>
+    </select>
+
+
+    <select id="debugDevice" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        ad.id,
+        p.project_name,
+        ad.device_name,
+        ar.region_Name,
+        ad.debug,
+        ad.debug_duration,
+        ad.debug_deadline
+        FROM as_device ad
+        LEFT JOIN as_region ar 
+        on ad.region_id = ar.id
+        LEFT JOIN as_project p
+        on p.project_id = ad.project_id
+        WHERE ad.debug = 1 
+        and ad.del_flag = 0
+        <if test="regionCode != null and regionCode != ''">
+            AND ad.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND ad.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND ad.tenant_code = #{tenantCode}
+        </if>
+    </select>
+    <select id="getCurrentHealthyCount" resultType="java.util.Map">
+
+        <choose>
+            <when test="queryProjectId !=null and queryProjectId !=''">
+                SELECT
+                t.region_name AS regionName,
+                IFNULL (temp.faultCount,0) AS faultCount,
+                IFNULL(temp.alarmCount,0 )AS alarmCount,
+                IFNULL(temp.deviceCount,0) AS deviceCount,
+                IFNULL(temp.offLineCount,0) AS offLineCount
+                FROM as_region t
+                LEFT JOIN(
+            </when>
+            <otherwise>
+                SELECT t.project_name AS projectName,
+                IFNULL (temp.faultCount,0) AS faultCount,
+                IFNULL(temp.alarmCount,0 )AS alarmCount,
+                IFNULL(temp.deviceCount,0) AS deviceCount,
+                IFNULL(temp.offLineCount,0) AS offLineCount
+                FROM as_project t LEFT JOIN(
+            </otherwise>
+        </choose>
+        SELECT
+        SUM(CASE WHEN t.alarm_level =1 AND (LOCATE('IsOnlineAlarm',t.alarm_types) =0) THEN 1 ELSE 0 END) AS faultCount,
+        SUM(CASE WHEN t.alarm_level = 2 THEN 1 ELSE 0 END) AS alarmCount,
+        SUM(CASE WHEN t.alarm_level =1 AND t.alarm_types LIKE CONCAT ('IsOnlineAlarm','%') THEN 1 ELSE 0 END) AS offLineCount,
+        t2.project_id,
+        t3.id,
+        COUNT(1) AS deviceCount
+        FROM as_device_event_alarm  t
+        LEFT JOIN as_device t2
+        ON t.device_id=t2.id
+        LEFT JOIN as_region t3
+        <choose>
+            <when test="queryProjectId !=null and queryProjectId !=''">
+                ON t2.region_code LIKE CONCAT(t3.region_code,'%')
+            </when>
+            <otherwise>
+                ON t3.id=t2.region_id
+            </otherwise>
+        </choose>
+
+        left join as_device_model m
+        on t2.device_model_id=m.id
+        LEFT JOIN as_device_type AS t4
+        ON m.device_type = t4.device_type
+        LEFT JOIN as_device_kind AS t5
+        ON t4.device_kind_id = t5.id
+        WHERE t2.del_flag = 0
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t2.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND t2.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND t2.region_code LIKE CONCAT(#{regionCode},'%')
+        </if>
+        <if test="model != null and model != ''">
+            AND m.device_model_name = #{model}
+        </if>
+        <if test="kind != null and kind != ''">
+            AND t5.type = #{kind}
+        </if>
+        <choose>
+            <when test="queryProjectId !=null and queryProjectId !=''">
+                GROUP BY t3.id)
+                AS temp
+                ON t.id = temp.id
+                WHERE  1=1
+                <choose>
+                    <when test="regionId!= null and regionId != ''">
+                        AND t.parent_id =#{regionId}
+                    </when>
+                    <otherwise>
+                        AND t.parent_id = -1
+                    </otherwise>
+                </choose>
+                AND t.project_id = #{queryProjectId}
+            </when>
+            <otherwise>
+                GROUP BY t2.project_id)
+                AS temp
+                ON t.project_id = temp.project_id
+                WHERE  1=1
+            </otherwise>
+        </choose>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId != null and projectId != ''">
+            AND t.project_id IN
+            <foreach collection="projectId.split(',')" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="findDeviceByIpNull" resultMap="deviceResultMap">
+        SELECT <include refid="deviceColumns"/>
+        FROM as_device
+        WHERE region_id = #{regionId}  AND  ip IS NULL
+    </select>
+    
+    <select id="findDeviceByIpNotNull" resultType="java.lang.Integer">
+        SELECT 
+        count(1) count
+        FROM as_device d
+        left join as_device_model m
+        on d.device_model_id=m.id
+        LEFT JOIN as_device_type AS t
+        ON m.device_type = t.device_type
+        LEFT JOIN as_device_kind AS k
+        ON t.device_kind_id = k.id
+        <if test='tag!= null and tag == "1" '>
+            WHERE k.type = 2
+        </if>
+        <if test='tag!= null and tag == "2" '>
+            WHERE k.type = 3
+        </if>
+        AND region_id = #{regionId}  AND  ip IS NOT NULL
+    </select>
+    <select id="findDevice" resultType="com.aswl.as.ibrs.api.module.Device">
+        SELECT <include refid="deviceColumns"/>
+        FROM as_device
+        WHERE ip=#{ip}
+        AND project_id=#{projectId}
+    </select>
+
+    <update id="updateAddress">
+        UPDATE as_device
+        <set>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="latitudeA != null">
+                latitude_a = #{latitudeA},
+            </if>
+            <if test="longitudeA != null">
+                longitude_a = #{longitudeA},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

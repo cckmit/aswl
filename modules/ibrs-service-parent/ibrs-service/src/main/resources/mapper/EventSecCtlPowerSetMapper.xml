@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventSecCtlPowerSetMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventSecCtlPowerSetResultMap" type="com.aswl.as.ibrs.api.module.EventSecCtlPowerSet">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="over_vol01"   property="overVol01" />
+			<id column="over_vol02"   property="overVol02" />
+			<id column="over_vol03"   property="overVol03" />
+			<id column="over_vol04"   property="overVol04" />
+			<id column="over_vol05"   property="overVol05" />
+			<id column="over_vol06"   property="overVol06" />
+			<id column="over_vol07"   property="overVol07" />
+			<id column="over_vol08"   property="overVol08" />
+			<id column="over_vol09"   property="overVol09" />
+			<id column="over_vol10"   property="overVol10" />
+			<id column="over_vol11"   property="overVol11" />
+			<id column="over_vol12"   property="overVol12" />
+			<id column="over_vol13"   property="overVol13" />
+			<id column="over_vol14"   property="overVol14" />
+			<id column="over_vol15"   property="overVol15" />
+			<id column="over_vol16"   property="overVol16" />
+			<id column="under_vol01"   property="underVol01" />
+			<id column="under_vol02"   property="underVol02" />
+			<id column="under_vol03"   property="underVol03" />
+			<id column="under_vol04"   property="underVol04" />
+			<id column="under_vol05"   property="underVol05" />
+			<id column="under_vol06"   property="underVol06" />
+			<id column="under_vol07"   property="underVol07" />
+			<id column="under_vol08"   property="underVol08" />
+			<id column="under_vol09"   property="underVol09" />
+			<id column="under_vol10"   property="underVol10" />
+			<id column="under_vol11"   property="underVol11" />
+			<id column="under_vol12"   property="underVol12" />
+			<id column="under_vol13"   property="underVol13" />
+			<id column="under_vol14"   property="underVol14" />
+			<id column="under_vol15"   property="underVol15" />
+			<id column="under_vol16"   property="underVol16" />
+			<id column="over_elec01"   property="overElec01" />
+			<id column="over_elec02"   property="overElec02" />
+			<id column="over_elec03"   property="overElec03" />
+			<id column="over_elec04"   property="overElec04" />
+			<id column="over_elec05"   property="overElec05" />
+			<id column="over_elec06"   property="overElec06" />
+			<id column="over_elec07"   property="overElec07" />
+			<id column="over_elec08"   property="overElec08" />
+			<id column="over_elec09"   property="overElec09" />
+			<id column="over_elec10"   property="overElec10" />
+			<id column="over_elec11"   property="overElec11" />
+			<id column="over_elec12"   property="overElec12" />
+			<id column="over_elec13"   property="overElec13" />
+			<id column="over_elec14"   property="overElec14" />
+			<id column="over_elec15"   property="overElec15" />
+			<id column="over_elec16"   property="overElec16" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventSecCtlPowerSetColumns">
+		id, u_event_id, device_id, region_no, rec_time, over_vol01, over_vol02, over_vol03, over_vol04, over_vol05, over_vol06, over_vol07, over_vol08, over_vol09, over_vol10, over_vol11, over_vol12, over_vol13, over_vol14, over_vol15, over_vol16, under_vol01, under_vol02, under_vol03, under_vol04, under_vol05, under_vol06, under_vol07, under_vol08, under_vol09, under_vol10, under_vol11, under_vol12, under_vol13, under_vol14, under_vol15, under_vol16, over_elec01, over_elec02, over_elec03, over_elec04, over_elec05, over_elec06, over_elec07, over_elec08, over_elec09, over_elec10, over_elec11, over_elec12, over_elec13, over_elec14, over_elec15, over_elec16, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId!= null and uEventId!= ''" >
+					and u_event_id LIKE CONCAT(#{uEventId},'%')
+				</if>
+				<if test="deviceId!= null and deviceId!= ''" >
+					and device_id LIKE CONCAT(#{deviceId},'%')
+				</if>
+				<if test="regionNo!= null and regionNo!= ''" >
+					and region_no LIKE CONCAT(#{regionNo},'%')
+				</if>
+				<if test="recTime!= null and recTime!= ''">
+					and rec_time = #{recTime}
+				</if>
+				<if test="overVol01!= null and overVol01!= ''">
+					and over_vol01 = #{overVol01}
+				</if>
+				<if test="overVol02!= null and overVol02!= ''">
+					and over_vol02 = #{overVol02}
+				</if>
+				<if test="overVol03!= null and overVol03!= ''">
+					and over_vol03 = #{overVol03}
+				</if>
+				<if test="overVol04!= null and overVol04!= ''">
+					and over_vol04 = #{overVol04}
+				</if>
+				<if test="overVol05!= null and overVol05!= ''">
+					and over_vol05 = #{overVol05}
+				</if>
+				<if test="overVol06!= null and overVol06!= ''">
+					and over_vol06 = #{overVol06}
+				</if>
+				<if test="overVol07!= null and overVol07!= ''">
+					and over_vol07 = #{overVol07}
+				</if>
+				<if test="overVol08!= null and overVol08!= ''">
+					and over_vol08 = #{overVol08}
+				</if>
+				<if test="overVol09!= null and overVol09!= ''">
+					and over_vol09 = #{overVol09}
+				</if>
+				<if test="overVol10!= null and overVol10!= ''">
+					and over_vol10 = #{overVol10}
+				</if>
+				<if test="overVol11!= null and overVol11!= ''">
+					and over_vol11 = #{overVol11}
+				</if>
+				<if test="overVol12!= null and overVol12!= ''">
+					and over_vol12 = #{overVol12}
+				</if>
+				<if test="overVol13!= null and overVol13!= ''">
+					and over_vol13 = #{overVol13}
+				</if>
+				<if test="overVol14!= null and overVol14!= ''">
+					and over_vol14 = #{overVol14}
+				</if>
+				<if test="overVol15!= null and overVol15!= ''">
+					and over_vol15 = #{overVol15}
+				</if>
+				<if test="overVol16!= null and overVol16!= ''">
+					and over_vol16 = #{overVol16}
+				</if>
+				<if test="underVol01!= null and underVol01!= ''">
+					and under_vol01 = #{underVol01}
+				</if>
+				<if test="underVol02!= null and underVol02!= ''">
+					and under_vol02 = #{underVol02}
+				</if>
+				<if test="underVol03!= null and underVol03!= ''">
+					and under_vol03 = #{underVol03}
+				</if>
+				<if test="underVol04!= null and underVol04!= ''">
+					and under_vol04 = #{underVol04}
+				</if>
+				<if test="underVol05!= null and underVol05!= ''">
+					and under_vol05 = #{underVol05}
+				</if>
+				<if test="underVol06!= null and underVol06!= ''">
+					and under_vol06 = #{underVol06}
+				</if>
+				<if test="underVol07!= null and underVol07!= ''">
+					and under_vol07 = #{underVol07}
+				</if>
+				<if test="underVol08!= null and underVol08!= ''">
+					and under_vol08 = #{underVol08}
+				</if>
+				<if test="underVol09!= null and underVol09!= ''">
+					and under_vol09 = #{underVol09}
+				</if>
+				<if test="underVol10!= null and underVol10!= ''">
+					and under_vol10 = #{underVol10}
+				</if>
+				<if test="underVol11!= null and underVol11!= ''">
+					and under_vol11 = #{underVol11}
+				</if>
+				<if test="underVol12!= null and underVol12!= ''">
+					and under_vol12 = #{underVol12}
+				</if>
+				<if test="underVol13!= null and underVol13!= ''">
+					and under_vol13 = #{underVol13}
+				</if>
+				<if test="underVol14!= null and underVol14!= ''">
+					and under_vol14 = #{underVol14}
+				</if>
+				<if test="underVol15!= null and underVol15!= ''">
+					and under_vol15 = #{underVol15}
+				</if>
+				<if test="underVol16!= null and underVol16!= ''">
+					and under_vol16 = #{underVol16}
+				</if>
+				<if test="overElec01!= null and overElec01!= ''">
+					and over_elec01 = #{overElec01}
+				</if>
+				<if test="overElec02!= null and overElec02!= ''">
+					and over_elec02 = #{overElec02}
+				</if>
+				<if test="overElec03!= null and overElec03!= ''">
+					and over_elec03 = #{overElec03}
+				</if>
+				<if test="overElec04!= null and overElec04!= ''">
+					and over_elec04 = #{overElec04}
+				</if>
+				<if test="overElec05!= null and overElec05!= ''">
+					and over_elec05 = #{overElec05}
+				</if>
+				<if test="overElec06!= null and overElec06!= ''">
+					and over_elec06 = #{overElec06}
+				</if>
+				<if test="overElec07!= null and overElec07!= ''">
+					and over_elec07 = #{overElec07}
+				</if>
+				<if test="overElec08!= null and overElec08!= ''">
+					and over_elec08 = #{overElec08}
+				</if>
+				<if test="overElec09!= null and overElec09!= ''">
+					and over_elec09 = #{overElec09}
+				</if>
+				<if test="overElec10!= null and overElec10!= ''">
+					and over_elec10 = #{overElec10}
+				</if>
+				<if test="overElec11!= null and overElec11!= ''">
+					and over_elec11 = #{overElec11}
+				</if>
+				<if test="overElec12!= null and overElec12!= ''">
+					and over_elec12 = #{overElec12}
+				</if>
+				<if test="overElec13!= null and overElec13!= ''">
+					and over_elec13 = #{overElec13}
+				</if>
+				<if test="overElec14!= null and overElec14!= ''">
+					and over_elec14 = #{overElec14}
+				</if>
+				<if test="overElec15!= null and overElec15!= ''">
+					and over_elec15 = #{overElec15}
+				</if>
+				<if test="overElec16!= null and overElec16!= ''">
+					and over_elec16 = #{overElec16}
+				</if>
+				<if test="storeTime!= null and storeTime!= ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventSecCtlPowerSetResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerSetColumns"/>
+		FROM as_event_sec_ctl_power_set
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventSecCtlPowerSetResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerSetColumns"/>
+		FROM as_event_sec_ctl_power_set
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventSecCtlPowerSetResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerSetColumns"/>
+		FROM as_event_sec_ctl_power_set
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_sec_ctl_power_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="overVol01 != null">
+                    over_vol01,
+                </if>
+                <if test="overVol02 != null">
+                    over_vol02,
+                </if>
+                <if test="overVol03 != null">
+                    over_vol03,
+                </if>
+                <if test="overVol04 != null">
+                    over_vol04,
+                </if>
+                <if test="overVol05 != null">
+                    over_vol05,
+                </if>
+                <if test="overVol06 != null">
+                    over_vol06,
+                </if>
+                <if test="overVol07 != null">
+                    over_vol07,
+                </if>
+                <if test="overVol08 != null">
+                    over_vol08,
+                </if>
+                <if test="overVol09 != null">
+                    over_vol09,
+                </if>
+                <if test="overVol10 != null">
+                    over_vol10,
+                </if>
+                <if test="overVol11 != null">
+                    over_vol11,
+                </if>
+                <if test="overVol12 != null">
+                    over_vol12,
+                </if>
+                <if test="overVol13 != null">
+                    over_vol13,
+                </if>
+                <if test="overVol14 != null">
+                    over_vol14,
+                </if>
+                <if test="overVol15 != null">
+                    over_vol15,
+                </if>
+                <if test="overVol16 != null">
+                    over_vol16,
+                </if>
+                <if test="underVol01 != null">
+                    under_vol01,
+                </if>
+                <if test="underVol02 != null">
+                    under_vol02,
+                </if>
+                <if test="underVol03 != null">
+                    under_vol03,
+                </if>
+                <if test="underVol04 != null">
+                    under_vol04,
+                </if>
+                <if test="underVol05 != null">
+                    under_vol05,
+                </if>
+                <if test="underVol06 != null">
+                    under_vol06,
+                </if>
+                <if test="underVol07 != null">
+                    under_vol07,
+                </if>
+                <if test="underVol08 != null">
+                    under_vol08,
+                </if>
+                <if test="underVol09 != null">
+                    under_vol09,
+                </if>
+                <if test="underVol10 != null">
+                    under_vol10,
+                </if>
+                <if test="underVol11 != null">
+                    under_vol11,
+                </if>
+                <if test="underVol12 != null">
+                    under_vol12,
+                </if>
+                <if test="underVol13 != null">
+                    under_vol13,
+                </if>
+                <if test="underVol14 != null">
+                    under_vol14,
+                </if>
+                <if test="underVol15 != null">
+                    under_vol15,
+                </if>
+                <if test="underVol16 != null">
+                    under_vol16,
+                </if>
+                <if test="overElec01 != null">
+                    over_elec01,
+                </if>
+                <if test="overElec02 != null">
+                    over_elec02,
+                </if>
+                <if test="overElec03 != null">
+                    over_elec03,
+                </if>
+                <if test="overElec04 != null">
+                    over_elec04,
+                </if>
+                <if test="overElec05 != null">
+                    over_elec05,
+                </if>
+                <if test="overElec06 != null">
+                    over_elec06,
+                </if>
+                <if test="overElec07 != null">
+                    over_elec07,
+                </if>
+                <if test="overElec08 != null">
+                    over_elec08,
+                </if>
+                <if test="overElec09 != null">
+                    over_elec09,
+                </if>
+                <if test="overElec10 != null">
+                    over_elec10,
+                </if>
+                <if test="overElec11 != null">
+                    over_elec11,
+                </if>
+                <if test="overElec12 != null">
+                    over_elec12,
+                </if>
+                <if test="overElec13 != null">
+                    over_elec13,
+                </if>
+                <if test="overElec14 != null">
+                    over_elec14,
+                </if>
+                <if test="overElec15 != null">
+                    over_elec15,
+                </if>
+                <if test="overElec16 != null">
+                    over_elec16,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="overVol01 != null">
+                    #{overVol01},
+                </if>
+                <if test="overVol02 != null">
+                    #{overVol02},
+                </if>
+                <if test="overVol03 != null">
+                    #{overVol03},
+                </if>
+                <if test="overVol04 != null">
+                    #{overVol04},
+                </if>
+                <if test="overVol05 != null">
+                    #{overVol05},
+                </if>
+                <if test="overVol06 != null">
+                    #{overVol06},
+                </if>
+                <if test="overVol07 != null">
+                    #{overVol07},
+                </if>
+                <if test="overVol08 != null">
+                    #{overVol08},
+                </if>
+                <if test="overVol09 != null">
+                    #{overVol09},
+                </if>
+                <if test="overVol10 != null">
+                    #{overVol10},
+                </if>
+                <if test="overVol11 != null">
+                    #{overVol11},
+                </if>
+                <if test="overVol12 != null">
+                    #{overVol12},
+                </if>
+                <if test="overVol13 != null">
+                    #{overVol13},
+                </if>
+                <if test="overVol14 != null">
+                    #{overVol14},
+                </if>
+                <if test="overVol15 != null">
+                    #{overVol15},
+                </if>
+                <if test="overVol16 != null">
+                    #{overVol16},
+                </if>
+                <if test="underVol01 != null">
+                    #{underVol01},
+                </if>
+                <if test="underVol02 != null">
+                    #{underVol02},
+                </if>
+                <if test="underVol03 != null">
+                    #{underVol03},
+                </if>
+                <if test="underVol04 != null">
+                    #{underVol04},
+                </if>
+                <if test="underVol05 != null">
+                    #{underVol05},
+                </if>
+                <if test="underVol06 != null">
+                    #{underVol06},
+                </if>
+                <if test="underVol07 != null">
+                    #{underVol07},
+                </if>
+                <if test="underVol08 != null">
+                    #{underVol08},
+                </if>
+                <if test="underVol09 != null">
+                    #{underVol09},
+                </if>
+                <if test="underVol10 != null">
+                    #{underVol10},
+                </if>
+                <if test="underVol11 != null">
+                    #{underVol11},
+                </if>
+                <if test="underVol12 != null">
+                    #{underVol12},
+                </if>
+                <if test="underVol13 != null">
+                    #{underVol13},
+                </if>
+                <if test="underVol14 != null">
+                    #{underVol14},
+                </if>
+                <if test="underVol15 != null">
+                    #{underVol15},
+                </if>
+                <if test="underVol16 != null">
+                    #{underVol16},
+                </if>
+                <if test="overElec01 != null">
+                    #{overElec01},
+                </if>
+                <if test="overElec02 != null">
+                    #{overElec02},
+                </if>
+                <if test="overElec03 != null">
+                    #{overElec03},
+                </if>
+                <if test="overElec04 != null">
+                    #{overElec04},
+                </if>
+                <if test="overElec05 != null">
+                    #{overElec05},
+                </if>
+                <if test="overElec06 != null">
+                    #{overElec06},
+                </if>
+                <if test="overElec07 != null">
+                    #{overElec07},
+                </if>
+                <if test="overElec08 != null">
+                    #{overElec08},
+                </if>
+                <if test="overElec09 != null">
+                    #{overElec09},
+                </if>
+                <if test="overElec10 != null">
+                    #{overElec10},
+                </if>
+                <if test="overElec11 != null">
+                    #{overElec11},
+                </if>
+                <if test="overElec12 != null">
+                    #{overElec12},
+                </if>
+                <if test="overElec13 != null">
+                    #{overElec13},
+                </if>
+                <if test="overElec14 != null">
+                    #{overElec14},
+                </if>
+                <if test="overElec15 != null">
+                    #{overElec15},
+                </if>
+                <if test="overElec16 != null">
+                    #{overElec16},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_sec_ctl_power_set
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="overVol01 != null">
+					over_vol01 =  #{overVol01},
+				</if>
+				<if test="overVol02 != null">
+					over_vol02 =  #{overVol02},
+				</if>
+				<if test="overVol03 != null">
+					over_vol03 =  #{overVol03},
+				</if>
+				<if test="overVol04 != null">
+					over_vol04 =  #{overVol04},
+				</if>
+				<if test="overVol05 != null">
+					over_vol05 =  #{overVol05},
+				</if>
+				<if test="overVol06 != null">
+					over_vol06 =  #{overVol06},
+				</if>
+				<if test="overVol07 != null">
+					over_vol07 =  #{overVol07},
+				</if>
+				<if test="overVol08 != null">
+					over_vol08 =  #{overVol08},
+				</if>
+				<if test="overVol09 != null">
+					over_vol09 =  #{overVol09},
+				</if>
+				<if test="overVol10 != null">
+					over_vol10 =  #{overVol10},
+				</if>
+				<if test="overVol11 != null">
+					over_vol11 =  #{overVol11},
+				</if>
+				<if test="overVol12 != null">
+					over_vol12 =  #{overVol12},
+				</if>
+				<if test="overVol13 != null">
+					over_vol13 =  #{overVol13},
+				</if>
+				<if test="overVol14 != null">
+					over_vol14 =  #{overVol14},
+				</if>
+				<if test="overVol15 != null">
+					over_vol15 =  #{overVol15},
+				</if>
+				<if test="overVol16 != null">
+					over_vol16 =  #{overVol16},
+				</if>
+				<if test="underVol01 != null">
+					under_vol01 =  #{underVol01},
+				</if>
+				<if test="underVol02 != null">
+					under_vol02 =  #{underVol02},
+				</if>
+				<if test="underVol03 != null">
+					under_vol03 =  #{underVol03},
+				</if>
+				<if test="underVol04 != null">
+					under_vol04 =  #{underVol04},
+				</if>
+				<if test="underVol05 != null">
+					under_vol05 =  #{underVol05},
+				</if>
+				<if test="underVol06 != null">
+					under_vol06 =  #{underVol06},
+				</if>
+				<if test="underVol07 != null">
+					under_vol07 =  #{underVol07},
+				</if>
+				<if test="underVol08 != null">
+					under_vol08 =  #{underVol08},
+				</if>
+				<if test="underVol09 != null">
+					under_vol09 =  #{underVol09},
+				</if>
+				<if test="underVol10 != null">
+					under_vol10 =  #{underVol10},
+				</if>
+				<if test="underVol11 != null">
+					under_vol11 =  #{underVol11},
+				</if>
+				<if test="underVol12 != null">
+					under_vol12 =  #{underVol12},
+				</if>
+				<if test="underVol13 != null">
+					under_vol13 =  #{underVol13},
+				</if>
+				<if test="underVol14 != null">
+					under_vol14 =  #{underVol14},
+				</if>
+				<if test="underVol15 != null">
+					under_vol15 =  #{underVol15},
+				</if>
+				<if test="underVol16 != null">
+					under_vol16 =  #{underVol16},
+				</if>
+				<if test="overElec01 != null">
+					over_elec01 =  #{overElec01},
+				</if>
+				<if test="overElec02 != null">
+					over_elec02 =  #{overElec02},
+				</if>
+				<if test="overElec03 != null">
+					over_elec03 =  #{overElec03},
+				</if>
+				<if test="overElec04 != null">
+					over_elec04 =  #{overElec04},
+				</if>
+				<if test="overElec05 != null">
+					over_elec05 =  #{overElec05},
+				</if>
+				<if test="overElec06 != null">
+					over_elec06 =  #{overElec06},
+				</if>
+				<if test="overElec07 != null">
+					over_elec07 =  #{overElec07},
+				</if>
+				<if test="overElec08 != null">
+					over_elec08 =  #{overElec08},
+				</if>
+				<if test="overElec09 != null">
+					over_elec09 =  #{overElec09},
+				</if>
+				<if test="overElec10 != null">
+					over_elec10 =  #{overElec10},
+				</if>
+				<if test="overElec11 != null">
+					over_elec11 =  #{overElec11},
+				</if>
+				<if test="overElec12 != null">
+					over_elec12 =  #{overElec12},
+				</if>
+				<if test="overElec13 != null">
+					over_elec13 =  #{overElec13},
+				</if>
+				<if test="overElec14 != null">
+					over_elec14 =  #{overElec14},
+				</if>
+				<if test="overElec15 != null">
+					over_elec15 =  #{overElec15},
+				</if>
+				<if test="overElec16 != null">
+					over_elec16 =  #{overElec16},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_sec_ctl_power_set
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_sec_ctl_power_set
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteByDeviceIds">
+
+		DELETE FROM   as_event_sec_ctl_power_set where device_id in (${deviceIds})
+
+	</delete>
+	<select id="findByDeviceId" resultMap="eventSecCtlPowerSetResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerSetColumns"/>
+		FROM as_event_sec_ctl_power_set
+		WHERE device_id = #{deviceId}
+	</select>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ProjectModelMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="projectModelResultMap" type="com.aswl.as.ibrs.api.module.ProjectModel">
+			<id column="id"   property="id" />
+			<id column="project_id"   property="projectId" />
+			<id column="device_model_id"   property="deviceModelId" />
+	</resultMap>
+
+	<sql id="projectModelColumns">
+		id, project_id, device_model_id
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+				<if test="deviceModelId!= null and deviceModelId!= ''" >
+					and device_model_id LIKE CONCAT(#{deviceModelId},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="projectModelResultMap">
+		SELECT
+		<include refid="projectModelColumns"/>
+		FROM as_project_model
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="projectModelResultMap">
+		SELECT
+		<include refid="projectModelColumns"/>
+		FROM as_project_model
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="projectModelResultMap">
+		SELECT
+		<include refid="projectModelColumns"/>
+		FROM as_project_model
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<insert id="insert">
+        INSERT INTO as_project_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="deviceModelId != null">
+                    device_model_id,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="deviceModelId != null">
+                    #{deviceModelId},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_project_model
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="deviceModelId != null">
+					device_model_id =  #{deviceModelId},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_project_model
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_project_model
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteByProjectId">
+		DELETE FROM  as_project_model
+		WHERE project_id = #{projectId} 
+	</delete>
+
+	<select id="findPageList" resultType="com.aswl.as.ibrs.api.vo.ProjectModelVo">
+	SELECT 
+	ap.project_name AS projectName,
+	ap.project_id AS projectId,
+	adm.id AS deviceModelId,
+	adm.device_model_name AS deviceModelName 
+	 FROM as_project ap
+	LEFT JOIN as_project_model apm
+	ON ap.project_id = apm.project_id
+	LEFT JOIN as_device_model adm
+	ON adm.id = apm.device_model_id
+	</select>
+</mapper>

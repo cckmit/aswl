@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.AppRoleMenuMapper">
+    <resultMap id="roleMenuResultMap" type="com.aswl.as.user.api.module.AppRoleMenu">
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="app_menu_id" property="appMenuId"/>
+    </resultMap>
+
+    <sql id="roleMenuColumns">
+        a.id,
+        a.role_id,
+        a.app_menu_id
+    </sql>
+
+    <insert id="insert">
+        INSERT  INTO sys_app_role_menu (
+            id,
+            role_id,
+            app_menu_id
+        ) VALUES (
+            #{id},
+            #{roleId},
+            #{appMenuId}
+        )
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="false">
+        INSERT INTO sys_app_role_menu (
+        id,
+        role_id,
+        app_menu_id)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.roleId}, #{item.appMenuId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByRoleId">
+        delete from sys_app_role_menu
+        where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteByMenuId">
+        delete from sys_app_role_menu
+        where app_menu_id = #{appMenuId}
+    </delete>
+</mapper>

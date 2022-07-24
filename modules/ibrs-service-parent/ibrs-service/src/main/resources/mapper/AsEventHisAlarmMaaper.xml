@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AsEventHisAlarmMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="asEventHisAlarmMap" type="com.aswl.as.ibrs.api.module.DeviceEventHisAlarm">
+        <id column="id"  property="id" />
+        <id column="u_event_id"  property="uEventId" />
+        <id column="device_id"  property="deviceId" />
+        <id column="store_time"  property="recTime" />
+        <id column="is_alarm"  property="isAlarm" />
+        <id column="alarm_level"  property="alarmLevel" />
+        <id column="alarm_types"  property="alarmTypes" />
+        <id column="alarm_types_des"  property="alarmTypesDes" />
+        <id column="store_time"  property="storeTime" />
+        <id column="application_code"  property="applicationCode" />
+        <id column="tenant_code"  property="tenantCode" />
+    </resultMap>
+    <select id="finByinfoTable"
+             resultType="com.aswl.as.ibrs.api.vo.DeviceEventHisAlarmVo">
+        select table_name as tableName from as_device_event_his_alarm_tab where table_name in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+    </select>
+    
+    
+    <select id="finByalarmlevel" resultType="com.aswl.as.ibrs.api.vo.DeviceEventHisAlarmVo">
+        select COUNT(*)as totality,
+        LEFT(y.store_time,LENGTH(y.store_time)-9)as storetime,
+        COALESCE(SUM(case when y.alarm_level=1 then 1 else 0 end),0) as Level1,
+        COALESCE(SUM(case when y.alarm_level=2 then 1 else 0 end),0) as Level2,
+        COALESCE(SUM(case when y.alarm_level=3 then 1 else 0 end),0) as Level3 from (
+        <foreach collection="list" index="index" item="item" >
+          <if test="index != 0" >
+              union all
+          </if>
+            select * from ${item}
+        </foreach>
+        )y  where 1=1 Group By storetime
+
+    </select>
+
+    <select id="findEventHisTable" resultType="com.aswl.as.ibrs.api.vo.DeviceEventHisAlarmVo">
+        select table_name as tableName from as_event_his_tab where table_name in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findHisPatrolTableName" resultType="string">
+        select table_name as tableName from as_patrol_his_tab where table_name LIKE CONCAT(#{histTablePrefix},'%')
+    </select>
+
+    <select id="findHisPatrolTableNameByTime" resultType="string">
+        select table_name from as_patrol_his_tab where table_name in
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findTables" resultType="string">
+        select table_name from as_patrol_his_tab where table_name in
+        <foreach collection="hisTables" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findTableNames" resultType="string">
+        SELECT table_name FROM as_device_event_his_alarm_tab WHERE table_name in
+        <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findHisAlarmTab" resultType="string">
+        select table_name from as_device_event_his_alarm_tab where table_name in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="finHisTable" resultType="string">
+        SELECT table_name FROM as_device_event_his_alarm_tab where rec_month IN
+        <foreach collection="tables" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findListTab" resultType="string">
+        SELECT table_name FROM as_device_event_his_alarm_tab where status = #{status}
+    </select>
+    <select id="findEventHisTab" resultType="java.lang.String">
+        SELECT table_name FROM as_event_his_tab where status = #{status}
+        
+    </select>
+
+    <delete id="deleteHisAlarm">
+        DELETE
+        t.*
+        FROM
+        ${tabName} as t
+        LEFT JOIN as_device d
+        on t.device_id =d.id
+        WHERE 1=1
+        <if test="uEventIds != null and uEventIds.size > 0 ">
+            AND t.u_event_id  in
+            <foreach collection="uEventIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND t.alarm_level in (${alarmLevel})
+        </if>
+    </delete>
+
+    <select id="findByUeventIds" resultType="java.lang.String">
+        SELECT t.u_event_id  FROM
+        ${tabName} as t
+        LEFT JOIN as_device d
+        on t.device_id =d.id
+        WHERE 1=1
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND t.alarm_level in (${alarmLevel})
+        </if>
+    </select>
+    
+</mapper>

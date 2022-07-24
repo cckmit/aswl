@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceExtMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceExtResultMap" type="com.aswl.as.ibrs.api.module.DeviceExt">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="code"   property="code" />
+			<id column="connect_type"   property="connectType" />
+			<id column="connect_id"   property="connectId" />
+			<id column="connect_port"   property="connectPort" />
+			<id column="external_device_type_id"   property="externalDeviceTypeId" />
+			<id column="ip"   property="ip" />
+			<id column="port"   property="port" />
+			<id column="create_date"   property="createDate" />
+			<id column="create"   property="create" />
+			<id column="create_name"   property="createName" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="modifier"   property="modifier" />
+			<id column="update_name"   property="updateName" />
+			<id column="sys_org_code"   property="sysOrgCode" />
+			<id column="sys_region_code"   property="sysRegionCode" />
+			<id column="del_flag"   property="delFlag" />
+			<id column="del_date"   property="delDate" />
+	</resultMap>
+
+	<sql id="deviceExtColumns">
+		id, name, code, connect_type, connect_id, connect_port, external_device_type_id, ip, port, create_date, `create`, create_name, modify_date, modifier, update_name, sys_org_code, sys_region_code, del_flag, del_date
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					and name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="code  != null and code != ''" >
+					and code like CONCAT('%',#{code},'%')
+				</if>
+				<if test="connectType  != null and connectType != ''" >
+					and connect_type like CONCAT('%',#{connectType},'%')
+				</if>
+				<if test="connectId  != null and connectId != ''" >
+					and connect_id= #{connectId}
+				</if>
+				<if test="connectPort  != null and connectPort != ''">
+					and connect_port = #{connectPort}
+				</if>
+				<if test="externalDeviceTypeId  != null and externalDeviceTypeId != ''" >
+					and external_device_type_id like CONCAT('%',#{externalDeviceTypeId},'%')
+				</if>
+				<if test="ip  != null and ip != ''" >
+					and ip like CONCAT('%',#{ip},'%')
+				</if>
+				<if test="port  != null and port != ''" >
+					and port like CONCAT('%',#{port},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="create  != null and create != ''" >
+					and create like CONCAT('%',#{create},'%')
+				</if>
+				<if test="createName  != null and createName != ''" >
+					and create_name like CONCAT('%',#{createName},'%')
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''">
+					and modify_date = #{modifyDate}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					and modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="updateName  != null and updateName != ''" >
+					and update_name like CONCAT('%',#{updateName},'%')
+				</if>
+				<if test="sysOrgCode  != null and sysOrgCode != ''" >
+					and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+				</if>
+				<if test="sysRegionCode  != null and sysRegionCode != ''" >
+					and sys_region_code like CONCAT('%',#{sysRegionCode},'%')
+				</if>
+				<if test="delFlag  != null and delFlag != ''">
+					and del_flag = #{delFlag}
+				</if>
+				<if test="delDate  != null and delDate != ''">
+					and del_date = #{delDate}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceExtResultMap">
+		SELECT
+		<include refid="deviceExtColumns"/>
+		FROM as_device_ext
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="deviceExtResultMap">
+		SELECT
+		<include refid="deviceExtColumns"/>
+		FROM as_device_ext
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceExtResultMap">
+		SELECT
+		<include refid="deviceExtColumns"/>
+		FROM as_device_ext
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_ext
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="code != null">
+                    code,
+                </if>
+                <if test="connectType != null">
+                    connect_type,
+                </if>
+                <if test="connectId != null">
+                    connect_id,
+                </if>
+                <if test="connectPort != null">
+                    connect_port,
+                </if>
+                <if test="externalDeviceTypeId != null">
+                    external_device_type_id,
+                </if>
+                <if test="ip != null">
+                    ip,
+                </if>
+                <if test="port != null">
+                    port,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="create != null">
+                    create,
+                </if>
+                <if test="createName != null">
+                    create_name,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="updateName != null">
+                    update_name,
+                </if>
+                <if test="sysOrgCode != null">
+                    sys_org_code,
+                </if>
+                <if test="sysRegionCode != null">
+                    sys_region_code,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+                <if test="delDate != null">
+                    del_date,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+                <if test="connectType != null">
+                    #{connectType},
+                </if>
+                <if test="connectId != null">
+                    #{connectId},
+                </if>
+                <if test="connectPort != null">
+                    #{connectPort},
+                </if>
+                <if test="externalDeviceTypeId != null">
+                    #{externalDeviceTypeId},
+                </if>
+                <if test="ip != null">
+                    #{ip},
+                </if>
+                <if test="port != null">
+                    #{port},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="create != null">
+                    #{create},
+                </if>
+                <if test="createName != null">
+                    #{createName},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="updateName != null">
+                    #{updateName},
+                </if>
+                <if test="sysOrgCode != null">
+                    #{sysOrgCode},
+                </if>
+                <if test="sysRegionCode != null">
+                    #{sysRegionCode},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+                <if test="delDate != null">
+                    #{delDate},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_ext
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="code != null">
+					code =  #{code},
+				</if>
+				<if test="connectType != null">
+					connect_type =  #{connectType},
+				</if>
+				<if test="connectId != null">
+					connect_id =  #{connectId},
+				</if>
+				<if test="connectPort != null">
+					connect_port =  #{connectPort},
+				</if>
+				<if test="externalDeviceTypeId != null">
+					external_device_type_id =  #{externalDeviceTypeId},
+				</if>
+				<if test="ip != null">
+					ip =  #{ip},
+				</if>
+				<if test="port != null">
+					port =  #{port},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="create != null">
+					create =  #{create},
+				</if>
+				<if test="createName != null">
+					create_name =  #{createName},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="modifier != null">
+					modifier =  #{modifier},
+				</if>
+				<if test="updateName != null">
+					update_name =  #{updateName},
+				</if>
+				<if test="sysOrgCode != null">
+					sys_org_code =  #{sysOrgCode},
+				</if>
+				<if test="sysRegionCode != null">
+					sys_region_code =  #{sysRegionCode},
+				</if>
+				<if test="delFlag != null">
+					del_flag =  #{delFlag},
+				</if>
+				<if test="delDate != null">
+					del_date =  #{delDate},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_device_ext SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_device_ext SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

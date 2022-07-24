@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aswl.as.iface.mapper.SuperPlatformMapper">
+
+    <select id="findByServiceId" resultType="com.aswl.as.iface.model.SuperPlatform">
+        select* from as_super_platform asp where asp.SERVICE_ID = #{serviceId} and asp.status = 1;
+    </select>
+
+</mapper>

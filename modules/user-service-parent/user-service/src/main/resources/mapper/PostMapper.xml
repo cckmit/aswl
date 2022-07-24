@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.PostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="postResultMap" type="com.aswl.as.user.api.module.Post">
+        <id column="post_id" property="id" />
+        <result column="post_name" property="postName" />
+        <result column="working_days" property="workingDays" />
+        <result column="standard_down" property="standardDown" />
+        <result column="standard_up" property="standardUp" />
+        <result column="commission" property="commission" />
+        <result column="application_code" property="applicationCode" />
+        <result column="tenant_code" property="tenantCode" />
+        <result column="creator" property="creator"/>
+        <result column="create_date" property="createDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier"/>
+        <result column="modify_date" property="modifyDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="postColumns">
+        a.post_id,
+        a.post_name,
+        a.working_days,
+        a.standard_down,
+        a.standard_up,
+        a.commission,
+        a.creator,
+        a.create_date,
+        a.modifier,
+        a.modify_date,
+        a.del_flag,
+        a.application_code,
+        a.tenant_code
+    </sql>
+    <!-- where 条件 -->
+    <sql id="whereColumnList">
+        <if test="postName != null and postName != ''">
+            and a.post_name like CONCAT('%', #{postName},'%')
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and a.tenant_code = #{tenantCode}
+        </if>
+    </sql>
+
+    <select id="get" resultMap="postResultMap">
+        SELECT
+        <include refid="postColumns"/>
+        FROM sys_post a
+        WHERE a.post_id = #{id} and a.del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="postResultMap">
+        SELECT
+        <include refid="postColumns"/>
+        FROM sys_post a
+        WHERE a.del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_post (
+        post_id,
+        post_name,
+        working_days,
+        standard_down,
+        standard_up,
+        commission,
+        creator,
+        create_date,
+        modifier,
+        modify_date,
+        del_flag,
+        application_code,
+        tenant_code
+        ) VALUES (
+        #{id},
+        #{postName},
+        #{workingDays},
+        #{standardDown},
+        #{standardUp},
+        #{commission,jdbcType=DECIMAL},
+        #{creator},
+        #{createDate, jdbcType=TIMESTAMP, javaType=java.util.Date},
+        #{modifier},
+        #{modifyDate, jdbcType=TIMESTAMP, javaType=java.util.Date},
+        #{delFlag},
+        #{applicationCode},
+        #{tenantCode}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE sys_post SET
+        <if test="postName != null">
+            post_name = #{postName},
+        </if>
+        <if test="workingDays != null">
+            working_days= #{workingDays},
+        </if>
+        <if test="standardDown != null">
+            standard_down= #{standardDown},
+        </if>
+        <if test="standardUp != null">
+            standard_up= #{standardUp},
+        </if>
+        <if test="commission != null">
+            commission= #{commission},
+        </if>
+        <if test="delFlag != null">
+            del_flag = #{delFlag},
+        </if>
+        modifier = #{modifier},
+        modify_date = #{modifyDate, jdbcType=TIMESTAMP, javaType=java.util.Date}
+        WHERE
+        <if test="id != null">
+            post_id = #{id}
+        </if>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM  sys_post 
+        WHERE post_id = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM sys_post 
+        WHERE post_id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteByTenantCode">
+        DELETE FROM sys_post 
+        WHERE tenant_code =#{tenantCode}
+    </delete>
+</mapper>

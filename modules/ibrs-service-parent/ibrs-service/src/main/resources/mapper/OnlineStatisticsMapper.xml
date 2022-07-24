@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.OnlineStatisticsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="onlineStatisticsResultMap" type="com.aswl.as.ibrs.api.module.OnlineStatistics">
+			<id column="id"   property="id" />
+			<id column="create_date"   property="createDate" />
+			<id column="region_no"   property="regionNo" />
+			<id column="online_num"   property="onlineNum" />
+			<id column="device_num"   property="deviceNum" />
+			<id column="device_kind" property="deviceKind"/>
+		<id column="intact_num"   property="intactNum" />
+		<id column="device_model_id" property="deviceModelId"/>
+		<id column="project_id" property="projectId"/>
+	</resultMap>
+
+	<sql id="onlineStatisticsColumns">
+		id, create_date, region_no, online_num, device_num, device_kind, intact_num, device_model_id, project_id
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="onlineNum  != null and onlineNum != ''">
+					and online_num = #{onlineNum}
+				</if>
+				<if test="deviceKind != null and deviceKind != ''">
+					and device_kind = #{deviceKind}
+				</if>
+				<if test="deviceNum  != null and deviceNum != ''">
+					and device_num = #{deviceNum}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="onlineStatisticsResultMap">
+		SELECT
+		<include refid="onlineStatisticsColumns"/>
+		FROM as_online_statistics
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="onlineStatisticsResultMap">
+		SELECT
+		<include refid="onlineStatisticsColumns"/>
+		FROM as_online_statistics
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="onlineStatisticsResultMap">
+		SELECT
+		<include refid="onlineStatisticsColumns"/>
+		FROM as_online_statistics
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_online_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="onlineNum != null">
+                    online_num,
+                </if>
+                <if test="deviceKind != null and deviceKind != ''">
+					device_kind,
+				</if>
+                <if test="deviceNum != null">
+                    device_num,
+                </if>
+			<if test="intactNum != null">
+				intact_num,
+			</if>
+			<if test="deviceModelId != null">
+				device_model_id,
+			</if>
+			<if test="projectId != null">
+				project_id,
+			</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="onlineNum != null">
+                    #{onlineNum},
+                </if>
+                <if test="deviceKind != null and deviceKind != ''">
+					#{deviceKind},
+				</if>
+                <if test="deviceNum != null">
+                    #{deviceNum},
+                </if>
+			<if test="intactNum != null">
+				#{intactNum},
+			</if>
+			<if test="deviceModelId != null">
+				#{deviceModelId},
+			</if>
+			<if test="projectId != null">
+				#{projectId},
+			</if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_online_statistics
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="deviceKind != null">
+					device_kind = #{deviceKind},
+				</if>
+				<if test="onlineNum != null">
+					online_num =  #{onlineNum},
+				</if>
+				<if test="deviceNum != null">
+					device_num =  #{deviceNum},
+				</if>
+			<if test="intactNum != null">
+				intact_num = #{intactNum},
+			</if>
+			<if test="deviceModelId != null">
+				device_model_id = #{deviceModelId},
+			</if>
+			<if test="projectId != null">
+				project_id = #{projectId},
+			</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_online_statistics
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_online_statistics
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getOnlineStatisticsCounts" resultType="java.util.Map">
+		SELECT
+		COALESCE(SUM(o.online_num),0) AS onlineNum,
+		COALESCE (SUM(o.device_num),0) AS deviceNum
+		 FROM as_online_statistics o
+		 LEFT JOIN as_region r on o.region_no= r.region_code
+		 WHERE 1=1
+		<if test="kind!=null and kind!=''">
+			AND o.device_kind=#{kind}
+		</if>
+		 <if test='type =="month"'>
+			 AND  DATE_FORMAT(o.create_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ), '%Y%m')
+		 </if>
+		 <if test='type =="year"'>
+			 AND  YEAR(o.create_date)=YEAR(NOW())
+		 </if>
+		 <if test="regionCode!=null and regionCode!=''">
+			 AND o.region_no LIKE  CONCAT(#{regionCode},'%')
+		 </if>
+		 <if test="tenantCode!=null and tenantCode!=''">
+		 	and r.tenant_code = #{tenantCode}
+		 </if>
+		<if test="projectId  != null and projectId != ''" >
+			AND r.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getOnlineStatistics" resultType="java.util.Map">
+		SELECT
+		COALESCE(SUM(o.online_num),0) AS onlineNum,
+		COALESCE (SUM(o.device_num),0) AS deviceNum,
+		(SUM(o.device_num)-SUM(o.online_num)) AS offlineCount
+		FROM as_online_statistics o
+		LEFT JOIN as_region r on o.region_no= r.region_code
+		WHERE 1=1
+		<if test="kind!=null and kind!=''">
+			AND o.device_kind=#{kind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND DATE_FORMAT(o.create_date, '%Y-%m-%d') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') AND DATE_FORMAT(#{endTime},'%Y-%m-%d')
+		</if>
+		<if test="regionCode!=null and regionCode!=''">
+			AND o.region_no LIKE  CONCAT(#{regionCode},'%')
+		</if>
+		<if test="tenantCode!=null and tenantCode!=''">
+			and r.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND r.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<insert id="bathInsert">
+		INSERT INTO as_online_statistics
+		(id,
+		create_date,
+		region_no,
+		device_kind,
+		online_num,
+		intact_num,
+		device_num,
+		device_model_id,
+		project_id)
+		VALUES
+		<foreach item="item" index="index" collection="list" separator=",">
+		(
+		#{item.id},
+		#{item.createDate},
+		#{item.regionNo},
+		#{item.deviceKind},
+		#{item.onlineNum},
+		#{item.intactNum},
+		#{item.deviceNum},
+		#{item.deviceModelId},
+		#{item.projectId})
+		</foreach>
+	</insert>
+
+    <select id="getByRegionCodeAndDeviceKind" resultType="com.aswl.as.ibrs.api.module.OnlineStatistics">
+		select
+		IFNULL(t5.region_code,#{regionCode}) as region_no,
+		IFNULL(t4.type,#{deviceKind}) as device_kind,
+		count(case when t6.network_state = 1 and t6.device_id not in (select device_id from ${hisTable} where DATE_FORMAT(store_time,'%Y-%m-%d') = #{day} and network_state != 1) then 1 else null end) as online_num,
+		count(temp.id) as intact_num,
+		count(t2.id) as device_num, t2.id as device_model_id, t5.project_id as projectId
+		from as_device t1
+		left join as_device_model t2 on t1.device_model_id = t2.id
+		left join as_device_type t3 on t2.device_type = t3.device_type
+		left join as_device_kind t4 on t3.device_kind_id = t4.id
+		left join  as_region t5 on t1.region_code = t5.region_code
+		left join as_event_network t6 on t1.id = t6.device_id
+		left join (select id from as_device where id not in (select device_id from as_device_event_alarm where alarm_level = 1
+			union select device_id FROM as_alarm_statistics where create_date = #{day} and fault_num > 0)
+        ) as temp  on t1.id = temp.id
+		where 1 = 1
+		and t4.type = #{deviceKind} and t1.region_code = #{regionCode}
+		group by t2.id
+</select>
+	<select id="getDevivceCount" resultType="java.util.Map">
+	SELECT MAX(tab1.deviceCount) AS deviceCount ,
+	MAX(tab1.onlineCount) AS onlineCount
+	FROM
+	(
+	SELECT
+	a.create_date,
+	 SUM(a.device_num) AS deviceCount,
+	 SUM(a.online_num) AS onlineCount
+	 FROM as_online_statistics as a LEFT JOIN as_region as b ON a.region_no = b.region_code
+	 WHERE 1=1
+		<if test="startTime != null and endTime != null">
+			AND a.create_date  BETWEEN #{startTime} AND  #{endTime}
+		</if>
+		<if test="kind!=null and kind !=''">
+			AND a.device_kind=#{kind}
+		</if>
+        <if test="regionCode != null and regionCode != ''">
+            AND a.region_no like concat(#{regionCode},'%')
+        </if>
+		<if test="projectId  != null and projectId != ''" >
+			AND b.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND b.tenant_code = #{tenantCode}
+		</if>
+		GROUP BY create_date
+	) AS tab1
+	</select>
+
+	<!--区域在线占比-->
+	<select id="regionOnlineRatio" resultType="map">
+	<!-- 当前的 -->
+	<choose>
+		<when test="startTime.substring(0,10) == currentDate and endTime.substring(0,10) == currentDate">
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					SELECT
+					t.region_name AS regionName,
+					IFNULL (temp.onlineNum,0)AS onlineNum ,
+					IFNULL(temp.deviceNum,0)AS deviceNum
+					FROM as_region t
+					LEFT JOIN(
+				</when>
+				<otherwise>
+					SELECT
+					t.project_name AS projectName,
+					IFNULL (temp.onlineNum,0)AS onlineNum ,
+					IFNULL(temp.deviceNum,0)AS deviceNum
+					FROM as_project t
+					LEFT JOIN(
+				</otherwise>
+			</choose>
+			select
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					c.id,
+				</when>
+				<otherwise>
+					ap.project_id,
+				</otherwise>
+			</choose>
+			SUM(case when a.network_state=1 then 1 else 0 end) as onlineNum,
+			COUNT(1) as deviceNum
+			from as_event_network as a
+			LEFT JOIN as_device as b on a.device_id = b.id
+			left join as_region as c 
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					on b.region_code LIKE CONCAT(c.region_code,'%')
+				</when>
+				<otherwise>
+					on b.region_code =c.region_code
+				</otherwise>
+			</choose>
+			LEFT JOIN as_project as ap on b.project_id = ap.project_id
+			where 1 = 1
+			<if test="regionCode != null and regionCode != ''">
+				 AND b.region_code like concat(#{regionCode},'%')
+			</if>
+			<if test="projectId  != null and projectId != ''" >
+				AND b.project_id IN
+				<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="tenantCode != null and tenantCode != ''">
+				AND b.tenant_code = #{tenantCode}
+			</if>
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					AND (b.project_id in (${queryProjectId}))
+					GROUP BY c.id )AS temp ON t.id =temp.id
+					WHERE 1=1 
+					<if test="tenantCode != null and tenantCode != ''">
+						AND t.tenant_code = #{tenantCode}
+					</if>
+					<choose>
+						<when test="regionId!= null and regionId != ''">
+							AND t.parent_id =#{regionId}
+						</when>
+						<otherwise>
+							AND t.parent_id = -1
+						</otherwise>
+					</choose>
+					AND t.project_id = #{queryProjectId}
+				</when>
+				<otherwise>
+					GROUP BY c.project_id ) AS temp ON t.project_id = temp.project_id
+					WHERE  1=1 
+					<if test="tenantCode != null and tenantCode != ''">
+						AND t.tenant_code = #{tenantCode}
+					</if>
+				</otherwise>
+			</choose>
+		</when>
+	<!-- 历史的 -->
+		<otherwise>
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					SELECT
+					t.region_name AS regionName,
+					IFNULL(temp.onlineNum,0)AS onlineNum ,
+					IFNULL(temp.deviceNum,0) AS deviceNum
+					FROM as_region t
+					LEFT JOIN (
+				</when>
+				<otherwise>
+					SELECT
+					t.project_name AS projectName,
+					IFNULL (temp.onlineNum,0)AS onlineNum ,
+					IFNULL(temp.deviceNum,0)AS deviceNum
+					FROM as_project t
+					LEFT JOIN(
+				</otherwise>
+			</choose>
+			select
+
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					b.id,
+				</when>
+				<otherwise>
+					b.project_id,
+				</otherwise>
+			</choose>
+			SUM(a.online_num) as onlineNum,
+			SUM(a.device_num) as deviceNum
+			from as_online_statistics a
+			left JOIN as_region b
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					on a.region_no LIKE CONCAT(b.region_code,'%')
+				</when>
+				<otherwise>
+					on a.region_no =b.region_code
+				</otherwise>
+			</choose>
+
+			WHERE 1 = 1
+			<if test="regionCode != null and regionCode != ''">
+				AND a.region_no like concat(#{regionCode},'%')
+			</if>
+			<if test="projectId  != null and projectId != ''" >
+				AND b.project_id IN
+				<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="tenantCode != null and tenantCode != ''">
+				AND b.tenant_code = #{tenantCode}
+			</if>
+			AND a.create_date BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d')
+			<choose>
+				<when test="queryProjectId != null and queryProjectId != ''">
+					GROUP BY b.id ) AS temp ON t.id = temp.id WHERE 1=1 
+					<if test="tenantCode != null and tenantCode != ''">
+						AND t.tenant_code = #{tenantCode}
+					</if>
+					<choose>
+						<when test="regionId!= null and regionId != ''">
+							AND t.parent_id =#{regionId}
+						</when>
+						<otherwise>
+							AND t.parent_id = -1
+						</otherwise>
+					</choose>
+					AND (t.project_id in (${queryProjectId}))
+				</when>
+				<otherwise>
+					GROUP BY b.project_id ) AS temp ON t.project_id = temp.project_id
+					WHERE 1=1
+					<if test="tenantCode != null and tenantCode != ''">
+						AND t.tenant_code = #{tenantCode}
+					</if>
+				</otherwise>
+			</choose>
+		</otherwise>
+	</choose>
+	</select>
+
+	<!--设备在线趋势分析-->
+	<select id="queryOnlineTrend" resultType="map">
+		select
+		<if test="timeUnit == 'day'">
+			CONCAT(DATE_FORMAT(a.create_date,'%Y-%m-%d'),'日')
+		</if>
+		<if test="timeUnit == 'month'">
+			CONCAT(DATE_FORMAT(a.create_date,'%Y-%m'),'月')
+		</if> as `date`,
+		SUM(online_num) as onlineNum
+		from as_online_statistics as a
+		left join as_region as b on a.region_no = b.region_code
+		left JOIN as_device_model as c on a.device_model_id = c.id
+		where 1 = 1
+		<if test="regionCode != null and regionCode != ''">
+		    and b.region_code LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="model != null and model != ''">
+			and c.device_model_name = #{model}
+		</if>
+		<if test="tenantCode!=null and tenantCode!=''">
+			and b.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND b.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="timeUnit == 'day'">
+			and DATE_FORMAT(a.create_date,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d') GROUP BY DATE_FORMAT(a.create_date,'%Y-%m-%d');
+		</if>
+		<if test="timeUnit == 'month'">
+			and DATE_FORMAT(a.create_date,'%Y-%m') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m') and DATE_FORMAT(#{endTime},'%Y-%m') GROUP BY DATE_FORMAT(a.create_date,'%Y-%m');
+		</if>
+	</select>
+
+	<select id="getCount" resultType="map">
+		select
+		sum(IFNULL(a.device_num,0)) as `count`,
+		sum(IFNULL(a.online_num,0)) as `onlineNum`
+		from as_online_statistics as a
+		LEFT JOIN as_region as b on a.region_no = b.region_code
+		where 1 = 1
+			<if test="regionCode != null and regionCode != ''">
+				AND a.region_no like CONCAT(#{regionCode},'%')
+			</if>
+			<if test="type != null and type != ''">
+			  	AND a.device_kind = #{type}
+			</if>
+			<if test="startTime != null and endTime != null">
+				AND DATE_FORMAT(a.create_date,'%Y-%m-%d HH:mm:ss') between #{startTime} and #{endTime}
+			</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND b.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+			<if test="tenantCode != null and tenantCode != ''">
+				AND b.tenant_code = #{tenantCode}
+			</if>
+
+	</select>
+
+	<select id="lowestRate" resultType="map">
+		select tab.* from (
+		SELECT
+		DATE_FORMAT(t1.create_date,'%Y-%m') as `date`,
+		IFNULL(t1.online_num/t1.device_num,0) as lowestRate
+		FROM as_online_statistics as t1 LEFT JOIN as_region as t2 on t1.region_no = t2.region_code
+		WHERE 1 = 1
+		<if test="projectId  != null and projectId != ''" >
+			AND t2.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="kind != null and kind != ''">
+			AND t1.device_kind = #{kind}
+		</if>
+		<if test="regionCode != null and regionCode != ''">
+			AND t2.region_code like CONCAT(#{regionCode},'%')
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND t2.tenant_code = #{tenantCode}
+		</if>
+		<if test="year != null and year != ''">
+			AND DATE_FORMAT(t1.create_date,'%Y') = #{year}
+		</if>
+		order by lowestRate
+		) as tab group by tab.date
+	</select>
+
+	<select id="getByDeviceKind" resultType="com.aswl.as.ibrs.api.module.OnlineStatistics">
+		select
+		IFNULL(t4.type,#{deviceKind}) as deviceKind,
+		count(case t6.network_state when 1 then 1 else null end) as onlineNum,
+		count(1) as deviceNum
+		from as_device t1
+		left join as_device_model t2 on t1.device_model_id = t2.id
+		left join as_device_type t3 on t2.device_type = t3.device_type
+		left join as_device_kind t4 on t3.device_kind_id = t4.id
+		left join  as_region t5 on t1.region_code = t5.region_code
+		left join as_event_network t6 on t1.id = t6.device_id
+		where t4.type = #{deviceKind};
+	</select>
+
+
+	<select id="getByCondition" resultType="com.aswl.as.ibrs.api.module.OnlineStatistics">
+		SELECT <include refid="onlineStatisticsColumns"/>
+		FROM as_online_statistics where 1 = 1
+		<if test="statisticsDate != null">
+			and create_date = #{statisticsDate}
+		</if>
+		<if test="deviceKind != null deviceKind != ''">
+			and device_kind = #{deviceKind}
+		</if>
+		<if test="projectId != null projectId != ''">
+			and project_id = #{projectId}
+		</if>
+	</select>
+	<select id="getHisHealthyCount" resultType="java.util.Map">
+		<choose>
+		<when test="queryProjectId !=null and queryProjectId !=''">
+			SELECT
+			t.region_name AS regionName,
+			IFNULL(t1.deviceNum,0) AS deviceCount ,
+			IFNULL(t1.offLineCount,0) AS offLineCount ,
+			IFNULL(t1.faultCount,0) AS faultCount,
+			IFNULL(t1.alarmCount,0) AS alarmCount
+			FROM as_region t
+			LEFT JOIN(
+		</when>
+		<otherwise>
+			SELECT
+			t.project_name AS projectName,
+			IFNULL(t1.deviceNum,0) AS deviceCount ,
+			IFNULL(t1.offLineCount,0) AS offLineCount ,
+			IFNULL(t1.faultCount,0) AS faultCount,
+			IFNULL(t1.alarmCount,0) AS alarmCount
+			FROM as_project t  LEFT JOIN(
+		</otherwise>
+	</choose>
+		SELECT * FROM (
+		SELECT
+		aos.project_id AS projectId,
+		SUM(aos.device_num) AS deviceNum
+		FROM as_online_statistics aos
+		WHERE 1=1 
+		<if test="startTime != null and endTime != null">
+			AND DATE_FORMAT(aos.create_date, '%Y-%m-%d') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') AND DATE_FORMAT(#{endTime},'%Y-%m-%d')
+		</if>
+		GROUP BY aos.project_id ORDER BY aos.project_id DESC) AS a
+		LEFT JOIN
+		(
+		SELECT
+		aas.project_id projectId2,
+		SUM(CASE WHEN aas.alarm_type LIKE CONCAT ('IsOnlineAlarm','%') THEN 1 ELSE 0 END) AS offLineCount,
+		SUM(CASE WHEN aas.fault_num > 0 THEN 1 ELSE 0 END )-SUM(CASE WHEN aas.alarm_type LIKE CONCAT ('IsOnlineAlarm','%') THEN 1 ELSE 0 END) AS faultCount,
+		SUM(CASE WHEN (aas.alarm_num - aas.fault_num) > 0 THEN 1 ELSE 0 END ) AS alarmCount
+		FROM as_alarm_statistics aas
+		WHERE 1=1 
+		<if test="startTime != null and endTime != null">
+			AND DATE_FORMAT(aas.create_date, '%Y-%m-%d') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') AND DATE_FORMAT(#{endTime},'%Y-%m-%d')
+		</if>
+		GROUP BY aas.project_id  ORDER BY aas.project_id DESC) AS b
+		ON a.projectId =b.projectId2 ) AS t1
+		ON t.project_id = t1.projectId
+		WHERE 1=1
+		<if test="projectId != null and projectId != ''">
+			AND t.project_id IN
+			<foreach collection="projectId.split(',')" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		GROUP BY t.project_id	
+	</select>
+
+	<delete id="deleteByCreateDate">
+		DELETE FROM as_online_statistics
+		WHERE create_date = #{createDate}
+	</delete>
+</mapper>

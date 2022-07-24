@@ -1,0 +1,229 @@
+server:
+  port: 8097
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:192.168.200.240}:${MYSQL_PORT:3306}/as-ibrs?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CTT&characterEncoding=UTF-8
+    username: ${MYSQL_USERNAME:aswl_dev}
+    password: ${MYSQL_PASSWORD:aswl^Dev}
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initial-size: 10
+    max-active: 100
+    min-idle: 10
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    lettuce:
+      pool:
+        min-idle: 10
+        max-idle: 50
+        max-active: 500
+        max-wait: 10000
+        time-between-eviction-runs: 300000
+      shutdown-timeout: 1000
+  rabbitmq:
+    host: ${RABBIT_HOST:192.168.200.225}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBITMQ_DEFAULT_USER:aswl_test}
+    password: ${RABBITMQ_DEFAULT_PASS:aswl_Test}
+  boot:
+    admin:
+      client:
+        url: http://${ADMIN_HOST:localhost}:${ADMIN_PORT:8085}/admin
+        username: ${ADMIN_USERNAME:admin}
+        password: ${ADMIN_PASSWORD:11}
+        instance:
+          service-base-url: http://${USER_SERVICE_HOST:localhost}:${server.port}
+          metadata:
+            tags:
+              environment: prd
+  # sleuth 配置
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。
+  # zipkin 配置
+  zipkin:
+    base-url: http://${ZIPKIN_HOST:localhost}:${ZIPKIN_PORT:9411}  # 指定了Zipkin服务器的地址
+    sender:
+      type: web
+
+##多数据源的配置
+dynamic:
+  datasource:
+    as-ibrs:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${IBRS_MYSQL_HOST:192.168.200.240}:${IBRS_MYSQL_PORT:3306}/as-ibrs?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: ${IBRS_MYSQL_USERNAME:aswl_dev}
+      password: ${IBRS_MYSQL_PASSWORD:aswl^Dev}
+    as-user:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${USER_MYSQL_HOST:192.168.200.240}:${USER_MYSQL_PORT:3306}/as-user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: ${USER_MYSQL_USERNAME:aswl_dev}
+      password: ${USER_MYSQL_PASSWORD:aswl^Dev}
+
+# mybatis配置
+mybatis:
+  type-aliases-package: com.aswl.as.ibrs.api.module
+  configuration:
+    # 驼峰转换
+    map-underscore-to-camel-case: true
+    # 延迟加载
+    lazy-loading-enabled: true
+  mapper-locations: classpath:mapper/*.xml
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# ===================================================================
+# 分布式文件系统FDFS配置
+# ===================================================================
+fdfs:
+  so-timeout: 1501
+  connect-timeout: 601
+  thumb-image:             #缩略图生成参数
+    width: 150
+    height: 150
+  tracker-list:            #TrackerList参数,支持多个
+    - ${FDFS_HOST:120.24.102.159}:${FDFS_PORT:22122}
+
+# 系统配置
+sys:
+  adminUser: ${ADMIN_USER:admin}  # 管理员账号，默认是admin
+  fdfsHttpHost: ${ATTACHMENT_HOST:http://120.24.102.159}  # fastDfs的HTTP配置
+  uploadUrl: api/user/v1/attachment/upload
+  defaultAvatar: https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80
+  key: '1234567887654321'
+  cacheExpire: 86400 # 缓存失效时间，单位秒，默认一天
+  projectCode: GZ-201911-001
+
+# feign相关配置
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled:  true
+
+# hystrix配置
+hystrix:
+  shareSecurityContext: true
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+  threadpool:
+    default:
+      coreSize: 100
+      maxQueueSize: 500
+      queueSizeRejectionThreshold: 400
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+ignore:
+  urls:
+    - /
+    - /error
+    - /favicon.ico
+    - /**/*swagger*/**
+    - /v2/api-docs
+    - /csrf
+    - /actuator/**
+    - /hystrix.sender
+    - /v1/sms/**
+    - /v1/mobile/**
+    - /v1/user/findUserByIdentifier/**
+    - /v1/tenant/findTenantByTenantCode/**
+    - /v1/menu/findMenuByRole/**
+    - /v1/menu/findAllMenu
+    - /v1/user/register
+    - /v1/user/checkExist/**
+    - /v1/user/updatePassword
+    - /v1/code/**
+    - /v1/attachment/download
+    - /v1/log/**
+    - /authentication/**
+    - /v1/authentication/**
+    - /**/*.css
+    - /**/*.js
+    - /social
+    - /signin
+    - /signup
+    - /info
+    - /health
+    - /metrics/**
+    - /loggers/**
+    - /bus/refresh
+
+# 集群ID生成配置
+cluster:
+  workId: ${CLUSTER_WORKID:1}
+  dataCenterId: ${CLUSTER_DATA_CENTER_ID:1}
+
+logging:
+  level:
+    root: info
+    com.aswl.as: debug
+
+#ffmpeg 配置
+ffmpeg:
+  #ffmpeg 根目录地址
+  address: D:/DevelopmentSoftware/ffmpeg/bin/ffmpeg.exe
+  # 图片分辨率
+  resolution: 1024x768
+  #第几针开始抓拍
+  time: 8
+  #视屏录制时长 单位毫秒
+  vedioTime: 5000
+  #是否开启录制视频
+  isVedio: false
+  #是否需要截图
+  isPic: true
+  #保存目录
+  filePath: D:/upload/
+
+#发送邮件的邮箱设置
+asmail:
+  host: smtp.qq.com
+  port: 587
+  auth: true
+  from: 1@qq.com
+  user: 1@qq.com
+  pass: 123
+  isSmsMail: false
+
+#极光推送的账号密码
+jpush:
+  appKey: cdd96785a0ac47c9ebc0df5c
+  masterSecret: 70434feda2ec94e757b4c5bd
+#市级平台区域code和projectCode,市级平台Ip
+cityPlatform:
+  enable: false
+  platform:
+    isCityPlatform: true
+    #cityName: 天河区
+    #cityCode: A01A01A05
+    #projectCode: bgsxm001
+    #projectName: 办公室项目
+    #ip: 192.168.200.240
+    #rabbitUserName: aswl_test
+    #rabbitPassword: aswl_Test
+    #rabbitPort: 5672
+
+sms:
+  signName: 傲视物联
+  alarmTemplateCode: SMS_213691411
+  orderTemplateCode: SMS_227736238

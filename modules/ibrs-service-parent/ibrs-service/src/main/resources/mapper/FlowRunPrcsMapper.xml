@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.FlowRunPrcsMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="flowRunPrcsResultMap" type="com.aswl.as.ibrs.api.module.FlowRunPrcs">
+        <id column="id" property="id"/>
+        <id column="run_id" property="runId"/>
+        <id column="prcs_id" property="prcsId"/>
+        <id column="user_id" property="userId"/>
+        <id column="prcs_time" property="prcsTime"/>
+        <id column="deliver_time" property="deliverTime"/>
+        <id column="prcs_flag" property="prcsFlag"/>
+        <id column="flow_prcs" property="flowPrcs"/>
+        <id column="op_flag" property="opFlag"/>
+        <id column="top_flag" property="topFlag"/>
+        <id column="parent_id" property="parentId"/>
+        <id column="child_run_id" property="childRunId"/>
+        <id column="time_out" property="timeOut"/>
+        <id column="other_user" property="otherUser"/>
+        <id column="time_out_flag" property="timeOutFlag"/>
+        <id column="create_time" property="createTime"/>
+        <id column="from_user_id" property="fromUserId"/>
+        <id column="active_time" property="activeTime"/>
+        <id column="comment" property="comment"/>
+        <id column="prcs_org" property="prcsOrg"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <sql id="flowRunPrcsColumns">
+		id, run_id, prcs_id, user_id, prcs_time, deliver_time, prcs_flag, flow_prcs, op_flag, top_flag, parent_id, child_run_id, time_out, other_user, time_out_flag, create_time, from_user_id, active_time, comment, prcs_org, application_code, tenant_code, remark
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="runId  != null and runId != ''">
+            and run_id = #{runId}
+        </if>
+        <if test="prcsId  != null and prcsId != ''">
+            and prcs_id = #{prcsId}
+        </if>
+        <if test="userId  != null and userId != ''">
+            and user_id like CONCAT('%',#{userId},'%')
+        </if>
+        <if test="prcsTime  != null and prcsTime != ''">
+            and prcs_time = #{prcsTime}
+        </if>
+        <if test="deliverTime  != null and deliverTime != ''">
+            and deliver_time = #{deliverTime}
+        </if>
+        <if test="prcsFlag  != null and prcsFlag != ''">
+            and prcs_flag = #{prcsFlag}
+        </if>
+        <if test="flowPrcs  != null and flowPrcs != ''">
+            and flow_prcs = #{flowPrcs}
+        </if>
+        <if test="opFlag  != null and opFlag != ''">
+            and op_flag = #{opFlag}
+        </if>
+        <if test="topFlag  != null and topFlag != ''">
+            and top_flag = #{topFlag}
+        </if>
+        <if test="parentId  != null and parentId != ''">
+            and parent_id = #{parentId}
+        </if>
+        <if test="childRunId  != null and childRunId != ''">
+            and child_run_id = #{childRunId}
+        </if>
+        <if test="timeOut  != null and timeOut != ''">
+            and time_out like CONCAT('%',#{timeOut},'%')
+        </if>
+        <if test="otherUser  != null and otherUser != ''">
+            and other_user like CONCAT('%',#{otherUser},'%')
+        </if>
+        <if test="timeOutFlag  != null and timeOutFlag != ''">
+            and time_out_flag = #{timeOutFlag}
+        </if>
+        <if test="createTime  != null and createTime != ''">
+            and create_time = #{createTime}
+        </if>
+        <if test="fromUserId  != null and fromUserId != ''">
+            and from_user_id like CONCAT('%',#{fromUserId},'%')
+        </if>
+        <if test="activeTime  != null and activeTime != ''">
+            and active_time = #{activeTime}
+        </if>
+        <if test="comment  != null and comment != ''">
+            and comment = #{comment}
+        </if>
+        <if test="prcsOrg  != null and prcsOrg != ''">
+            and prcs_org = #{prcsOrg}
+        </if>
+        <if test="applicationCode  != null and applicationCode != ''">
+            and application_code like CONCAT('%',#{applicationCode},'%')
+        </if>
+        <if test="tenantCode  != null and tenantCode != ''">
+            and tenant_code like CONCAT('%',#{tenantCode},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="flowRunPrcsResultMap">
+        SELECT
+        <include refid="flowRunPrcsColumns"/>
+        FROM as_flow_run_prcs
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="flowRunPrcsResultMap">
+        SELECT
+        <include refid="flowRunPrcsColumns"/>
+        FROM as_flow_run_prcs
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="flowRunPrcsResultMap">
+        SELECT
+        <include refid="flowRunPrcsColumns"/>
+        FROM as_flow_run_prcs
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_flow_run_prcs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="runId != null and runId!=''">
+                run_id,
+            </if>
+            <if test="prcsId != null and prcsId!=''">
+                prcs_id,
+            </if>
+            <if test="userId != null and userId!=''">
+                user_id,
+            </if>
+            <if test="prcsTime != null and prcsTime!=''">
+                prcs_time,
+            </if>
+            <if test="deliverTime != null and deliverTime!=''">
+                deliver_time,
+            </if>
+            <if test="prcsFlag != null and prcsFlag!=''">
+                prcs_flag,
+            </if>
+            <if test="flowPrcs != null and flowPrcs!=''">
+                flow_prcs,
+            </if>
+            <if test="opFlag != null and opFlag!=''">
+                op_flag,
+            </if>
+            <if test="topFlag != null and topFlag!=''">
+                top_flag,
+            </if>
+            <if test="parentId != null and parentId!=''">
+                parent_id,
+            </if>
+            <if test="childRunId != null and childRunId!=''">
+                child_run_id,
+            </if>
+            <if test="timeOut != null and timeOut!=''">
+                time_out,
+            </if>
+            <if test="otherUser != null and otherUser!=''">
+                other_user,
+            </if>
+            <if test="timeOutFlag != null and timeOutFlag!=''">
+                time_out_flag,
+            </if>
+            <if test="createTime != null and createTime!=''">
+                create_time,
+            </if>
+            <if test="fromUserId != null and fromUserId!=''">
+                from_user_id,
+            </if>
+            <if test="activeTime != null and activeTime!=''">
+                active_time,
+            </if>
+            <if test="comment != null and comment!=''">
+                comment,
+            </if>
+            <if test="prcsOrg != null and prcsOrg!=''">
+                prcs_org,
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                application_code,
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code,
+            </if>
+            <if test="remark != null and remark!=''">
+                remark
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="runId != null and runId!=''">
+                #{runId},
+            </if>
+            <if test="prcsId != null and prcsId!=''">
+                #{prcsId},
+            </if>
+            <if test="userId != null and userId!=''">
+                #{userId},
+            </if>
+            <if test="prcsTime != null and prcsTime!=''">
+                #{prcsTime},
+            </if>
+            <if test="deliverTime != null and deliverTime!=''">
+                #{deliverTime},
+            </if>
+            <if test="prcsFlag != null and prcsFlag!=''">
+                #{prcsFlag},
+            </if>
+            <if test="flowPrcs != null and flowPrcs!=''">
+                #{flowPrcs},
+            </if>
+            <if test="opFlag != null and opFlag!=''">
+                #{opFlag},
+            </if>
+            <if test="topFlag != null and topFlag!=''">
+                #{topFlag},
+            </if>
+            <if test="parentId != null and parentId!=''">
+                #{parentId},
+            </if>
+            <if test="childRunId != null and childRunId!=''">
+                #{childRunId},
+            </if>
+            <if test="timeOut != null and timeOut!=''">
+                #{timeOut},
+            </if>
+            <if test="otherUser != null and otherUser!=''">
+                #{otherUser},
+            </if>
+            <if test="timeOutFlag != null and timeOutFlag!=''">
+                #{timeOutFlag},
+            </if>
+            <if test="createTime != null and createTime!=''">
+                #{createTime},
+            </if>
+            <if test="fromUserId != null and fromUserId!=''">
+                #{fromUserId},
+            </if>
+            <if test="activeTime != null and activeTime!=''">
+                #{activeTime},
+            </if>
+            <if test="comment != null and comment!=''">
+                #{comment},
+            </if>
+            <if test="prcsOrg != null and prcsOrg!=''">
+                #{prcsOrg},
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                #{tenantCode},
+            </if>
+            <if test="remark != null and remark!=''">
+                #{remark}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_flow_run_prcs
+        <set>
+            <if test="id != null and id!=''">
+                id = #{id},
+            </if>
+            <if test="runId != null and runId!=''">
+                run_id = #{runId},
+            </if>
+            <if test="prcsId != null and prcsId!=''">
+                prcs_id = #{prcsId},
+            </if>
+            <if test="userId != null and userId!=''">
+                user_id = #{userId},
+            </if>
+            <if test="prcsTime != null and prcsTime!=''">
+                prcs_time = #{prcsTime},
+            </if>
+            <if test="deliverTime != null and deliverTime!=''">
+                deliver_time = #{deliverTime},
+            </if>
+            <if test="prcsFlag != null and prcsFlag!=''">
+                prcs_flag = #{prcsFlag},
+            </if>
+            <if test="flowPrcs != null and flowPrcs!=''">
+                flow_prcs = #{flowPrcs},
+            </if>
+            <if test="opFlag != null and opFlag!=''">
+                op_flag = #{opFlag},
+            </if>
+            <if test="topFlag != null and topFlag!=''">
+                top_flag = #{topFlag},
+            </if>
+            <if test="parentId != null and parentId!=''">
+                parent_id = #{parentId},
+            </if>
+            <if test="childRunId != null and childRunId!=''">
+                child_run_id = #{childRunId},
+            </if>
+            <if test="timeOut != null and timeOut!=''">
+                time_out = #{timeOut},
+            </if>
+            <if test="otherUser != null and otherUser!=''">
+                other_user = #{otherUser},
+            </if>
+            <if test="timeOutFlag != null and timeOutFlag!=''">
+                time_out_flag = #{timeOutFlag},
+            </if>
+            <if test="createTime != null and createTime!=''">
+                create_time = #{createTime},
+            </if>
+            <if test="fromUserId != null and fromUserId!=''">
+                from_user_id = #{fromUserId},
+            </if>
+            <if test="activeTime != null and activeTime!=''">
+                active_time = #{activeTime},
+            </if>
+            <if test="comment != null and comment!=''">
+                comment = #{comment},
+            </if>
+            <if test="prcsOrg != null and prcsOrg!=''">
+                prcs_org = #{prcsOrg},
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code = #{tenantCode},
+            </if>
+            <if test="remark != null and remark!=''">
+                remark = #{remark}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE as_flow_run_prcs SET
+        del_flag = 1
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        UPDATE as_flow_run_prcs SET
+        del_flag = 1
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+</mapper>

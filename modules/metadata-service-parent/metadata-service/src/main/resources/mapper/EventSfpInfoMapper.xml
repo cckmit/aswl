@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventSfpInfoMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventSfpInfoResultMap" type="com.aswl.as.ibrs.api.module.EventSfpInfo">
+		<id column="id"   property="id" />
+		<id column="u_event_id"   property="uEventId" />
+		<id column="device_id"   property="deviceId" />
+		<id column="region_no"   property="regionNo" />
+		<id column="rec_time"   property="recTime" />
+		<id column="passway"   property="passway" />
+		<id column="fld01"   property="fld01" />
+		<id column="fld02"   property="fld02" />
+		<id column="fld03"   property="fld03" />
+		<id column="fld04"   property="fld04" />
+		<id column="fld05"   property="fld05" />
+		<id column="fld06"   property="fld06" />
+		<id column="fld07"   property="fld07" />
+		<id column="fld08"   property="fld08" />
+		<id column="store_time"   property="storeTime" />
+		<id column="application_code"   property="applicationCode" />
+		<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventSfpInfoColumns">
+		id, u_event_id, device_id, region_no, rec_time, passway, fld01, fld02, fld03, fld04, fld05, fld06, fld07, fld08, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+		<if test="uEventId!= null and uEventId!= ''" >
+			and u_event_id LIKE CONCAT(#{uEventId},'%')
+		</if>
+		<if test="deviceId!= null and deviceId!= ''" >
+			and device_id LIKE CONCAT(#{deviceId},'%')
+		</if>
+		<if test="regionNo!= null and regionNo!= ''" >
+			and region_no LIKE CONCAT(#{regionNo},'%')
+		</if>
+		<if test="recTime!= null and recTime!= ''">
+			and rec_time = #{recTime}
+		</if>
+		<if test="passway!= null and passway!= ''" >
+			and passway LIKE CONCAT(#{passway},'%')
+		</if>
+		<if test="fld01!= null and fld01!= ''" >
+			and fld01 LIKE CONCAT(#{fld01},'%')
+		</if>
+		<if test="fld02!= null and fld02!= ''" >
+			and fld02 LIKE CONCAT(#{fld02},'%')
+		</if>
+		<if test="fld03!= null and fld03!= ''" >
+			and fld03 LIKE CONCAT(#{fld03},'%')
+		</if>
+		<if test="fld04!= null and fld04!= ''" >
+			and fld04 LIKE CONCAT(#{fld04},'%')
+		</if>
+		<if test="fld05!= null and fld05!= ''" >
+			and fld05 LIKE CONCAT(#{fld05},'%')
+		</if>
+		<if test="fld06!= null and fld06!= ''" >
+			and fld06 LIKE CONCAT(#{fld06},'%')
+		</if>
+		<if test="fld07!= null and fld07!= ''" >
+			and fld07 LIKE CONCAT(#{fld07},'%')
+		</if>
+		<if test="fld08!= null and fld08!= ''" >
+			and fld08 LIKE CONCAT(#{fld08},'%')
+		</if>
+		<if test="storeTime!= null and storeTime!= ''">
+			and store_time = #{storeTime}
+		</if>
+		<if test="applicationCode!= null and applicationCode!= ''" >
+			and application_code LIKE CONCAT(#{applicationCode},'%')
+		</if>
+		<if test="tenantCode!= null and tenantCode!= ''" >
+			and tenant_code LIKE CONCAT(#{tenantCode},'%')
+		</if>
+	</sql>
+
+	<select id="get" resultMap="eventSfpInfoResultMap">
+		SELECT
+		<include refid="eventSfpInfoColumns"/>
+		FROM as_event_sfp_info
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventSfpInfoResultMap">
+		SELECT
+		<include refid="eventSfpInfoColumns"/>
+		FROM as_event_sfp_info
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventSfpInfoResultMap">
+		SELECT
+		<include refid="eventSfpInfoColumns"/>
+		FROM as_event_sfp_info
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+		INSERT INTO as_event_sfp_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uEventId != null">
+				u_event_id,
+			</if>
+			<if test="deviceId != null">
+				device_id,
+			</if>
+			<if test="regionNo != null">
+				region_no,
+			</if>
+			<if test="recTime != null">
+				rec_time,
+			</if>
+			<if test="passway != null">
+				passway,
+			</if>
+			<if test="fld01 != null">
+				fld01,
+			</if>
+			<if test="fld02 != null">
+				fld02,
+			</if>
+			<if test="fld03 != null">
+				fld03,
+			</if>
+			<if test="fld04 != null">
+				fld04,
+			</if>
+			<if test="fld05 != null">
+				fld05,
+			</if>
+			<if test="fld06 != null">
+				fld06,
+			</if>
+			<if test="fld07 != null">
+				fld07,
+			</if>
+			<if test="fld08 != null">
+				fld08,
+			</if>
+			<if test="storeTime != null">
+				store_time,
+			</if>
+			<if test="applicationCode != null">
+				application_code,
+			</if>
+			<if test="tenantCode != null">
+				tenant_code,
+			</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="uEventId != null">
+				#{uEventId},
+			</if>
+			<if test="deviceId != null">
+				#{deviceId},
+			</if>
+			<if test="regionNo != null">
+				#{regionNo},
+			</if>
+			<if test="recTime != null">
+				#{recTime},
+			</if>
+			<if test="passway != null">
+				#{passway},
+			</if>
+			<if test="fld01 != null">
+				#{fld01},
+			</if>
+			<if test="fld02 != null">
+				#{fld02},
+			</if>
+			<if test="fld03 != null">
+				#{fld03},
+			</if>
+			<if test="fld04 != null">
+				#{fld04},
+			</if>
+			<if test="fld05 != null">
+				#{fld05},
+			</if>
+			<if test="fld06 != null">
+				#{fld06},
+			</if>
+			<if test="fld07 != null">
+				#{fld07},
+			</if>
+			<if test="fld08 != null">
+				#{fld08},
+			</if>
+			<if test="storeTime != null">
+				#{storeTime},
+			</if>
+			<if test="applicationCode != null">
+				#{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				#{tenantCode},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_sfp_info
+		<set>
+			<if test="id != null">
+				id =  #{id},
+			</if>
+			<if test="uEventId != null">
+				u_event_id =  #{uEventId},
+			</if>
+			<if test="deviceId != null">
+				device_id =  #{deviceId},
+			</if>
+			<if test="regionNo != null">
+				region_no =  #{regionNo},
+			</if>
+			<if test="recTime != null">
+				rec_time =  #{recTime},
+			</if>
+			<if test="passway != null">
+				passway =  #{passway},
+			</if>
+			<if test="fld01 != null">
+				fld01 =  #{fld01},
+			</if>
+			<if test="fld02 != null">
+				fld02 =  #{fld02},
+			</if>
+			<if test="fld03 != null">
+				fld03 =  #{fld03},
+			</if>
+			<if test="fld04 != null">
+				fld04 =  #{fld04},
+			</if>
+			<if test="fld05 != null">
+				fld05 =  #{fld05},
+			</if>
+			<if test="fld06 != null">
+				fld06 =  #{fld06},
+			</if>
+			<if test="fld07 != null">
+				fld07 =  #{fld07},
+			</if>
+			<if test="fld08 != null">
+				fld08 =  #{fld08},
+			</if>
+			<if test="storeTime != null">
+				store_time =  #{storeTime},
+			</if>
+			<if test="applicationCode != null">
+				application_code =  #{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				tenant_code =  #{tenantCode},
+			</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_sfp_info
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_sfp_info
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

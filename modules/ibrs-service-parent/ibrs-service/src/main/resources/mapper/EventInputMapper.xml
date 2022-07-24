@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventInputMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventInputResultMap" type="com.aswl.as.ibrs.api.module.EventInput">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="passway1"   property="passway1" />
+			<id column="passway2"   property="passway2" />
+			<id column="input01"   property="input01" />
+			<id column="input02"   property="input02" />
+			<id column="input03"   property="input03" />
+			<id column="input04"   property="input04" />
+			<id column="input05"   property="input05" />
+			<id column="input06"   property="input06" />
+			<id column="input07"   property="input07" />
+			<id column="input08"   property="input08" />
+			<id column="input09"   property="input09" />
+			<id column="input10"   property="input10" />
+			<id column="input11"   property="input11" />
+			<id column="input12"   property="input12" />
+			<id column="input13"   property="input13" />
+			<id column="input14"   property="input14" />
+			<id column="input15"   property="input15" />
+			<id column="input16"   property="input16" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventInputColumns">
+		id, u_event_id, device_id, region_no, rec_time, passway1, passway2, input01, input02, input03, input04, input05, input06, input07, input08, input09, input10, input11, input12, input13, input14, input15, input16, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId!= null and uEventId!= ''" >
+					and u_event_id LIKE CONCAT(#{uEventId},'%')
+				</if>
+				<if test="deviceId!= null and deviceId!= ''" >
+					and device_id LIKE CONCAT(#{deviceId},'%')
+				</if>
+				<if test="regionNo!= null and regionNo!= ''" >
+					and region_no LIKE CONCAT(#{regionNo},'%')
+				</if>
+				<if test="recTime!= null and recTime!= ''">
+					and rec_time = #{recTime}
+				</if>
+				<if test="passway1!= null and passway1!= ''" >
+					and passway1 LIKE CONCAT(#{passway1},'%')
+				</if>
+				<if test="passway2!= null and passway2!= ''" >
+					and passway2 LIKE CONCAT(#{passway2},'%')
+				</if>
+				<if test="input01!= null and input01!= ''">
+					and input01 = #{input01}
+				</if>
+				<if test="input02!= null and input02!= ''">
+					and input02 = #{input02}
+				</if>
+				<if test="input03!= null and input03!= ''">
+					and input03 = #{input03}
+				</if>
+				<if test="input04!= null and input04!= ''">
+					and input04 = #{input04}
+				</if>
+				<if test="input05!= null and input05!= ''">
+					and input05 = #{input05}
+				</if>
+				<if test="input06!= null and input06!= ''">
+					and input06 = #{input06}
+				</if>
+				<if test="input07!= null and input07!= ''">
+					and input07 = #{input07}
+				</if>
+				<if test="input08!= null and input08!= ''">
+					and input08 = #{input08}
+				</if>
+				<if test="input09!= null and input09!= ''">
+					and input09 = #{input09}
+				</if>
+				<if test="input10!= null and input10!= ''">
+					and input10 = #{input10}
+				</if>
+				<if test="input11!= null and input11!= ''">
+					and input11 = #{input11}
+				</if>
+				<if test="input12!= null and input12!= ''">
+					and input12 = #{input12}
+				</if>
+				<if test="input13!= null and input13!= ''">
+					and input13 = #{input13}
+				</if>
+				<if test="input14!= null and input14!= ''">
+					and input14 = #{input14}
+				</if>
+				<if test="input15!= null and input15!= ''">
+					and input15 = #{input15}
+				</if>
+				<if test="input16!= null and input16!= ''">
+					and input16 = #{input16}
+				</if>
+				<if test="storeTime!= null and storeTime!= ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventInputResultMap">
+		SELECT
+		<include refid="eventInputColumns"/>
+		FROM as_event_input
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventInputResultMap">
+		SELECT
+		<include refid="eventInputColumns"/>
+		FROM as_event_input
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventInputResultMap">
+		SELECT
+		<include refid="eventInputColumns"/>
+		FROM as_event_input
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findByDeviceId" resultMap="eventInputResultMap">
+		SELECT
+		<include refid="eventInputColumns"/>
+		FROM as_event_input
+		WHERE device_id = #{deviceId}
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_input
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="passway1 != null">
+                    passway1,
+                </if>
+                <if test="passway2 != null">
+                    passway2,
+                </if>
+                <if test="input01 != null">
+                    input01,
+                </if>
+                <if test="input02 != null">
+                    input02,
+                </if>
+                <if test="input03 != null">
+                    input03,
+                </if>
+                <if test="input04 != null">
+                    input04,
+                </if>
+                <if test="input05 != null">
+                    input05,
+                </if>
+                <if test="input06 != null">
+                    input06,
+                </if>
+                <if test="input07 != null">
+                    input07,
+                </if>
+                <if test="input08 != null">
+                    input08,
+                </if>
+                <if test="input09 != null">
+                    input09,
+                </if>
+                <if test="input10 != null">
+                    input10,
+                </if>
+                <if test="input11 != null">
+                    input11,
+                </if>
+                <if test="input12 != null">
+                    input12,
+                </if>
+                <if test="input13 != null">
+                    input13,
+                </if>
+                <if test="input14 != null">
+                    input14,
+                </if>
+                <if test="input15 != null">
+                    input15,
+                </if>
+                <if test="input16 != null">
+                    input16,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="passway1 != null">
+                    #{passway1},
+                </if>
+                <if test="passway2 != null">
+                    #{passway2},
+                </if>
+                <if test="input01 != null">
+                    #{input01},
+                </if>
+                <if test="input02 != null">
+                    #{input02},
+                </if>
+                <if test="input03 != null">
+                    #{input03},
+                </if>
+                <if test="input04 != null">
+                    #{input04},
+                </if>
+                <if test="input05 != null">
+                    #{input05},
+                </if>
+                <if test="input06 != null">
+                    #{input06},
+                </if>
+                <if test="input07 != null">
+                    #{input07},
+                </if>
+                <if test="input08 != null">
+                    #{input08},
+                </if>
+                <if test="input09 != null">
+                    #{input09},
+                </if>
+                <if test="input10 != null">
+                    #{input10},
+                </if>
+                <if test="input11 != null">
+                    #{input11},
+                </if>
+                <if test="input12 != null">
+                    #{input12},
+                </if>
+                <if test="input13 != null">
+                    #{input13},
+                </if>
+                <if test="input14 != null">
+                    #{input14},
+                </if>
+                <if test="input15 != null">
+                    #{input15},
+                </if>
+                <if test="input16 != null">
+                    #{input16},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_input
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="passway1 != null">
+					passway1 =  #{passway1},
+				</if>
+				<if test="passway2 != null">
+					passway2 =  #{passway2},
+				</if>
+				<if test="input01 != null">
+					input01 =  #{input01},
+				</if>
+				<if test="input02 != null">
+					input02 =  #{input02},
+				</if>
+				<if test="input03 != null">
+					input03 =  #{input03},
+				</if>
+				<if test="input04 != null">
+					input04 =  #{input04},
+				</if>
+				<if test="input05 != null">
+					input05 =  #{input05},
+				</if>
+				<if test="input06 != null">
+					input06 =  #{input06},
+				</if>
+				<if test="input07 != null">
+					input07 =  #{input07},
+				</if>
+				<if test="input08 != null">
+					input08 =  #{input08},
+				</if>
+				<if test="input09 != null">
+					input09 =  #{input09},
+				</if>
+				<if test="input10 != null">
+					input10 =  #{input10},
+				</if>
+				<if test="input11 != null">
+					input11 =  #{input11},
+				</if>
+				<if test="input12 != null">
+					input12 =  #{input12},
+				</if>
+				<if test="input13 != null">
+					input13 =  #{input13},
+				</if>
+				<if test="input14 != null">
+					input14 =  #{input14},
+				</if>
+				<if test="input15 != null">
+					input15 =  #{input15},
+				</if>
+				<if test="input16 != null">
+					input16 =  #{input16},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_input
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_input
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+    <delete id="deleteByDeviceIds">
+		DELETE FROM  as_event_input where device_id in (${deviceIds})
+		
+	</delete>
+</mapper>

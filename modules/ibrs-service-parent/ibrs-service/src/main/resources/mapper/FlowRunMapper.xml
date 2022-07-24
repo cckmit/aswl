@@ -1,0 +1,2145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.FlowRunMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="flowRunResultMap" type="com.aswl.as.ibrs.api.module.FlowRun">
+        <id column="id" property="id"/>
+        <id column="run_no" property="runNo"/>
+        <id column="run_name" property="runName"/>
+        <id column="run_status" property="runStatus"/>
+        <id column="flow_id" property="flowId"/>
+        <id column="begin_user_id" property="beginUserId"/>
+        <id column="begin_org_id" property="beginOrgId"/>
+        <id column="begin_device_id" property="beginDeviceId"/>
+        <id column="begin_u_event_id" property="beginUEventId"/>
+        <id column="begin_time" property="beginTime"/>
+        <id column="end_time" property="endTime"/>
+        <id column="alarm_type" property="alarmType"/>
+        <id column="alarm_time" property="alarmTime"/>
+        <id column="type" property="type"/>
+        <id column="app_notice" property="appNotice"/>
+        <id column="sms_notice" property="smsNotice"/>
+        <id column="email_notice" property="emailNotice"/>
+        <id column="attachment_ids" property="attachmentIds"/>
+        <id column="attachment_names" property="attachmentNames"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="cur_user_id" property="curUserId"/>
+        <id column="maintain_user_id" property="maintainUserId"/>
+        <id column="alarm_level" property="alarmLevel"/>
+        <id column="prcs_user_ids" property="prcsUserIds"/>
+        <id column="focus_user_ids" property="focusUserIds"/>
+        <id column="chked_user_ids" property="chkedUserIds"/>
+        <id column="parent_run" property="parentRun"/>
+        <id column="view_user_ids" property="viewUserIds"/>
+        <id column="is_archive" property="isArchive"/>
+        <id column="force_over" property="forceOver"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+        <id column="estimated_time" property="estimatedTime"/>
+    </resultMap>
+
+    <resultMap id="workOrder" type="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+        <id property="id" column="id"/>
+        <result property="deviceId" column="deviceId"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="address" column="address"/>
+        <result property="title" column="title"/>
+        <result property="runNo" column="runNo"/>
+        <result property="ip" column="ip"/>
+        <result property="regionName" column="regionName"/>
+        <result property="alarmTime" column="alarmTime"/>
+        <result property="beginTime" column="beginTime"/>
+        <result property="eventId" column="eventId"/>
+        <result property="type" column="type"/>
+        <result property="priority" column="priority"/>
+        <result property="repairer" column="repairer"/>
+        <result property="repairerMobile" column="repairerMobile"/>
+        <result property="status" column="status"/>
+
+        <result property="estimatedTime" column="estimatedTime"/>
+
+    </resultMap>
+
+    <sql id="flowRunColumns">
+		id, run_no, run_name, run_status, flow_id, begin_user_id, begin_org_id, begin_device_id, begin_u_event_id, begin_time, end_time, alarm_type, alarm_time, `type`, app_notice, sms_notice, email_notice, attachment_ids, attachment_names, del_flag, cur_user_id, maintain_user_id, alarm_level, prcs_user_ids, focus_user_ids, chked_user_ids, parent_run, view_user_ids, is_archive, force_over, application_code, tenant_code, estimated_time
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="runNo  != null and runNo != ''">
+            and run_no like CONCAT('%',#{runNo},'%')
+        </if>
+        <if test="runName  != null and runName != ''">
+            and run_name like CONCAT('%',#{runName},'%')
+        </if>
+        <if test="runStatus  != null and runStatus != ''">
+            and run_status = #{runStatus}
+        </if>
+        <if test="flowId  != null and flowId != ''">
+            and flow_id = #{flowId}
+        </if>
+        <if test="beginUserId  != null and beginUserId != ''">
+            and begin_user_id like CONCAT('%',#{beginUserId},'%')
+        </if>
+        <if test="beginOrgId  != null and beginOrgId != ''">
+            and begin_org_id = #{beginOrgId}
+        </if>
+        <if test="beginDeviceId  != null and beginDeviceId != ''">
+            and begin_device_id like CONCAT('%',#{beginDeviceId},'%')
+        </if>
+        <if test="beginUEventId  != null and beginUEventId != ''">
+            and begin_u_event_id like CONCAT('%',#{beginUEventId},'%')
+        </if>
+        <if test="beginTime  != null and beginTime != ''">
+            and begin_time = #{beginTime}
+        </if>
+        <if test="endTime  != null and endTime != ''">
+            and end_time = #{endTime}
+        </if>
+        <if test="alarmType  != null and alarmType != ''">
+            and alarm_type = #{alarmType}
+        </if>
+        <if test="alarmTime  != null and alarmTime != ''">
+            and alarm_time = #{alarmTime}
+        </if>
+        <if test="type  != null and type != ''">
+            and `type` = #{type}
+        </if>
+        <if test="appNotice  != null and appNotice != ''">
+            and app_notice = #{appNotice}
+        </if>
+        <if test="smsNotice  != null and smsNotice != ''">
+            and sms_notice = #{smsNotice}
+        </if>
+        <if test="emailNotice  != null and emailNotice != ''">
+            and email_notice = #{emailNotice}
+        </if>
+        <if test="attachmentIds  != null and attachmentIds != ''">
+            and attachment_ids like CONCAT('%',#{attachmentIds},'%')
+        </if>
+        <if test="attachmentNames  != null and attachmentNames != ''">
+            and attachment_names like CONCAT('%',#{attachmentNames},'%')
+        </if>
+        <if test="delFlag  != null and delFlag != ''">
+            and del_flag = #{delFlag}
+        </if>
+        <if test="curUserId  != null and curUserId != ''">
+            and cur_user_id like CONCAT('%',#{curUserId},'%')
+        </if>
+        <if test="maintainUserId  != null and maintainUserId != ''">
+            and maintain_user_id like CONCAT(#{maintainUserId},'%')
+        </if>
+        <if test="alarmLevel  != null and alarmLevel != ''">
+            and alarm_level =#{alarmLevel}
+        </if>
+        <if test="prcsUserIds  != null and prcsUserIds != ''">
+            and prcs_user_ids like CONCAT('%',#{prcsUserIds},'%')
+        </if>
+        <if test="focusUserIds  != null and focusUserIds != ''">
+            and focus_user_ids like CONCAT('%',#{focusUserIds},'%')
+        </if>
+        <if test="chkedUserIds  != null and chkedUserIds != ''">
+            and chked_user_ids like CONCAT('%',#{chkedUserIds},'%')
+        </if>
+        <if test="parentRun  != null and parentRun != ''">
+            and parent_run = #{parentRun}
+        </if>
+        <if test="viewUserIds  != null and viewUserIds != ''">
+            and view_user_ids like CONCAT('%',#{viewUserIds},'%')
+        </if>
+        <if test="isArchive  != null and isArchive != ''">
+            and is_archive = #{isArchive}
+        </if>
+        <if test="forceOver  != null and forceOver != ''">
+            and force_over like CONCAT('%',#{forceOver},'%')
+        </if>
+        <if test="applicationCode  != null and applicationCode != ''">
+            and application_code like CONCAT('%',#{applicationCode},'%')
+        </if>
+        <if test="tenantCode  != null and tenantCode != ''">
+            and tenant_code like CONCAT('%',#{tenantCode},'%')
+        </if>
+        <if test="estimatedTime  != null ">
+            and estimated_time like CONCAT('%',#{estimatedTime},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="flowRunResultMap">
+        SELECT
+        <include refid="flowRunColumns"/>
+        FROM as_flow_run
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="flowRunResultMap">
+        SELECT
+        <include refid="flowRunColumns"/>
+        FROM as_flow_run
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="flowRunResultMap">
+        SELECT
+        <include refid="flowRunColumns"/>
+        FROM as_flow_run
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO as_flow_run
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="runNo != null and runNo!=''">
+                run_no,
+            </if>
+            <if test="runName != null and runName!=''">
+                run_name,
+            </if>
+            <if test="runStatus != null and runStatus!=''">
+                run_status,
+            </if>
+            <if test="flowId != null and flowId!=''">
+                flow_id,
+            </if>
+            <if test="beginUserId != null and beginUserId!=''">
+                begin_user_id,
+            </if>
+            <if test="beginOrgId != null and beginOrgId!=''">
+                begin_org_id,
+            </if>
+            <if test="beginDeviceId != null and beginDeviceId!=''">
+                begin_device_id,
+            </if>
+            <if test="beginUEventId != null and beginUEventId!=''">
+                begin_u_event_id,
+            </if>
+            <if test="beginTime != null and beginTime!=''">
+                begin_time,
+            </if>
+            <if test="endTime != null and endTime!=''">
+                end_time,
+            </if>
+            <if test="alarmType != null">
+                alarm_type,
+            </if>
+            <if test="alarmTime != null">
+                alarm_time,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="priority != null">
+                priority,
+            </if>
+            <if test="attachmentIds != null and attachmentIds!=''">
+                attachment_ids,
+            </if>
+            <if test="attachmentNames != null and attachmentNames!=''">
+                attachment_names,
+            </if>
+            <if test="delFlag != null and delFlag!=''">
+                del_flag,
+            </if>
+            <if test="curUserId != null and curUserId!=''">
+                cur_user_id,
+            </if>
+            <if test="maintainUserId != null and maintainUserId!=''">
+                maintain_user_id,
+            </if>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                alarm_level,
+            </if>
+            <if test="prcsUserIds != null and prcsUserIds!=''">
+                prcs_user_ids,
+            </if>
+            <if test="focusUserIds != null and focusUserIds!=''">
+                focus_user_ids,
+            </if>
+            <if test="chkedUserIds != null and chkedUserIds!=''">
+                chked_user_ids,
+            </if>
+            <if test="parentRun != null and parentRun!=''">
+                parent_run,
+            </if>
+            <if test="viewUserIds != null and viewUserIds!=''">
+                view_user_ids,
+            </if>
+            <if test="isArchive != null and isArchive!=''">
+                is_archive,
+            </if>
+            <if test="forceOver != null and forceOver!=''">
+                force_over,
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                application_code,
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="estimatedTime  != null ">
+                estimated_time,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="runNo != null and runNo!=''">
+                #{runNo},
+            </if>
+            <if test="runName != null and runName!=''">
+                #{runName},
+            </if>
+            <if test="runStatus != null and runStatus!=''">
+                #{runStatus},
+            </if>
+            <if test="flowId != null and flowId!=''">
+                #{flowId},
+            </if>
+            <if test="beginUserId != null and beginUserId!=''">
+                #{beginUserId},
+            </if>
+            <if test="beginOrgId != null and beginOrgId!=''">
+                #{beginOrgId},
+            </if>
+            <if test="beginDeviceId != null and beginDeviceId!=''">
+                #{beginDeviceId},
+            </if>
+            <if test="beginUEventId != null and beginUEventId!=''">
+                #{beginUEventId},
+            </if>
+            <if test="beginTime != null and beginTime!=''">
+                #{beginTime},
+            </if>
+            <if test="endTime != null and endTime!=''">
+                #{endTime},
+            </if>
+            <if test="alarmType != null">
+                #{alarmType},
+            </if>
+            <if test="alarmTime != null">
+                #{alarmTime},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="priority != null">
+                #{priority},
+            </if>
+            <if test="attachmentIds != null and attachmentIds!=''">
+                #{attachmentIds},
+            </if>
+            <if test="attachmentNames != null and attachmentNames!=''">
+                #{attachmentNames},
+            </if>
+            <if test="delFlag != null and delFlag!=''">
+                #{delFlag},
+            </if>
+            <if test="curUserId != null and curUserId!=''">
+                #{curUserId},
+            </if>
+            <if test="maintainUserId != null and maintainUserId !=''">
+                #{maintainUserId},
+            </if>
+            <if test="alarmLevel != null and alarmLevel !=''">
+                #{alarmLevel},
+            </if>
+            <if test="prcsUserIds != null and prcsUserIds!=''">
+                #{prcsUserIds},
+            </if>
+            <if test="focusUserIds != null and focusUserIds!=''">
+                #{focusUserIds},
+            </if>
+            <if test="chkedUserIds != null and chkedUserIds!=''">
+                #{chkedUserIds},
+            </if>
+            <if test="parentRun != null and parentRun!=''">
+                #{parentRun},
+            </if>
+            <if test="viewUserIds != null and viewUserIds!=''">
+                #{viewUserIds},
+            </if>
+            <if test="isArchive != null and isArchive!=''">
+                #{isArchive},
+            </if>
+            <if test="forceOver != null and forceOver!=''">
+                #{forceOver},
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                #{tenantCode},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="estimatedTime  != null ">
+                #{estimatedTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_flow_run
+        <set>
+            <if test="id != null and id!=''">
+                id = #{id},
+            </if>
+            <if test="runNo != null and runNo!=''">
+                run_no = #{runNo},
+            </if>
+            <if test="runName != null and runName!=''">
+                run_name = #{runName},
+            </if>
+            <if test="runStatus != null and runStatus!=''">
+                run_status = #{runStatus},
+            </if>
+            <if test="flowId != null and flowId!=''">
+                flow_id = #{flowId},
+            </if>
+            <if test="beginUserId != null and beginUserId!=''">
+                begin_user_id = #{beginUserId},
+            </if>
+            <if test="beginOrgId != null and beginOrgId!=''">
+                begin_org_id = #{beginOrgId},
+            </if>
+            <if test="beginDeviceId != null and beginDeviceId!=''">
+                begin_device_id = #{beginDeviceId},
+            </if>
+            <if test="beginUEventId != null and beginUEventId!=''">
+                begin_u_event_id = #{beginUEventId},
+            </if>
+            <if test="beginTime != null and beginTime!=''">
+                begin_time = #{beginTime},
+            </if>
+            <if test="endTime != null and endTime!=''">
+                end_time = #{endTime},
+            </if>
+            <if test="alarmType != null">
+                alarm_type = #{alarmType},
+            </if>
+            <if test="alarmTime != null">
+                alarm_time = #{alarmTime},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="priority != null">
+                priority = #{priority},
+            </if>
+            <if test="attachmentIds != null and attachmentIds!=''">
+                attachment_ids = #{attachmentIds},
+            </if>
+            <if test="attachmentNames != null and attachmentNames!=''">
+                attachment_names = #{attachmentNames},
+            </if>
+            <if test="delFlag != null and delFlag!=''">
+                del_flag = #{delFlag},
+            </if>
+            <if test="curUserId != null and curUserId!=''">
+                cur_user_id = #{curUserId},
+            </if>
+            <if test="maintainUserId != null and maintainUserId !=''">
+                maintain_user_id = #{maintainUserId},
+            </if>
+            <if test="alarmLevel != null and alarmLevel !=''">
+                alarm_level = #{alarmLevel},
+            </if>
+            <if test="prcsUserIds != null and prcsUserIds!=''">
+                prcs_user_ids = #{prcsUserIds},
+            </if>
+            <if test="focusUserIds != null and focusUserIds!=''">
+                focus_user_ids = #{focusUserIds},
+            </if>
+            <if test="chkedUserIds != null and chkedUserIds!=''">
+                chked_user_ids = #{chkedUserIds},
+            </if>
+            <if test="parentRun != null and parentRun!=''">
+                parent_run = #{parentRun},
+            </if>
+            <if test="viewUserIds != null and viewUserIds!=''">
+                view_user_ids = #{viewUserIds},
+            </if>
+            <if test="isArchive != null and isArchive!=''">
+                is_archive = #{isArchive},
+            </if>
+            <if test="forceOver != null and forceOver!=''">
+                force_over = #{forceOver},
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code = #{tenantCode},
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+            <if test="estimatedTime != null">
+                estimated_time = #{estimatedTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE as_flow_run SET
+        del_flag = 1
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        UPDATE as_flow_run SET
+        del_flag = 1
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <select id="findFlowStatus" resultType="map">
+        SELECT fr.id AS id,fr.run_status AS `status`,IFNULL(frp.`comment`,"") AS `comment`,IFNULL(frp.`remark`,"") AS
+        `remark`,fr.cur_user_id AS userId,IFNULL(frp.id,"") AS prcsId,fr.begin_device_id AS deviceId,alarm_type AS alarmType
+        FROM as_flow_run fr LEFT JOIN as_flow_run_prcs frp
+        ON fr.id = frp.run_id
+        WHERE fr.id = #{id}
+    </select>
+
+    <select id="findUndoneList" resultMap="workOrder">
+        SELECT
+        fr.id AS id,
+        d.id AS deviceId,
+        d.device_name AS deviceName,
+        d.device_code AS deviceCode,
+        d.longitude AS longitude,
+        d.latitude AS latitude,
+        d.address AS address,
+        fr.run_name AS title,
+        d.ip AS ip,
+        r.region_name AS regionName,
+        fr.begin_user_id AS assigner,
+        fr.remark AS remark,
+        fr.run_no AS runNo,
+        FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d %H:%i:%s') AS alarmTime,
+        TIMESTAMPDIFF(SECOND,fr.alarm_time,DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')) AS
+        intervalTime,
+        TIMESTAMPDIFF(SECOND,FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d %H:%i:%s'),FROM_UNIXTIME(fr.end_time,'%Y-%m-%d
+        %H:%i:%s')) AS repairTime,
+        DATE_FORMAT(fr.alarm_time,'%Y%m') AS beginTime,
+        fr.begin_u_event_id AS eventId,
+        fr.type AS type,
+        fr.priority AS priority,
+        fr.run_status AS status,
+        fr.alarm_level AS alarmLevel,
+        rl.user_name AS repairer,
+        rl.user_mobile AS repairerMobile,
+        IFNULL(handle.order_handle_type,0) AS orderHandleType,
+        handle.handle_user_id as handleUserId,
+        fr.estimated_time as estimatedTime,
+        case when fr.run_status='6' then 0 else 1 end as orderNum,
+        case when fr.run_status in ('1','8') then 1 else 0 end as orderNum1,
+        alarmType.alarm_type_name AS alarmTypeName,
+        alarmType.alarm_type AS alarmType,
+        k.type AS model,
+        p.project_name as projectName
+        FROM as_flow_run fr
+        LEFT JOIN as_region_leader rl ON rl.id = fr.maintain_user_id
+        LEFT JOIN as_device d ON d.id = fr.begin_device_id
+        LEFT JOIN as_device_model m ON d.device_model_id = m.id
+        LEFT JOIN as_device_type t ON m.device_type = t.device_type
+        LEFT JOIN as_device_kind k ON t.device_kind_id = k.id
+        LEFT JOIN as_region r ON d.region_id = r. id
+        LEFT JOIN as_alarm_order_handle handle ON handle.project_id=d.project_id
+        LEFT JOIN as_alarm_type alarmType ON alarmType.alarm_type =fr.alarm_type
+        LEFT JOIN as_project as p ON p.project_id =d.project_id
+        WHERE d.del_flag = 0
+        <choose>
+            <when test='htmlSelectType1 !=null and htmlSelectType1== "1" '>
+                <if test="statuses != null and statuses!= ''">
+                    AND fr.run_status in
+                    <foreach item="item" index="index" collection="statuses" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="alarmLevels != null and alarmLevels!= ''">
+                    and fr.alarm_level in
+                    <foreach item="item" index="index" collection="alarmLevels" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+
+            </when>
+            <otherwise>
+                <if test="statuses != null and statuses!= ''">
+                    AND fr.run_status in
+                    <foreach item="item" index="index" collection="statuses" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="alarmLevels != null and alarmLevels!= ''">
+                    AND fr.alarm_level in
+                    <foreach item="item" index="index" collection="alarmLevels" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test="regionCode != null and regionCode != ''">
+            AND r.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="regionName != null and regionName != ''">
+            AND r.region_name LIKE CONCAT( '%',#{regionName},'%')
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND d.device_name LIKE CONCAT('%', #{deviceName},'%')
+        </if>
+        <if test="alarmType != null and alarmType != ''">
+            AND fr.alarm_type = #{alarmType}
+        </if>
+        <if test="eventId != null and eventId != ''">
+            AND fr.begin_u_event_id = #{eventId}
+        </if>
+        <if test="query != null and query!= ''">
+           AND (rl.user_name LIKE CONCAT('%', #{query},'%') OR  fr.run_name LIKE CONCAT('%', #{query},'%') OR fr.run_no = #{query})
+        </if>
+        <if test="kind != null and kind!= ''">
+            AND k.type = #{kind}
+        </if>
+        <if test="id != null and id != ''">
+            AND fr.id = #{id}
+        </if>
+        <if test="runNo != null and runNo != ''">
+            AND fr.run_no = #{runNo}
+        </if>
+        <if test="deviceId != null and deviceId != ''">
+            AND d.id = #{deviceId}
+        </if>
+
+        <if test="startTime != null and endTime!= ''">
+            AND FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d') BETWEEN #{startTime} and #{endTime}
+        </if>
+
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND fr.tenant_code = #{tenantCode}
+        </if>
+        <!-- 这里暂时跟丁飞确认如果没有设备就不显示，如果需要显示，可以使用该sql
+        AND (d.project_id in (#{projectId}) or d.id is null )
+        -->
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="status!=null">
+            <choose>
+                <when test='isApp =="1" and status=="" '>
+                    ORDER BY orderNum1 asc, alarmTime DESC
+                </when>
+                <when test='isAppOrderType1 == "1" '>
+                    <!-- 专给APP的已处理使用 -->
+                    ORDER BY orderNum asc,FROM_UNIXTIME(fr.end_time,'%Y-%m-%d %H:%i:%s') DESC
+                </when>
+                <otherwise>
+                    <if test="status!=null and status != '1'.toString() ">
+                        ORDER BY  status ASC, alarmTime DESC
+                    </if>
+                    <if test="status!=null and status == '1'.toString() ">
+                        ORDER BY FROM_UNIXTIME(fr.end_time,'%Y-%m-%d %H:%i:%s') DESC
+                    </if>
+                </otherwise>
+            </choose>
+        </if>
+        <if test='status == null and isApp =="1"'>
+            ORDER BY orderNum1 asc, alarmTime DESC
+        </if>
+
+    </select>
+
+    <select id="findAlarmType" resultType="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+        SELECT t.alarm_level AS alarmLevel,t.alarm_types_des AS alarmTypeName
+        FROM ${hisTable} t
+        WHERE t.u_event_id = #{eventId}
+    </select>
+
+    <select id="findWorkorderByEventId" resultType="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+        SELECT fr.id AS id,fr.run_status AS status
+        FROM as_flow_run fr
+        WHERE fr.begin_u_event_id = #{eventId}
+    </select>
+
+    <delete id="deleteFlowRunByDeviceId">
+        DELETE FROM as_flow_run
+        WHERE begin_device_id=#{deviceId}
+    </delete>
+
+    <select id="getHistoryMaintainCounts" resultType="java.lang.Integer">
+        SELECT count(*) FROM as_flow_run
+        WHERE 1=1
+        AND run_status in (0,1,2,3,4,6,7,8)
+        <if test="deviceId!=null and deviceId!=''">
+            AND begin_device_id=#{deviceId}
+        </if>
+        <if test="type!=null and type!=''">
+             AND type=#{type}
+        </if>
+        <if test="startTime != null and endTime!= ''">
+            AND FROM_UNIXTIME(begin_time,'%Y-%m-%d ') BETWEEN #{startTime} AND #{endTime}
+        </if>
+    </select>
+
+    <insert id="batchCreateWorkOrder">
+        INSERT INTO as_flow_run
+        (
+        id,
+        run_no,
+        run_name,
+        run_status,
+        flow_id,
+        begin_user_id,
+        begin_org_id,
+        begin_device_id,
+        begin_u_event_id,
+        begin_time,
+        end_time,
+        alarm_type,
+        alarm_time,
+        type,
+        priority,
+        attachment_ids,
+        attachment_names,
+        del_flag,
+        cur_user_id,
+        maintain_user_id,
+        alarm_level,
+        prcs_user_ids,
+        focus_user_ids,
+        chked_user_ids,
+        parent_run,
+        view_user_ids,
+        is_archive,
+        force_over,
+        application_code,
+        tenant_code,
+        remark,
+        estimated_time
+        )
+        VALUES
+        <foreach item="item" index="index" collection="flowRuns"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.runNo},
+            #{item.runName},
+            #{item.runStatus},
+            #{item.flowId},
+            #{item.beginUserId},
+            #{item.beginOrgId},
+            #{item.beginDeviceId},
+            #{item.beginUEventId},
+            #{item.beginTime},
+            #{item.endTime},
+            #{item.alarmType},
+            #{item.alarmTime},
+            #{item.type},
+            #{item.priority},
+            #{item.attachmentIds},
+            #{item.attachmentNames},
+            #{item.delFlag},
+            #{item.curUserId},
+            #{item.maintainUserId},
+            #{item.alarmLevel},
+            #{item.prcsUserIds},
+            #{item.focusUserIds},
+            #{item.chkedUserIds},
+            #{item.parentRun},
+            #{item.viewUserIds},
+            #{item.isArchive},
+            #{item.forceOver},
+            #{item.applicationCode},
+            #{item.tenantCode},
+            #{item.remark},
+            #{item.estimatedTime}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getFlowRunData" resultType="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+        SELECT
+        r.region_name AS regionName,
+        d.device_name AS deviceName,
+        d.ip AS ip,
+        t.alarm_type_name AS alarmTypeName,
+        f.alarm_time AS alarmTime,
+        FROM_UNIXTIME(f.end_time,'%Y-%m-%d %H:%i:%s') AS repairTime,
+        rl.user_name AS repairer
+        FROM as_flow_run f
+        LEFT JOIN as_device d
+        ON f.begin_device_id=d.id
+        LEFT JOIN as_region r
+        ON r.id=d.region_id
+        LEFT JOIN as_region_leader rl
+        ON rl.id=f.maintain_user_id
+        LEFT JOIN as_alarm_type t
+        ON f.alarm_type=t.alarm_type
+        WHERE f.run_status=1
+        <if test="regionCode != null and regionCode != ''">
+            AND r.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND d.tenant_code = #{tenantCode}
+        </if>
+        <if test="startTime != null and endTime != null">
+            AND f.alarm_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+    </select>
+
+
+    <select id="getRepairTime" resultType="java.util.Map">
+        SELECT
+        <!--DATE_FORMAT(DATE_SUB(FROM_UNIXTIME(SUM(f.end_time-UNIX_TIMESTAMP(f.alarm_time))/COUNT(*)), INTERVAL 8 HOUR), '%H小时%i分%s秒') AS ofTime -->
+        FLOOR(SUM(f.end_time-UNIX_TIMESTAMP(f.alarm_time))/COUNT(*)) as ofTime
+        FROM as_flow_run f
+        LEFT JOIN as_device d
+        ON f.begin_device_id=d.id
+        LEFT JOIN as_device_model m
+        ON d.device_model_id = m.id
+        LEFT JOIN as_device_type t
+        ON m.device_type = t.device_type
+        LEFT JOIN as_device_kind k
+        ON t.device_kind_id = k.id
+        LEFT join as_region as r
+        on d.region_id = r.id
+        WHERE f.run_status=1
+        <if test="kind !=null and kind!=''">
+            AND k.type=#{kind}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND r.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="startTime != null and endTime != null">
+            AND f.alarm_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND d.tenant_code = #{tenantCode}
+        </if>
+    </select>
+
+    <select id="findFaultDispatchCount" resultType="map">
+      select 
+        IFNULL(SUM(CASE WHEN fr.run_status IN (0,2,3,4,6,7) THEN 1 ELSE 0 END),0) AS repairCount,
+        IFNULL(SUM(CASE WHEN fr.run_status IN (1,8) THEN 1 ELSE 0 END),0) AS finishCount
+        FROM (
+        SELECT * FROM
+        <foreach collection="tableNames" item="item" separator="union all" open="(" close=")">
+            select * from ${item}
+        </foreach> as s
+        ) as t
+        LEFT JOIN as_alarm_type AS aat
+        ON LOCATE(aat.alarm_type,t.alarm_types)
+        LEFT JOIN as_device AS a
+        ON t.device_id = a.id
+        LEFT JOIN as_device_model AS c
+        ON a.device_model_id = c.id
+        LEFT JOIN as_flow_run fr
+        ON fr.begin_u_event_id = t.u_event_id
+        WHERE aat.alarm_level =1
+        AND fr.begin_u_event_id != 0
+        <if test="model != null and model != ''">
+            AND c.device_model_name = #{model}
+        </if>
+        <if test="status!= null and status!=''">
+            AND fr.run_status=#{status}
+        </if>
+        <if test="startTime != null and endTime != null">
+            AND t.store_time BETWEEN #{startTime} AND  #{endTime}
+        </if>
+        <if test="regionCode!=null and regionCode!=''">
+            AND a.region_code LIKE CONCAT(#{regionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and a.region_code like concat(#{regionCode},'%')
+        </if>
+    </select>
+
+    <select id="dispatchTrend" resultType="map">
+        select count(1) as dispatchCount
+        <if test="timeUnit=='day'">
+            ,concat(DATE_FORMAT(a.alarm_time,'%Y-%m-%d'),'日') as `date`
+        </if>
+        <if test="timeUnit=='month'">
+            ,concat(DATE_FORMAT(a.alarm_time,'%Y-%m'),'月') as `date`
+        </if>
+        from as_flow_run a
+        left join as_device b on a.begin_device_id = b.id
+        left join as_region c on b.region_id = c.id
+        left join as_device_model d on b.device_model_id = d.id
+        left join as_alarm_type aat on aat.alarm_type = a.alarm_type
+        where 1=1
+        and aat.alarm_level =1
+        and a.begin_u_event_id != 0
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="model != null and model != ''">
+            and d.device_model_name = #{model}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+
+    <select id="doneTrent" resultType="map">
+        select count(1) as doneCount
+        <if test="timeUnit=='day'">
+            ,concat(DATE_FORMAT(a.alarm_time,'%Y-%m-%d'),'日') as `date`
+        </if>
+        <if test="timeUnit=='month'">
+            ,concat(DATE_FORMAT(a.alarm_time,'%Y-%m'),'月') as `date`
+        </if>
+        from as_flow_run a
+        left join as_device b on a.begin_device_id = b.id
+        left join as_region c on b.region_id = c.id
+        left join as_device_model d on b.device_model_id = d.id
+        left join as_alarm_type aat on aat.alarm_type = a.alarm_type
+        where a.run_status in (1,8)
+        and aat.alarm_level =1
+        and a.begin_u_event_id != 0
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="model != null and model != ''">
+            and d.device_model_name = #{model}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+    
+    <select id="repairTrent" resultType="map">
+        select count(1) as repairCount
+        <if test="timeUnit=='day'">
+            ,concat(DATE_FORMAT(a.alarm_time,'%Y-%m-%d'),'日') as `date`
+        </if>
+        <if test="timeUnit=='month'">
+            ,concat(DATE_FORMAT(a.alarm_time,'%Y-%m'),'月') as `date`
+        </if>
+        from as_flow_run a
+        left join as_device b on a.begin_device_id = b.id
+        left join as_region c on b.region_id = c.id
+        left join as_device_model d on b.device_model_id = d.id
+        left join as_alarm_type aat on aat.alarm_type = a.alarm_type
+        where a.run_status in (0,2,3,4,6,7)
+        and aat.alarm_level =1
+        and a.begin_u_event_id != 0
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="model != null and model != ''">
+            and d.device_model_name = #{model}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+    
+    <select id="noDispatchTrent" resultType="map">
+        select
+        SUM(CASE WHEN a.run_no IS NULL THEN 1 ELSE 0 END) AS noDispatch
+        <if test="timeUnit=='day'">
+            ,concat(DATE_FORMAT(t1.store_time,'%Y-%m-%d'),'日') as `date`
+        </if>
+        <if test="timeUnit=='month'">
+            ,concat(DATE_FORMAT(t1.store_time,'%Y-%m'),'月') as `date`
+        </if>
+        FROM (
+        <foreach collection="tableNames" separator="union all" item="item">
+            SELECT id,u_event_id,device_id,rec_time,is_alarm,alarm_level,alarm_types,alarm_types_des,tenant_code,store_time FROM ${item}
+        </foreach>
+        ) as t1
+        LEFT JOIN  as_flow_run a 
+        ON t1.u_event_id =a. begin_u_event_id
+        LEFT JOIN as_device b on  t1.device_id = b.id
+        left join as_region c on b.region_id = c.id
+        left join as_device_model d on b.device_model_id = d.id
+        left join as_alarm_type aat on aat.alarm_type = a.alarm_type
+        where 1=1
+        and aat.alarm_level =1
+        and a.begin_u_event_id != 0
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="model != null and model != ''">
+            and d.device_model_name = #{model}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        AND t1.alarm_level =1
+        and t1.store_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+    
+
+    <select id="dispatchAndDoneByType" resultType="map">
+        select e.alarm_type_name as alarmTypeName,
+        count(1) as dispatcherCount,
+        SUM(case when run_status in (1,8) then 1 else 0
+        end) as doneCount,
+        SUM(case when run_status in (0,2,3,4,6,7) then 1 else 0
+        end) as repairCount
+        from as_flow_run as a
+        left join as_device as b
+        on a.begin_device_id = b.id
+        LEFT JOIN as_region as c
+        on b.region_id = c.id
+        left join as_device_model as d
+        on b.device_model_id = d.id
+        left join as_alarm_type as e
+        on a.alarm_type = e.alarm_type
+        where 1=1
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="model != null and model != ''">
+            and d.device_model_name = #{model}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        GROUP BY a.alarm_type;
+    </select>
+
+    <select id="faultDispatchCount" resultType="long">
+        select count(1) as faultDispatchCount from as_flow_run as a
+        left join as_device as b on a.begin_device_id = b.id
+        left join as_device_model as c on b.device_model_id = c.id
+        LEFT JOIN as_alarm_type aat
+        ON aat.alarm_type = a.alarm_type
+        where 1=1
+        and aat.alarm_level =1
+        and a.begin_u_event_id != 0 
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="queryProjectId != null and queryProjectId != ''">
+            and (b.project_id in (${queryProjectId}))
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+    </select>
+
+    <select id="finishedCount" resultType="long">
+        select count(1) as finishedCount from as_flow_run as a
+        left join as_device as b on a.begin_device_id = b.id
+        left join as_device_model as c on b.device_model_id = c.id
+        LEFT JOIN as_alarm_type aat
+        ON aat.alarm_type = a.alarm_type
+        where a.run_status in (1,8)
+        and aat.alarm_level =1
+        AND a.begin_u_event_id != 0
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="queryProjectId != null and queryProjectId != ''">
+            and (b.project_id in (${queryProjectId}))
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+    </select>
+
+    <select id="MonthlyDispatchRate" resultType="map">
+        select DATE_FORMAT(a.alarm_time,'%Y-%m') as `date`,count(1) as MonthlyDispatchRate from as_flow_run as a
+        left join as_device as b on a.begin_device_id = b.id
+        left join as_device_model as c on b.device_model_id = c.id
+        where 1=1
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        group by `date`;
+    </select>
+
+    <select id="monthlyRepairRate" resultType="map">
+        select DATE_FORMAT(a.alarm_time,'%Y-%m') as `date`,count(1) as RepairCount from as_flow_run as a
+        left join as_device as b on a.begin_device_id = b.id
+        left join as_device_model as c on b.device_model_id = c.id
+        where a.run_status = 1
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+
+    <select id="RegionDispatchRate" resultType="map">
+        select c.region_name as regionName,count(1) as total from as_flow_run as a left join as_device as b on
+        a.begin_device_id = b.id
+        LEFT join as_region as c on b.region_id = c.id
+        left join as_device_model as d on b.device_model_id = d.id
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        and a.alarm_time between #{startTime} and #{endTime}
+        group by c.region_code
+    </select>
+
+    <select id="regionRepairRate" resultType="map">
+        select t.*,CONCAT((t.doneCount/t.total)*100,'%') as ratio
+        from (
+        select
+        <choose>
+            <when test="queryProjectId != null and queryProjectId != ''">
+                c.region_name as regionName,
+            </when>
+            <otherwise>
+                ap.project_name as projectName,
+            </otherwise>
+        </choose>
+        count(1) as total,sum(case when a.run_status = 1 then 1 else 0 end) as
+        doneCount
+        from as_flow_run as a
+        left join as_device as b on a.begin_device_id = b.id
+        LEFT join as_region as c on b.region_id = c.id
+        left join as_device_model as d on b.device_model_id = d.id
+        LEFT JOIN as_project as ap on b.project_id = ap.project_id
+        where 1=1
+        <if test="tenantCode != null and tenantCode != ''">
+            and b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and d.device_model_name = #{model}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <choose>
+            <when test="queryProjectId != null and queryProjectId != ''">
+                and (b.project_id in (${queryProjectId}))
+                and a.alarm_time between #{startTime} and #{endTime}
+                group by c.region_code
+            </when>
+            <otherwise>
+                and a.alarm_time between #{startTime} and #{endTime}
+                group by ap.project_id
+            </otherwise>
+        </choose>
+        ) as t
+    </select>
+    <!--
+        <select id="monthlyDispatchDetail" resultType="map">
+            select concat(DATE_FORMAT(t.store_time,'%Y-%m'),'月') as `date`,
+            sum(case when t.id is not null then 1 else 0 end) as alarmCount,
+            sum(case when t1.id is not null then 1 else 0 end) as dispatchCount
+            from(
+            select * from
+            <foreach collection="tableNames" open="(" close=")" separator="union all" item="item">
+                select * from ${item}
+            </foreach> as s
+            ) as t
+            JOIN mysql.help_topic b ON b.help_topic_id &lt; (LENGTH(t.alarm_types) - LENGTH(REPLACE(t.alarm_types,',',''))+1)
+            left join as_flow_run as t1 on t.u_event_id = t1.begin_u_event_id
+            left join as_device as a on t.device_id = a.id
+            left join as_device_model as c on a.device_model_id = c.id
+            left join as_alarm_type as f on SUBSTRING_INDEX(SUBSTRING_INDEX(t.alarm_types,',',b.help_topic_id+1),',',-1) = f.alarm_type
+            where t.alarm_level != 3
+            <if test="tenantCode != null and tenantCode != ''">
+                and a.tenant_code = #{tenantCode}
+            </if>
+            <if test="projectId != null and projectId != ''">
+                and a.project_id = #{projectId}
+            </if>
+            <if test="model != null and model != ''">
+                and c.device_model_name = #{model}
+            </if>
+            and t.store_time between #{startTime} and #{endTime}
+            group by `date`
+        </select>
+    -->
+    <select id="monthlyDispatchDetail" resultType="map">
+        SELECT
+        concat(DATE_FORMAT(t.alarm_time,'%Y-%m'),'月') as `date`,
+        COUNT(1) as dispatchCount
+        FROM as_flow_run as t
+        left join as_device as a on t.begin_device_id = a.id
+        left join as_device_model as c on a.device_model_id = c.id
+        where 1=1
+        <if test="tenantCode != null and tenantCode != ''">
+            and a.tenant_code = #{tenantCode}
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and a.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="queryProjectId != null and queryProjectId != ''">
+            and (a.project_id in (${queryProjectId}))
+        </if>
+        and t.alarm_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+    <!--
+        <select id="monthlyRepairDetail" resultType="map">
+            select concat(DATE_FORMAT(t.alarm_time,'%Y-%m'),'月') as `date`,
+            SUM(case when t.run_status = 1 then 1 else 0 end) as repairCount,
+            count(1) as dispatchCount
+            from as_flow_run as t
+            LEFT join as_device as a on t.begin_device_id = a.id
+            left join as_device_model as b on a.device_model_id = b.id
+            where 1=1
+            <if test="tenantCode != null and tenantCode != ''">
+                and a.tenant_code = #{tenantCode}
+            </if>
+            <if test="projectId != null and projectId != ''">
+                and a.project_id = #{projectId}
+            </if>
+            <if test="model != null and model != ''">
+                and b.device_model_name = #{model}
+            </if>
+            and t.alarm_time between #{startTime} and #{endTime}
+            group by `date`
+        </select>
+    -->
+    <select id="monthlyRepairDetail" resultType="map">
+        select concat(DATE_FORMAT(t.alarm_time,'%Y-%m'),'月') as `date`,
+        count(1) as repairCount
+        from as_flow_run as t
+        LEFT join as_device as a on t.begin_device_id = a.id
+        left join as_device_model as b on a.device_model_id = b.id
+        where t.run_status = 1
+        <if test="tenantCode != null and tenantCode != ''">
+            and a.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and b.device_model_name = #{model}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and a.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="queryProjectId != null and queryProjectId != ''">
+            and (a.project_id in (${queryProjectId}))
+        </if>
+        and t.alarm_time between #{startTime} and #{endTime}
+        group by `date`
+    </select>
+
+    <select id="regionDispatchRateTop" resultType="map">
+        select
+        <choose>
+            <when test="queryProjectId != null and queryProjectId != ''">
+                d.region_name as regionName,
+            </when>
+            <otherwise>
+                ap.project_name as projectName,
+            </otherwise>
+        </choose>
+        sum(case when t.id is not null then 1 else 0 end) as alarmCount,
+        sum(case when t1.id is not null then 1 else 0 end) as dispatchCount
+        from(
+        <foreach collection="tableNames" separator="union all" item="item">
+            select s.id,s.device_id,s.alarm_types,s.u_event_id,s.region_no,s.store_time from ${item} as s
+            LEFT JOIN as_alarm_type as aat on LOCATE(aat.alarm_type,s.alarm_types)
+            where aat.alarm_level != 3
+        </foreach>
+        ) as t
+        left join as_flow_run as t1 on t.u_event_id = t1.begin_u_event_id
+        left join as_device as a on t.device_id = a.id
+        left join as_device_model as c on a.device_model_id = c.id
+        left join as_region as d on t.region_no = d.region_code
+        LEFT JOIN as_project as ap on a.project_id = ap.project_id
+        where 1 = 1
+        <if test="tenantCode != null and tenantCode != ''">
+            and a.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="model != null and model != ''">
+            and c.device_model_name = #{model}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and a.region_code like concat(#{regionCode},'%')
+        </if>
+        <choose>
+            <when test="queryProjectId != null and queryProjectId != ''">
+                and (a.project_id in (${queryProjectId}))
+                and t.store_time between #{startTime} and #{endTime}
+                group by t.region_no
+            </when>
+            <otherwise>
+                and t.store_time between #{startTime} and #{endTime}
+                group by a.project_id
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="boxRepairDuration" resultType="integer">
+        SELECT
+        <!--DATE_FORMAT(DATE_SUB(FROM_UNIXTIME(SUM(a.end_time-UNIX_TIMESTAMP(a.alarm_time))/COUNT(*)), INTERVAL 8 HOUR), '%H小时%i分%s秒') as repairTime-->
+        FLOOR(SUM(a.end_time-UNIX_TIMESTAMP(a.alarm_time))/COUNT(*)) as repairTime
+        FROM as_flow_run as a
+        LEFT JOIN as_device as b
+        on a.begin_device_id = b.id
+        LEFT JOIN as_device_model as c
+        on b.device_model_id = c.id
+        LEFT JOIN as_device_type as d
+        on c.device_type = d.device_type
+        LEFT JOIN as_device_kind as e
+        on d.device_kind_id = e.id
+        where a.run_status = 1
+        <if test="regionCode != null and regionCode != ''">
+            and b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="deviceKind != null and deviceKind != ''">
+            and e.type = #{deviceKind}
+        </if>
+        <if test="startTime != '' and endTime != ''">
+            and a.alarm_time between #{startTime} and #{endTime}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and a.tenant_code = #{tenantCode}
+        </if>
+    </select>
+
+
+    <select id="getRepairRate" resultType="double">
+        SELECT IFNULL(((`finishCount`/`count`)*100),0) as RepairRate FROM (
+        SELECT count(1) as `count`,ifnull(sum(case when a.run_status = 1 then 1 else 0 end),0) as `finishCount`
+        FROM as_flow_run as a LEFT JOIN as_device as b on a.begin_device_id = b.id left JOIN as_device_model as c on
+        b.device_model_id = c.id
+        LEFT JOIN as_device_type as d on c.device_type = d.device_type LEFT JOIN as_device_kind as e on d.device_kind_id
+        = e.id
+        where 1 = 1
+        <if test="regionCode != null and regionCode != ''">
+            AND b.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="deviceKind != null and deviceKind != ''">
+            AND e.type = #{deviceKind}
+        </if>
+        <if test="startTime != null and endTime != null">
+            AND a.alarm_time between #{startTime} and #{endTime}
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND b.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) as tab
+    </select>
+
+    <select id="findCountByExamineTime" resultType="com.aswl.as.ibrs.api.vo.FlowRunVo">
+        SELECT
+        t1.id as id,
+        t3.region_code as regionCode,
+        t3.region_name as regionName,
+        t1.application_code as applicationCode,
+        t1.tenant_code as tenantCode
+        FROM as_flow_run as t1
+        LEFT JOIN as_device as t2 on t1.begin_device_id = t2.id
+        LEFT JOIN as_region as t3 on t2.region_id = t3.id
+        where (FROM_UNIXTIME(t1.begin_time,'%H:%i:%s') BETWEEN #{beginTimeStr} and #{endTimeStr})
+        and (FROM_UNIXTIME(t1.begin_time,'%Y-%m-%d %H:%i:%s') between #{previousMonthStart} and #{previousMonthEnd})
+        and ((t1.run_status = 1 and (t1.end_time-t1.begin_time > #{respondTime}))
+        or (t1.run_status = 0 and (TIMESTAMPDIFF(SECOND, '1970-01-01 08:00:00', NOW())- t1.begin_time) > #{respondTime}))
+    </select>
+
+    <select id="repairDuration" resultType="map">
+        SELECT tab.date,FLOOR(ifnull((tab.totalTime/tab.count),0)) as repairDuration FROM (
+        SELECT DATE_FORMAT(t1.alarm_time,'%Y-%m') as `date`,count(t1.end_time) as
+        `count`,sum(IFNULL((t1.end_time-t1.begin_time),0)) as totalTime FROM as_flow_run as t1
+        LEFT JOIN as_device as t2 on t1.begin_device_id = t2.id
+        LEFT JOIN as_device_model as t3 on t2.device_model_id = t3.id
+        LEFT JOIN as_device_type as t4 on t3.device_type = t4.device_type
+        LEFT JOIN as_device_kind as t5 on t4.device_kind_id = t5.id
+        WHERE 1 = 1
+        <if test="kind != null and kind != ''">
+            AND t5.type = #{kind}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND t2.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(t1.alarm_time,'%Y') = #{year}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND t2.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t2.tenant_code = #{tenantCode}
+        </if>
+        group by `date`) as tab
+    </select>
+
+
+    <select id="findNoFinish" resultType="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+        SELECT t2.id as id, t2.device_name as deviceName,t1.id as runId
+        FROM as_flow_run as t1 LEFT JOIN as_device as t2 ON t1.begin_device_id = t2.id
+        WHERE t1.run_status NOT IN (1,8)
+        <if test="deviceId != null and deviceId != ''">
+            AND t1.begin_device_id = #{deviceId}
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t2.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND t2.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="alarmType != null and alarmType != ''">
+            AND t1.alarm_type = #{alarmType}
+        </if>
+    </select>
+
+    <select id="findTodayCount" resultType="int">
+        SELECT count(1) as count FROM as_flow_run as t1
+        LEFT JOIN as_device as t2 on t1.begin_device_id = t2.id
+        LEFT JOIN as_device_model as t3 on t2.device_model_id = t3.id
+        LEFT JOIN as_device_type as t4 on t3.device_type = t4.device_type
+        LEFT JOIN as_device_kind as t5 on t4.device_kind_id = t5.id
+        WHERE t5.type = #{type}
+        and FROM_UNIXTIME(t1.begin_time,'%Y-%m-%d') = #{today}
+        and t1.alarm_type = #{alarmType}
+        and t3.id = #{deviceModelId}
+    </select>
+
+
+    <select id="findTodayFinish" resultType="map">
+      select
+      temp.date,
+      temp.alarmType,
+      temp.deviceModelId,
+      temp.finishNum,
+      floor(COALESCE(temp.totalTime/temp.finishNum,'0')) as avgRepairTime
+      from (
+        SELECT
+        FROM_UNIXTIME(t1.begin_time,'%Y-%m-%d') as date,
+        t1.alarm_type as alarmType,
+        t3.id as deviceModelId,
+        count(1) as finishNum,
+        SUM(t1.end_time-t1.begin_time) as totalTime
+        FROM as_flow_run as t1
+        LEFT JOIN as_device as t2 on t1.begin_device_id = t2.id
+        LEFT JOIN as_device_model as t3 on t2.device_model_id = t3.id
+        LEFT JOIN as_device_type as t4 on t3.device_type = t4.device_type
+        LEFT JOIN as_device_kind as t5 on t4.device_kind_id = t5.id
+        WHERE t5.type = #{type} and t1.run_status = 1 and FROM_UNIXTIME(t1.end_time,'%Y-%m-%d') = #{today}
+        group by date,t1.alarm_type,t3.id) as temp
+    </select>
+
+
+    <select id="findPeriodRun" resultType="com.aswl.as.ibrs.api.module.CityRunTimeStatistics">
+        SELECT
+        temp.deviceKind,
+        count(temp.runTime1) AS runNumTime1,
+        count(temp.runTime2) AS runNumTime2,
+        count(temp.runTime3) AS runNumTime3,
+        count(temp.runTime4) AS runNumTime4,
+        count(temp.runTime5) AS runNumTime5,
+        count(temp.runTime6) AS runNumTime6,
+        count(temp.runTime7) AS runNumTime7,
+        count(temp.runTime8) AS runNumTime8,
+        count(temp.runTime9) AS runNumTime9,
+        count(temp.runTime10) AS runNumTime10,
+        count(temp.runTime11) AS runNumTime11,
+        count(temp.runTime12) AS runNumTime12,
+        count(temp.repairTime1) AS repairNumTime1,
+        count(temp.repairTime2) AS repairNumTime2,
+        count(temp.repairTime3) AS repairNumTime3,
+        count(temp.repairTime4) AS repairNumTime4,
+        count(temp.repairTime5) AS repairNumTime5,
+        count(temp.repairTime6) AS repairNumTime6,
+        count(temp.repairTime7) AS repairNumTime7,
+        count(temp.repairTime8) AS repairNumTime8,
+        count(temp.repairTime9) AS repairNumTime9,
+        count(temp.repairTime10) AS repairNumTime10,
+        count(temp.repairTime11) AS repairNumTime11,
+        count(temp.repairTime12) AS repairNumTime12
+        FROM
+        (
+        SELECT
+        ifnull(t5.type,#{type}) as deviceKind,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 0
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 2 THEN
+        1
+        END AS runTime1,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 2
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 4 THEN
+        1
+        END AS runTime2,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 4
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 6 THEN
+        1
+        END AS runTime3,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 6
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 8 THEN
+        1
+        END AS runTime4,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 8
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 10 THEN
+        1
+        END AS runTime5,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 10
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 12 THEN
+        1
+        END AS runTime6,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 12
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 14 THEN
+        1
+        END AS runTime7,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 14
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 16 THEN
+        1
+        END AS runTime8,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 16
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 18 THEN
+        1
+        END AS runTime9,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 18
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 20 THEN
+        1
+        END AS runTime10,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 20
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 22 THEN
+        1
+        END AS runTime11,
+        CASE
+        WHEN FROM_UNIXTIME(t1.begin_time, '%H') >= 22
+        AND FROM_UNIXTIME(t1.begin_time, '%H') &lt; 24 THEN
+        1
+        END AS runTime12,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 0
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 2 THEN
+        1
+        END AS repairTime1,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 2
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 4 THEN
+        1
+        END AS repairTime2,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 4
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 6 THEN
+        1
+        END AS repairTime3,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 6
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 8 THEN
+        1
+        END AS repairTime4,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 8
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 10 THEN
+        1
+        END AS repairTime5,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 10
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 12 THEN
+        1
+        END AS repairTime6,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 12
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 14 THEN
+        1
+        END AS repairTime7,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 14
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 16 THEN
+        1
+        END AS repairTime8,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 16
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 18 THEN
+        1
+        END AS repairTime9,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 18
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 20 THEN
+        1
+        END AS repairTime10,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 20
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 22 THEN
+        1
+        END AS repairTime11,
+        CASE
+        WHEN FROM_UNIXTIME(t1.end_time, '%H') >= 22
+        AND FROM_UNIXTIME(t1.end_time, '%H') &lt; 24 THEN
+        1
+        END AS repairTime12
+
+        FROM
+        as_flow_run AS t1
+        LEFT JOIN as_device AS t2 ON t1.begin_device_id = t2.id
+        LEFT JOIN as_device_model AS t3 ON t2.device_model_id = t3.id
+        LEFT JOIN as_device_type AS t4 ON t3.device_type = t4.device_type
+        LEFT JOIN as_device_kind AS t5 ON t4.device_kind_id = t5.id
+        WHERE
+        FROM_UNIXTIME(t1.begin_time, '%Y-%m-%d') = #{today}
+        AND t5.type = #{type}
+        ) AS temp
+    </select>
+
+    <select id="getByDateAlarmTypeKind" resultType="com.aswl.as.ibrs.api.module.CityAlarmStatistics">
+    SELECT
+        temp.statisticsDate,
+        temp.alarmType,
+        temp.deviceModelId,
+        temp.repairNum,
+        FLOOR(temp.totalTime/temp.repairNum) AS avgRepairTime
+        FROM (
+            SELECT
+            FROM_UNIXTIME(t1.begin_time,'%Y-%m-%d') AS statisticsDate,
+            t1.alarm_type AS alarmType,
+            t3.id AS deviceModelId,
+            COUNT(CASE WHEN t1.end_time IS NOT NULL THEN 1 ELSE NULL END) AS repairNum,
+            SUM(CASE WHEN t1.end_time IS NOT NULL THEN t1.end_time-t1.begin_time ELSE 0 END) AS totalTime
+            FROM as_flow_run AS t1
+            LEFT JOIN as_device AS t2 ON t1.begin_device_id = t2.id
+            LEFT JOIN as_device_model AS t3 ON t2.device_model_id = t3.id
+            LEFT JOIN as_device_type AS t4 ON t3.device_type = t4.device_type
+            LEFT JOIN as_device_kind AS t5 ON t4.device_kind_id = t5.id
+            WHERE 1 = 1
+            <if test="type != null and type != ''">
+                and t5.type = #{type}
+            </if>
+            <if test="beginTime != null">
+                AND FROM_UNIXTIME(t1.begin_time,'%Y-%m-%d') = #{beginTime}
+            </if>
+            <if test="alarmType != null and alarmType != ''">
+                AND t1.alarm_type = #{alarmType}
+            </if>
+            <if test="deviceModelId != null and deviceModelId != ''">
+                AND t3.id = #{deviceModelId}
+            </if>
+            ) AS temp
+    </select>
+    <select id="getFlowRunByUeventIds" resultType="com.aswl.as.ibrs.api.module.FlowRun">
+        SELECT
+        <include refid="flowRunColumns"/>
+         FROM as_flow_run
+        WHERE 1=1
+        <if test="uEventIds != null and uEventIds.size > 0 ">
+            AND begin_u_event_id  in
+            <foreach collection="uEventIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <delete id="deleteByUEventIds">
+        DELETE FROM as_flow_run
+        <if test="uEventIds != null and uEventIds.size > 0 ">
+            WHERE begin_u_event_id  in
+            <foreach collection="uEventIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+    <select id="findWorkOrderList" resultType="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+        SELECT
+        fr.id AS id,
+        <if test="latitude != null and longitude != null">
+            IFNULL(ROUND(
+            6378.138 * 2 * ASIN(
+            SQRT(
+            POW(
+            SIN(
+            (
+            ${latitude} * PI() / 180 - d.latitude * PI() / 180
+            ) / 2
+            ),
+            2
+            ) + COS(${latitude} * PI() / 180) * COS(d.latitude * PI() / 180) * POW(
+            SIN(
+            (
+            ${longitude} * PI() / 180 - d.longitude * PI() / 180
+            ) / 2
+            ),
+            2
+            )
+            )
+            ) * 1000
+            ),0) AS juli,
+        </if>
+        d.id AS deviceId,
+        d.device_name AS deviceName,
+        d.device_code AS deviceCode,
+        d.longitude AS longitude,
+        d.latitude AS latitude,
+        d.address AS address,
+        fr.run_name AS title,
+        d.ip AS ip,
+        r.region_name AS regionName,
+        fr.begin_user_id AS assigner,
+        fr.remark AS remark,
+        fr.run_no AS runNo,
+        fr.alarm_time AS alarmTime,
+        TIMESTAMPDIFF(SECOND,fr.alarm_time,DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')) AS
+        intervalTime,
+        TIMESTAMPDIFF(SECOND,FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d %H:%i:%s'),FROM_UNIXTIME(fr.end_time,'%Y-%m-%d
+        %H:%i:%s')) AS repairTime,
+        FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d %H:%i:%s') AS beginTime,
+        fr.begin_u_event_id AS eventId,
+        fr.type AS type,
+        fr.priority AS priority,
+        fr.run_status AS status,
+        fr.alarm_level AS alarmLevel,
+        rl.user_name AS repairer,
+        rl.user_mobile AS repairerMobile,
+        IFNULL(handle.order_handle_type,0) AS orderHandleType,
+        handle.handle_user_id as handleUserId,
+        fr.estimated_time as estimatedTime,
+        alarmType.alarm_type_name AS alarmTypeName,
+        alarmType.alarm_type AS alarmType,
+        k.type AS model
+        FROM as_flow_run fr
+        LEFT JOIN as_region_leader rl ON rl.id = fr.maintain_user_id
+        LEFT JOIN as_device d ON d.id = fr.begin_device_id
+        LEFT JOIN as_device_model m ON d.device_model_id = m.id
+        LEFT JOIN as_device_type t ON m.device_type = t.device_type
+        LEFT JOIN as_device_kind k ON t.device_kind_id = k.id
+        LEFT JOIN as_region r ON d.region_id = r.id
+        LEFT JOIN as_alarm_order_handle handle ON handle.project_id=d.project_id
+        LEFT JOIN as_alarm_type alarmType ON alarmType.alarm_type =fr.alarm_type
+        WHERE d.del_flag = 0
+        <choose>
+            <when test='htmlSelectType1 !=null and htmlSelectType1== "1" '>
+                <if test="statuses != null and statuses!= ''">
+                    AND fr.run_status in
+                    <foreach item="item" index="index" collection="statuses" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="alarmLevels != null and alarmLevels!= ''">
+                    and fr.alarm_level in
+                    <foreach item="item" index="index" collection="alarmLevels" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+
+            </when>
+            <otherwise>
+                <if test="statuses != null and statuses!= ''">
+                    AND fr.run_status in
+                    <foreach item="item" index="index" collection="statuses" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="alarmLevels != null and alarmLevels!= ''">
+                    AND fr.alarm_level in
+                    <foreach item="item" index="index" collection="alarmLevels" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </otherwise>
+        </choose>
+
+        <if test="regionCode != null and regionCode != ''">
+            AND r.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="regionName != null and regionName != ''">
+            AND r.region_name LIKE CONCAT( '%',#{regionName},'%')
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND d.device_name LIKE CONCAT('%', #{deviceName},'%')
+        </if>
+        <if test="alarmType != null and alarmType != ''">
+            AND fr.alarm_type = #{alarmType}
+        </if>
+        <if test="eventId != null and eventId != ''">
+            AND fr.begin_u_event_id = #{eventId}
+        </if>
+        <if test="query != null and query!= ''">
+           AND (fr.run_name LIKE CONCAT('%', #{query},'%') OR  (rl.user_name LIKE CONCAT('%', #{query},'%') OR d.device_name LIKE CONCAT('%', #{query},'%') OR  fr.run_no LIKE CONCAT('%', #{query},'%')))
+        </if>
+        <if test="kind != null and kind!= ''">
+            AND k.type  in (#{kind})
+        </if>
+        <if test="id != null and id != ''">
+            AND fr.id = #{id}
+        </if>
+        <if test="runNo != null and runNo != ''">
+            AND fr.run_no = #{runNo}
+        </if>
+        <if test="deviceId != null and deviceId != ''">
+            AND d.id = #{deviceId}
+        </if>
+
+        <if test="startTime != null and endTime!= ''">
+            AND FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d') BETWEEN #{startTime} and #{endTime}
+        </if>
+
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND fr.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="maintainUserId!= null and maintainUserId!=''">
+            AND fr.maintain_user_id = #{maintainUserId}
+        </if>
+        <choose>
+            <when test='order != null and order =="0" '>
+                ORDER BY beginTime DESC
+            </when>
+            <when test='order != null and order =="1" '>
+                ORDER BY juli
+            </when>
+            <when test='order != null and order =="2" '>
+                ORDER BY beginTime
+            </when>
+            <when test='order != null and order =="3" '>
+                ORDER BY beginTime DESC
+            </when>
+            <otherwise>
+                ORDER BY alarmLevel
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findWorkOrderCount" resultType="java.util.Map">
+        SELECT COUNT(1) as count
+        FROM as_flow_run a
+        LEFT JOIN as_device b
+        ON a.begin_device_id =b.id
+        LEFT JOIN as_region_leader c
+        ON c.user_id =a.maintain_user_id
+        WHERE 1=1
+        <if test="maintainUserId!= null and maintainUserId!=''">
+            AND a.maintain_user_id = #{maintainUserId}
+        </if>
+        <if test="status != null and status!= ''">
+            AND a.run_status in (${status})
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND b.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+    </select>
+    <select id="myWorkOrderCount" resultType="java.util.Map">
+        SELECT count(1) as count  FROM as_flow_run a
+        LEFT JOIN as_device b
+        ON a.begin_device_id =b.id
+        JOIN as_region_leader c
+        ON c.id =a.maintain_user_id
+        WHERE 1=1
+        <choose>
+            <when test="maintainUserId!= null and maintainUserId!=''">
+                AND a.maintain_user_id = #{maintainUserId}
+            </when>
+            <otherwise>
+                AND 1=2
+            </otherwise>
+        </choose>
+        <if test="status != null and status!= ''">
+            AND a.run_status in (${status})
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND b.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+    </select>
+    
+    <select id="findFlowRunById" resultType="com.aswl.as.ibrs.api.vo.FlowRunVo">
+       SELECT 
+     fr.id AS id,
+     fr.run_no AS runNo,
+     fr.run_name AS runName,
+     ad.project_id AS projectId,
+     ad.device_name AS deviceName,
+     ar.region_name AS regionName,
+     ad.address AS address,
+     fr.begin_time AS beginTime,
+     fr.end_time AS endTime,
+     FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d %H:%i') AS dispatchTime,
+     fr.begin_user_id AS beginUserId,
+     rl.user_name AS maintainUserName,
+     rl.user_mobile AS maintainUserPhone,
+     fr.estimated_time AS estimatedTime,
+     fr.alarm_time AS alarmTime,
+     fr.run_status AS status,
+     fr.begin_device_id AS deviceId,
+     fr.alarm_type AS alarmType,
+     aat.alarm_type_name AS alarmTypeName,
+     fr.type AS orderHandleType
+     FROM as_flow_run fr
+    LEFT JOIN as_device ad
+    ON ad.id=fr.begin_device_id
+    LEFT JOIN as_region_leader rl
+    ON rl.id= fr.maintain_user_id
+    LEFT JOIN as_region ar
+    ON ar.id= ad.region_id
+    LEFT JOIN as_alarm_type aat
+    on aat.alarm_type = fr.alarm_type
+    WHERE fr.id = #{id}   
+    </select>
+   
+    <select id="getHandledOrder" resultType="com.aswl.as.ibrs.api.vo.FlowRunVo">
+       SELECT 
+     fr.id AS id,
+     fr.run_no AS runNo,
+     fr.run_name AS title,
+     fr.run_status as status,
+     ad.project_id AS projectId,
+     ad.device_name AS deviceName,
+     ad.address AS address,
+     fr.end_time AS endTime,
+     FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d %H:%i') AS beginTime
+     FROM as_flow_run fr
+    LEFT JOIN as_device ad
+    ON fr.begin_device_id = ad.id
+    WHERE 1=1
+    AND fr.run_status in (1,8)
+    AND fr.begin_user_id = #{beginUserId}
+    AND fr.end_time BETWEEN  #{endTime}-5  AND  #{endTime}+5
+    AND fr.id != #{id}     
+    </select>
+    <select id="getOrderAvgRepairDuration" resultType="java.util.Map">
+        SELECT 
+     COUNT(1) AS count,
+     SUM(fr.end_time-fr.begin_time) AS totalDuration
+     FROM as_flow_run fr
+    LEFT JOIN as_device ad
+    ON fr.begin_device_id =ad.id
+    LEFT JOIN as_device_model dm
+    ON dm.id = ad.device_model_id
+    WHERE fr.run_status IN  (1,8)
+        <if test="model != null and model != ''">
+            AND a.device_model_name = #{model}
+        </if>
+        <if test="startTime != null and endTime!= ''">
+            AND FROM_UNIXTIME(fr.begin_time,'%Y-%m-%d') BETWEEN #{startTime} and #{endTime}
+        </if>
+        <if test="regionCode!=null and regionCode!=''">
+            AND ad.region_code LIKE CONCAT(#{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND ad.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND ad.tenant_code = #{tenantCode}
+        </if>
+    </select>
+    <select id="getExamineOrderCount" resultType="java.util.Map">
+        SELECT count(1) as count  FROM as_flow_run a
+        LEFT JOIN as_device b
+        ON a.begin_device_id =b.id
+        JOIN as_region_leader c
+        ON c.id =a.maintain_user_id
+        WHERE 1=1
+        <if test="status != null and status!= ''">
+            AND a.run_status in (${status})
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            AND b.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+    </select>
+
+</mapper>

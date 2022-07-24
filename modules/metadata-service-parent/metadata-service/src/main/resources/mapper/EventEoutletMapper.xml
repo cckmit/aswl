@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventEoutletMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventEoutletResultMap" type="com.aswl.as.ibrs.api.module.EventEoutlet">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="passway1"   property="passway1" />
+			<id column="passway2"   property="passway2" />
+			<id column="passway3"   property="passway3" />
+			<id column="fld01"   property="fld01" />
+			<id column="fld02"   property="fld02" />
+			<id column="fld03"   property="fld03" />
+			<id column="fld04"   property="fld04" />
+			<id column="fld05"   property="fld05" />
+			<id column="fld06"   property="fld06" />
+			<id column="fld07"   property="fld07" />
+			<id column="fld08"   property="fld08" />
+			<id column="fld09"   property="fld09" />
+			<id column="fld10"   property="fld10" />
+			<id column="fld11"   property="fld11" />
+			<id column="fld12"   property="fld12" />
+			<id column="fld13"   property="fld13" />
+			<id column="fld14"   property="fld14" />
+			<id column="fld15"   property="fld15" />
+			<id column="fld16"   property="fld16" />
+			<id column="fld17"   property="fld17" />
+			<id column="fld18"   property="fld18" />
+			<id column="fld19"   property="fld19" />
+			<id column="fld20"   property="fld20" />
+			<id column="fld21"   property="fld21" />
+			<id column="fld22"   property="fld22" />
+			<id column="fld23"   property="fld23" />
+			<id column="fld24"   property="fld24" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventEoutletColumns">
+		id, u_event_id, device_id, region_no, rec_time, passway1, passway2, passway3, fld01, fld02, fld03, fld04, fld05, fld06, fld07, fld08, fld09, fld10, fld11, fld12, fld13, fld14, fld15, fld16, fld17, fld18, fld19, fld20, fld21, fld22, fld23, fld24, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''">
+					and u_event_id = #{uEventId}
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="recTime  != null and recTime != ''">
+					and rec_time = #{recTime}
+				</if>
+				<if test="passway1  != null and passway1 != ''" >
+					and passway1 like CONCAT('%',#{passway1},'%')
+				</if>
+				<if test="passway2  != null and passway2 != ''" >
+					and passway2 like CONCAT('%',#{passway2},'%')
+				</if>
+				<if test="passway3  != null and passway3 != ''" >
+					and passway3 like CONCAT('%',#{passway3},'%')
+				</if>
+				<if test="fld01  != null and fld01 != ''" >
+					and fld01 like CONCAT('%',#{fld01},'%')
+				</if>
+				<if test="fld02  != null and fld02 != ''" >
+					and fld02 like CONCAT('%',#{fld02},'%')
+				</if>
+				<if test="fld03  != null and fld03 != ''" >
+					and fld03 like CONCAT('%',#{fld03},'%')
+				</if>
+				<if test="fld04  != null and fld04 != ''" >
+					and fld04 like CONCAT('%',#{fld04},'%')
+				</if>
+				<if test="fld05  != null and fld05 != ''" >
+					and fld05 like CONCAT('%',#{fld05},'%')
+				</if>
+				<if test="fld06  != null and fld06 != ''" >
+					and fld06 like CONCAT('%',#{fld06},'%')
+				</if>
+				<if test="fld07  != null and fld07 != ''" >
+					and fld07 like CONCAT('%',#{fld07},'%')
+				</if>
+				<if test="fld08  != null and fld08 != ''" >
+					and fld08 like CONCAT('%',#{fld08},'%')
+				</if>
+				<if test="fld09  != null and fld09 != ''" >
+					and fld09 like CONCAT('%',#{fld09},'%')
+				</if>
+				<if test="fld10  != null and fld10 != ''" >
+					and fld10 like CONCAT('%',#{fld10},'%')
+				</if>
+				<if test="fld11  != null and fld11 != ''" >
+					and fld11 like CONCAT('%',#{fld11},'%')
+				</if>
+				<if test="fld12  != null and fld12 != ''" >
+					and fld12 like CONCAT('%',#{fld12},'%')
+				</if>
+				<if test="fld13  != null and fld13 != ''" >
+					and fld13 like CONCAT('%',#{fld13},'%')
+				</if>
+				<if test="fld14  != null and fld14 != ''" >
+					and fld14 like CONCAT('%',#{fld14},'%')
+				</if>
+				<if test="fld15  != null and fld15 != ''" >
+					and fld15 like CONCAT('%',#{fld15},'%')
+				</if>
+				<if test="fld16  != null and fld16 != ''" >
+					and fld16 like CONCAT('%',#{fld16},'%')
+				</if>
+				<if test="fld17  != null and fld17 != ''" >
+					and fld17 like CONCAT('%',#{fld17},'%')
+				</if>
+				<if test="fld18  != null and fld18 != ''" >
+					and fld18 like CONCAT('%',#{fld18},'%')
+				</if>
+				<if test="fld19  != null and fld19 != ''" >
+					and fld19 like CONCAT('%',#{fld19},'%')
+				</if>
+				<if test="fld20  != null and fld20 != ''" >
+					and fld20 like CONCAT('%',#{fld20},'%')
+				</if>
+				<if test="fld21  != null and fld21 != ''" >
+					and fld21 like CONCAT('%',#{fld21},'%')
+				</if>
+				<if test="fld22  != null and fld22 != ''" >
+					and fld22 like CONCAT('%',#{fld22},'%')
+				</if>
+				<if test="fld23  != null and fld23 != ''" >
+					and fld23 like CONCAT('%',#{fld23},'%')
+				</if>
+				<if test="fld24  != null and fld24 != ''" >
+					and fld24 like CONCAT('%',#{fld24},'%')
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventEoutletResultMap">
+		SELECT
+		<include refid="eventEoutletColumns"/>
+		FROM as_event_eoutlet
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventEoutletResultMap">
+		SELECT
+		<include refid="eventEoutletColumns"/>
+		FROM as_event_eoutlet
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventEoutletResultMap">
+		SELECT
+		<include refid="eventEoutletColumns"/>
+		FROM as_event_eoutlet
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_eoutlet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="passway1 != null">
+                    passway1,
+                </if>
+                <if test="passway2 != null">
+                    passway2,
+                </if>
+                <if test="passway3 != null">
+                    passway3,
+                </if>
+                <if test="fld01 != null">
+                    fld01,
+                </if>
+                <if test="fld02 != null">
+                    fld02,
+                </if>
+                <if test="fld03 != null">
+                    fld03,
+                </if>
+                <if test="fld04 != null">
+                    fld04,
+                </if>
+                <if test="fld05 != null">
+                    fld05,
+                </if>
+                <if test="fld06 != null">
+                    fld06,
+                </if>
+                <if test="fld07 != null">
+                    fld07,
+                </if>
+                <if test="fld08 != null">
+                    fld08,
+                </if>
+                <if test="fld09 != null">
+                    fld09,
+                </if>
+                <if test="fld10 != null">
+                    fld10,
+                </if>
+                <if test="fld11 != null">
+                    fld11,
+                </if>
+                <if test="fld12 != null">
+                    fld12,
+                </if>
+                <if test="fld13 != null">
+                    fld13,
+                </if>
+                <if test="fld14 != null">
+                    fld14,
+                </if>
+                <if test="fld15 != null">
+                    fld15,
+                </if>
+                <if test="fld16 != null">
+                    fld16,
+                </if>
+                <if test="fld17 != null">
+                    fld17,
+                </if>
+                <if test="fld18 != null">
+                    fld18,
+                </if>
+                <if test="fld19 != null">
+                    fld19,
+                </if>
+                <if test="fld20 != null">
+                    fld20,
+                </if>
+                <if test="fld21 != null">
+                    fld21,
+                </if>
+                <if test="fld22 != null">
+                    fld22,
+                </if>
+                <if test="fld23 != null">
+                    fld23,
+                </if>
+                <if test="fld24 != null">
+                    fld24,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="passway1 != null">
+                    #{passway1},
+                </if>
+                <if test="passway2 != null">
+                    #{passway2},
+                </if>
+                <if test="passway3 != null">
+                    #{passway3},
+                </if>
+                <if test="fld01 != null">
+                    #{fld01},
+                </if>
+                <if test="fld02 != null">
+                    #{fld02},
+                </if>
+                <if test="fld03 != null">
+                    #{fld03},
+                </if>
+                <if test="fld04 != null">
+                    #{fld04},
+                </if>
+                <if test="fld05 != null">
+                    #{fld05},
+                </if>
+                <if test="fld06 != null">
+                    #{fld06},
+                </if>
+                <if test="fld07 != null">
+                    #{fld07},
+                </if>
+                <if test="fld08 != null">
+                    #{fld08},
+                </if>
+                <if test="fld09 != null">
+                    #{fld09},
+                </if>
+                <if test="fld10 != null">
+                    #{fld10},
+                </if>
+                <if test="fld11 != null">
+                    #{fld11},
+                </if>
+                <if test="fld12 != null">
+                    #{fld12},
+                </if>
+                <if test="fld13 != null">
+                    #{fld13},
+                </if>
+                <if test="fld14 != null">
+                    #{fld14},
+                </if>
+                <if test="fld15 != null">
+                    #{fld15},
+                </if>
+                <if test="fld16 != null">
+                    #{fld16},
+                </if>
+                <if test="fld17 != null">
+                    #{fld17},
+                </if>
+                <if test="fld18 != null">
+                    #{fld18},
+                </if>
+                <if test="fld19 != null">
+                    #{fld19},
+                </if>
+                <if test="fld20 != null">
+                    #{fld20},
+                </if>
+                <if test="fld21 != null">
+                    #{fld21},
+                </if>
+                <if test="fld22 != null">
+                    #{fld22},
+                </if>
+                <if test="fld23 != null">
+                    #{fld23},
+                </if>
+                <if test="fld24 != null">
+                    #{fld24},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_eoutlet
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="passway1 != null">
+					passway1 =  #{passway1},
+				</if>
+				<if test="passway2 != null">
+					passway2 =  #{passway2},
+				</if>
+				<if test="passway3 != null">
+					passway3 =  #{passway3},
+				</if>
+				<if test="fld01 != null">
+					fld01 =  #{fld01},
+				</if>
+				<if test="fld02 != null">
+					fld02 =  #{fld02},
+				</if>
+				<if test="fld03 != null">
+					fld03 =  #{fld03},
+				</if>
+				<if test="fld04 != null">
+					fld04 =  #{fld04},
+				</if>
+				<if test="fld05 != null">
+					fld05 =  #{fld05},
+				</if>
+				<if test="fld06 != null">
+					fld06 =  #{fld06},
+				</if>
+				<if test="fld07 != null">
+					fld07 =  #{fld07},
+				</if>
+				<if test="fld08 != null">
+					fld08 =  #{fld08},
+				</if>
+				<if test="fld09 != null">
+					fld09 =  #{fld09},
+				</if>
+				<if test="fld10 != null">
+					fld10 =  #{fld10},
+				</if>
+				<if test="fld11 != null">
+					fld11 =  #{fld11},
+				</if>
+				<if test="fld12 != null">
+					fld12 =  #{fld12},
+				</if>
+				<if test="fld13 != null">
+					fld13 =  #{fld13},
+				</if>
+				<if test="fld14 != null">
+					fld14 =  #{fld14},
+				</if>
+				<if test="fld15 != null">
+					fld15 =  #{fld15},
+				</if>
+				<if test="fld16 != null">
+					fld16 =  #{fld16},
+				</if>
+				<if test="fld17 != null">
+					fld17 =  #{fld17},
+				</if>
+				<if test="fld18 != null">
+					fld18 =  #{fld18},
+				</if>
+				<if test="fld19 != null">
+					fld19 =  #{fld19},
+				</if>
+				<if test="fld20 != null">
+					fld20 =  #{fld20},
+				</if>
+				<if test="fld21 != null">
+					fld21 =  #{fld21},
+				</if>
+				<if test="fld22 != null">
+					fld22 =  #{fld22},
+				</if>
+				<if test="fld23 != null">
+					fld23 =  #{fld23},
+				</if>
+				<if test="fld24 != null">
+					fld24 =  #{fld24},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_event_eoutlet SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_event_eoutlet SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findOutletState" resultType="map">
+		SELECT
+		<foreach collection="keySet" separator="," item="item">
+			${item}
+		</foreach>
+		FROM as_event_eoutlet
+		WHERE device_id = #{deviceId}
+	</select>
+</mapper>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.TenantMapper">
+    <resultMap id="tenantResultMap" type="com.aswl.as.user.api.module.Tenant">
+        <id column="id" property="id"/>
+        <result column="tenant_code" property="tenantCode"/>
+        <result column="tenant_name" property="tenantName"/>
+        <result column="tenant_desc" property="tenantDesc"/>
+        <result column="status" property="status"/>
+        <result column="creator" property="creator"/>
+        <result column="create_date" property="createDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier"/>
+        <result column="modify_date" property="modifyDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="owner_name" property="ownerName"/>
+        <result column="notify_email" property="notifyEmail"/>
+        <result column="tenant_role_id" property="tenantRoleId"/>
+        <result column="tenant_role_name" property="tenantRoleName"/>
+        <result column="trial_mobile" property="trialMobile"/>
+        <result column="telephone" property="telephone"/>
+        <result column="owner_mobile" property="ownerMobile"/>
+        <result column="valid_count" property="validCount"/>
+        <result column="valid_unit" property="validUnit"/>
+        <result column="effective_start_time" property="effectiveStartTime"/>
+        <result column="effective_end_time" property="effectiveEndTime"/>
+        <result column="max_device_count" property="maxDeviceCount"/>
+        <result column="valid_time" property="validTime"/>
+
+    </resultMap>
+
+    <sql id="tenantColumns">
+        a.id,
+        a.tenant_code,
+        a.tenant_name,
+        a.tenant_desc,
+        a.status,
+        a.creator,
+        a.create_date,
+        a.modifier,
+        a.modify_date,
+        a.del_flag,
+        a.owner_name,
+        a.owner_mobile,
+        a.notify_email,
+        a.tenant_role_id,
+        a.tenant_role_name,
+        a.trial_mobile,
+        a.telephone,
+        valid_count,
+        valid_unit,
+        effective_start_time,
+        effective_end_time,
+        max_device_count,
+        valid_time
+
+    </sql>
+
+    <select id="get" resultMap="tenantResultMap">
+        SELECT
+        <include refid="tenantColumns"/>
+        FROM sys_tenant a
+        WHERE a.id = #{id} and a.del_flag = 0
+    </select>
+
+    <select id="getByTenantCode" resultMap="tenantResultMap">
+        SELECT
+        <include refid="tenantColumns"/>
+        FROM sys_tenant a
+        WHERE a.tenant_code = #{tenantCode} and a.del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="tenantResultMap">
+        SELECT
+        <include refid="tenantColumns"/>
+        FROM sys_tenant a
+        WHERE a.del_flag = 0
+    </select>
+
+    <select id="findListById" resultMap="tenantResultMap">
+        SELECT
+        <include refid="tenantColumns"/>
+        FROM sys_tenant a
+        WHERE a.id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getExistMobile" resultType="java.lang.Integer">
+        SELECT COUNT(1) AS count FROM sys_tenant WHERE trial_mobile LIKE CONCAT('%',#{mobile},'%')
+
+    </select>
+    <select id="getTenantByMobile" resultMap="tenantResultMap">
+         SELECT
+        <include refid="tenantColumns"/>
+         FROM sys_tenant a WHERE a.trial_mobile LIKE CONCAT('%',#{mobile},'%')
+    </select>
+
+    <insert id="insert">
+        INSERT  INTO sys_tenant (
+            id,
+            tenant_code,
+            tenant_name,
+            tenant_desc,
+            status,
+            creator,
+            create_date,
+            modifier,
+            modify_date,
+            del_flag
+        ) VALUES (
+            #{id},
+            #{tenantCode},
+            #{tenantName},
+            #{tenantDesc},
+            #{status},
+            #{creator},
+            #{createDate, jdbcType=TIMESTAMP, javaType=java.util.Date},
+            #{modifier},
+            #{modifyDate, jdbcType=TIMESTAMP, javaType=java.util.Date},
+            #{delFlag}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE sys_tenant SET
+        <if test="tenantName != null">
+            tenant_name = #{tenantName},
+        </if>
+        <if test="tenantDesc != null">
+            tenant_desc = #{tenantDesc},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="delFlag != null">
+            del_flag = #{delFlag},
+        </if>
+        <if test="status != null and status != ''">
+            status = #{status},
+        </if>
+        <if test="fullName != null and fullName != ''">
+            full_name = #{fullName},
+        </if>
+        <if test="address != null and address != ''">
+            address = #{address},
+        </if>
+        <if test="telephone != null and telephone != ''">
+            telephone = #{telephone},
+        </if>
+        <if test="notifyEmail != null and notifyEmail != ''">
+            notify_email = #{notifyEmail},
+        </if>
+        <if test="tenantRoleId != null">
+            tenant_role_id = #{tenantRoleId},
+        </if>
+        <if test="tenantRoleName != null">
+            tenant_role_name = #{tenantRoleName},
+        </if>
+        <if test="trialMobile != null">
+            trial_mobile = #{trialMobile},
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            owner_name = #{ownerName},
+        </if>
+        <if test="ownerPosition != null and ownerPosition != ''">
+            owner_position = #{ownerPosition},
+        </if>
+        <if test="ownerMobile != null and ownerMobile != ''">
+            owner_mobile = #{ownerMobile},
+        </if>
+        <if test="expTime != null and expTime != ''">
+            exp_time = #{expTime},
+        </if>
+        <if test="licenseCode != null and licenseCode != ''">
+            license_code = #{licenseCode},
+        </if>
+        <if test="licenseImage != null and licenseImage != ''">
+            license_image = #{licenseImage},
+        </if>
+        <if test="tenantLogo != null and tenantLogo != ''">
+            tenant_logo = #{tenantLogo},
+        </if>
+        <if test="remark != null and remark != ''">
+            remark = #{remark},
+        </if>
+        <if test="validCount != null ">
+            valid_count = #{validCount},
+        </if>
+        <if test="validUnit != null and validUnit != ''">
+            valid_unit = #{validUnit},
+        </if>
+        <if test="effectiveStartTime != null ">
+            effective_start_time = #{effectiveStartTime},
+        </if>
+        <if test="effectiveEndTime != null ">
+            effective_end_time = #{effectiveEndTime},
+        </if>
+        <if test="maxDeviceCount != null">
+            max_device_count = #{maxDeviceCount},
+        </if>
+        <if test="validTime != null and validTime != ''">
+            valid_time = #{validTime},
+        </if>
+
+        modifier = #{modifier},
+        modify_date = #{modifyDate, jdbcType=TIMESTAMP, javaType=java.util.Date}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM  sys_tenant 
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM  sys_tenant 
+        where id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ContentIndustryMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="contentIndustryResultMap" type="com.aswl.as.ibrs.api.module.ContentIndustry">
+			<id column="id"   property="id" />
+			<id column="category_tree_id"   property="categoryTreeId" />
+			<id column="title"   property="title" />
+			<id column="author"   property="author" />
+			<id column="sort"   property="sort" />
+			<id column="cover_image"   property="coverImage" />
+			<id column="cover_text"   property="coverText" />
+			<id column="showcase_text"   property="showcaseText" />
+			<id column="modifier"   property="modifier" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="del_flag"   property="delFlag" />
+			<id column="is_showcase"   property="isShowcase" />
+			<id column="clicks"   property="clicks" />
+			<id column="likes"   property="likes" />
+			<id column="is_release"   property="isRelease" />
+			<id column="content"   property="content" />
+
+			<id column="other_url"   property="otherUrl" />
+
+	</resultMap>
+
+	<sql id="contentIndustryColumns">
+		id, category_tree_id, title, author, sort, cover_image, cover_text, showcase_text, modifier, modify_date, creator, create_date, del_flag, is_showcase, clicks, likes, is_release, content, other_url
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="categoryTreeId  != null and categoryTreeId != ''" >
+					AND category_tree_id like CONCAT('%',#{categoryTreeId},'%')
+				</if>
+				<if test="title  != null and title != ''" >
+					AND title like CONCAT('%',#{title},'%')
+				</if>
+				<if test="author  != null and author != ''" >
+					AND author like CONCAT('%',#{author},'%')
+				</if>
+				<if test="sort  != null and sort != ''">
+					AND sort = #{sort}
+				</if>
+				<if test="coverImage  != null and coverImage != ''" >
+					AND cover_image like CONCAT('%',#{coverImage},'%')
+				</if>
+				<if test="coverText  != null and coverText != ''" >
+					AND cover_text like CONCAT('%',#{coverText},'%')
+				</if>
+				<if test="showcaseText  != null and showcaseText != ''" >
+					AND showcase_text like CONCAT('%',#{showcaseText},'%')
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					AND modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''">
+					AND modify_date = #{modifyDate}
+				</if>
+				<if test="creator  != null and creator != ''" >
+					AND creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					AND create_date = #{createDate}
+				</if>
+				<if test="delFlag  != null and delFlag != ''">
+					AND del_flag = #{delFlag}
+				</if>
+				<if test="isShowcase  != null and isShowcase != ''">
+					AND is_showcase = #{isShowcase}
+				</if>
+				<if test="clicks  != null and clicks != ''">
+					AND clicks = #{clicks}
+				</if>
+				<if test="likes  != null and likes != ''">
+					AND likes = #{likes}
+				</if>
+				<if test="isRelease  != null and isRelease != ''">
+					AND is_release = #{isRelease}
+				</if>
+				<if test="content  != null and content != ''">
+					AND content = #{content}
+				</if>
+				<if test="queryStr  != null and queryStr != ''">
+					AND ( title like CONCAT('%',#{queryStr},'%') or content like CONCAT('%',#{queryStr},'%') )
+				</if>
+
+				<if test="otherUrl  != null and otherUrl != ''">
+					AND other_url = #{otherUrl}
+				</if>
+
+	</sql>
+
+	<select id="get" resultMap="contentIndustryResultMap">
+		SELECT
+		<include refid="contentIndustryColumns"/>
+		FROM as_content_industry
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="contentIndustryResultMap">
+		SELECT
+		<include refid="contentIndustryColumns"/>
+		FROM as_content_industry
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="contentIndustryResultMap">
+		SELECT
+		<include refid="contentIndustryColumns"/>
+		FROM as_content_industry
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+		<insert id="insert">
+        INSERT INTO as_content_industry
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="categoryTreeId != null">
+                    category_tree_id,
+                </if>
+                <if test="title != null">
+                    title,
+                </if>
+                <if test="author != null">
+                    author,
+                </if>
+                <if test="sort != null">
+                    sort,
+                </if>
+                <if test="coverImage != null">
+                    cover_image,
+                </if>
+                <if test="coverText != null">
+                    cover_text,
+                </if>
+                <if test="showcaseText != null">
+                    showcase_text,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+                <if test="isShowcase != null">
+                    is_showcase,
+                </if>
+                <if test="clicks != null">
+                    clicks,
+                </if>
+				<if test="likes != null">
+					likes,
+				</if>
+                <if test="isRelease != null">
+                    is_release,
+                </if>
+                <if test="content != null">
+                    content,
+                </if>
+				<if test="otherUrl != null">
+					other_url,
+				</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="categoryTreeId != null">
+                    #{categoryTreeId},
+                </if>
+                <if test="title != null">
+                    #{title},
+                </if>
+                <if test="author != null">
+                    #{author},
+                </if>
+                <if test="sort != null">
+                    #{sort},
+                </if>
+                <if test="coverImage != null">
+                    #{coverImage},
+                </if>
+                <if test="coverText != null">
+                    #{coverText},
+                </if>
+                <if test="showcaseText != null">
+                    #{showcaseText},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+                <if test="isShowcase != null">
+                    #{isShowcase},
+                </if>
+                <if test="clicks != null">
+                    #{clicks},
+                </if>
+				<if test="likes != null">
+					#{likes},
+				</if>
+                <if test="isRelease != null">
+                    #{isRelease},
+                </if>
+                <if test="content != null">
+                    #{content},
+                </if>
+				<if test="otherUrl != null">
+					#{otherUrl},
+				</if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_content_industry
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="categoryTreeId != null">
+					category_tree_id =  #{categoryTreeId},
+				</if>
+				<if test="title != null">
+					title =  #{title},
+				</if>
+				<if test="author != null">
+					author =  #{author},
+				</if>
+				<if test="sort != null">
+					sort =  #{sort},
+				</if>
+				<if test="coverImage != null">
+					cover_image =  #{coverImage},
+				</if>
+				<if test="coverText != null">
+					cover_text =  #{coverText},
+				</if>
+				<if test="showcaseText != null">
+					showcase_text =  #{showcaseText},
+				</if>
+				<if test="modifier != null">
+					modifier =  #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="delFlag != null">
+					del_flag =  #{delFlag},
+				</if>
+				<if test="isShowcase != null">
+					is_showcase =  #{isShowcase},
+				</if>
+				<if test="clicks != null">
+					clicks =  #{clicks},
+				</if>
+				<if test="likes != null">
+					likes =  #{likes},
+				</if>
+				<if test="isRelease != null">
+					is_release =  #{isRelease},
+				</if>
+				<if test="content != null">
+					content =  #{content},
+				</if>
+				<if test="otherUrl != null">
+					other_url =  #{otherUrl},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_content_industry
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_content_industry
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<update id="addClicks">
+		update as_content_industry set clicks=clicks+1
+		WHERE id =  #{id}
+	</update>
+
+	<update id="addLikes">
+		update as_content_industry set likes=likes + (#{addCount})
+		WHERE id =  #{id}
+	</update>
+
+</mapper>

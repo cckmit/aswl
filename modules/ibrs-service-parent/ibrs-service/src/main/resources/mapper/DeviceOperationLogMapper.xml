@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceOperationLogMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="deviceOperationLogResultMap" type="com.aswl.as.ibrs.api.module.DeviceOperationLog">
+        <id column="id" property="id"/>
+        <id column="device_id" property="deviceId"/>
+        <id column="operation_mode" property="operationMode"/>
+        <id column="operation_content" property="operationContent"/>
+        <id column="operation_command" property="operationCommand"/>
+        <id column="full_content" property="fullContent"/>
+        <id column="user_id" property="userId"/>
+        <id column="user_name" property="userName"/>
+        <id column="create_date" property="createDate"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <sql id="deviceOperationLogColumns">
+		id, device_id, operation_mode, operation_content, operation_command, full_content, user_id, user_name, create_date, application_code, tenant_code
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="deviceId!= null and deviceId!= ''">
+            and device_id LIKE CONCAT(#{deviceId},'%')
+        </if>
+        <if test="operationMode!= null and operationMode!= ''">
+            and operation_mode LIKE CONCAT(#{operationMode},'%')
+        </if>
+        <if test="operationContent!= null and operationContent!= ''">
+            and operation_content LIKE CONCAT(#{operationContent},'%')
+        </if>
+        <if test="operationCommand!= null and operationCommand!= ''">
+            and operation_command LIKE CONCAT(#{operationCommand},'%')
+        </if>
+        <if test="fullContent!= null and fullContent!= ''">
+            and full_content LIKE CONCAT(#{fullContent},'%')
+        </if>
+        <if test="userId!= null and userId!= ''">
+            and user_id LIKE CONCAT(#{userId},'%')
+        </if>
+        <if test="userName!= null and userName!= ''">
+            and user_name LIKE CONCAT(#{userName},'%')
+        </if>
+        <if test="createDate!= null and createDate!= ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="applicationCode!= null and applicationCode!= ''">
+            and application_code LIKE CONCAT(#{applicationCode},'%')
+        </if>
+        <if test="tenantCode!= null and tenantCode!= ''">
+            and tenant_code LIKE CONCAT(#{tenantCode},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="deviceOperationLogResultMap">
+        SELECT
+        <include refid="deviceOperationLogColumns"/>
+        FROM as_device_operation_log
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultMap="deviceOperationLogResultMap">
+        SELECT
+        <include refid="deviceOperationLogColumns"/>
+        FROM as_device_operation_log
+        WHERE 1=1
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="deviceOperationLogResultMap">
+        SELECT
+        <include refid="deviceOperationLogColumns"/>
+        FROM as_device_operation_log
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="findInfoList" resultType="com.aswl.as.ibrs.api.vo.DeviceOperationLogVo">
+        SELECT
+    dol.id as id,     
+    ap.project_name as projectName,
+    ar.region_name as regionName,
+    d.device_name as deviceName,
+    dk.device_kind_name as deviceKindName,
+    dm.device_model_name as deviceModelName,
+    d.ip as ip,
+    d.device_code as deviceCode,
+    dol.operation_command as operationCommand ,
+    dol.operation_content as operationContent,
+    dol.full_content as fullContent,
+    dol.user_name as userName,
+    dol.create_date,    
+    dol.create_Date as createDate
+     FROM as_device_operation_log dol
+    LEFT JOIN as_device d
+    ON dol.device_id =d.id
+    LEFT JOIN as_device_model dm
+    ON dm.id =d.device_model_id
+    LEFT JOIN as_device_type dt
+    ON dt.device_type =dm.device_type
+    LEFT JOIN as_device_kind dk
+    ON dk.id =dt.device_kind_id
+    LEFT JOIN as_project ap
+    ON ap.project_id =d.project_id
+    LEFT JOIN as_region ar
+    ON ar.region_code =d.region_code
+    WHERE 1= 1    
+    <if test="query!= null and query!=''">
+        and (d.device_name LIKE CONCAT('%',#{query},'%') OR d.ip LIKE CONCAT('%',#{query},'%') OR d.device_code LIKE CONCAT('%',#{query},'%') OR dol.full_content LIKE CONCAT('%',#{query},'%'))
+    </if>
+    <if test="operationCommand!= null and operationCommand!=''">
+       and dol.operation_command = #{operationCommand}
+    </if>
+    <if test="startTime!= null and endTime !=''"> 
+        and DATE_FORMAT(dol.create_date,'%Y-%m-%d') between #{startTime} and #{endTime}
+   </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>   
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_device_operation_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="operationMode != null">
+                operation_mode,
+            </if>
+            <if test="operationContent != null">
+                operation_content,
+            </if>
+            <if test="operationCommand != null">
+                operation_command,
+            </if>
+            <if test="fullContent != null">
+                full_content,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId},
+            </if>
+            <if test="operationMode != null">
+                #{operationMode},
+            </if>
+            <if test="operationContent != null">
+                #{operationContent},
+            </if>
+            <if test="operationCommand != null">
+                #{operationCommand},
+            </if>
+            <if test="fullContent != null">
+                #{fullContent},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_device_operation_log
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="deviceId != null">
+                device_id = #{deviceId},
+            </if>
+            <if test="operationMode != null">
+                operation_mode = #{operationMode},
+            </if>
+            <if test="operationContent != null">
+                operation_content = #{operationContent},
+            </if>
+            <if test="operationCommand != null">
+                operation_command = #{operationCommand},
+            </if>
+            <if test="fullContent != null">
+                full_content = #{fullContent},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM  as_device_operation_log
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM as_device_operation_log
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+</mapper>

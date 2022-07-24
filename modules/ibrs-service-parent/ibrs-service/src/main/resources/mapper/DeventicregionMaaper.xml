@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventstatuMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="eventstatuMap" type="com.aswl.as.ibrs.api.module.Eventstatu">
+        <id column="id"  property="id" />
+        <id column="device_id"  property="deviceId" />
+        <id column="region_no"  property="regionNo" />
+        <id column="network_state"  property="networkState" />
+        <id column="store_time"  property="storeTime" />
+        <id column="application_code"  property="applicationCode" />
+        <id column="tenant_code"  property="tenantCode" />
+    </resultMap>
+
+<!--    &lt;!&ndash; 获取关注的设备区域树 &ndash;&gt;
+    <select id="findRegionaltree"
+            resultType="map">
+</select>
+
+    &lt;!&ndash; 设置设备关注类型 &ndash;&gt;
+    <select id="findFocustype "
+            resultType="map">
+     </select>
+
+    &lt;!&ndash; 复制设备关注类型 &ndash;&gt;
+    <select id="findCopyfocustype"
+            resultType="map">
+</select>
+
+    &lt;!&ndash; 获取设备关注的类型 &ndash;&gt;
+    <select id="findcopyobtainfocustype"
+            resultType="map">
+
+     </select>
+
+    &lt;!&ndash; 设置平台关注类型 &ndash;&gt;
+    <select id="obtainfocustype"
+            resultType="map">
+
+    </select>
+
+    &lt;!&ndash; 获取平台关注类型 &ndash;&gt;
+    <select id="opfocustype"
+            resultType="map">
+
+    </select>-->
+
+
+
+</mapper>

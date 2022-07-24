@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.MsgReadRecordMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="msgReadRecordResultMap" type="com.aswl.as.ibrs.api.module.MsgReadRecord">
+			<id column="id"   property="id" />
+			<id column="business_key"   property="businessKey" />
+			<id column="related_id"   property="relatedId" />
+			<id column="read_user_ids"   property="readUserIds" />
+	</resultMap>
+
+	<sql id="msgReadRecordColumns">
+		id, business_key, related_id, read_user_ids
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="businessKey!= null and businessKey!= ''" >
+					and business_key LIKE CONCAT(#{businessKey},'%')
+				</if>
+				<if test="relatedId!= null and relatedId!= ''" >
+					and related_id LIKE CONCAT(#{relatedId},'%')
+				</if>
+				<if test="readUserIds!= null and readUserIds!= ''">
+					and read_user_ids = #{readUserIds}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="msgReadRecordResultMap">
+		SELECT
+		<include refid="msgReadRecordColumns"/>
+		FROM as_msg_read_record
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="msgReadRecordResultMap">
+		SELECT
+		<include refid="msgReadRecordColumns"/>
+		FROM as_msg_read_record
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="msgReadRecordResultMap">
+		SELECT
+		<include refid="msgReadRecordColumns"/>
+		FROM as_msg_read_record
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<insert id="insert">
+        INSERT INTO as_msg_read_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="businessKey != null">
+                    business_key,
+                </if>
+                <if test="relatedId != null">
+                    related_id,
+                </if>
+                <if test="readUserIds != null">
+                    read_user_ids,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="businessKey != null">
+                    #{businessKey},
+                </if>
+                <if test="relatedId != null">
+                    #{relatedId},
+                </if>
+                <if test="readUserIds != null">
+                    #{readUserIds},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_msg_read_record
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="businessKey != null">
+					business_key =  #{businessKey},
+				</if>
+				<if test="relatedId != null">
+					related_id =  #{relatedId},
+				</if>
+				<if test="readUserIds != null">
+					read_user_ids =  #{readUserIds},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_msg_read_record
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_msg_read_record
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	
+	<select id="findByEventId" resultMap="msgReadRecordResultMap">
+		SELECT 
+		<include refid="msgReadRecordColumns"/>
+		FROM as_msg_read_record
+		WHERE related_id = #{eventId}
+		
+	</select>
+	
+	<update id="updateByEventId">
+		UPDATE as_msg_read_record
+		<set>
+			<if test="userId != null">
+				read_user_ids =  #{userId}
+			</if>
+		</set>
+		WHERE related_id =  #{eventId}
+	</update>
+</mapper>

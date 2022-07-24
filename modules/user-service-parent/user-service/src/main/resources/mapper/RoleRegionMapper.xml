@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.RoleRegionMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="roleRegionResultMap" type="com.aswl.as.user.api.module.RoleRegion">
+        <id column="id" property="id"/>
+        <id column="region_id" property="regionId"/>
+        <id column="role_id" property="roleId"/>
+    </resultMap>
+
+    <sql id="roleRegionColumns">
+		id, region_id, role_id
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="regionId  != null and regionId != ''">
+            and region_id like CONCAT('%',#{regionId},'%')
+        </if>
+        <if test="roleId  != null and roleId != ''">
+            and role_id like CONCAT('%',#{roleId},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="roleRegionResultMap">
+        SELECT
+        <include refid="roleRegionColumns"/>
+        FROM sys_role_region
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="roleRegionResultMap">
+        SELECT
+        <include refid="roleRegionColumns"/>
+        FROM sys_role_region
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="roleRegionResultMap">
+        SELECT
+        <include refid="roleRegionColumns"/>
+        FROM sys_role_region
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO sys_role_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="regionId != null and regionId!=''">
+                region_id,
+            </if>
+            <if test="roleId != null and roleId!=''">
+                role_id,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="regionId != null and regionId!=''">
+                #{regionId},
+            </if>
+            <if test="roleId != null and roleId!=''">
+                #{roleId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE sys_role_region
+        <set>
+            <if test="id != null and id!=''">
+                id = #{id},
+            </if>
+            <if test="regionId != null and regionId!=''">
+                region_id = #{regionId},
+            </if>
+            <if test="roleId != null and roleId!=''">
+                role_id = #{roleId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		UPDATE sys_role_region SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        UPDATE sys_role_region SET
+        del_flag = 1
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+
+    <select id="findByRole" resultType="com.aswl.as.user.api.vo.RegionRoleVo">
+    SELECT
+     t1.region_id AS regionId,
+     t1.role_id AS roleId
+     FROM sys_role_region t1
+    LEFT JOIN sys_role t2
+    ON t1.role_id=t2.id
+    WHERE t2.del_flag=0
+    AND t2.role_code =#{role}
+    AND t2.tenant_code = #{tenantCode}
+
+</select>
+
+    <insert id="insertBatch" useGeneratedKeys="false">
+        INSERT INTO sys_role_region (
+        id,
+        region_id,
+        role_id)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.regionId}, #{item.roleId})
+        </foreach>
+    </insert>
+    <delete id="deleteByRoleId">
+        delete from sys_role_region
+        where role_id = #{roleId}
+    </delete>
+
+</mapper>

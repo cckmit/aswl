@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceDetailsMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="deviceResultMap" type="com.aswl.as.ibrs.api.module.Device">
+        <id column="id" property="id"/>
+        <id column="device_code" property="deviceCode"/>
+        <id column="device_name" property="deviceName"/>
+        <id column="address" property="address"/>
+        <id column="rj45_no" property="rj45No"/>
+        <id column="fibre_optical_no" property="fibreOpticalNo"/>
+        <id column="ip" property="ip"/>
+        <id column="port" property="port"/>
+        <id column="latitude" property="latitude"/>
+        <id column="latitude_a" property="latitudeA"/>
+        <id column="longitude" property="longitude"/>
+        <id column="longitude_a" property="longitudeA"/>
+        <id column="parent_acpower_no" property="parentAcpowerNo"/>
+        <id column="parent_dcpower_no" property="parentDcpowerNo"/>
+        <id column="parent_fibre_optical_no" property="parentFibreOpticalNo"/>
+        <id column="parent_rj45_no" property="parentRj45No"/>
+        <id column="parent_slot_o" property="parentSlotO"/>
+        <id column="device_model_id" property="deviceModelId"/>
+        <id column="parent_device_id" property="parentDeviceId"/>
+        <id column="region_id" property="regionId"/>
+        <id column="user_name" property="userName"/>
+        <id column="password" property="password"/>
+        <id column="purchase_date" property="purchaseDate"/>
+        <id column="guarantee_time" property="guaranteeTime"/>
+        <id column="modifier" property="modifier"/>
+        <id column="modify_date" property="modifyDate"/>
+        <id column="modify_terminal" property="modifyTerminal"/>
+        <id column="creator" property="creator"/>
+        <id column="create_date" property="createDate"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="create_terminal" property="createTerminal"/>
+        <id column="remark" property="remark"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <!-- 根据ID查询设备详情 -->
+    <select id="findById" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        ad.id as id,
+        ad.parent_device_id as parentDeviceId,
+        ad.device_code as deviceCode,
+        ad.device_model_id as deviceModelId,
+        ad.device_name as deviceName,
+        dk.type as type,
+        dk.device_kind_name AS deviceKindName,
+        dt.device_type_name as deviceTypeName,
+        dm.device_model_name as deviceModelName,
+        ad.port as port,
+        ad.rj45_no as rj45No,
+        ad.fibre_optical_no as fibreOpticalNo,
+        DATE_FORMAT(ad.purchase_date,'%Y-%m-%d %H:%i:%s') AS purchaseDate,
+        ad.guarantee_time as guaranteeTime,
+        ad.remark as remark,
+        ad.longitude as longitude,
+        ad.latitude as latitude,
+        ad.address as address,
+        ad.ip as ip,
+        ad.mac as mac,
+        ad.create_date as createDate,
+        ar. region_name as regionName,
+        ar. id as regionId,
+        ar. region_code as regionCode,
+        ar. full_name as fullName,
+        dea.is_alarm as isAlarm,
+        dea.alarm_level as alarmLevel,
+        dea.alarm_types as alarmTypes,
+        dea.alarm_types_des as alarmTypesDes,
+        aen.network_state as networkState,
+        arl.user_name as regionLeaderName,
+        arl.user_mobile as userMobile,
+        dm.pic_url as picUrl,
+        dm.description as description,
+        ad.debug as debug
+        FROM as_device ad
+        LEFT JOIN as_device_model dm
+        ON ad.device_model_id=dm.id
+        LEFT JOIN as_device_type dt
+        ON dt.device_type=dm.device_type
+        LEFT JOIN as_device_kind dk
+        ON dk.id=dt.device_kind_id
+        LEFT JOIN as_region ar
+        ON ar.id=ad.region_id
+        LEFT JOIN as_device_event_alarm dea
+        ON dea.device_id=ad.id
+        LEFT JOIN as_event_network aen
+        ON aen.device_id=ad.id
+        LEFT JOIN as_region_leader arl
+        ON ad.region_code LIKE CONCAT(arl.region_code,'%')
+        WHERE 1=1 AND (ad.id = #{id} or ad.device_code = #{id})
+        GROUP BY ad.id HAVING MAX(IFNULL(LENGTH(arl.region_code),-1))
+    </select>
+
+    <!-- 查询上级设备 -->
+    <select id="getSuperiorDevice" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        *
+        FROM as_device ad
+        LEFT JOIN as_device_model dm
+        ON ad.device_model_id=dm.id
+        LEFT JOIN as_device_type dt
+        ON dt.device_type=dm.device_type
+        LEFT JOIN as_device_kind dk
+        ON dk.id=dt.device_kind_id
+        LEFT JOIN as_region ar
+        ON ar.id=ad.region_id
+        WHERE ad.del_flag=0
+        and ad.id=#{parentId}
+    </select>
+
+
+    <update id="update">
+        UPDATE as_device
+        <set>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 查询下级设备 -->
+    <select id="getSubordinateDevice" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+        SELECT
+        *
+        FROM as_device ad
+        LEFT JOIN as_device_model dm
+        ON ad.device_model_id=dm.id
+        LEFT JOIN as_device_type dt
+        ON dt.device_type=dm.device_type
+        LEFT JOIN as_device_kind dk
+        ON dk.id=dt.device_kind_id
+        LEFT JOIN as_region ar
+        ON ar.id=ad.region_id
+        WHERE ad.del_flag=0
+        AND ad.parent_device_id=#{id}
+    </select>
+
+    <!--设备状态 -->
+    <select id="getDeviceStautsData" resultType="com.aswl.as.ibrs.api.vo.DeviceModelMetadataVo">
+        SELECT
+        ad.id as deviceId,
+        ad.device_name as deviceName,
+        ad.device_model_id as deviceModelId,
+        adm.device_model_name as deviceModelName,
+        aeumm.event_metadata_id as eventMetadataId ,
+        aeum.tab_code as tabCode,
+        aeum.fld_code as fldCode,
+        aeum.event_status_group_id
+        FROM as_device ad
+        LEFT JOIN as_device_model adm
+        ON ad.device_model_id=adm.id
+        LEFT JOIN as_event_uc_metadata_model aeumm
+        ON ad.device_model_id=aeumm.device_model_id
+        LEFT JOIN as_event_uc_metadata aeum
+        ON aeum.id= aeumm.event_metadata_id
+        WHERE aeum.enable=1
+        AND ad.id=#{id}
+    </select>
+    <select id="getDynamicTable" resultType="java.util.Map">
+        select ${fld} as fldValue
+        from ${tables}
+        where device_id=#{deviceId}
+    </select>
+
+    <select id="getData" resultType="java.util.Map">
+        SELECT t2.event_status_group_id AS groupId,
+        t2.vector_type AS vectorType
+        FROM as_event_uc_metadata t2
+        WHERE t2.fld_code = #{fld} AND t2.tab_code = #{tables}
+        LIMIT 1
+    </select>
+
+    <select id="getEventUcStatusOperation" resultType="com.aswl.as.ibrs.api.vo.EventUcStatusOperationVo">
+        SELECT
+        t1.id as id,
+        t1.title AS title,
+        t1.oper_name AS operName,
+        t1.oper_code AS operCode,
+        t1.oper_sort AS operSort,
+        t3.event_metadata_id AS metadataId,
+        t3.device_model_id AS deviceModelId,
+        t3.event_metadata_id as eventMetadataId,
+        t3.port_serial as portSerial
+        FROM as_event_uc_status_operation t1
+        LEFT JOIN as_event_uc_metadata_model_operation t2
+        ON t1.id=t2.status_operation_id
+        LEFT JOIN as_event_uc_metadata_model t3
+        ON t3.id= t2.event_metadata_model_id
+        WHERE t3.device_model_id=#{deviceModelId}
+    </select>
+
+    <select id="getOnlineStatusByDeviceId" resultType="java.util.Map">
+        SELECT t1.device_id AS deviceId,d.device_code AS deviceCode,t1.network_state AS networkStatus,
+        t2.code AS code,t2.code_cn AS codeCN
+        FROM as_event_network t1 JOIN as_device d
+        ON d.id = t1.device_id JOIN as_alarm_type t2
+        ON t2.status_value = t1.network_state
+        WHERE t2.status_name = "IsOnline" AND ( t1.device_id = #{id} OR d.device_code = #{id})
+    </select>
+</mapper>

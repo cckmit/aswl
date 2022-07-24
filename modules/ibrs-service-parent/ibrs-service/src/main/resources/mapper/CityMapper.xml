@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.CityMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="cityResultMap" type="com.aswl.as.ibrs.api.module.City">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="short_name"   property="shortName" />
+			<id column="pinyin"   property="pinyin" />
+			<id column="jianpin"   property="jianpin" />
+			<id column="code"   property="code" />
+			<id column="parent_id"   property="parentId" />
+			<id column="level" property="level"/>
+			<id column="lng" property="lng"/>
+			<id column="lat" property="lat"/>
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="cityColumns">
+		id, name, short_name, pinyin, jianpin, code, parent_id,lng,lat application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					AND name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="shortName  != null and shortName != ''" >
+					AND short_name like CONCAT('%',#{shortName},'%')
+				</if>
+				<if test="pinyin  != null and pinyin != ''" >
+					AND pinyin like CONCAT('%',#{pinyin},'%')
+				</if>
+				<if test="jianpin  != null and jianpin != ''" >
+					AND jianpin like CONCAT('%',#{jianpin},'%')
+				</if>
+				<if test="code  != null and code != ''" >
+					AND code like CONCAT('%',#{code},'%')
+				</if>
+				<if test="parentId  != null and parentId != ''" >
+					AND parent_id like CONCAT('%',#{parentId},'%')
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+			 ORDER BY code
+	</sql>
+
+	<select id="get" resultMap="cityResultMap">
+		SELECT
+		<include refid="cityColumns"/>
+		FROM as_city
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="cityResultMap">
+		SELECT
+		id,
+		name,
+		short_name,
+		pinyin,
+		jianpin,
+		code,
+		parent_id,
+		level,
+		lng,
+		lat,
+		application_code,
+		tenant_code,
+		 "1" AS type
+		FROM as_city
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="cityResultMap">
+		SELECT
+		<include refid="cityColumns"/>
+		FROM as_city
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_city
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="shortName != null">
+                    short_name,
+                </if>
+                <if test="pinyin != null">
+                    pinyin,
+                </if>
+                <if test="jianpin != null">
+                    jianpin,
+                </if>
+                <if test="code != null">
+                    code,
+                </if>
+                <if test="parentId != null">
+                    parent_id,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="shortName != null">
+                    #{shortName},
+                </if>
+                <if test="pinyin != null">
+                    #{pinyin},
+                </if>
+                <if test="jianpin != null">
+                    #{jianpin},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+                <if test="parentId != null">
+                    #{parentId},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_city
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="shortName != null">
+					short_name =  #{shortName},
+				</if>
+				<if test="pinyin != null">
+					pinyin =  #{pinyin},
+				</if>
+				<if test="jianpin != null">
+					jianpin =  #{jianpin},
+				</if>
+				<if test="code != null">
+					code =  #{code},
+				</if>
+				<if test="parentId != null">
+					parent_id =  #{parentId},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_city
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_city
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+
+	<select id="findByCode" resultMap="cityResultMap">
+		SELECT <include refid="cityColumns"/>
+		FROM as_city where code = #{cityCode}
+	</select>
+
+	<select id="getCityRate" resultType="com.aswl.as.ibrs.api.vo.CityVo">
+		SELECT
+		city1.id,
+		city1.name,
+		city1.code,
+		city1.jianpin,
+		city1.parent_id,
+		city1.level,
+		city1.lng,
+		city1.lat,
+		SUM(IFNULL (t.deviceCount,0))AS deviceCount ,
+		SUM(IFNULL(t.intactCount,0)) AS intactCount ,
+		SUM(IFNULL (t.onlineCount,0)) AS onlineCount
+		FROM as_city city1 LEFT JOIN (
+		SELECT
+		city.id,
+        city.code,
+        COUNT(1) AS deviceCount,
+		SUM(CASE WHEN eventAlarm.alarm_level != 1 THEN 1 ELSE 0 END ) AS intactCount ,
+		SUM(CASE WHEN network.network_state = 1 THEN 1 ELSE 0 END ) AS onlineCount,
+		kind.type
+		FROM as_city city
+		LEFT JOIN as_project project
+		ON city.id=project.city_id
+		LEFT JOIN as_device device
+		ON project.project_id=device.project_id
+		LEFT JOIN as_event_network network
+		ON device.id =network.device_id
+		LEFT JOIN as_device_event_alarm eventAlarm
+		ON device.id =eventAlarm.device_id
+		LEFT JOIN as_device_model model
+		ON model.id =device.device_model_id
+		LEFT JOIN as_device_type type
+		ON type.device_type =model.device_type
+		LEFT JOIN as_device_kind kind
+		ON kind.id =type.device_kind_id
+		<if test="kind != null and kind != ''">
+			WHERE kind.type = #{kind}
+		</if>
+		<if test="projectId!= null and projectId !=''">
+			AND project.project_id = #{projectId}
+		</if>
+		GROUP BY city.id ) AS t
+		ON t.code LIKE CONCAT (city1.code,'%')
+		WHERE 1=1
+		<choose>
+			<when test="parentId != null and parentId != ''">
+				AND city1.parent_id = #{parentId}
+			</when>
+			<otherwise>
+				AND city1.parent_id = (SELECT id FROM as_city WHERE parent_id ="-1")
+			</otherwise>
+		</choose>
+		<if test="cityCode!= null and cityCode !=''">
+			AND city1.code LIKE CONCAT (#{cityCode},'%')
+		</if>
+		<if test='level!= null and level == "province" '>
+		 AND city1.level in ('province','city')
+		</if>
+		GROUP BY city1.id
+		ORDER BY city1.code
+	</select>
+
+	<select id="findProjectRate" resultType="com.aswl.as.ibrs.api.vo.ProjectVo">
+		SELECT
+		t.id,
+		t.name,
+		t.parent_id,
+		t.code,
+		t.level,
+		t.parentCityId,
+		t.parentCityName,
+		t.parentCityParentId,
+		t.parentCityCode,
+		project1.project_id AS projectId,
+		project1.project_name AS projectName,
+		project1.project_code AS projectCode,
+		IFNULL (t.deviceCount,0)AS deviceCount ,
+		IFNULL(t.intact,0) AS intactCount ,
+		IFNULL (t.online,0) AS onlineCount
+		FROM as_project project1 LEFT JOIN (
+		SELECT
+		city.id,
+		city.code,
+		city.parent_id,
+		city.name,
+		city.level,
+		parentCity.id AS parentCityId ,
+		parentCity.code AS parentCityCode,
+		parentCity.parent_id AS parentCityParentId,
+		parentCity.name AS parentCityName,
+		project.project_id,
+		project.project_name,
+		COUNT(device.project_id) AS deviceCount,
+		SUM(CASE WHEN eventAlarm.alarm_level != 1 THEN 1 ELSE 0 END ) AS intact ,
+		SUM(CASE WHEN network.network_state = 1 THEN 1 ELSE 0 END ) AS online
+		FROM  as_project project
+		LEFT JOIN as_city city
+		ON city.id=project.city_id
+		LEFT JOIN as_device device
+		ON project.project_id=device.project_id
+		LEFT JOIN as_event_network network
+		ON device.id =network.device_id
+		LEFT JOIN as_device_event_alarm eventAlarm
+		ON device.id =eventAlarm.device_id
+		LEFT JOIN as_device_model model
+		ON model.id =device.device_model_id
+		LEFT JOIN as_device_type type
+		ON type.device_type =model.device_type
+		LEFT JOIN as_device_kind kind
+		ON kind.id =type.device_kind_id
+		LEFT JOIN as_city parentCity
+		ON parentCity.id=city.parent_id
+		<if test="kind!= null and kind != ''">
+			WHERE kind.type = #{kind}
+		</if>
+		GROUP BY project.project_id) AS t
+		ON project1.project_id=t.project_id
+		<if test="cityCode != null and cityCode != ''">
+			WHERE t.code LIKE CONCAT (#{cityCode},'%')
+		</if>
+		ORDER BY deviceCount DESC
+	</select>
+	<select id="getHealthyRate" resultType="java.util.Map">
+		SELECT
+		COUNT(*) AS deviceCount,
+		IFNULL(SUM(CASE WHEN alarm.alarm_level != 1 THEN 1 ELSE 0 END),0) AS normalCount
+		FROM as_device device
+		LEFT JOIN as_project project
+		ON device.project_id =project.project_id
+		LEFT JOIN as_city city
+		ON city.id=project.city_id
+		LEFT JOIN as_device_event_alarm alarm
+		ON alarm.device_id =device.id
+		LEFT JOIN as_device_model model
+		ON model.id =device.device_model_id
+		LEFT JOIN as_device_type type
+		ON type.device_type =model.device_type
+		LEFT JOIN as_device_kind kind
+		ON kind.id =type.device_kind_id
+		WHERE 1=1
+		<if test="cityCode!= null and cityCode!=''">
+			AND city.code LIKE CONCAT(#{cityCode},'%')
+		</if>
+		<if test="kind!= null and kind !=''">
+			AND kind.type= #{kind}
+		</if>
+		<if test="projectId!= null and projectId!=''">
+			AND project.project_id = #{projectId}
+		</if>
+
+	</select>
+	<select id="getFaultType" resultType="java.util.Map">
+		SELECT
+	alarmType.alarm_type_name AS alarmTypeName,
+	COUNT(device.id) alarmCount
+	FROM as_device_event_alarm  alarm
+	LEFT JOIN as_device device
+	ON alarm.device_id =device.id
+	JOIN as_alarm_type alarmType
+	ON LOCATE(alarmType.alarm_type,alarm.alarm_types)
+	AND alarmType.alarm_level=1
+	LEFT JOIN as_project project
+	ON project.project_id=device.project_id
+	LEFT JOIN as_city city
+	ON city.id=project.city_id
+	LEFT JOIN as_device_model model
+	ON model.id =device.device_model_id
+	LEFT JOIN as_device_type type
+	ON type.device_type =model.device_type
+	LEFT JOIN as_device_kind kind
+	ON kind.id =type.device_kind_id
+	WHERE alarm.alarm_level=1
+	<if test="kind!= null and kind != ''">
+		AND kind.type = #{kind}
+	</if>
+	<if test="cityCode!= null and cityCode !=''">
+		AND city.code LIKE CONCAT(#{cityCode},'%')
+	</if>
+	<if test="projectId!= null and projectId!=''">
+		AND project.project_id = #{projectId}
+	</if>
+	GROUP BY alarmType.alarm_type
+	ORDER BY alarmCount DESC
+	</select>
+	<select id="getFaultModel" resultType="java.util.Map">
+	SELECT
+	 t.deviceModelName,
+	 t.alarmCount,
+	 t1.total
+	FROM (
+	SELECT
+	model.device_model_name AS deviceModelName,
+	model.id,
+	COUNT(1) AS alarmCount
+	FROM as_device_event_alarm  alarm
+	LEFT JOIN as_device device
+	ON alarm.device_id =device.id
+	LEFT JOIN as_project project
+	ON project.project_id=device.project_id
+	LEFT JOIN as_city city
+	ON city.id=project.city_id
+	LEFT JOIN as_device_model model
+	ON model.id =device.device_model_id
+	LEFT JOIN as_device_type type
+	ON type.device_type =model.device_type
+	LEFT JOIN as_device_kind kind
+	ON kind.id =type.device_kind_id
+	 WHERE alarm.alarm_level=1
+	 <if test="cityCode !=null and cityCode !=''">
+		 AND city.code  LIKE CONCAT(#{cityCode},'%')
+	 </if>
+	<if test="kind !=null and kind !=''">
+		AND kind.type = #{kind}
+	</if>
+	<if test="projectId!= null and projectId!=''">
+	   AND project.project_id = #{projectId}
+	</if>
+	GROUP BY model.id )AS t
+	LEFT JOIN (SELECT m.id, m.device_model_name,COUNT(1) AS total FROM as_device  a LEFT JOIN as_device_model m ON a.device_model_id =m.id GROUP BY m.id) AS t1
+	ON t.id=t1.id
+</select>
+	<select id="findDeviceList" resultType="com.aswl.as.ibrs.api.vo.DeviceVo">
+	SELECT
+	device.id AS id,
+	device.device_name AS deviceName,
+	device.address AS  address,
+	device.ip AS ip,
+	alarm.alarm_level AS alarmLevel,
+	network.network_state AS networkState,
+	kind.type AS type,
+	device.latitude,
+	device.longitude,
+	alarm.alarm_types_des
+	 FROM  as_device device
+	LEFT JOIN as_project project
+	ON device.project_id =project.project_id
+	LEFT JOIN as_city city
+	ON city.id =project.city_id
+	LEFT JOIN as_device_event_alarm alarm
+	ON alarm.device_id= device.id
+	LEFT JOIN as_event_network network
+	ON network.device_id= device.id
+	LEFT JOIN as_device_model model
+	ON model.id =device.device_model_id
+	LEFT JOIN as_device_type type
+	ON type.device_type =model.device_type
+	LEFT JOIN as_device_kind kind
+	ON kind.id =type.device_kind_id
+    WHERE device.del_flag=0
+	<if test="longMin!=null and longMax!=null ">
+		AND device.longitude between #{longMin} and #{longMax}
+	</if>
+	<if test="latMin!=null and latMax!=null ">
+		AND  device.latitude between #{latMin} and #{latMax}
+	</if>
+	<if test="kind != null and kind !=''">
+		AND kind.type in (${kind})
+	</if>
+   <if test="cityCodes != null and cityCodes !=''">
+	   AND city.code in
+		   <foreach item="item" index="index" collection="cityCodes.split(',')" open="(" separator="," close=")">
+			   #{item}
+		   </foreach>
+	   </if>
+	<if test="projectId != null and projectId !='' ">
+		AND project.project_id in
+        <foreach item="item" index="index" collection="projectId.split(',')" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+	</select>
+
+	<select id="findDevicesStatistics" resultType="java.util.Map">
+		SELECT
+		COUNT(1) AS deviceCount,
+		COALESCE(SUM(CASE WHEN alarm.alarm_level =1 THEN 1 ELSE 0 END),0) AS faultCount,
+		COALESCE(SUM(CASE WHEN alarm.alarm_level =2 THEN 1 ELSE 0 END),0) AS warningCount,
+		COALESCE(SUM(CASE WHEN network.network_state =1 THEN 1 ELSE 0 END),0) AS onlineCount,
+		COALESCE(SUM(CASE WHEN network.network_state !=1 THEN 1 ELSE 0 END),0) AS offlineCount,
+		COALESCE(COUNT(1)-COALESCE(SUM(CASE WHEN alarm.alarm_level =1 THEN 1 ELSE 0 END),0),0) AS intactCount
+		FROM  as_device device
+		LEFT JOIN as_project project
+		ON device.project_id =project.project_id
+		LEFT JOIN as_city city
+		ON city.id =project.city_id
+		LEFT JOIN as_device_event_alarm alarm
+		ON alarm.device_id= device.id
+		LEFT JOIN as_event_network network
+		ON network.device_id= device.id
+		LEFT JOIN as_device_model model
+		ON model.id =device.device_model_id
+		LEFT JOIN as_device_type type
+		ON type.device_type =model.device_type
+		LEFT JOIN as_device_kind kind
+		ON kind.id =type.device_kind_id
+		WHERE device.del_flag=0
+		<if test="longMin!=null and longMax!=null ">
+			AND device.longitude between #{longMin} and #{longMax}
+		</if>
+		<if test="latMin!=null and latMax!=null ">
+			AND  device.latitude between #{latMin} and #{latMax}
+		</if>
+		<if test="kind != null and kind !=''">
+			AND kind.type in (${kind})
+		</if>
+		<if test="cityCode != null and cityCode !=''">
+			AND city.code LIKE CONCAT(#{cityCode},'%')
+		</if>
+		<if test="cityCodes != null and cityCodes !=''">
+			AND city.code in
+			<foreach item="item" index="index" collection="cityCodes.split(',')" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="projectId != null and projectId !='' ">
+			AND project.project_id in
+			<foreach item="item" index="index" collection="projectId.split(',')" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+	<select id="findManufacturerDevicesStatistics" resultType="com.aswl.as.ibrs.api.vo.CityVo">
+		SELECT
+		 model.manufacturer,
+		 model.device_model_name AS deviceModelName,
+		 COUNT(1)AS deviceCount ,
+		SUM(CASE WHEN eventAlarm.alarm_level != 1 THEN 1 ELSE 0 END ) AS intactCount ,
+		SUM(CASE WHEN network.network_state = 1 THEN 1 ELSE 0 END ) AS onlineCount
+		 FROM  as_device_model model
+		LEFT JOIN  as_device  device
+		ON model.id =device.device_model_id
+		LEFT JOIN as_project project
+		ON device.project_id =project.project_id
+		LEFT JOIN as_city city
+		ON city.id =project.city_id
+		LEFT JOIN as_event_network network
+		ON network.device_id =device.id
+		LEFT JOIN as_device_event_alarm eventAlarm
+		ON eventAlarm.device_id =device.id
+		LEFT JOIN as_device_type type
+		ON type.device_type =model.device_type
+		LEFT JOIN as_device_kind kind
+		ON kind.id =type.device_kind_id
+		WHERE 1=1
+		<if test="kind != null and kind !=''">
+				AND kind.type= #{kind}
+		</if>
+		 <if test="cityCode != null and cityCode !=''">
+				AND city.code LIKE CONCAT(#{cityCode},'%')
+			</if>
+			<if test="projectId != null and projectId !='' ">
+				AND project.project_id  = #{projectId}
+			</if>
+		<if test='groupName != null and groupName =="manufacturer"'>
+				GROUP BY model.manufacturer
+		</if>
+		<if test='groupName != null and groupName =="device_type"'>
+			GROUP BY model.device_type
+		</if>
+
+	</select>
+	<select id="getAssetsStatistics" resultType="java.util.Map">
+		SELECT
+		city1.name,
+		t.type,
+		t.deviceType,
+		t.deviceModelName,
+		SUM(t.total) AS total
+		FROM as_city city1 LEFT JOIN (
+		SELECT
+		city.code,
+		kind.type,
+		type.device_type_name AS deviceType,
+		model.device_model_name deviceModelName ,
+		COUNT(1) AS total
+		FROM as_city city
+		JOIN as_project project
+		ON city.id=project.city_id
+		JOIN as_device device
+		ON device.project_id =project.project_id
+		LEFT JOIN as_device_model model
+		ON model.id =device.device_model_id
+		LEFT JOIN as_device_type type
+		ON type.device_type =model.device_type
+		LEFT JOIN as_device_kind kind
+		ON kind.id =type.device_kind_id
+		WHERE 1=1
+		<if test="kind != null and kind !=''">
+			AND kind.type= #{kind}
+		</if>
+		<if test="projectId != null and projectId !='' ">
+			AND project.project_id = #{projectId}
+		</if>
+		<if test="queryDate!= null and  queryDate!=''">
+			AND DATE_FORMAT(device.create_date ,'%Y-%m-%d') <![CDATA[ <= ]]>  #{queryDate}
+		</if>
+		<if test="deviceType != null and deviceType !='' ">
+			AND type.device_type_name  = #{deviceType}
+		</if>
+		<if test="deviceModelName != null and deviceModelName !='' ">
+			AND model.device_model_name  = #{deviceModelName}
+		</if>
+		GROUP BY city.id,model.device_model_name )AS t
+		ON t.code LIKE CONCAT (city1.code,'%')
+		WHERE 1 =1
+		<if test="cityCode != null and cityCode !=''">
+			AND city1.code LIKE CONCAT(#{cityCode},'%')
+		</if>
+		<choose>
+			<when test="parentId != null and parentId != ''">
+				AND city1.parent_id = #{parentId}
+			</when>
+			<otherwise>
+				AND city1.parent_id = (SELECT id FROM as_city WHERE parent_id ="-1")
+			</otherwise>
+		</choose>
+		AND t.deviceModelName IS NOT NULL
+		GROUP BY
+		city1.id,t.deviceModelName
+		ORDER BY city1.code
+	</select>
+	<select id="getCityTree" resultType="com.aswl.as.ibrs.api.vo.CityProjectDeviceVo">
+		  SELECT
+		city. id ,city.parent_id AS parentId,city.`name` AS `name`, `code` AS `code`, "0" AS `type`, "" AS `status`
+		FROM as_city city
+		WHERE
+		1=1
+		<if test="cityCodes != null and cityCodes !=''">
+			AND city.code in
+			<foreach item="item" index="index" collection="cityCodes.split(',')" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+        UNION ALL
+        SELECT project.project_id AS id,project.city_id AS parentId, project.project_name AS `name`, project.project_code AS `code`, "1" AS `type`, "" AS `status`
+        FROM as_city city
+        JOIN
+        as_project project
+        ON city.id=project.city_id
+		WHERE 1=1
+        <if test="cityCodes != null and cityCodes !=''">
+            AND city.code in
+            <foreach item="item" index="index" collection="cityCodes.split(',')" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+		<if test="projectId != null and projectId !='' ">
+			AND project.project_id in
+			<foreach item="item" index="index" collection="projectId.split(',')" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+        UNION ALL
+        SELECT device.id AS id, CASE WHEN device.parent_device_id IS NULL OR device.parent_device_id ='' THEN device.project_id ELSE device.parent_device_id END AS parentId, device.device_name AS `name`, device.device_code AS `code`, kind.type AS `type`, network.network_state AS `status`
+        FROM as_city city
+        JOIN
+        as_project project
+        ON city.id=project.city_id
+        JOIN as_device device
+        ON device.project_id =project.project_id
+        LEFT JOIN as_device_model model
+        ON model.id =device.device_model_id
+        LEFT JOIN as_device_type type
+        ON type.device_type =model.device_type
+        LEFT JOIN as_device_kind kind
+        ON kind.id =type.device_kind_id
+        LEFT JOIN as_event_network network
+        ON network.device_id=device.id
+        WHERE 1=1
+        <if test="cityCodes != null and cityCodes !=''">
+            AND city.code in
+            <foreach item="item" index="index" collection="cityCodes.split(',')" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+		<if test="projectId != null and projectId !='' ">
+			AND device.project_id in
+			<foreach item="item" index="index" collection="projectId.split(',')" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+</mapper>

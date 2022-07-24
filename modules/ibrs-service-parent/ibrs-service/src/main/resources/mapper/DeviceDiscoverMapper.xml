@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceDiscoverMapper">
+    <select id="findPage" resultType="com.aswl.as.ibrs.api.vo.DeviceDiscoverVo">
+        select t1.*,t2.region_name from as_device_discover t1 left join as_region t2 on t1.region_id = t2.id
+        <where>
+            <if test="ip != null and ip != ''">
+                and ip = #{ip}
+            </if>
+        </where>
+        order by store_time  desc
+    </select>
+</mapper>

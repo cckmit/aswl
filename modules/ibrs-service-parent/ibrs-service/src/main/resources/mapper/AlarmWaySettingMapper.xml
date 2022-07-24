@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmWaySettingMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmWaySettingResultMap" type="com.aswl.as.ibrs.api.module.AlarmWaySetting">
+			<id column="id"   property="id" />
+			<id column="bell"   property="bell" />
+			<id column="voice"   property="voice" />
+			<id column="notice"   property="notice" />
+			<id column="message"   property="message" />
+			<id column="sound_light"   property="soundLight" />
+			<id column="popup_window"   property="popupWindow" />
+			<id column="window_tremble"   property="windowTremble" />
+			<id column="terminal_vibration"   property="terminalVibration" />
+			<id column="alarm_level"   property="alarmLevel" />
+			<id column="project_id"   property="projectId" />
+			<id column="region_code"   property="regionCode" />
+			<id column="create_date"   property="createDate" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="alarmWaySettingColumns">
+		id, bell, voice, notice, message, sound_light, popup_window, window_tremble, terminal_vibration, alarm_level, project_id, region_code, create_date, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="bell!= null and bell!= ''">
+					and bell = #{bell}
+				</if>
+				<if test="voice!= null and voice!= ''">
+					and voice = #{voice}
+				</if>
+				<if test="notice!= null and notice!= ''">
+					and notice = #{notice}
+				</if>
+				<if test="message!= null and message!= ''">
+					and message = #{message}
+				</if>
+				<if test="soundLight!= null and soundLight!= ''">
+					and sound_light = #{soundLight}
+				</if>
+				<if test="popupWindow!= null and popupWindow!= ''">
+					and popup_window = #{popupWindow}
+				</if>
+				<if test="windowTremble!= null and windowTremble!= ''">
+					and window_tremble = #{windowTremble}
+				</if>
+				<if test="terminalVibration!= null and terminalVibration!= ''">
+					and terminal_vibration = #{terminalVibration}
+				</if>
+				<if test="alarmLevel!= null and alarmLevel!= ''">
+					and alarm_level = #{alarmLevel}
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="regionCode!= null and regionCode!= ''" >
+					and region_code LIKE CONCAT(#{regionCode},'%')
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmWaySettingResultMap">
+		SELECT
+		<include refid="alarmWaySettingColumns"/>
+		FROM as_alarm_way_setting
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmWaySettingResultMap">
+		SELECT
+		<include refid="alarmWaySettingColumns"/>
+		FROM as_alarm_way_setting
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmWaySettingResultMap">
+		SELECT
+		<include refid="alarmWaySettingColumns"/>
+		FROM as_alarm_way_setting
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_way_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="bell != null">
+                    bell,
+                </if>
+                <if test="voice != null">
+                    voice,
+                </if>
+                <if test="notice != null">
+                    notice,
+                </if>
+                <if test="message != null">
+                    message,
+                </if>
+                <if test="soundLight != null">
+                    sound_light,
+                </if>
+                <if test="popupWindow != null">
+                    popup_window,
+                </if>
+                <if test="windowTremble != null">
+                    window_tremble,
+                </if>
+                <if test="terminalVibration != null">
+                    terminal_vibration,
+                </if>
+                <if test="alarmLevel != null">
+                    alarm_level,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="bell != null">
+                    #{bell},
+                </if>
+                <if test="voice != null">
+                    #{voice},
+                </if>
+                <if test="notice != null">
+                    #{notice},
+                </if>
+                <if test="message != null">
+                    #{message},
+                </if>
+                <if test="soundLight != null">
+                    #{soundLight},
+                </if>
+                <if test="popupWindow != null">
+                    #{popupWindow},
+                </if>
+                <if test="windowTremble != null">
+                    #{windowTremble},
+                </if>
+                <if test="terminalVibration != null">
+                    #{terminalVibration},
+                </if>
+                <if test="alarmLevel != null">
+                    #{alarmLevel},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_way_setting
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="bell != null">
+					bell =  #{bell},
+				</if>
+				<if test="voice != null">
+					voice =  #{voice},
+				</if>
+				<if test="notice != null">
+					notice =  #{notice},
+				</if>
+				<if test="message != null">
+					message =  #{message},
+				</if>
+				<if test="soundLight != null">
+					sound_light =  #{soundLight},
+				</if>
+				<if test="popupWindow != null">
+					popup_window =  #{popupWindow},
+				</if>
+				<if test="windowTremble != null">
+					window_tremble =  #{windowTremble},
+				</if>
+				<if test="terminalVibration != null">
+					terminal_vibration =  #{terminalVibration},
+				</if>
+				<if test="alarmLevel != null">
+					alarm_level =  #{alarmLevel},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_alarm_way_setting
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_alarm_way_setting
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmCaptureMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmCaptureResultMap" type="com.aswl.as.ibrs.api.module.AlarmCapture">
+			<id column="id"   property="id" />
+			<id column="device_id"   property="deviceId" />
+			<id column="alarm_type"   property="alarmType" />
+			<id column="alarm_type_des" property="alarmTypeDes"/>
+			<id column="pic_path"   property="picPath" />
+			<id column="pic_name"   property="picName" />
+			<id column="store_time"   property="storeTime" />
+			<id column="u_event_id" property="uEventId"/>
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="alarmCaptureColumns">
+		id, device_id, alarm_type, alarm_type_des,pic_path, pic_name, store_time, u_event_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="deviceId  != null and deviceId != ''" >
+					AND device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="alarmType  != null and alarmType != ''" >
+					AND alarm_type like CONCAT('%',#{alarmType},'%')
+				</if>
+				<if test="alarmTypeDes  != null and alarmTypeDes != ''" >
+					AND alarm_type_des like CONCAT('%',#{alarmTypeDes},'%')
+				</if>
+				<if test="picPath  != null and picPath != ''" >
+					AND pic_path like CONCAT('%',#{picPath},'%')
+				</if>
+				<if test="picName  != null and picName != ''" >
+					AND pic_name like CONCAT('%',#{picName},'%')
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+				<if test="uEventId  != null and uEventId != ''">
+					AND u_event_id = #{uEventId}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmCaptureResultMap">
+		SELECT
+		<include refid="alarmCaptureColumns"/>
+		FROM as_alarm_capture
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmCaptureResultMap">
+		SELECT
+		<include refid="alarmCaptureColumns"/>
+		FROM as_alarm_capture
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmCaptureResultMap">
+		SELECT
+		<include refid="alarmCaptureColumns"/>
+		FROM as_alarm_capture
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_capture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="alarmType != null">
+                    alarm_type,
+                </if>
+				<if test="alarmTypeDes != null">
+					alarm_type_des,
+				</if>
+                <if test="picPath != null">
+                    pic_path,
+                </if>
+                <if test="picName != null">
+                    pic_name,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+				<if test="uEventId != null">
+					u_event_Id,
+				</if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="alarmType != null">
+                    #{alarmType},
+                </if>
+				<if test="alarmTypeDes != null">
+					#{alarmTypeDes},
+				</if>
+                <if test="picPath != null">
+                    #{picPath},
+                </if>
+                <if test="picName != null">
+                    #{picName},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+				<if test="uEventId != null">
+					#{uEventId},
+				</if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_capture
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="alarmType != null">
+					alarm_type =  #{alarmType},
+				</if>
+				<if test="alarmTypeDes != null">
+					alarm_type_des =  #{alarmTypeDes},
+				</if>
+				<if test="picPath != null">
+					pic_path =  #{picPath},
+				</if>
+				<if test="picName != null">
+					pic_name =  #{picName},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_alarm_capture
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_alarm_capture
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findByEventId" resultMap="alarmCaptureResultMap">
+		SELECT
+		<include refid="alarmCaptureColumns"/>
+		FROM as_alarm_capture as a
+		WHERE a.store_time > date_add(now(),interval-3 month)
+		AND INSTR(#{uEventId},a.u_event_id)
+	</select>
+</mapper>

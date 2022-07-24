@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ElectricSupplyUnitMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="electricSupplyUnitResultMap" type="com.aswl.as.ibrs.api.module.ElectricSupplyUnit">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="contact"   property="contact" />
+			<id column="phone"   property="phone" />
+			<id column="electric_price" property="electricPrice"/>
+			<id column="description"   property="description" />
+			<id column="create_date" property="createDate"/>
+			<id column="modify_date" property="modifyDate"/>
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="electricSupplyUnitColumns">
+		id, name, contact, phone,electric_price, description,create_date,modify_date, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name!= null and name!= ''" >
+					and name LIKE CONCAT('%',#{name},'%')
+				</if>
+				<if test="contact!= null and contact!= ''" >
+					and contact LIKE CONCAT(#{contact},'%')
+				</if>
+				<if test="phone!= null and phone!= ''" >
+					and phone LIKE CONCAT(#{phone},'%')
+				</if>
+				<if test="description!= null and description!= ''" >
+					and description LIKE CONCAT(#{description},'%')
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="electricSupplyUnitResultMap">
+		SELECT
+		<include refid="electricSupplyUnitColumns"/>
+		FROM as_electric_supply_unit
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="electricSupplyUnitResultMap">
+		SELECT
+		<include refid="electricSupplyUnitColumns"/>
+		FROM as_electric_supply_unit
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="electricSupplyUnitResultMap">
+		SELECT
+		<include refid="electricSupplyUnitColumns"/>
+		FROM as_electric_supply_unit
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_electric_supply_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="contact != null">
+                    contact,
+                </if>
+                <if test="phone != null">
+                    phone,
+                </if>
+			    <if test="electricPrice != null">
+					  electric_price,
+				 </if>
+                <if test="description != null">
+                    description,
+                </if>
+				<if test="createDate!= null">
+					create_date,
+				</if>
+				<if test="modifyDate!= null">
+					modify_date,
+				</if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="contact != null">
+                    #{contact},
+                </if>
+                <if test="phone != null">
+                    #{phone},
+                </if>
+				<if test="electricPrice != null">
+					#{electricPrice},
+				</if>
+                <if test="description != null">
+                    #{description},
+                </if>
+				<if test="createDate!= null">
+					#{createDate},
+				</if>
+				<if test="modifyDate!= null">
+					#{modifyDate},
+				</if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_electric_supply_unit
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="contact != null">
+					contact =  #{contact},
+				</if>
+				<if test="phone != null">
+					phone =  #{phone},
+				</if>
+				<if test="electricPrice != null">
+					electric_price=#{electricPrice},
+				</if>
+				<if test="description != null">
+					description =  #{description},
+				</if>
+				<if test="createDate!= null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate!= null">
+					modify_date=#{modifyDate},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_electric_supply_unit
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_electric_supply_unit
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getElectricSupplyUnitList" resultType="com.aswl.as.ibrs.api.vo.ElectricSupplyUnitVo">
+		SELECT
+		aesu.id, aesu.name, aesu.contact, aesu.phone, aesu.electric_price AS electricPrice, aesu.description,
+		aesu.create_date AS createDate, aesu.modify_date AS modifyDate,
+		aesu.project_id AS projectId, aesu.application_code AS applicationCode, aesu.tenant_code AS tenantCode,
+		COUNT(aeud.device_id) AS deviceNum, GROUP_CONCAT(aeud.device_id) AS deviceIds
+		FROM as_electric_supply_unit AS aesu
+		LEFT JOIN as_electric_unit_device AS aeud ON aeud.unit_id = aesu.id
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+		GROUP BY aesu.id
+	</select>
+    <select id="findByUnitId" resultType="com.aswl.as.ibrs.api.vo.UnitDeviceVo">
+		SELECT
+    unit.name AS name,
+    d.device_name AS deviceName,
+    IFNULL(SUM(es.electric_day),0) AS electricTotal,
+    unit.electric_price AS electricPrice
+     FROM as_device d
+     LEFT JOIN as_electric_unit_device ud
+    ON d.id = ud.device_id
+    LEFT JOIN as_electric_statistics es
+    ON es.device_id = ud.device_id
+	<if test="startTime != null and endTime != ''">
+	  AND es.statistics_date BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d')
+	</if>
+    LEFT JOIN as_electric_supply_unit unit
+    ON unit.id = ud.unit_id
+    WHERE  1=1
+    <if test="unitId != null and unitId!= ''">
+        AND unit.id = #{unitId}
+    </if>
+	<if test="deviceName!= null and deviceName!= '' ">
+		AND d.device_name LIKE CONCAT('%',#{deviceName},'%')
+	</if>
+    GROUP BY d.id
+   ORDER BY electricTotal DESC
+	</select>
+</mapper>

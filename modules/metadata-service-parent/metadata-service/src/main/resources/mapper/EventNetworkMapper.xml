@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventNetworkMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventNetworkResultMap" type="com.aswl.as.ibrs.api.module.EventNetwork">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="network_state"   property="networkState" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventNetworkColumns">
+		id, device_id, region_no, network_state, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''" >
+					and u_evnet_id like CONCAT('%',#{uEventId},'%')
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="networkState  != null and networkState != ''">
+					and network_state = #{networkState}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventNetworkResultMap">
+		SELECT
+		<include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventNetworkResultMap">
+		SELECT
+		<include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventNetworkResultMap">
+		SELECT
+		<include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_network
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="networkState != null">
+                    network_state,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="networkState != null">
+                    #{networkState},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_network
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="networkState != null">
+					network_state =  #{networkState},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_event_network SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_event_network SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventUcStatusGroupModelMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="eventUcStatusGroupModelResultMap" type="com.aswl.as.ibrs.api.module.EventUcStatusGroupModel">
+        <id column="id" property="id"/>
+        <id column="event_status_group_id" property="eventStatusGroupId"/>
+        <id column="device_model_id" property="deviceModelId"/>
+        <id column="port_num" property="portNum"/>
+        <id column="create_date" property="createDate"/>
+        <id column="create_by" property="createBy"/>
+        <id column="create_name" property="createName"/>
+        <id column="update_date" property="updateDate"/>
+        <id column="update_by" property="updateBy"/>
+        <id column="update_name" property="updateName"/>
+    </resultMap>
+
+    <sql id="eventUcStatusGroupModelColumns">
+		id, event_status_group_id, device_model_id, port_num, create_date, create_by, create_name, update_date, update_by, update_name
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="eventStatusGroupId  != null and eventStatusGroupId != ''">
+            and event_status_group_id =#{eventStatusGroupId}
+        </if>
+        <if test="deviceModelId  != null and deviceModelId != ''">
+            and device_model_id = #{deviceModelId}
+        </if>
+        <if test="portNum  != null and portNum != ''">
+            and port_num = #{portNum}
+        </if>
+        <if test="createDate  != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="createBy  != null and createBy != ''">
+            and create_by like CONCAT('%',#{createBy},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="updateDate  != null and updateDate != ''">
+            and update_date = #{updateDate}
+        </if>
+        <if test="updateBy  != null and updateBy != ''">
+            and update_by like CONCAT('%',#{updateBy},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="eventUcStatusGroupModelResultMap">
+        SELECT
+        <include refid="eventUcStatusGroupModelColumns"/>
+        FROM as_event_uc_status_group_model
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultMap="eventUcStatusGroupModelResultMap">
+        SELECT
+        <include refid="eventUcStatusGroupModelColumns"/>
+        FROM as_event_uc_status_group_model
+        WHERE 1=1
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="eventUcStatusGroupModelResultMap">
+        SELECT
+        <include refid="eventUcStatusGroupModelColumns"/>
+        FROM as_event_uc_status_group_model
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_event_uc_status_group_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="eventStatusGroupId != null">
+                event_status_group_id,
+            </if>
+            <if test="deviceModelId != null">
+                device_model_id,
+            </if>
+            <if test="portNum != null">
+                port_num,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateName != null">
+                update_name,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="eventStatusGroupId != null">
+                #{eventStatusGroupId},
+            </if>
+            <if test="deviceModelId != null">
+                #{deviceModelId},
+            </if>
+            <if test="portNum != null">
+                #{portNum},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="createBy != null">
+                #{createBy},
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy},
+            </if>
+            <if test="updateName != null">
+                #{updateName},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_event_uc_status_group_model
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="eventStatusGroupId != null">
+                event_status_group_id = #{eventStatusGroupId},
+            </if>
+            <if test="deviceModelId != null">
+                device_model_id = #{deviceModelId},
+            </if>
+            <if test="portNum != null">
+                port_num = #{portNum},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="createName != null">
+                create_name = #{createName},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateName != null">
+                update_name = #{updateName},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM  as_event_uc_status_group_model
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM  as_event_uc_status_group_model
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteByDeviceModelId">
+       DELETE FROM  as_event_uc_status_group_model 
+       WHERE device_model_id = #{deviceModelId}  
+        
+    </delete>
+
+
+    <select id="findPortNum" resultType="int">
+        SELECT a.port_num FROM as_event_uc_status_group_model a
+        LEFT JOIN as_event_uc_status_group b ON a.event_status_group_id = b.id
+        WHERE 1 = 1
+        <if test="groupName != null and groupName != ''">
+            AND b.status_group_name = #{groupName}
+        </if>
+        <if test="deviceModelId != null and deviceModelId != ''">
+            AND a.device_model_id = #{deviceModelId}
+        </if>
+    </select>
+</mapper>

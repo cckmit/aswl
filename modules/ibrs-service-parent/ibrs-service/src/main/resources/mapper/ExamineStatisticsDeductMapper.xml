@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineStatisticsDeductMapper">
+
+        <insert id="batchInsert">
+            INSERT INTO as_examine_statistics_deduct
+            (
+            id,
+            examine_statistics_id,
+            examine_base_lib_id,
+            deduct_score_total,
+            store_time,
+            application_code,
+            tenant_code
+            )
+            VALUES
+            <foreach collection="deductList" separator="," item="item">
+                (
+                #{item.id},
+                #{item.examineStatisticsId},
+                #{item.examineBaseLibId},
+                #{item.deductScoreTotal},
+                #{item.storeTime},
+                #{item.applicationCode},
+                #{item.tenantCode}
+                )
+            </foreach>
+    </insert>
+
+    <insert id="insert">
+        INSERT INTO as_examine_statistics_deduct
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="examineStatisticsId != null">
+                examine_statistics_id,
+            </if>
+            <if test="examineBaseLibId != null">
+                examine_base_lib_id,
+            </if>
+            <if test="deductScoreTotal != null">
+                deduct_score_total,
+            </if>
+            <if test="deductFeeTotal != null">
+                deduct_fee_total,
+            </if>
+            <if test="storeTime != null">
+                store_time,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="examineStatisticsId != null">
+                #{examineStatisticsId},
+            </if>
+            <if test="examineBaseLibId != null">
+                #{examineBaseLibId},
+            </if>
+            <if test="deductScoreTotal != null">
+                #{deductScoreTotal},
+            </if>
+            <if test="deductFeeTotal != null">
+                #{deductFeeTotal},
+            </if>
+            <if test="storeTime != null">
+                #{storeTime},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="periodTotalScope" resultType="com.aswl.as.ibrs.api.dto.PeriodScopeDto">
+        SELECT <!-- CONCAT(DATE_FORMAT(#{periodStart},'%Y-%m'),'至',DATE_FORMAT(#{periodEnd},'%Y-%m')) as period , -->
+        concat(#{periodStart},'至',#{periodEnd}) as period,
+        concat('总分:',100-COALESCE(SUM(t1.deduct_score_total),0)) as totalScope,
+        concat('总金额:',COALESCE(sum(t1.deduct_fee_total),0)) as totalFee
+        FROM
+        as_examine_statistics_deduct as t1 LEFT JOIN as_examine_statistics as t2 on t1.examine_statistics_id = t2.id
+        LEFT JOIN as_examine_standard as t3 on t2.examine_standard_id = t3.id
+        where 1 = 1
+        <if test="standardId != null and standardId != ''">
+            AND t3.id = #{standardId}
+        </if>
+        <if test="periodStart != null and periodEnd != null">
+            AND t1.store_time between #{periodStart} and #{periodEnd}
+        </if>
+    </select>
+
+    <select id="totalScope" resultType="com.aswl.as.ibrs.api.dto.PeriodScopeDto">
+        SELECT <!-- CONCAT(DATE_FORMAT(#{periodStart},'%Y-%m'),'至',DATE_FORMAT(#{periodEnd},'%Y-%m')) as period , -->
+        <!--concat(#{periodStart},'至',#{periodEnd}) as period,-->
+        concat('总分:',100-COALESCE(SUM(deduct_score_total),0)) as totalScope,
+        concat('总金额:',COALESCE(sum(deduct_fee_total),0)) as totalFee
+        FROM as_examine_statistics_deduct
+        where examine_statistics_id = #{statisticId}
+    </select>
+
+    <select id="LabelScope" resultType="com.aswl.as.ibrs.api.dto.LabelScopeDto">
+      SELECT t2.title as labelTitle ,
+        COALESCE(SUM(t1.deduct_score_total),0) as labelScope,
+        COALESCE(SUM(t1.deduct_fee_total),0) as labelFee
+        FROM as_examine_statistics_deduct as t1
+        LEFT JOIN as_examine_base_lib as t2 on t1.examine_base_lib_id = t2.id
+        where t1.examine_statistics_id = #{statisticId}
+        group by t1.examine_base_lib_id
+    </select>
+</mapper>

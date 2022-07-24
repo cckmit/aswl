@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventNetworkMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventNetworkResultMap" type="com.aswl.as.ibrs.api.module.EventNetwork">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="network_state"   property="networkState" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventNetworkColumns">
+		id, device_id, region_no, network_state, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''" >
+					and u_event_id like CONCAT('%',#{uEventId},'%')
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="networkState  != null and networkState != ''">
+					and network_state = #{networkState}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventNetworkResultMap">
+		SELECT
+		<include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventNetworkResultMap">
+		SELECT
+		<include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		WHERE 1 = 1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventNetworkResultMap">
+		SELECT
+		<include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_network
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="uEventId != null and uEventId!=''">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    device_id,
+                </if>
+                <if test="regionNo != null and regionNo!=''">
+                    region_no,
+                </if>
+                <if test="networkState != null and networkState!=''">
+                    network_state,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="uEventId != null and uEventId!=''">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null and regionNo!=''">
+                    #{regionNo},
+                </if>
+                <if test="networkState != null and networkState!=''">
+                    #{networkState},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime,jdbcType=TIMESTAMP, javaType=java.util.Date},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_network
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null and uEventId!=''">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null and deviceId!=''">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null and regionNo!=''">
+					region_no =  #{regionNo},
+				</if>
+				<if test="networkState != null and networkState!=''">
+					network_state =  #{networkState},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_network
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_network
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="onlineCount" resultType="com.aswl.as.ibrs.api.module.CityOnlineStatistics">
+		SELECT
+		ifnull(t4.type,#{type}) as deviceKind,
+		t2.id as deviceModelId,
+		count(t1.id) as deviceNum,
+		count(case when t5.network_state = 1 and t5.device_id not in (select device_id from ${hisTable} where DATE_FORMAT(store_time,'%Y-%m-%d') = #{day} and network_state != 1) then 1 else null end) as onlineNum,
+        count(temp.id) as intactNum
+		from as_device as t1
+		LEFT JOIN as_device_model as t2 on t1.device_model_id = t2.id
+		LEFT JOIN as_device_type as t3 on t2.device_type = t3.device_type
+		LEFT JOIN as_device_kind as t4 on t3.device_kind_id = t4.id
+		LEFT JOIN as_event_network as t5 on t1.id = t5.device_id
+        LEFT JOIN (select id from as_device where id not in(SELECT device_id FROM as_device_event_alarm WHERE alarm_level = 1
+		UNION SELECT device_id FROM as_alarm_statistics WHERE create_date = #{day})
+        ) as temp  on t1.id = temp.id
+		where 1 = 1
+		<if test="type != null and type != ''">
+			and t4.type = #{type}
+		</if>
+		group by t2.id
+	</select>
+
+	<select id="findByDeviceId" resultType="com.aswl.as.ibrs.api.module.EventNetwork">
+		SELECT <include refid="eventNetworkColumns"/>
+		FROM as_event_network
+		where device_id = #{deviceId}
+	</select>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventUcIdMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventUcIdResultMap" type="com.aswl.as.metadata.api.module.EventUcId">
+			<id column="id"   property="id" />
+	</resultMap>
+
+	<sql id="eventUcIdColumns">
+		id, 
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+	</sql>
+
+	<select id="get" resultMap="eventUcIdResultMap">
+		SELECT
+		<include refid="eventUcIdColumns"/>
+		FROM as_event_uc_id
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventUcIdResultMap">
+		SELECT
+		<include refid="eventUcIdColumns"/>
+		FROM as_event_uc_id
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventUcIdResultMap">
+		SELECT
+		<include refid="eventUcIdColumns"/>
+		FROM as_event_uc_id
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_uc_id
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_uc_id
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_event_uc_id SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_event_uc_id SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

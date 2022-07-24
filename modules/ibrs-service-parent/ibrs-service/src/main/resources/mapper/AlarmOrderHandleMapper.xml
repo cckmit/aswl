@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmOrderHandleMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmOrderHandleResultMap" type="com.aswl.as.ibrs.api.module.AlarmOrderHandle">
+			<id column="id"   property="id" />
+			<id column="send_order_type"   property="sendOrderType" />
+			<id column="app_notice"   property="appNotice" />
+			<id column="sms_notice"   property="smsNotice" />
+			<id column="email_notice"   property="emailNotice" />
+			<id column="order_handle_type"   property="orderHandleType" />
+			<id column="handle_user_id"   property="handleUserId" />
+			<id column="modifier"   property="modifier" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="alarmOrderHandleColumns">
+		id, send_order_type, app_notice, sms_notice, email_notice, order_handle_type, handle_user_id, modifier, modify_date, creator, create_date, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+		<if test="sendOrderType != null">
+			AND send_order_type = #{sendOrderType}
+		</if>
+		<if test="appNotice != null">
+			AND app_notice = #{appNotice}
+		</if>
+		<if test="smsNotice != null">
+			AND sms_notice = #{smsNotice}
+		</if>
+		<if test="emailNotice != null">
+			AND email_notice = #{emailNotice}
+		</if>
+		<if test="orderHandleType  != null and orderHandleType != ''">
+			AND order_handle_type = #{orderHandleType}
+		</if>
+		<if test="handleUserId  != null and handleUserId != ''" >
+			AND handle_user_id like CONCAT('%',#{handleUserId},'%')
+		</if>
+		<if test="modifier  != null and modifier != ''" >
+			AND modifier like CONCAT('%',#{modifier},'%')
+		</if>
+		<if test="modifyDate  != null and modifyDate != ''">
+			AND modify_date = #{modifyDate}
+		</if>
+		<if test="creator  != null and creator != ''" >
+			AND creator like CONCAT('%',#{creator},'%')
+		</if>
+		<if test="createDate  != null and createDate != ''">
+			AND create_date = #{createDate}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="applicationCode  != null and applicationCode != ''" >
+			AND application_code = #{applicationCode}
+		</if>
+		<if test="tenantCode  != null and tenantCode != ''" >
+			AND tenant_code = #{tenantCode}
+		</if>
+	</sql>
+
+	<select id="get" resultMap="alarmOrderHandleResultMap">
+		SELECT
+		<include refid="alarmOrderHandleColumns"/>
+		FROM as_alarm_order_handle
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmOrderHandleResultMap">
+		SELECT
+		<include refid="alarmOrderHandleColumns"/>
+		FROM as_alarm_order_handle
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmOrderHandleResultMap">
+		SELECT
+		<include refid="alarmOrderHandleColumns"/>
+		FROM as_alarm_order_handle
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_order_handle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="sendOrderType != null">
+				send_order_type,
+			</if>
+			<if test="appNotice != null">
+				app_notice,
+			</if>
+			<if test="smsNotice != null">
+				sms_notice,
+			</if>
+			<if test="emailNotice != null">
+				email_notice,
+			</if>
+			<if test="orderHandleType != null">
+				order_handle_type,
+			</if>
+			<if test="handleUserId != null">
+				handle_user_id,
+			</if>
+			<if test="modifier != null">
+				modifier,
+			</if>
+			<if test="modifyDate != null">
+				modify_date,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="projectId != null">
+				project_id,
+			</if>
+			<if test="applicationCode != null">
+				application_code,
+			</if>
+			<if test="tenantCode != null">
+				tenant_code,
+			</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="sendOrderType != null">
+				#{sendOrderType},
+			</if>
+			<if test="appNotice != null">
+				#{appNotice},
+			</if>
+			<if test="smsNotice != null">
+				#{smsNotice},
+			</if>
+			<if test="emailNotice != null">
+				#{emailNotice},
+			</if>
+			<if test="orderHandleType != null">
+				#{orderHandleType},
+			</if>
+			<if test="handleUserId != null">
+				#{handleUserId},
+			</if>
+			<if test="modifier != null">
+				#{modifier},
+			</if>
+			<if test="modifyDate != null">
+				#{modifyDate},
+			</if>
+			<if test="creator != null">
+				#{creator},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="projectId != null">
+				#{projectId},
+			</if>
+			<if test="applicationCode != null">
+				#{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				#{tenantCode},
+			</if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_order_handle
+		<set>
+			<if test="id != null">
+				id =  #{id},
+			</if>
+			<if test="sendOrderType != null">
+				send_order_type = #{sendOrderType},
+			</if>
+			<if test="appNotice != null">
+				app_notice = #{appNotice},
+			</if>
+			<if test="smsNotice != null">
+				sms_notice = #{smsNotice},
+			</if>
+			<if test="emailNotice != null">
+				email_notice = #{emailNotice},
+			</if>
+			<if test="orderHandleType != null">
+				order_handle_type =  #{orderHandleType},
+			</if>
+			<if test="handleUserId != null">
+				handle_user_id =  #{handleUserId},
+			</if>
+			<if test="modifier != null">
+				modifier =  #{modifier},
+			</if>
+			<if test="modifyDate != null">
+				modify_date =  #{modifyDate},
+			</if>
+			<if test="creator != null">
+				creator =  #{creator},
+			</if>
+			<if test="createDate != null">
+				create_date =  #{createDate},
+			</if>
+			<if test="projectId != null">
+				project_id = #{projectId},
+			</if>
+			<if test="applicationCode != null">
+				application_code = #{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				tenant_code =  #{tenantCode},
+			</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_alarm_order_handle
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_alarm_order_handle
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+    <delete id="deleteByTenantCode">
+		DELETE FROM  as_alarm_order_handle WHERE tenant_code = #{tenantCode}
+		
+	</delete>
+
+    <select id="findProjectOrderList" resultType="com.aswl.as.ibrs.api.vo.AlarmOrderHandleVo">
+		SELECT ap.project_name as projectName, ap.project_id as projectId, aaoh.id as id,
+		CASE WHEN aaoh.id IS NOT NULL THEN aaoh.send_order_type ELSE 1 END as sendOrderType, <!-- 如果没有设置过，则返回默认值 -->
+		CASE WHEN aaoh.id IS NOT NULL THEN aaoh.app_notice ELSE 1 END as appNotice,
+		CASE WHEN aaoh.id IS NOT NULL THEN aaoh.sms_notice ELSE 0 END as smsNotice,
+		CASE WHEN aaoh.id IS NOT NULL THEN aaoh.email_notice ELSE 0 END as emailNotice,
+		CASE WHEN aaoh.id IS NOT NULL THEN aaoh.order_handle_type ELSE 1 END as orderHandleType,
+		aaoh.application_code as applicationCode, aaoh.tenant_code as tenantCode
+		FROM as_project ap
+		LEFT JOIN as_alarm_order_handle aaoh ON aaoh.project_id = ap.project_id
+		WHERE 1=1
+		<if test="projectId != null and projectId != ''">
+			AND ap.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND ap.tenant_code =  #{tenantCode}
+		</if>
+		ORDER BY ap.project_id
+	</select>
+</mapper>

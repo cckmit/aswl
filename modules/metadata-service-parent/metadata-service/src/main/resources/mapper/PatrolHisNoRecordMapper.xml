@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.PatrolHisNoRecordMapper">
+    <delete id="deleteByDeviceIdAndTime">
+        <foreach collection="hisTables" item="item">
+            DELETE from ${item} WHERE
+            device_id = #{deviceId}
+            <!-- and period_begin_date = #{periodBegin}-->
+            <!--and period_end_date = #{periodEnd};-->
+        </foreach>
+    </delete>
+</mapper>

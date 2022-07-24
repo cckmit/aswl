@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ReportHisInfoMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="reportHisInfoResultMap" type="com.aswl.as.ibrs.api.module.ReportHisInfo">
+			<id column="id"   property="id" />
+			<id column="project_id"   property="projectId" />
+			<id column="region_code"   property="regionCode" />
+			<id column="statis_type"   property="statisType" />
+			<id column="statis_start_time"   property="statisStartTime" />
+			<id column="statis_end_time"   property="statisEndTime" />
+			<id column="doc_format"   property="docFormat" />
+			<id column="create_date"   property="createDate" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="reportHisInfoColumns">
+		id, project_id, region_code, statis_type, statis_start_time, statis_end_time, doc_format, create_date, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+				<if test="regionCode!= null and regionCode!= ''" >
+					and region_code LIKE CONCAT(#{regionCode},'%')
+				</if>
+				<if test="statisType!= null and statisType!= ''" >
+					and statis_type LIKE CONCAT(#{statisType},'%')
+				</if>
+				<if test="statisStartTime!= null and statisStartTime!= ''">
+					and statis_start_time = #{statisStartTime}
+				</if>
+				<if test="statisEndTime!= null and statisEndTime!= ''">
+					and statis_end_time = #{statisEndTime}
+				</if>
+				<if test="docFormat!= null and docFormat!= ''" >
+					and doc_format LIKE CONCAT(#{docFormat},'%')
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="reportHisInfoResultMap">
+		SELECT
+		<include refid="reportHisInfoColumns"/>
+		FROM as_report_his_info
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="reportHisInfoResultMap">
+		SELECT
+		<include refid="reportHisInfoColumns"/>
+		FROM as_report_his_info
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="reportHisInfoResultMap">
+		SELECT
+		<include refid="reportHisInfoColumns"/>
+		FROM as_report_his_info
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<insert id="insert">
+        INSERT INTO as_report_his_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+                <if test="statisType != null">
+                    statis_type,
+                </if>
+                <if test="statisStartTime != null">
+                    statis_start_time,
+                </if>
+                <if test="statisEndTime != null">
+                    statis_end_time,
+                </if>
+                <if test="docFormat != null">
+                    doc_format,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+                <if test="statisType != null">
+                    #{statisType},
+                </if>
+                <if test="statisStartTime != null">
+                    #{statisStartTime},
+                </if>
+                <if test="statisEndTime != null">
+                    #{statisEndTime},
+                </if>
+                <if test="docFormat != null">
+                    #{docFormat},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_report_his_info
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="statisType != null">
+					statis_type =  #{statisType},
+				</if>
+				<if test="statisStartTime != null">
+					statis_start_time =  #{statisStartTime},
+				</if>
+				<if test="statisEndTime != null">
+					statis_end_time =  #{statisEndTime},
+				</if>
+				<if test="docFormat != null">
+					doc_format =  #{docFormat},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_report_his_info
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_report_his_info
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findPageInfo" resultType="com.aswl.as.ibrs.api.vo.ReportHisInfoVo">		
+	SELECT 
+	  ap.project_name AS projectName,
+	  info.id AS id,
+	  info.project_id as projectId,
+	  info.statis_type AS statisType,
+	  info.statis_start_time AS statisStartTime,
+	  info.statis_end_time AS statisEndTime,
+	  MAX(record.download_date) AS downloadDate,
+	  info.doc_format AS docFormat 
+	 FROM as_report_his_info info
+	LEFT JOIN as_report_download_record record
+	ON info.id =record.report_his_info_id
+	LEFT JOIN as_project ap
+	ON ap.project_id =info.project_id
+	WHERE 1=1 AND ap.project_id IS NOT NULL
+	<if test="month != null and month !=''">
+	  AND DATE_FORMAT(info.statis_start_time,'%Y-%m') = #{month}
+	</if>
+	<if test="statisType != null and statisType!='' ">
+		AND info.statis_type LIKE CONCAT('%',#{statisType},'%')
+	</if>
+	<if test="tenantCode != null and tenantCode!=''">
+	   AND info.tenant_code =  #{tenantCode}
+	</if>
+	GROUP BY info.project_id,info.statis_type
+	</select>
+	
+</mapper>

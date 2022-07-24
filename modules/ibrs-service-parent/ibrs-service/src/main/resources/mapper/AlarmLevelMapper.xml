@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmLevelMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="alarmLevelResultMap" type="com.aswl.as.ibrs.api.module.AlarmLevel">
+        <id column="id" property="id"/>
+        <id column="alarm_level" property="alarmLevel"/>
+        <id column="alarm_level_name" property="alarmLevelName"/>
+        <id column="alarm_level_name_en" property="alarmLevelNameEn"/>
+        <id column="remark" property="remark"/>
+        <id column="remark_en" property="remarkEn"/>
+        <id column="order_gen_type" property="orderGenType"/>
+        <id column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <sql id="alarmLevelColumns">
+		id,alarm_level,alarm_level_name,alarm_level_name_en, remark,remark_en,order_gen_type,tenant_code
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+        <if test="alarmLevel  != null and alarmLevel != ''">
+            and alarm_level=#{alarmLevel}
+        </if>
+        <if test="alarmLevelName  != null and alarmLevelName != ''">
+            and alarm_level_name like CONCAT('%',#{alarmLevelName},'%')
+        </if>
+        <if test="remark  != null and remark != ''">
+            and remark like CONCAT('%',#{remark},'%')
+        </if>
+        <if test="orderGenType != null ">
+            and order_gen_type = #{orderGenType}
+        </if>
+        <if test="tenantCode  != null and tenantCode != '' ">
+            and tenant_code =#{tenantCode}
+        </if>
+    </sql>
+
+    <select id="get" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+        FROM as_alarm_level
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+        FROM as_alarm_level
+        WHERE 1=1
+        <include refid="whereColumnList"/>
+        ORDER BY alarm_level desc
+    </select>
+
+
+    <select id="findListById" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+        FROM as_alarm_level
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_alarm_level
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                alarm_level,
+            </if>
+            <if test="alarmLevelName != null and alarmLevelName!=''">
+                alarm_level_name,
+            </if>
+            <if test="alarmLevelNameEn!= null and alarmLevelNameEn !=''">
+                alarm_level_name_en,
+            </if>
+            <if test="remark != null and remark!=''">
+                remark,
+            </if>
+            <if test="remarkEn != null and remarkEn!=''">
+                remark_en,
+            </if>
+            <if test="orderGenType != null ">
+                order_gen_type,
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                #{alarmLevel},
+            </if>
+            <if test="alarmLevelName != null and alarmLevelName!=''">
+                #{alarmLevelName},
+            </if>
+            <if test="alarmLevelNameEn!= null and alarmLevelNameEn !=''">
+                #{alarmLevelNameEn},
+            </if>
+            <if test="remark != null and remark!=''">
+                #{remark},
+            </if>
+            <if test="remarkEn != null and remarkEn!=''">
+                #{remarkEn},
+            </if>
+            <if test="orderGenType != null ">
+                #{orderGenType},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_alarm_level
+        <set>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                alarm_level= #{alarmLevel},
+            </if>
+            <if test="alarmLevelName != null and alarmLevelName!=''">
+                alarm_level_name = #{alarmLevelName},
+            </if>
+            <if test="alarmLevelNameEn!= null and alarmLevelNameEn !=''">
+                alarm_level_name_en =  #{alarmLevelNameEn},
+            </if>
+            <if test="remark != null and remark!=''">
+                remark = #{remark},
+            </if>
+            <if test="remarkEn != null and remarkEn!=''">
+                remark_en = #{remarkEn},
+            </if>
+            <if test=" orderGenType!= null ">
+                order_gen_type = #{orderGenType},
+            </if>
+            <if test="tenantCode != null and tenantCode != '' ">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM as_alarm_level
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM as_alarm_level
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteByTenantCode">
+        DELETE FROM as_alarm_level WHERE tenant_code = #{tenantCode} 
+        
+    </delete>
+    <select id="findAlarmLevel" resultType="java.util.Map">
+		SELECT id AS level,alarm_level_name AS alarmLevelName
+		FROM as_alarm_level
+        where tenant_code=#{tenantCode}
+		ORDER BY level ASC
+	</select>
+
+    <select id="findWorkOrderConfig" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+		FROM as_alarm_level
+        where tenant_code=#{tenantCode}
+		ORDER BY alarm_level ASC
+		Limit 2
+    </select>
+
+    <update id="batchUpdate">
+        update as_alarm_level
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="order_gen_type =case" suffix="end,">
+                <foreach collection="alarmLevels" item="i" index="index">
+                    <if test="i.orderGenType!=null">
+                        when id=#{i.id}  then #{i.orderGenType}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        tenant_code=#{tenantCode}
+        <foreach collection="alarmLevels" separator="or" item="i" index="index" open="and ("  close=")">
+            id=#{i.id}
+        </foreach>
+    </update>
+</mapper>

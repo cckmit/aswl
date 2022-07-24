@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventDataExtMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventDataExtResultMap" type="com.aswl.as.ibrs.api.module.EventDataExt">
+			<id column="id"   property="id" />
+			<id column="device_id"   property="deviceId" />
+			<id column="data"   property="data" />
+	</resultMap>
+
+	<sql id="eventDataExtColumns">
+		id, device_id, `data`
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="deviceId  != null" >
+					and device_id = #{deviceId}
+				</if>
+				<if test="data  != null" >
+					and `data` like CONCAT('%',#{data},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventDataExtResultMap">
+		SELECT
+		<include refid="eventDataExtColumns"/>
+		FROM as_event_data_ext
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventDataExtResultMap">
+		SELECT
+		<include refid="eventDataExtColumns"/>
+		FROM as_event_data_ext
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventDataExtResultMap">
+		SELECT
+		<include refid="eventDataExtColumns"/>
+		FROM as_event_data_ext
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_data_ext
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="data != null">
+					`data`,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="data != null">
+                    #{data},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_data_ext
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="data != null">
+					`data` =  #{data},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_event_data_ext SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_event_data_ext SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

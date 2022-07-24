@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.OpenDoorRecodeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="openDoorRecodeResultMap" type="com.aswl.as.ibrs.api.module.OpenDoorRecode">
+			<id column="id"   property="id" />
+			<id column="device_id"   property="deviceId" />
+			<id column="alarm_type"   property="alarmType" />
+			<id column="open_door_time"   property="openDoorTime" />
+			<id column="close_door_time"   property="closeDoorTime" />
+			<id column="maintain_user_id"   property="maintainUserId" />
+			<id column="pic_paths"   property="picPaths" />
+			<id column="video_path"   property="videoPath" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="openDoorRecodeColumns">
+		id, device_id, alarm_type, open_door_time, close_door_time, maintain_user_id, pic_paths, video_path, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="alarmType  != null and alarmType != ''" >
+					and alarm_type like CONCAT('%',#{alarmType},'%')
+				</if>
+				<if test="openDoorTime  != null ">
+					and open_door_time = #{openDoorTime}
+				</if>
+				<if test="closeDoorTime  != null ">
+					and close_door_time = #{closeDoorTime}
+				</if>
+				<if test="maintainUserId  != null and maintainUserId != ''" >
+					and maintain_user_id like CONCAT('%',#{maintainUserId},'%')
+				</if>
+				<if test="picPaths  != null and picPaths != ''" >
+					and pic_paths like CONCAT('%',#{picPaths},'%')
+				</if>
+				<if test="videoPath  != null and videoPath != ''" >
+					and video_path like CONCAT('%',#{videoPath},'%')
+				</if>
+				<if test="storeTime  != null ">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="openDoorRecodeResultMap">
+		SELECT
+		<include refid="openDoorRecodeColumns"/>
+		FROM as_open_door_recode
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="openDoorRecodeResultMap">
+		SELECT
+		<include refid="openDoorRecodeColumns"/>
+		FROM as_open_door_recode
+		WHERE 1 = 1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="openDoorRecodeResultMap">
+		SELECT
+		<include refid="openDoorRecodeColumns"/>
+		FROM as_open_door_recode
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_open_door_recode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    device_id,
+                </if>
+                <if test="alarmType != null and alarmType!=''">
+                    alarm_type,
+                </if>
+                <if test="openDoorTime != null ">
+                    open_door_time,
+                </if>
+                <if test="closeDoorTime != null ">
+                    close_door_time,
+                </if>
+                <if test="maintainUserId != null and maintainUserId!=''">
+                    maintain_user_id,
+                </if>
+                <if test="picPaths != null and picPaths!=''">
+                    pic_paths,
+                </if>
+                <if test="videoPath != null and videoPath!=''">
+                    video_path,
+                </if>
+                <if test="storeTime != null ">
+                    store_time,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    #{deviceId},
+                </if>
+                <if test="alarmType != null and alarmType!=''">
+                    #{alarmType},
+                </if>
+                <if test="openDoorTime != null ">
+                    #{openDoorTime},
+                </if>
+                <if test="closeDoorTime != null ">
+                    #{closeDoorTime},
+                </if>
+                <if test="maintainUserId != null and maintainUserId!=''">
+                    #{maintainUserId},
+                </if>
+                <if test="picPaths != null and picPaths!=''">
+                    #{picPaths},
+                </if>
+                <if test="videoPath != null and videoPath!=''">
+                    #{videoPath},
+                </if>
+                <if test="storeTime != null ">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_open_door_recode
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="deviceId != null and deviceId!=''">
+					device_id =  #{deviceId},
+				</if>
+				<if test="alarmType != null and alarmType!=''">
+					alarm_type =  #{alarmType},
+				</if>
+				<if test="openDoorTime != null ">
+					open_door_time =  #{openDoorTime},
+				</if>
+				<if test="closeDoorTime != null ">
+					close_door_time =  #{closeDoorTime},
+				</if>
+				<if test="maintainUserId != null and maintainUserId!=''">
+					maintain_user_id =  #{maintainUserId},
+				</if>
+				<if test="picPaths != null and picPaths!=''">
+					pic_paths =  #{picPaths},
+				</if>
+				<if test="videoPath != null and videoPath!=''">
+					video_path =  #{videoPath},
+				</if>
+				<if test="storeTime != null ">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_open_door_recode SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_open_door_recode SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+    <select id="findOpenDoorInfo" resultType="com.aswl.as.ibrs.api.vo.OpenDoorVo">
+		SELECT
+		t1.id AS id,
+		t1.device_id AS deviceId,
+		t2.device_name AS deviceName,
+		t2.device_code AS deviceCode,
+		t2.ip as ip,
+		t3.region_name AS regionName,
+		t1.alarm_type AS alarmType,
+		t1.open_door_time AS openTime,
+		t1.close_door_time AS closeTime,
+		TIMESTAMPDIFF(SECOND,DATE_FORMAT(t1.open_door_time,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(t1.close_door_time,'%Y-%m-%d %H:%i:%s')) AS intervalTime,
+		t4.user_name AS owner,
+		t4.user_mobile AS mobile,
+		t1.pic_paths AS picUrl,t1.video_path AS videoUrl,
+		p.project_name as projectName
+		FROM as_open_door_recode t1 LEFT JOIN as_device t2
+		ON t2.id = t1.device_id LEFT JOIN as_region t3
+		ON t3.id = t2.region_id LEFT JOIN as_region_leader t4
+		ON t4.id = t1.maintain_user_id
+		LEFT JOIN as_project as p 
+		ON t2.project_id = p.project_id
+		WHERE t2.del_flag = 0
+		<if test="deviceId != null and deviceId != ''">
+			AND t1.device_id = #{deviceId}
+		</if>
+		<if test="deviceName != null and deviceName!= ''">
+			AND t2.device_name LIKE CONCAT('%', #{deviceName},'%')
+		</if>
+		<if test="deviceCode != null and deviceCode!= ''">
+			AND t2.device_code = #{deviceCode}
+		</if>
+		<if test="regionCode != null and regionCode != ''">
+			AND t3.region_code LIKE CONCAT( #{regionCode},'%')
+		</if>
+		<if test="alarmType != null and alarmType != ''">
+			AND t1.alarm_type = #{alarmType}
+		</if>
+		<if test="openDoorTime != null and openDoorTime!= ''">
+			AND t1.open_door_time &gt;= #{openDoorTime}
+		</if>
+		<if test="closeDoorTime != null and closeDoorTime!= ''">
+			AND t1.close_door_time &lt;= #{closeDoorTime}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			AND DATE_FORMAT(t1.store_time,'%Y-%m-%d') BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND t2.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND t2.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		 ORDER BY t1.open_door_time DESC
+	</select>
+
+	<select id="findOpenDoorTotal" resultType="int">
+		SELECT count(*) AS count
+		FROM as_open_door_recode t1
+		WHERE 1=1
+		<if test="deviceId != null and deviceId != ''">
+			AND t1.device_id = #{deviceId}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			AND t1.store_time  &gt;= #{startTime}
+		</if>
+		<if test="endTime!= null and endTime != ''">
+			AND t1.store_time  &lt;=   #{endTime}
+		</if>
+	</select>
+
+	<select id="findIllegalOpenDoorTotal" resultType="int">
+		SELECT count(*) AS count
+		FROM as_open_door_recode t1
+		WHERE 1=1
+		AND t1.alarm_type = "DoorExtAlarm2"
+		<if test="deviceId != null and deviceId != ''">
+			AND t1.device_id = #{deviceId}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			AND t1.store_time  &gt;= #{startTime}
+		</if>
+		<if test="endTime!= null and endTime != ''">
+			AND t1.store_time  &lt;= #{endTime}
+		</if>
+	</select>
+</mapper>

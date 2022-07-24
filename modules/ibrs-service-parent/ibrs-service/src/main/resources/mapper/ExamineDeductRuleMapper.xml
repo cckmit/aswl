@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineDeductRuleMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="examineDeductRuleResultMap" type="com.aswl.as.ibrs.api.module.ExamineDeductRule">
+			<id column="id"   property="id" />
+			<id column="examine_item_id"   property="examineItemId" />
+			<id column="min_num"   property="minNum" />
+			<id column="max_num"   property="maxNum" />
+			<id column="expression"   property="expression" />
+			<id column="deduct_score"   property="deductScore" />
+			<id column="deduct_fee"   property="deductFee" />
+			<id column="store_time"   property="storeTime" />
+	</resultMap>
+
+	<sql id="examineDeductRuleColumns">
+		id, examine_item_id, min_num, max_num, expression, deduct_score, deduct_fee, store_time
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="examineItemId  != null and examineItemId != ''" >
+					AND examine_item_id like CONCAT('%',#{examineItemId},'%')
+				</if>
+				<if test="minNum  != null and minNum != ''">
+					AND min_num = #{minNum}
+				</if>
+				<if test="maxNum  != null and maxNum != ''">
+					AND max_num = #{maxNum}
+				</if>
+				<if test="expression  != null and expression != ''" >
+					AND expression like CONCAT('%',#{expression},'%')
+				</if>
+				<if test="deductScore  != null and deductScore != ''">
+					AND deduct_score = #{deductScore}
+				</if>
+				<if test="deductFee  != null and deductFee != ''">
+					AND deduct_fee = #{deductFee}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="examineDeductRuleResultMap">
+		SELECT
+		<include refid="examineDeductRuleColumns"/>
+		FROM as_examine_deduct_rule
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="examineDeductRuleResultMap">
+		SELECT
+		<include refid="examineDeductRuleColumns"/>
+		FROM as_examine_deduct_rule
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="examineDeductRuleResultMap">
+		SELECT
+		<include refid="examineDeductRuleColumns"/>
+		FROM as_examine_deduct_rule
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getRuleListByStandardId" resultMap="examineDeductRuleResultMap">
+		select r.*
+		from as_examine_deduct_rule r
+		inner join as_examine_item i on r.examine_item_id=i.id
+		inner join as_examine_standard s on i.examine_standard_id=s.id
+		where s.id=#{standardId}
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_examine_deduct_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="examineItemId != null">
+                    examine_item_id,
+                </if>
+                <if test="minNum != null">
+                    min_num,
+                </if>
+                <if test="maxNum != null">
+                    max_num,
+                </if>
+                <if test="expression != null">
+                    expression,
+                </if>
+                <if test="deductScore != null">
+                    deduct_score,
+                </if>
+                <if test="deductFee != null">
+                    deduct_fee,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="examineItemId != null">
+                    #{examineItemId},
+                </if>
+                <if test="minNum != null">
+                    #{minNum},
+                </if>
+                <if test="maxNum != null">
+                    #{maxNum},
+                </if>
+                <if test="expression != null">
+                    #{expression},
+                </if>
+                <if test="deductScore != null">
+                    #{deductScore},
+                </if>
+                <if test="deductFee != null">
+                    #{deductFee},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_examine_deduct_rule
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="examineItemId != null">
+					examine_item_id =  #{examineItemId},
+				</if>
+				<if test="minNum != null">
+					min_num =  #{minNum},
+				</if>
+				<if test="maxNum != null">
+					max_num =  #{maxNum},
+				</if>
+				<if test="expression != null">
+					expression =  #{expression},
+				</if>
+				<if test="deductScore != null">
+					deduct_score =  #{deductScore},
+				</if>
+				<if test="deductFee != null">
+					deduct_fee =  #{deductFee},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_examine_deduct_rule
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_examine_deduct_rule
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getByExamineItemId" resultMap="examineDeductRuleResultMap">
+		SELECT * FROM
+		as_examine_deduct_rule
+		WHERE examine_item_id = #{examineItemId}
+	</select>
+</mapper>

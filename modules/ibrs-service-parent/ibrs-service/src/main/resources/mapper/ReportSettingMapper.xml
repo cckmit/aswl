@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ReportSettingMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="reportSettingResultMap" type="com.aswl.as.ibrs.api.module.ReportSetting">
+			<id column="id"   property="id" />
+			<id column="report_user"   property="reportUser" />
+			<id column="report_user_email" property="reportUserEmail"/>
+			<id column="send_user"   property="sendUser" />
+			<id column="send_user_email" property="sendUserEmail"/>
+			<id column="project_id"   property="projectId" />
+			<id column="region_code"   property="regionCode" />
+			<id column="compose_type" property="composeType"/>
+			<id  column="create_date" property="createDate"/>
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="reportSettingColumns">
+		id, report_user,report_user_email, send_user,send_user_email, project_id, region_code,compose_type,create_date, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="reportUser!= null and reportUser!= ''" >
+					and report_user LIKE CONCAT(#{reportUser},'%')
+				</if>
+				<if test="sendUser!= null and sendUser!= ''" >
+					and send_user LIKE CONCAT(#{sendUser},'%')
+				</if>
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+				<if test="regionCode!= null and regionCode!= ''" >
+					and region_code LIKE CONCAT(#{regionCode},'%')
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code = #{tenantCode}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="reportSettingResultMap">
+		SELECT
+		<include refid="reportSettingColumns"/>
+		FROM as_report_setting
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="reportSettingResultMap">
+		SELECT
+		<include refid="reportSettingColumns"/>
+		FROM as_report_setting
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="reportSettingResultMap">
+		SELECT
+		<include refid="reportSettingColumns"/>
+		FROM as_report_setting
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findPageInfo" resultType="com.aswl.as.ibrs.api.vo.ReportSettingVo">
+	SELECT
+	"全部项目" AS projectName,
+	"-1" as projectId,	
+	rs.id AS id ,
+	rs.report_user AS reportUser ,
+	rs.report_user_email AS reportUserEmail,
+	rs.send_user AS sendUser,
+	rs.send_user_email AS sendUserEmail,
+	rs.compose_type AS composeType
+	FROM as_report_setting rs
+	WHERE rs.project_id = -1
+	<if test="tenantCode!= null and tenantCode!= ''" >
+	and rs.tenant_code = #{tenantCode}
+  </if>
+	UNION ALL 
+	SELECT
+	ap.project_name AS projectName,
+	ap.project_id as projectId,
+	rs.id AS id ,
+    rs.report_user AS reportUser ,
+	rs.report_user_email AS reportUserEmail,
+	rs.send_user AS sendUser,
+	rs.send_user_email AS sendUserEmail,	
+	rs.compose_type AS composeType
+	FROM as_project ap
+	LEFT JOIN as_report_setting rs
+	ON ap.project_id = rs.project_id		
+	WHERE 1=1
+		<if test="projectId  != null and projectId != ''" >
+			AND ap.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	<if test="tenantCode!= null and tenantCode!= ''" >
+		and ap.tenant_code = #{tenantCode}
+	</if>	
+	</select>
+	
+	<insert id="insert">
+        INSERT INTO as_report_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="reportUser != null">
+                    report_user,
+                </if>
+				<if test="reportUserEmail != null">
+					report_user_email,
+				</if>
+                <if test="sendUser != null">
+                    send_user,
+                </if>
+			    <if test="sendUserEmail!= null">
+					send_user_email,
+				</if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+			   <if test="composeType!= null">
+				compose_type,
+			  </if>
+			<if test="createDate!= null">
+					create_date,
+			</if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="reportUser != null">
+                    #{reportUser},
+                </if>
+				<if test="reportUserEmail != null">
+					#{reportUserEmail},
+				</if>
+                <if test="sendUser != null">
+                    #{sendUser},
+                </if>
+				<if test="sendUserEmail!= null">
+					#{sendUserEmail},
+				</if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+				<if test="composeType!= null">
+					#{composeType},
+				</if>
+				<if test="createDate!= null">
+					#{createDate},
+				</if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_report_setting
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="reportUser != null">
+					report_user =  #{reportUser},
+				</if>
+				<if test="reportUserEmail != null">
+					report_user_email = #{reportUserEmail},
+				</if>
+				<if test="sendUser != null">
+					send_user =  #{sendUser},
+				</if>
+				<if test="sendUserEmail!= null">
+					send_user_email = #{sendUserEmail},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="composeType!= null">
+					compose_type =#{composeType},
+				</if>
+				<if test="createDate!= null">
+					create_date =#{createDate},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_report_setting
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_report_setting
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

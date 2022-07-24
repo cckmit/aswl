@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.aswl.as.metadata.mapper.FlowRunPrcsMapper">
+	<resultMap id="FlowRunPrcsResultMap" type="com.aswl.as.ibrs.api.module.FlowRunPrcs">
+		<id property="id" column="id" />
+		<result property="runId" column="run_id" />
+		<result property="prcsId" column="prcs_id" />
+		<result property="userId" column="user_id" />
+		<result property="prcsTime" column="prcs_time" />
+		<result property="deliverTime" column="deliver_time" />
+		<result property="prcsFlag" column="prcs_flag" />
+		<result property="flowPrcs" column="flow_prcs" />
+		<result property="opFlag" column="op_flag" />
+		<result property="topFlag" column="top_flag" />
+		<result property="parentId" column="parent_id" />
+		<result property="childRunId" column="child_run_id" />
+		<result property="timeOut" column="time_out" />
+		<result property="otherUser" column="other_user" />
+		<result property="timeOutFlag" column="time_out_flag" />
+		<result property="createTime" column="create_time" />
+		<result property="fromUserId" column="from_user_id" />
+		<result property="activeTime" column="active_time" />
+		<result property="comment" column="comment" />
+		<result property="prcsOrg" column="prcs_org" />
+		<result property="applicationCode" column="application_code" />
+		<result property="tenantCode" column="tenant_code" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+	<!-- 定义可重用的SQL代码段，可以包含在其他语句中 -->
+	<sql id="base_column">
+		 id
+		 ,run_id
+		 ,prcs_id
+		 ,user_id
+		 ,prcs_time
+		 ,deliver_time
+		 ,prcs_flag
+		 ,flow_prcs
+		 ,op_flag
+		 ,top_flag
+		 ,parent_id
+		 ,child_run_id
+		 ,time_out
+		 ,other_user
+		 ,time_out_flag
+		 ,create_time
+		 ,from_user_id
+		 ,active_time
+		 ,comment
+		 ,prcs_org
+		 ,application_code
+		 ,tenant_code
+		 ,remark
+	</sql>
+	
+	<!-- 定义可重用的WHERE SQL公共代码段，可以包含在其他语句中 -->
+	<sql id="where_column">
+		<if test="id != null and id != ''">
+			AND id = #{id,jdbcType=VARCHAR}
+		</if>
+		<if test="runId != null and runId != ''">
+			AND run_id = #{runId,jdbcType=INTEGER}
+		</if>
+		<if test="prcsId != null and prcsId != ''">
+			AND prcs_id = #{prcsId,jdbcType=INTEGER}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND user_id = #{userId,jdbcType=VARCHAR}
+		</if>
+		<if test="prcsTime != null and prcsTime != ''">
+			AND prcs_time = #{prcsTime,jdbcType=INTEGER}
+		</if>
+		<if test="deliverTime != null and deliverTime != ''">
+			AND deliver_time = #{deliverTime,jdbcType=INTEGER}
+		</if>
+		<if test="prcsFlag != null and prcsFlag != ''">
+			AND prcs_flag = #{prcsFlag,jdbcType=BIT}
+		</if>
+		<if test="flowPrcs != null and flowPrcs != ''">
+			AND flow_prcs = #{flowPrcs,jdbcType=INTEGER}
+		</if>
+		<if test="opFlag != null and opFlag != ''">
+			AND op_flag = #{opFlag,jdbcType=BIT}
+		</if>
+		<if test="topFlag != null and topFlag != ''">
+			AND top_flag = #{topFlag,jdbcType=BIT}
+		</if>
+		<if test="parentId != null and parentId != ''">
+			AND parent_id = #{parentId,jdbcType=INTEGER}
+		</if>
+		<if test="childRunId != null and childRunId != ''">
+			AND child_run_id = #{childRunId,jdbcType=INTEGER}
+		</if>
+		<if test="timeOut != null and timeOut != ''">
+			AND time_out = #{timeOut,jdbcType=VARCHAR}
+		</if>
+		<if test="otherUser != null and otherUser != ''">
+			AND other_user = #{otherUser,jdbcType=VARCHAR}
+		</if>
+		<if test="timeOutFlag != null and timeOutFlag != ''">
+			AND time_out_flag = #{timeOutFlag,jdbcType=BIT}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND create_time = #{createTime,jdbcType=INTEGER}
+		</if>
+		<if test="fromUserId != null and fromUserId != ''">
+			AND from_user_id = #{fromUserId,jdbcType=VARCHAR}
+		</if>
+		<if test="activeTime != null and activeTime != ''">
+			AND active_time = #{activeTime,jdbcType=INTEGER}
+		</if>
+		<if test="comment != null and comment != ''">
+			AND comment = #{comment,jdbcType=VARCHAR}
+		</if>
+		<if test="prcsOrg != null and prcsOrg != ''">
+			AND prcs_org = #{prcsOrg,jdbcType=INTEGER}
+		</if>
+		<if test="applicationCode != null and applicationCode != ''">
+			AND application_code = #{applicationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND tenant_code = #{tenantCode,jdbcType=VARCHAR}
+		</if>
+		<if test="remark != null and remark != ''">
+			AND remark = #{remark,jdbcType=VARCHAR}
+		</if>
+	</sql>
+	
+	<select id="find" resultMap="FlowRunPrcsResultMap">
+	
+		SELECT	<include refid="base_column" />
+		FROM	as_flow_run_prcs
+		WHERE	id=#{id,jdbcType=VARCHAR}
+	
+	</select>
+	
+	<select id="findByPk" resultMap="FlowRunPrcsResultMap">
+	
+		SELECT	<include refid="base_column" />
+		FROM	as_flow_run_prcs
+		WHERE	id=#{id,jdbcType=VARCHAR}
+		  
+	</select>
+
+	<select id="findByPage" resultMap="FlowRunPrcsResultMap">
+	
+		SELECT	<include refid="base_column" />
+		FROM	as_flow_run_prcs
+		<where>
+			<include refid="where_column" />
+		</where>
+		
+	</select>
+	
+	<insert id="insert" parameterType="com.aswl.as.ibrs.api.module.FlowRunPrcs">
+	
+		INSERT INTO as_flow_run_prcs
+				(id
+				,run_id
+				,prcs_id
+				,user_id
+				,prcs_time
+				,deliver_time
+				,prcs_flag
+				,flow_prcs
+				,op_flag
+				,top_flag
+				,parent_id
+				,child_run_id
+				,time_out
+				,other_user
+				,time_out_flag
+				,create_time
+				,from_user_id
+				,active_time
+				,comment
+				,prcs_org
+				,application_code
+				,tenant_code
+				,remark
+				)
+		VALUES	(#{id,jdbcType=VARCHAR}
+				,#{runId}
+				,#{prcsId}
+				,#{userId}
+				,#{prcsTime}
+				,#{deliverTime}
+				,#{prcsFlag}
+				,#{flowPrcs}
+				,#{opFlag}
+				,#{topFlag}
+				,#{parentId}
+				,#{childRunId}
+				,#{timeOut}
+				,#{otherUser}
+				,#{timeOutFlag}
+				,#{createTime}
+				,#{fromUserId}
+				,#{activeTime}
+				,#{comment}
+				,#{prcsOrg}
+				,#{applicationCode}
+				,#{tenantCode}
+				,#{remark}
+				)
+				
+	</insert>
+	
+	<update id="update" parameterType="com.aswl.as.ibrs.api.module.FlowRunPrcs">
+	
+		UPDATE	as_flow_run_prcs
+		<set>
+			<if test="id != null ">
+				id = #{id,jdbcType=VARCHAR},
+			</if>
+			<if test="runId != null ">
+				run_id = #{runId,jdbcType=INTEGER},
+			</if>
+			<if test="prcsId != null ">
+				prcs_id = #{prcsId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null ">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="prcsTime != null ">
+				prcs_time = #{prcsTime,jdbcType=INTEGER},
+			</if>
+			<if test="deliverTime != null ">
+				deliver_time = #{deliverTime,jdbcType=INTEGER},
+			</if>
+			<if test="prcsFlag != null ">
+				prcs_flag = #{prcsFlag,jdbcType=BIT},
+			</if>
+			<if test="flowPrcs != null ">
+				flow_prcs = #{flowPrcs,jdbcType=INTEGER},
+			</if>
+			<if test="opFlag != null ">
+				op_flag = #{opFlag,jdbcType=BIT},
+			</if>
+			<if test="topFlag != null ">
+				top_flag = #{topFlag,jdbcType=BIT},
+			</if>
+			<if test="parentId != null ">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="childRunId != null ">
+				child_run_id = #{childRunId,jdbcType=INTEGER},
+			</if>
+			<if test="timeOut != null ">
+				time_out = #{timeOut,jdbcType=VARCHAR},
+			</if>
+			<if test="otherUser != null ">
+				other_user = #{otherUser,jdbcType=VARCHAR},
+			</if>
+			<if test="timeOutFlag != null ">
+				time_out_flag = #{timeOutFlag,jdbcType=BIT},
+			</if>
+			<if test="createTime != null ">
+				create_time = #{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="fromUserId != null ">
+				from_user_id = #{fromUserId,jdbcType=VARCHAR},
+			</if>
+			<if test="activeTime != null ">
+				active_time = #{activeTime,jdbcType=INTEGER},
+			</if>
+			<if test="comment != null ">
+				comment = #{comment,jdbcType=VARCHAR},
+			</if>
+			<if test="prcsOrg != null ">
+				prcs_org = #{prcsOrg,jdbcType=INTEGER},
+			</if>
+			<if test="applicationCode != null ">
+				application_code = #{applicationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="tenantCode != null ">
+				tenant_code = #{tenantCode,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null ">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE	id = #{id,jdbcType=VARCHAR}
+		  
+	</update>
+	
+	<delete id="deleteByPk">
+	
+		DELETE	FROM as_flow_run_prcs
+		WHERE	id = #{id,jdbcType=VARCHAR}
+		  
+	</delete>
+	
+	<delete id="delete">
+	
+		DELETE	FROM as_flow_run_prcs
+		WHERE	id
+		   IN
+    	<foreach item="flowRunPrcsId" index="index" collection="array" open="(" separator="," close=")">
+	  		#{flowRunPrcsId} 
+		</foreach>
+		  
+	</delete>
+</mapper> 

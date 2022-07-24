@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ReportStatisticsColorSettingMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="reportStatisticsColorSettingResultMap"
+               type="com.aswl.as.ibrs.api.module.ReportStatisticsColorSetting">
+        <id column="id" property="id"/>
+        <id column="colors" property="colors"/>
+        <id column="statistics_type" property="statisticsType"/>
+        <id column="create_date" property="createDate"/>
+        <id column="project_id" property="projectId"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <sql id="reportStatisticsColorSettingColumns">
+		id, colors, statistics_type, create_date, project_id, application_code, tenant_code
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="colors!= null and colors!= ''">
+            and colors LIKE CONCAT('%',#{colors},'%')
+        </if>
+        <if test="statisticsType!= null and statisticsType!= ''">
+            and statistics_type = #{statisticsType}
+        </if>
+        <if test="createDate!= null and createDate!= ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="projectId!= null and projectId!= ''">
+            and project_id = #{projectId}
+        </if>
+        <if test="applicationCode!= null and applicationCode!= ''">
+            and application_code = #{applicationCode}
+        </if>
+        <if test="tenantCode!= null and tenantCode!= ''">
+            and tenant_code = #{tenantCode}
+        </if>
+    </sql>
+
+    <select id="get" resultMap="reportStatisticsColorSettingResultMap">
+        SELECT
+        <include refid="reportStatisticsColorSettingColumns"/>
+        FROM as_report_statistics_color_setting
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultMap="reportStatisticsColorSettingResultMap">
+        SELECT
+        <include refid="reportStatisticsColorSettingColumns"/>
+        FROM as_report_statistics_color_setting
+        WHERE 1=1
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="reportStatisticsColorSettingResultMap">
+        SELECT
+        <include refid="reportStatisticsColorSettingColumns"/>
+        FROM as_report_statistics_color_setting
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_report_statistics_color_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="colors != null">
+                colors,
+            </if>
+            <if test="statisticsType != null">
+                statistics_type,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="colors != null">
+                #{colors},
+            </if>
+            <if test="statisticsType != null">
+                #{statisticsType},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="projectId != null">
+                #{projectId},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_report_statistics_color_setting
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="colors != null">
+                colors = #{colors},
+            </if>
+            <if test="statisticsType != null">
+                statistics_type = #{statisticsType},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM  as_report_statistics_color_setting
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM as_report_statistics_color_setting
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineTimePartConfigMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="examineTimePartConfigResultMap" type="com.aswl.as.ibrs.api.module.ExamineTimePartConfig">
+			<id column="id"   property="id" />
+			<id column="examine_item_id"   property="examineItemId" />
+			<id column="begin_time"   property="beginTime" />
+			<id column="end_time"   property="endTime" />
+			<id column="respond_num"   property="respondNum" />
+			<id column="respond_unit"   property="respondUnit" />
+			<id column="respond_time"   property="respondTime" />
+			<id column="store_time"   property="storeTime" />
+	</resultMap>
+
+	<sql id="examineTimePartConfigColumns">
+		id, examine_item_id, begin_time, end_time, respond_num, respond_unit, respond_time, store_time
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="examineItemId  != null and examineItemId != ''" >
+					AND examine_item_id like CONCAT('%',#{examineItemId},'%')
+				</if>
+				<if test="beginTime  != null and beginTime != ''">
+					AND begin_time = #{beginTime}
+				</if>
+				<if test="endTime  != null and endTime != ''">
+					AND end_time = #{endTime}
+				</if>
+				<if test="respondNum  != null and respondNum != ''">
+					AND respond_num = #{respondNum}
+				</if>
+				<if test="respondUnit  != null and respondUnit != ''" >
+					AND respond_unit like CONCAT('%',#{respondUnit},'%')
+				</if>
+				<if test="respondTime  != null and respondTime != ''">
+					AND respond_time = #{respondTime}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="examineTimePartConfigResultMap">
+		SELECT
+		<include refid="examineTimePartConfigColumns"/>
+		FROM as_examine_time_part_config
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="examineTimePartConfigResultMap">
+		SELECT
+		<include refid="examineTimePartConfigColumns"/>
+		FROM as_examine_time_part_config
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="examineTimePartConfigResultMap">
+		SELECT
+		<include refid="examineTimePartConfigColumns"/>
+		FROM as_examine_time_part_config
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_examine_time_part_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="examineItemId != null">
+                    examine_item_id,
+                </if>
+                <if test="beginTime != null">
+                    begin_time,
+                </if>
+                <if test="endTime != null">
+                    end_time,
+                </if>
+                <if test="respondNum != null">
+                    respond_num,
+                </if>
+                <if test="respondUnit != null">
+                    respond_unit,
+                </if>
+                <if test="respondTime != null">
+                    respond_time,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="examineItemId != null">
+                    #{examineItemId},
+                </if>
+                <if test="beginTime != null">
+                    #{beginTime},
+                </if>
+                <if test="endTime != null">
+                    #{endTime},
+                </if>
+                <if test="respondNum != null">
+                    #{respondNum},
+                </if>
+                <if test="respondUnit != null">
+                    #{respondUnit},
+                </if>
+                <if test="respondTime != null">
+                    #{respondTime},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_examine_time_part_config
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="examineItemId != null">
+					examine_item_id =  #{examineItemId},
+				</if>
+				<if test="beginTime != null">
+					begin_time =  #{beginTime},
+				</if>
+				<if test="endTime != null">
+					end_time =  #{endTime},
+				</if>
+				<if test="respondNum != null">
+					respond_num =  #{respondNum},
+				</if>
+				<if test="respondUnit != null">
+					respond_unit =  #{respondUnit},
+				</if>
+				<if test="respondTime != null">
+					respond_time =  #{respondTime},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_examine_time_part_config
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_examine_time_part_config
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getConfigListByStandardId" resultMap="examineTimePartConfigResultMap">
+		select c.*
+		from as_examine_time_part_config c
+		inner join as_examine_item i on c.examine_item_id=i.id
+		inner join as_examine_standard s on i.examine_standard_id=s.id
+		where s.id=#{id}
+	</select>
+
+	<select id="getConfigListExamineItemId" resultMap="examineTimePartConfigResultMap">
+		SELECT *
+		FROM as_examine_time_part_config
+		WHERE examine_item_id = #{examineItemId}
+	</select>
+
+</mapper>

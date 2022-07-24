@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.SuperPlatformMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="superPlatformResultMap" type="com.aswl.as.ibrs.api.module.SuperPlatform">
+        <id column="id" property="id"/>
+        <id column="client_id" property="clientId"/>
+        <id column="client_secret" property="clientSecret"/>
+        <id column="org_name" property="orgName"/>
+        <id column="app_name" property="appName"/>
+        <id column="api_url" property="apiUrl"/>
+        <id column="callback_url" property="callbackUrl"/>
+        <id column="status" property="status"/>
+        <id column="creator" property="creator"/>
+        <id column="create_name" property="createName"/>
+        <id column="create_date" property="createDate"/>
+        <id column="modifier" property="modifier"/>
+        <id column="update_name" property="updateName"/>
+        <id column="modifier_date" property="modifyDate"/>
+        <id column="sys_org_code" property="sysOrgCode"/>
+        <id column="region_code" property="regionCode"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="del_date" property="delDate"/>
+        <id column="remark" property="remark"/>
+        <result column="api_uid" property="userId"/>
+    </resultMap>
+
+    <sql id="superPlatformColumns">
+		id, client_id, client_secret, org_name, app_name, api_url, callback_url, status, creator, create_name, create_date, modifier, update_name, modifier_date, sys_org_code, region_code, del_flag, del_date, remark,api_uid
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="clientId  != null and clientId != ''">
+            and client_id like CONCAT('%',#{clientId},'%')
+        </if>
+        <if test="clientSecret  != null and clientSecret != ''">
+            and client_secret like CONCAT('%',#{clientSecret},'%')
+        </if>
+        <if test="orgName  != null and orgName != ''">
+            and org_name like CONCAT('%',#{orgName},'%')
+        </if>
+        <if test="appName  != null and appName != ''">
+            and app_name like CONCAT('%',#{appName},'%')
+        </if>
+        <if test="apiUrl  != null and apiUrl != ''">
+            and api_url like CONCAT('%',#{apiUrl},'%')
+        </if>
+        <if test="callbackUrl != null and callbackUrl != ''">
+            and callback_url like CONCAT('%',#{callbackUrl},'%')
+        </if>
+        <if test="status  != null and status != ''">
+            and status = #{status}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator like CONCAT('%',#{creator},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="createDate  != null ">
+            and create_date = #{createDate}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier like CONCAT('%',#{modifier},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+        <if test="modifyDate != null">
+            and modifier_date = #{modifyDate}
+        </if>
+        <if test="sysOrgCode  != null and sysOrgCode != ''">
+            and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and region_code like CONCAT('%',#{regionCode},'%')
+        </if>
+        <if test="delFlag  != null and delFlag != ''">
+            and del_flag = #{delFlag}
+        </if>
+        <if test="remark  != null and remark != ''">
+            and remark like CONCAT('%',#{remark},'%')
+        </if>
+        <if test="userId  != null and userId != ''">
+            and api_uid =#{userId}
+        </if>
+    </sql>
+
+    <select id="get" resultMap="superPlatformResultMap">
+        SELECT
+        <include refid="superPlatformColumns"/>
+        FROM as_super_platform
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="superPlatformResultMap">
+        SELECT
+        <include refid="superPlatformColumns"/>
+        FROM as_super_platform
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="superPlatformResultMap">
+        SELECT
+        <include refid="superPlatformColumns"/>
+        FROM as_super_platform
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_super_platform
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="clientId != null and clientId!=''">
+                client_id,
+            </if>
+            <if test="clientSecret != null and clientSecret!=''">
+                client_secret,
+            </if>
+            <if test="orgName != null and orgName!=''">
+                org_name,
+            </if>
+            <if test="appName != null and appName!=''">
+                app_name,
+            </if>
+            <if test="apiUrl != null and apiUrl!=''">
+                api_url,
+            </if>
+            <if test="callbackUrl != null and callbackUrl!=''">
+                callback_url,
+            </if>
+            <if test="status != null and status!=''">
+                status,
+            </if>
+            <if test="creator != null and creator!=''">
+                creator,
+            </if>
+            <if test="createName != null and createName!=''">
+                create_name,
+            </if>
+            <if test="createDate != null ">
+                create_date,
+            </if>
+            <if test="modifier != null and modifier!=''">
+                modifier,
+            </if>
+            <if test="updateName != null and updateName!=''">
+                update_name,
+            </if>
+            <if test="modifyDate != null ">
+                modifier_date,
+            </if>
+            <if test="sysOrgCode != null and sysOrgCode!=''">
+                sys_org_code,
+            </if>
+            <if test="regionCode != null and regionCode!=''">
+                region_code,
+            </if>
+                del_flag,
+            <if test="delDate != null ">
+                del_date,
+            </if>
+            <if test="remark != null and remark!=''">
+                remark,
+            </if>
+            <if test="userId != null and userId!=''">
+                api_uid,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="clientId != null and clientId!=''">
+                #{clientId},
+            </if>
+            <if test="clientSecret != null and clientSecret!=''">
+                #{clientSecret},
+            </if>
+            <if test="orgName != null and orgName!=''">
+                #{orgName},
+            </if>
+            <if test="appName != null and appName!=''">
+                #{appName},
+            </if>
+            <if test="apiUrl != null and apiUrl!=''">
+                #{apiUrl},
+            </if>
+            <if test="callbackUrl != null and callbackUrl!=''">
+                #{callbackUrl},
+            </if>
+            <if test="status != null and status!=''">
+                #{status},
+            </if>
+            <if test="creator != null and creator!=''">
+                #{creator},
+            </if>
+            <if test="createName != null and createName!=''">
+                #{createName},
+            </if>
+            <if test="createDate != null ">
+                #{createDate},
+            </if>
+            <if test="modifier != null and modifier!=''">
+                #{modifier},
+            </if>
+            <if test="updateName != null and updateName!=''">
+                #{updateName},
+            </if>
+            <if test="modifyDate != null ">
+                #{modifyDate},
+            </if>
+            <if test="sysOrgCode != null and sysOrgCode!=''">
+                #{sysOrgCode},
+            </if>
+            <if test="regionCode != null and regionCode!=''">
+                #{regionCode},
+            </if>
+                #{delFlag},
+            <if test="delDate != null ">
+                #{delDate},
+            </if>
+            <if test="remark != null and remark!=''">
+                #{remark},
+            </if>
+            <if test="userId != null and userId!=''">
+                #{userId}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_super_platform
+        <set>
+            <if test="id != null and id!=''">
+                id = #{id},
+            </if>
+            <if test="clientId != null and clientId!=''">
+                client_id = #{clientId},
+            </if>
+            <if test="clientSecret != null and clientSecret!=''">
+                client_secret = #{clientSecret},
+            </if>
+            <if test="orgName != null and orgName!=''">
+                org_name = #{orgName},
+            </if>
+            <if test="appName != null and appName!=''">
+                app_name = #{appName},
+            </if>
+            <if test="apiUrl != null and apiUrl!=''">
+                api_url = #{apiUrl},
+            </if>
+            <if test="callbackUrl != null and callbackUrl!=''">
+                callback_url = #{callbackUrl},
+            </if>
+            <if test="status != null ">
+                status = #{status},
+            </if>
+            <if test="creator != null and creator!=''">
+                creator = #{creator},
+            </if>
+            <if test="createName != null and createName!=''">
+                create_name = #{createName},
+            </if>
+            <if test="createDate != null ">
+                create_date = #{createDate},
+            </if>
+            <if test="modifier != null and modifier!=''">
+                modifier = #{modifier},
+            </if>
+            <if test="updateName != null and updateName!=''">
+                update_name = #{updateName},
+            </if>
+            <if test="modifyDate != null ">
+                modifier_date = #{modifyDate},
+            </if>
+            <if test="sysOrgCode != null and sysOrgCode!=''">
+                sys_org_code = #{sysOrgCode},
+            </if>
+            <if test="regionCode != null and regionCode!=''">
+                region_code = #{regionCode},
+            </if>
+            <if test="delFlag != null and delFlag!=''">
+                del_flag = #{delFlag},
+            </if>
+            <if test="delDate != null ">
+                del_date = #{delDate},
+            </if>
+            <if test="remark != null and remark!=''">
+                remark = #{remark},
+            </if>
+            <if test="userId != null and userId!=''">
+                api_uid =#{userId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE as_super_platform SET
+        del_flag = 1
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        UPDATE as_super_platform SET
+        del_flag = 1
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <select id="findByClientId" resultMap="superPlatformResultMap">
+        SELECT
+        <include refid="superPlatformColumns"/>
+        FROM as_super_platform
+        WHERE client_id = #{clientId} and del_flag = 0
+    </select>
+</mapper>

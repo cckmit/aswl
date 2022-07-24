@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventElectricityMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventElectricityResultMap" type="com.aswl.as.ibrs.api.module.EventElectricity">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="passway"   property="passway" />
+			<id column="leakage"   property="leakage" />
+			<id column="switch_num"   property="switchNum" />
+			<id column="over_load"   property="overLoad" />
+			<id column="under_voltage"   property="underVoltage" />
+			<id column="electricity"   property="electricity" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventElectricityColumns">
+		id, u_event_id, device_id, region_no, rec_time, passway, leakage, switch_num, over_load, under_voltage, electricity, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''" >
+					AND u_event_id like CONCAT('%',#{uEventId},'%')
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					AND device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					AND region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="recTime  != null and recTime != ''">
+					AND rec_time = #{recTime}
+				</if>
+				<if test="passway  != null and passway != ''" >
+					AND passway like CONCAT('%',#{passway},'%')
+				</if>
+				<if test="leakage  != null and leakage != ''">
+					AND leakage = #{leakage}
+				</if>
+				<if test="switchNum  != null and switchNum != ''">
+					AND switch_num = #{switchNum}
+				</if>
+				<if test="overLoad  != null and overLoad != ''">
+					AND over_load = #{overLoad}
+				</if>
+				<if test="underVoltage  != null and underVoltage != ''">
+					AND under_voltage = #{underVoltage}
+				</if>
+				<if test="electricity  != null and electricity != ''">
+					AND electricity = #{electricity}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventElectricityResultMap">
+		SELECT
+		<include refid="eventElectricityColumns"/>
+		FROM as_event_electricity
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventElectricityResultMap">
+		SELECT
+		<include refid="eventElectricityColumns"/>
+		FROM as_event_electricity
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventElectricityResultMap">
+		SELECT
+		<include refid="eventElectricityColumns"/>
+		FROM as_event_electricity
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_electricity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="passway != null">
+                    passway,
+                </if>
+                <if test="leakage != null">
+                    leakage,
+                </if>
+                <if test="switchNum != null">
+                    switch_num,
+                </if>
+                <if test="overLoad != null">
+                    over_load,
+                </if>
+                <if test="underVoltage != null">
+                    under_voltage,
+                </if>
+                <if test="electricity != null">
+                    electricity,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="passway != null">
+                    #{passway},
+                </if>
+                <if test="leakage != null">
+                    #{leakage},
+                </if>
+                <if test="switchNum != null">
+                    #{switchNum},
+                </if>
+                <if test="overLoad != null">
+                    #{overLoad},
+                </if>
+                <if test="underVoltage != null">
+                    #{underVoltage},
+                </if>
+                <if test="electricity != null">
+                    #{electricity},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_electricity
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="passway != null">
+					passway =  #{passway},
+				</if>
+				<if test="leakage != null">
+					leakage =  #{leakage},
+				</if>
+				<if test="switchNum != null">
+					switch_num =  #{switchNum},
+				</if>
+				<if test="overLoad != null">
+					over_load =  #{overLoad},
+				</if>
+				<if test="underVoltage != null">
+					under_voltage =  #{underVoltage},
+				</if>
+				<if test="electricity != null">
+					electricity =  #{electricity},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_electricity
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_electricity
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

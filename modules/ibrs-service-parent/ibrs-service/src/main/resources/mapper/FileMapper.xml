@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.FileMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="fileResultMap" type="com.aswl.as.ibrs.api.module.File">
+			<id column="id"   property="id" />
+			<id column="file_name"   property="fileName" />
+			<id column="path"   property="path" />
+			<id column="file_size"   property="fileSize" />
+			<id column="file_md5"   property="fileMd5" />
+			<id column="upload_time"   property="uploadTime" />
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="fileColumns">
+		id, file_name, path, file_size, file_md5, upload_time, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="fileName  != null and fileName != ''" >
+					and file_name like CONCAT('%',#{fileName},'%')
+				</if>
+				<if test="path  != null and path != ''" >
+					and path like CONCAT('%',#{path},'%')
+				</if>
+				<if test="fileSize  != null and fileSize != ''" >
+					and file_size like CONCAT('%',#{fileSize},'%')
+				</if>
+				<if test="fileMd5  != null and fileMd5 != ''" >
+					and file_md5 like CONCAT('%',#{fileMd5},'%')
+				</if>
+				<if test="uploadTime  != null and uploadTime != ''">
+					and upload_time = #{uploadTime}
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					and project_id like CONCAT('%',#{projectId},'%')
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="fileResultMap">
+		SELECT
+		<include refid="fileColumns"/>
+		FROM as_file
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="fileResultMap">
+		SELECT
+		<include refid="fileColumns"/>
+		FROM as_file
+		WHERE 1 = 1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="fileResultMap">
+		SELECT
+		<include refid="fileColumns"/>
+		FROM as_file
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+    <insert id="insert">
+        INSERT INTO as_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="fileName != null and fileName!=''">
+                    file_name,
+                </if>
+                <if test="path != null and path!=''">
+                    path,
+                </if>
+                <if test="fileSize != null and fileSize!=''">
+                    file_size,
+                </if>
+                <if test="fileMd5 != null and fileMd5!=''">
+                    file_md5,
+                </if>
+                <if test="uploadTime != null ">
+                    upload_time,
+                </if>
+                <if test="projectId != null and projectId!=''">
+                    project_id,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="fileName != null and fileName!=''">
+                    #{fileName},
+                </if>
+                <if test="path != null and path!=''">
+                    #{path},
+                </if>
+                <if test="fileSize != null and fileSize!=''">
+                    #{fileSize},
+                </if>
+                <if test="fileMd5 != null and fileMd5!=''">
+                    #{fileMd5},
+                </if>
+                <if test="uploadTime != null ">
+                    #{uploadTime},
+                </if>
+                <if test="projectId != null and projectId!=''">
+                    #{projectId},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_file
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="fileName != null and fileName!=''">
+					file_name =  #{fileName},
+				</if>
+				<if test="path != null and path!=''">
+					path =  #{path},
+				</if>
+				<if test="fileSize != null and fileSize!=''">
+					file_size =  #{fileSize},
+				</if>
+				<if test="fileMd5 != null and fileMd5!=''">
+					file_md5 =  #{fileMd5},
+				</if>
+				<if test="uploadTime != null ">
+					upload_time =  #{uploadTime},
+				</if>
+			<if test="projectId  != null and projectId != ''" >
+				AND project_id IN
+				<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM as_file
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_file
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="selectByFileMd5" resultMap="fileResultMap">
+		SELECT
+		<include refid="fileColumns"/>
+		 FROM as_file WHERE file_md5 = #{fileMd5}
+		
+	</select>
+</mapper>

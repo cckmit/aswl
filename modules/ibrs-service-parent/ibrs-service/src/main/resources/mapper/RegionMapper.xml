@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.RegionMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="regionResultMap" type="com.aswl.as.ibrs.api.module.Region">
+        <id column="id" property="id"/>
+        <id column="region_name" property="regionName"/>
+        <id column="parent_id" property="parentId"/>
+        <id column="full_name" property="fullName"/>
+        <id column="description" property="description"/>
+        <id column="region_code" property="regionCode"/>
+        <id column="latitude" property="latitude"/>
+        <id column="longitude" property="longitude"/>
+        <id column="ip_part_begin" property="ipPartBegin"/>
+        <id column="ip_part_end" property="ipPartEnd"/>
+        <id column="ip_part_begin2" property="ipPartBegin2"/>
+        <id column="ip_part_end2" property="ipPartEnd2"/>
+        <id column="box_num" property="boxNum"/>
+        <id column="camera_num" property="cameraNum"/>
+        <id column="creator" property="creator"/>
+        <id column="create_name" property="createName"/>
+        <id column="create_date" property="createDate"/>
+        <id column="modifier" property="modifier"/>
+        <id column="update_name" property="updateName"/>
+        <id column="modify_date" property="modifyDate"/>
+        <id column="sys_org_code" property="sysOrgCode"/>
+        <id column="sys_region_code" property="sysRegionCode"/>
+        <id column="sort" property="sort"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+        <id column="project_id" property="projectId"/>
+        <id column="device_ip_mode" property="deviceIpMode"/>
+        <id column="communication_operator_id" property="communicationOperatorId"/>
+        <id column="communication_operator_name" property="communicationOperatorName"/>
+    </resultMap>
+
+    <resultMap id="deviceKindModel" type="com.aswl.as.ibrs.api.vo.KindVo">
+        <result property="label" column="deviceKindName"/>
+        <result property="value" column="type"/>
+        <collection property="children" ofType="com.aswl.as.ibrs.api.vo.TypeVo">
+            <result property="label" column="deviceTypeName"/>
+            <result property="value" column="deviceTypeName"/>
+            <collection property="children" ofType="com.aswl.as.ibrs.api.vo.ModelVo">
+                <result property="label" column="deviceModelName"/>
+                <result property="value" column="deviceModelName"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="regionColumns">
+		id, region_name, parent_id, full_name, description, region_code, latitude, longitude, creator, create_name, create_date, modifier, update_name, modify_date, sys_org_code, sys_region_code, sort, del_flag, application_code, tenant_code,project_id,ip_part_begin,ip_part_end,ip_part_begin2,ip_part_end2,device_ip_mode,box_num,camera_num,communication_operator_id,communication_operator_name
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="regionName  != null and regionName != ''">
+            and region_name like CONCAT('%',#{regionName},'%')
+        </if>
+        <if test="parentId  != null and parentId != ''">
+            and parent_id like CONCAT('%',#{parentId},'%')
+        </if>
+        <if test="fullName  != null and fullName != ''">
+            and full_name like CONCAT('%',#{fullName},'%')
+        </if>
+        <if test="description  != null and description != ''">
+            and description like CONCAT('%',#{description},'%')
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and region_code = #{regionCode}
+        </if>
+        <if test="latitude  != null and latitude != ''">
+            and latitude = #{latitude}
+        </if>
+        <if test="longitude  != null and longitude != ''">
+            and longitude = #{longitude}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator like CONCAT('%',#{creator},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="createDate  != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier like CONCAT('%',#{modifier},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+        <if test="modifyDate  != null and modifyDate != ''">
+            and modify_date = #{modifyDate}
+        </if>
+        <if test="sysOrgCode  != null and sysOrgCode != ''">
+            and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+        </if>
+        <if test="sysRegionCode  != null and sysRegionCode != ''">
+            and sys_region_code like CONCAT('%',#{sysRegionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId !=null and projectId !='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="lonMin!=null and lonMin != '' and lonMax!=null and lonMax!='' ">
+            and longitude between #{lonMin} and #{lonMax}
+        </if>
+        <if test="latMin!=null and latMin!='' and latMax!=null and  latMax !='' ">
+            and   latitude between #{latMin} and #{latMax}
+        </if>
+    </sql>
+
+    <select id="get" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="regionName != null">
+                region_name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="fullName != null">
+                full_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="regionCode != null">
+                region_code,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="ipPartBegin != null">
+                ip_part_begin,
+            </if>
+            <if test="ipPartEnd != null">
+                ip_part_end,
+            </if>
+            <if test="ipPartBegin2 != null">
+                ip_part_begin2,
+            </if>
+            <if test="ipPartEnd2 != null">
+                ip_part_end2,
+            </if>
+            <if test="boxNum!= null">
+                box_num,
+            </if>
+            <if test="cameraNum!= null">
+                camera_num,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="updateName != null">
+                update_name,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="sysOrgCode != null">
+                sys_org_code,
+            </if>
+            <if test="sysRegionCode != null">
+                sys_region_code,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+            <if test="projectId !=null ">
+                project_id,
+            </if>
+            <if test="deviceIpMode!= null">
+                device_ip_mode,
+            </if>
+            <if test="communicationOperatorId != null">
+                communication_operator_id,
+            </if>
+            <if test="communicationOperatorName != null">
+                communication_operator_name,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="regionName != null">
+                #{regionName},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="fullName != null">
+                #{fullName},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="regionCode != null">
+                #{regionCode},
+            </if>
+            <if test="latitude != null">
+                #{latitude},
+            </if>
+            <if test="longitude != null">
+                #{longitude},
+            </if>
+            <if test="ipPartBegin != null">
+                #{ipPartBegin},
+            </if>
+            <if test="ipPartEnd != null">
+                #{ipPartEnd},
+            </if>
+            <if test="ipPartBegin2 != null">
+                #{ipPartBegin2},
+            </if>
+            <if test="ipPartEnd2 != null">
+                #{ipPartEnd2},
+            </if>
+            <if test="boxNum!= null">
+                #{boxNum},
+            </if>
+            <if test="cameraNum!= null">
+                #{cameraNum},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="updateName != null">
+                #{updateName},
+            </if>
+            <if test="modifyDate != null ">
+                #{modifyDate},
+            </if>
+            <if test="sysOrgCode != null">
+                #{sysOrgCode},
+            </if>
+            <if test="sysRegionCode != null">
+                #{sysRegionCode},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+            <if test="projectId != null">
+                #{projectId},
+            </if>
+            <if test="deviceIpMode!= null">
+                #{deviceIpMode},
+            </if>
+            <if test="communicationOperatorId != null">
+                #{communicationOperatorId},
+            </if>
+            <if test="communicationOperatorName != null">
+                #{communicationOperatorName},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_region
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="regionName != null">
+                region_name = #{regionName},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="fullName != null">
+                full_name = #{fullName},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="regionCode != null">
+                region_code = #{regionCode},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="ipPartBegin != null">
+                ip_part_begin= #{ipPartBegin},
+            </if>
+            <if test="ipPartEnd != null">
+                ip_part_end= #{ipPartEnd},
+            </if>
+            <if test="ipPartBegin2 != null">
+                ip_part_begin2= #{ipPartBegin2},
+            </if>
+            <if test="ipPartEnd2 != null">
+                ip_part_end2= #{ipPartEnd2},
+            </if>
+            <if test="boxNum!= null">
+                box_num = #{boxNum},
+            </if>
+            <if test="cameraNum!= null">
+                camera_num = #{cameraNum},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="createName != null">
+                create_name = #{createName},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="updateName != null">
+                update_name = #{updateName},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+            <if test="sysOrgCode != null">
+                sys_org_code = #{sysOrgCode},
+            </if>
+            <if test="sysRegionCode != null">
+                sys_region_code = #{sysRegionCode},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="deviceIpMode!= null">
+                device_ip_mode = #{deviceIpMode},
+            </if>
+            <if test="communicationOperatorId != null">
+                communication_operator_id =  #{communicationOperatorId},
+            </if>
+            <if test="communicationOperatorName != null">
+                communication_operator_name =  #{communicationOperatorName}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM  as_region
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM as_region
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <delete id="deleteByRegionCode">
+
+        DELETE FROM as_region WHERE region_code LIKE CONCAT(#{regionCode},'%')
+
+    </delete>
+    <delete id="deleteByProjectId">
+        
+         DELETE FROM as_region WHERE project_id =  #{projectId}
+        
+    </delete>
+
+    <select id="findRegionByParentId" resultMap="regionResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE parent_id=#{parentId}
+        ORDER BY create_date desc,id desc
+        limit 1
+    </select>
+
+    <select id="findByParentId" resultType="com.aswl.as.ibrs.api.vo.RegionDeviceVo">
+        SELECT *
+        FROM (
+        SELECT id ,region_name AS name,region_code AS code,0 AS isOnline,0 AS ip,0 AS type ,"" AS iconSkin,latitude AS
+        latitude,longitude AS longitude,0 AS alarmLevel,parent_id AS parentId,project_id as projectId
+        FROM as_region
+        WHERE
+        del_flag = 0
+        <if test="regionCode != null and regionCode != ''">
+            AND region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="query != null and query!= ''">
+            AND region_name like CONCAT('%', #{query},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId!=null and projectId!='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        UNION
+
+        SELECT
+        d.id AS id,d.device_name AS name,d.region_code AS code,n.network_state AS isOnline,d.ip AS ip,
+        k.type AS type,
+        CASE k.type WHEN '1' THEN 'deviceIcon deviceicon_optical' WHEN '2' THEN 'deviceIcon deviceicon_box' WHEN '3'
+        THEN 'deviceIcon deviceicon_IPC' end as iconSkin,
+        d.latitude AS latitude,d.longitude AS longitude,
+        ea.alarm_level AS alarmLevel,
+        CASE WHEN d.parent_device_id !=null OR d.parent_device_id != ''THEN d.parent_device_id ELSE d.region_id END AS
+        parentId,r.project_id as projectId
+        FROM as_region r
+        RIGHT JOIN as_device d
+        ON r.id = d.region_id LEFT JOIN as_event_network n
+        ON d.id = n.device_id LEFT JOIN as_device_model m
+        ON d.device_model_id = m.id LEFT JOIN as_device_type t
+        ON m.device_type = t.device_type LEFT JOIN as_device_kind k
+        ON t.device_kind_id = k.id LEFT JOIN as_alarm_type_device_favorite df
+        ON df.device_id = d.id LEFT JOIN as_device_event_alarm ea
+        ON ea.device_id = d.id
+        WHERE d.del_flag = 0
+        AND d.device_name IS NOT NULL
+        <if test="regionCode != null and regionCode != ''">
+            AND r.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            AND (d.region_id = #{parentId} and (d.parent_device_id is null OR d.parent_device_id = ''))
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            OR d.parent_device_id = #{parentId}
+        </if>
+        <if test="query != null and query!= ''">
+            AND(d.device_name LIKE CONCAT('%',#{query},'%') OR d.ip LIKE  CONCAT('%',#{query},'%'))
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND d.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kind!= null and kind !=''">
+            AND k.type = #{kind}
+        </if>
+        ) AS a
+       --  ORDER BY a.type
+    </select>
+
+    <select id="getRegionTree" resultType="com.aswl.as.ibrs.api.vo.RegionDeviceTree">
+        SELECT
+        id ,parent_id AS parentId,region_name AS name,region_code AS code,"image:///img/pub_area.png" AS symbol,0 AS isAlarm,0 AS
+        isOnline,project_id as projectId,0 AS type,"" AS alarmLevel,"" AS alarmLevelName,
+        communication_operator_id AS  communicationOperatorId, communication_operator_name AS communicationOperatorName
+        FROM as_region
+        WHERE
+        del_flag = 0
+        <if test="regionCode != null and regionCode != ''">
+            AND region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId!=null and projectId!='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        UNION
+
+        SELECT
+        d.id AS id,CASE
+        WHEN d.parent_device_id is null or d.parent_device_id =''THEN d.region_id ELSE d.parent_device_id END AS parentId,
+        d.device_name AS name,d.device_code AS code,
+        CASE
+        WHEN n.network_state = 1 AND ea.is_alarm = 0 AND k.type = '1' THEN 'image:///img/fibre-optical.png'
+        WHEN n.network_state = 1 AND ea.is_alarm = 1 AND k.type = '1' THEN 'image:///img/fibre-optical_alarm.png'
+        WHEN n.network_state = 0 AND k.type = '1' THEN 'image:///img/fibre-optical_offline.png'
+        WHEN n.network_state = 1 AND ea.is_alarm = 0 AND k.type = '2' THEN 'image:///img/pub_box.png'
+        WHEN n.network_state = 1 AND ea.is_alarm = 1 AND k.type = '2' THEN 'image:///img/pub_box_alarm.png'
+        WHEN n.network_state = 2 AND ea.is_alarm = 1 AND k.type = '2' THEN 'image:///img/pub_box_offline.png'
+        WHEN n.network_state = 3 AND ea.is_alarm = 1 AND k.type = '2' THEN 'image:///img/pub_box_offline.png'
+        WHEN n.network_state = 0 AND k.type = '2' THEN 'image:///img/pub_box_offline.png'
+        WHEN n.network_state = 1 AND ea.is_alarm = 0 AND k.type = '3' THEN 'image:///img/pub_device3D.png'
+        WHEN n.network_state = 1 AND ea.is_alarm = 1 AND k.type = '3' THEN 'image:///img/pub_device3D_alarm.png'
+        WHEN n.network_state = 2 AND ea.is_alarm = 1 AND k.type = '3' THEN 'image:///img/pub_device3D_offline.png'
+        WHEN n.network_state = 3 AND ea.is_alarm = 1 AND k.type = '3' THEN 'image:///img/pub_device3D_offline.png'
+        WHEN n.network_state = 0 AND k.type = '3' THEN 'image:///img/pub_device3D_offline.png' END AS
+        symbol,ea.is_alarm AS isAlarm,n.network_state AS isOnline,r.project_id as projectId,
+        k.type AS type,l.alarm_level AS alarmLevel ,l.alarm_level_name AS alarmLevelName,
+        communication_operator_id AS  communicationOperatorId, communication_operator_name AS communicationOperatorName
+        FROM as_region r
+        RIGHT JOIN as_device d
+        ON r.id = d.region_id LEFT JOIN as_event_network n
+        ON d.id = n.device_id LEFT JOIN as_device_model m
+        ON d.device_model_id = m.id LEFT JOIN as_device_type t
+        ON m.device_type = t.device_type LEFT JOIN as_device_kind k
+        ON t.device_kind_id = k.id LEFT JOIN as_device_event_alarm ea
+        ON ea.device_id = d.id
+        LEFT JOIN as_alarm_level l
+        ON l.alarm_level =ea.alarm_level
+        WHERE d.del_flag = 0
+        <if test="regionCode != null and regionCode != ''">
+            AND r.region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            AND (d.region_id = #{parentId} AND (d.parent_device_id is null OR d.parent_device_id = ''))
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            OR d.parent_device_id = #{parentId}
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND d.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getRegions" resultType="map">
+        SELECT
+        id ,region_name AS name,region_code AS code,parent_id AS parentId
+        FROM as_region
+        WHERE
+        del_flag = 0
+        <if test="regionCode != null and regionCode != ''">
+            AND region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="parentId != null and parentId!= ''">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="query != null and query!= ''">
+            AND region_name LIKE CONCAT('%', #{query},'%')
+        </if>
+    </select>
+
+    <select id="findDeviceModelKind" resultMap="deviceKindModel">
+        SELECT m.device_model_name AS deviceModelName,t.device_type_name AS deviceTypeName,k.device_kind_name AS deviceKindName,k.type AS type
+        FROM as_device d RIGHT JOIN as_device_model m
+        ON d.device_model_id = m.id RIGHT JOIN as_device_type t
+        ON m.device_type = t.device_type RIGHT JOIN as_device_kind k
+        ON t.device_kind_id = k.id;
+    </select>
+    <select id="findRegionTree" resultType="com.aswl.as.ibrs.api.vo.RegionVo">
+        SELECT id AS id,region_name AS regionName,region_code AS regionCode,parent_id AS parentId
+        FROM as_region
+        WHERE
+        del_flag = 0
+        <if test="regionCode != null and regionCode != ''">
+            AND region_code LIKE CONCAT( #{regionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId!=null and projectId!='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="findRegionId" resultType="java.lang.String">
+        SELECT parent_id AS id
+        FROM as_region
+        WHERE
+        del_flag = 0
+        AND region_code = #{regionCode}
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId!=null and projectId!='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findRegionByProjectIdAndName" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE 1 = 1
+        <if test="projectId != null and projectId != ''">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="regionName != null and regionName != ''">
+         and region_name = #{regionName}
+        </if>
+    </select>
+
+    <select id="findRegionByName" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE region_name=#{regionName}
+    </select>
+
+    <select id="getAllRegion" resultType="java.lang.String">
+     SELECT region_code FROM as_region;
+    </select>
+
+    <select id="findVideo" resultType="com.aswl.as.ibrs.api.vo.RegionDeviceVo">
+      SELECT d.id AS id,n.network_state AS isOnline,
+      k.type  AS type
+      FROM as_device d LEFT JOIN as_event_network n
+      ON d.id = n.device_id LEFT JOIN as_device_model m
+      ON d.device_model_id = m.id LEFT JOIN as_device_type t
+      ON m.device_type = t.device_type LEFT JOIN as_device_kind k
+      ON t.device_kind_id = k.id
+      WHERE d.del_flag = 0
+      AND n.network_state =1 AND d.parent_device_id = #{id}
+    </select>
+
+    <select id="findRegionList" resultType="java.util.LinkedHashMap">
+        SELECT id AS id,region_code AS regionCode,region_name AS regionName,parent_id AS parentId
+        FROM as_region
+        WHERE 1=1
+        <if test="regionName!=null and regionName!='' ">
+            AND region_name = #{regionName}
+        </if>
+    </select>
+
+    <select id="findRegionListByParentId" resultType="com.aswl.as.ibrs.api.module.Region">
+        select
+        <include refid="regionColumns"/>
+        from as_region where parent_id = #{parentId}
+    </select>
+
+    <!--<select id="findRegionByIpBetween" resultType="com.aswl.as.ibrs.api.module.Region">-->
+        <!--select* from-->
+        <!--(select * from as_region-->
+        <!--<trim prefix="where" prefixOverrides="or">-->
+            <!--<if test="ipPartBegin != null and ipPartBegin != '' and ipPartEnd != null and ipPartEnd != ''">-->
+                <!--(INET_ATON(#{ipPartBegin}) <![CDATA[<=]]> INET_ATON(ip_part_end) and INET_ATON(#{ipPartEnd}) <![CDATA[>=]]> INET_ATON(ip_part_begin))-->
+                <!--or (INET_ATON(#{ipPartBegin}) <![CDATA[<=]]> INET_ATON(ip_part_end2) and INET_ATON(#{ipPartEnd}) <![CDATA[>=]]> INET_ATON(ip_part_begin2))-->
+            <!--</if>-->
+            <!--<if test="ipPartBegin2 != null and ipPartBegin2 != '' and ipPartEnd2 != null and ipPartEnd2 != ''">-->
+                <!--or (INET_ATON(#{ipPartBegin2}) <![CDATA[<=]]> INET_ATON(ip_part_end) and INET_ATON(#{ipPartEnd2}) <![CDATA[>=]]> INET_ATON(ip_part_begin))-->
+                <!--or (INET_ATON(#{ipPartBegin2}) <![CDATA[<=]]> INET_ATON(ip_part_end2) and INET_ATON(#{ipPartEnd2}) <![CDATA[>=]]> INET_ATON(ip_part_begin2))-->
+            <!--</if>-->
+        <!--</trim>-->
+        <!--) t-->
+        <!--where t.parent_id = #{parentId} limit 1-->
+    <!--</select>-->
+
+    <select id="findRegionByIpBetween" resultType="com.aswl.as.ibrs.api.module.Region">
+        select * from as_region
+        <trim prefix="where(" prefixOverrides="and|or" suffix=")">
+            <if test="ipPartBegin != null and ipPartBegin != '' and ipPartEnd != null and ipPartEnd != ''">
+                and (INET_ATON(ip_part_begin) &gt; INET_ATON(#{ipPartBegin}) and INET_ATON(ip_part_begin) &lt; INET_ATON(#{ipPartEnd}))
+                or (INET_ATON(ip_part_begin) &lt; INET_ATON(#{ipPartBegin}) and INET_ATON(ip_part_end) &gt; INET_ATON(#{ipPartEnd}))
+                or (INET_ATON(ip_part_end) &gt; INET_ATON(#{ipPartBegin}) and INET_ATON(ip_part_end) &lt; INET_ATON(#{ipPartEnd}))
+                or (INET_ATON(ip_part_begin2) &gt; INET_ATON(#{ipPartBegin}) and INET_ATON(ip_part_begin2) &lt; INET_ATON(#{ipPartEnd}))
+                or (INET_ATON(ip_part_begin2) &lt; INET_ATON(#{ipPartBegin}) and INET_ATON(ip_part_end2) &gt; INET_ATON(#{ipPartEnd}))
+                or (INET_ATON(ip_part_end2) &gt; INET_ATON(#{ipPartBegin}) and INET_ATON(ip_part_end2) &lt; INET_ATON(#{ipPartEnd}))
+            </if>
+            <if test="ipPartBegin2 != null and ipPartBegin2 != '' and ipPartEnd2 != null and ipPartEnd2 != ''">
+                or (INET_ATON(ip_part_begin) &gt; INET_ATON(#{ipPartBegin2}) and INET_ATON(ip_part_begin) &lt; INET_ATON(#{ipPartEnd2}))
+                or (INET_ATON(ip_part_begin) &lt; INET_ATON(#{ipPartBegin2}) and INET_ATON(ip_part_end) &gt; INET_ATON(#{ipPartEnd2}))
+                or (INET_ATON(ip_part_end) &gt; INET_ATON(#{ipPartBegin2}) and INET_ATON(ip_part_end) &lt; INET_ATON(#{ipPartEnd2}))
+                or (INET_ATON(ip_part_begin2) &gt; INET_ATON(#{ipPartBegin2}) and INET_ATON(ip_part_begin2) &lt; INET_ATON(#{ipPartEnd2}))
+                or (INET_ATON(ip_part_begin2) &lt; INET_ATON(#{ipPartBegin2}) and INET_ATON(ip_part_end2) &gt; INET_ATON(#{ipPartEnd2}))
+                or (INET_ATON(ip_part_end2) &gt; INET_ATON(#{ipPartBegin2}) and INET_ATON(ip_part_end2) &lt; INET_ATON(#{ipPartEnd2}))
+            </if>
+        </trim>
+        and parent_id = #{parentId}
+    </select>
+
+    <select id="getHaveDeviceRegion" resultType="string">
+        select a.region_name from
+        as_region as a
+        INNER JOIN as_device as b on a.id = b.region_id
+        LEFT JOIN as_device_model dm
+        ON b.device_model_id = dm.id
+        LEFT JOIN as_device_type adt
+        ON dm.device_type = adt.device_type
+        LEFT JOIN as_device_kind adk
+        ON adt.device_kind_id = adk.id
+        where 1 = 1
+        <if test="regionCode != null and regionCode != ''">
+            AND b.region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="kind !=null and kind!=''">
+            and adk.type = #{kind}
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+        GROUP BY a.region_name
+    </select>
+
+    <select id="findDeviceModelKind1" resultMap="deviceKindModel">
+        SELECT m.device_model_name AS deviceModelName,t.device_type_name AS deviceTypeName,k.device_kind_name AS deviceKindName,k.type AS type
+        FROM as_device d RIGHT JOIN as_device_model m
+        ON d.device_model_id = m.id RIGHT JOIN as_device_type t
+        ON m.device_type = t.device_type RIGHT JOIN as_device_kind k
+        ON t.device_kind_id = k.id;
+    </select>
+
+    <select id="findListAll" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE del_flag = 0
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="regionName  != null and regionName != ''">
+            and region_name like CONCAT('%',#{regionName},'%')
+        </if>
+        <if test="parentId  != null and parentId != ''">
+            and parent_id like CONCAT('%',#{parentId},'%')
+        </if>
+        <if test="fullName  != null and fullName != ''">
+            and full_name like CONCAT('%',#{fullName},'%')
+        </if>
+        <if test="description  != null and description != ''">
+            and description like CONCAT('%',#{description},'%')
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and region_code like concat(#{regionCode},'%')
+        </if>
+        <if test="latitude  != null and latitude != ''">
+            and latitude = #{latitude}
+        </if>
+        <if test="longitude  != null and longitude != ''">
+            and longitude = #{longitude}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator like CONCAT('%',#{creator},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="createDate  != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier like CONCAT('%',#{modifier},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+        <if test="modifyDate  != null and modifyDate != ''">
+            and modify_date = #{modifyDate}
+        </if>
+        <if test="sysOrgCode  != null and sysOrgCode != ''">
+            and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+        </if>
+        <if test="sysRegionCode  != null and sysRegionCode != ''">
+            and sys_region_code like CONCAT('%',#{sysRegionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId !=null and projectId !='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="findByPage" resultMap="regionResultMap">
+        SELECT <include refid="regionColumns"/>
+        FROM as_region
+        WHERE del_flag = 0
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="regionName  != null and regionName != ''">
+            and region_name like CONCAT('%',#{regionName},'%')
+        </if>
+        <if test="parentId  != null and parentId != ''">
+            and parent_id like CONCAT('%',#{parentId},'%')
+        </if>
+        <if test="fullName  != null and fullName != ''">
+            and full_name like CONCAT('%',#{fullName},'%')
+        </if>
+        <if test="description  != null and description != ''">
+            and description like CONCAT('%',#{description},'%')
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="latitude  != null and latitude != ''">
+            and latitude = #{latitude}
+        </if>
+        <if test="longitude  != null and longitude != ''">
+            and longitude = #{longitude}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator like CONCAT('%',#{creator},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="createDate  != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier like CONCAT('%',#{modifier},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+        <if test="modifyDate  != null and modifyDate != ''">
+            and modify_date = #{modifyDate}
+        </if>
+        <if test="sysOrgCode  != null and sysOrgCode != ''">
+            and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+        </if>
+        <if test="sysRegionCode  != null and sysRegionCode != ''">
+            and sys_region_code like CONCAT('%',#{sysRegionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId !=null and projectId !='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="getAppOnlineAndIntactList" resultType="com.aswl.as.ibrs.api.vo.RegionDeviceListVo">
+        SELECT
+        a.id,
+        a.region_name AS regionName,
+        COUNT(b.id) AS totalCount,
+        COALESCE(SUM(CASE WHEN c.network_state=1 THEN 1 ELSE 0 END),0) AS onlineCount,
+        COUNT(b.id) - COALESCE(SUM(CASE WHEN d.alarm_level=1 THEN 1 ELSE 0 END),0) AS intactCount
+        FROM as_region a
+        LEFT JOIN as_device b
+        ON a.id =b.region_id
+        LEFT JOIN as_event_network c
+        ON b.id=c.device_id
+        LEFT JOIN as_device_event_alarm d
+        ON b.id=d.device_id
+        LEFT JOIN as_device_model AS t2
+        ON b.device_model_id = t2.id
+        LEFT JOIN as_device_type AS t3
+        ON t2.device_type = t3.device_type
+        LEFT JOIN as_device_kind AS t4
+        ON t3.device_kind_id = t4.id
+        WHERE a.id NOT IN (SELECT parent_id FROM as_region)
+        <if test="type != null and type != ''">
+            AND t4.type = #{type}
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and a.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY a.id
+    </select>
+
+    <select id="getRegionCurrentOnlineIntactList" resultType="com.aswl.as.ibrs.api.vo.RegionDeviceListVo">
+        select
+        t1.id,
+        t1.region_name,
+        t1.region_code,
+        t1.parent_id,
+        count(CASE WHEN temp.id IS NOT NULL THEN 1 ELSE null END ) as totalCount,
+        count(CASE WHEN temp.alarm_level != 1 THEN 1 ELSE null END ) AS intactCount,
+        count(CASE WHEN temp.network_state = 1 THEN 1 ELSE null END ) AS onlineCount
+        from (select id,region_code,region_name,parent_id,project_id from as_region where parent_id in (SELECT id FROM as_region where 1 = 1
+        <choose>
+            <when test="regionCode != null and regionCode != ''">
+                AND region_code = #{regionCode}
+            </when>
+            <otherwise>
+                AND parent_id = '-1'
+            </otherwise>
+        </choose>
+        )) as t1
+        LEFT JOIN (select a.id,a.region_code,b.alarm_level,c.network_state from as_device a
+        LEFT JOIN as_device_event_alarm b on a.id = b.device_id
+        LEFT JOIN as_event_network c on a.id = c.device_id
+        LEFT JOIN as_device_model d on a.device_model_id = d.id
+        LEFT JOIN as_device_type e on d.device_type = e.device_type
+        LEFT JOIN as_device_kind f on e.device_kind_id = f.id
+        where 1 = 1 
+        <if test="kind != null and kind != ''">
+            and f.type = #{kind}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) as temp on temp.region_code like concat(t1.region_code,'%')
+        GROUP BY t1.region_code
+        ORDER BY t1.region_code
+    </select>
+    <select id="getRegionHistoryOnlineIntactList" resultType="com.aswl.as.ibrs.api.vo.RegionDeviceListVo">
+        SELECT
+        temp.id,
+        temp.region_code,
+        temp.region_name,
+        temp.parent_id,
+        sum(IFNULL(temp2.device_num,0)) totalCount,
+        sum(IFNULL(temp2.intact_num,0)) intactCount,
+        sum(ifnull(temp2.online_num,0)) onlineCount
+        FROM (select id,region_code,region_name,parent_id from as_region where parent_id in (SELECT id FROM as_region where 1 = 1
+        <choose>
+            <when test="regionCode != null and regionCode != ''">
+                AND region_code = #{regionCode}
+            </when>
+            <otherwise>
+                AND parent_id = '-1'
+            </otherwise>
+        </choose>
+        ))AS temp
+        LEFT JOIN (select region_no, device_num, intact_num, online_num from as_online_statistics b where 1 = 1
+        <if test="kind != null and kind != ''">
+            and b.device_kind = #{kind}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and b.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND b.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) as temp2 on temp2.region_no like concat(temp.region_code,'%')
+        GROUP BY temp.region_code
+        order by temp.region_code
+    </select>
+    <select id="findByProjectId" resultType="java.util.Map">        
+        SELECT  IFNULL(SUM(box_num),0) AS boxNum,IFNULL(SUM(camera_num),0) AS cameraNum FROM  as_region 
+        WHERE project_id in
+            <foreach collection="projectIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+    <select id="findByRegionCode" resultMap="regionResultMap">
+        SELECT <include refid="regionColumns"/>
+        FROM as_region
+        WHERE region_code = #{regionCode}
+    </select>
+    <select id="findRegionAlarmLevel" resultType="com.aswl.as.ibrs.api.vo.RegionVo">    
+        select 
+        ar.id as id,
+        ar.project_id as projectId,
+        ar.region_name as regionName,
+        ar.region_code as regionCode,
+        ar.longitude as longitude,
+        ar.latitude as latitude,
+        ifnull(min(adea.alarm_level),3) as alarmLevel
+         from as_region ar
+        left join as_device_event_alarm adea
+        on ar.region_code = adea.region_no
+        where 1=1
+        <if test="projectId !=null and projectId !='' ">
+            AND ar.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="lonMin!=null and lonMin != '' and lonMax!=null and lonMax!='' ">
+            and ar.longitude between #{lonMin} and #{lonMax}
+        </if>
+        <if test="latMin!=null and latMin!='' and latMax!=null and  latMax !='' ">
+            and  ar.latitude between #{latMin} and #{latMax}
+        </if>
+        group by ar.region_code
+    </select>
+</mapper>

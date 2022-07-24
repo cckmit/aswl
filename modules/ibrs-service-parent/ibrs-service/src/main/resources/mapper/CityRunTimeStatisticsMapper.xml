@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.CityRunTimeStatisticsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="cityRunTimeStatisticsResultMap" type="com.aswl.as.ibrs.api.module.CityRunTimeStatistics">
+			<id column="id"   property="id" />
+			<id column="city_code"   property="cityCode" />
+			<id column="statistics_date"   property="statisticsDate" />
+			<id column="device_kind"   property="deviceKind" />
+			<id column="run_num_time1"   property="runNumTime1" />
+			<id column="run_num_time2"   property="runNumTime2" />
+			<id column="run_num_time3"   property="runNumTime3" />
+			<id column="run_num_time4"   property="runNumTime4" />
+			<id column="run_num_time5"   property="runNumTime5" />
+			<id column="run_num_time6"   property="runNumTime6" />
+			<id column="run_num_time7"   property="runNumTime7" />
+			<id column="run_num_time8"   property="runNumTime8" />
+			<id column="run_num_time9"   property="runNumTime9" />
+			<id column="run_num_time10"   property="runNumTime10" />
+			<id column="run_num_time11"   property="runNumTime11" />
+			<id column="run_num_time12"   property="runNumTime12" />
+			<id column="repair_num_time1"   property="repairNumTime1" />
+			<id column="repair_num_time2"   property="repairNumTime2" />
+			<id column="repair_num_time3"   property="repairNumTime3" />
+			<id column="repair_num_time4"   property="repairNumTime4" />
+			<id column="repair_num_time5"   property="repairNumTime5" />
+			<id column="repair_num_time6"   property="repairNumTime6" />
+			<id column="repair_num_time7"   property="repairNumTime7" />
+			<id column="repair_num_time8"   property="repairNumTime8" />
+			<id column="repair_num_time9"   property="repairNumTime9" />
+			<id column="repair_num_time10"   property="repairNumTime10" />
+			<id column="repair_num_time11"   property="repairNumTime11" />
+			<id column="repair_num_time12"   property="repairNumTime12" />
+			<id column="alarm_num_time1"   property="alarmNumTime1" />
+			<id column="alarm_num_time2"   property="alarmNumTime2" />
+			<id column="alarm_num_time3"   property="alarmNumTime3" />
+			<id column="alarm_num_time4"   property="alarmNumTime4" />
+			<id column="alarm_num_time5"   property="alarmNumTime5" />
+			<id column="alarm_num_time6"   property="alarmNumTime6" />
+			<id column="alarm_num_time7"   property="alarmNumTime7" />
+			<id column="alarm_num_time8"   property="alarmNumTime8" />
+			<id column="alarm_num_time9"   property="alarmNumTime9" />
+			<id column="alarm_num_time10"   property="alarmNumTime10" />
+			<id column="alarm_num_time11"   property="alarmNumTime11" />
+			<id column="alarm_num_time12"   property="alarmNumTime12" />
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="cityRunTimeStatisticsColumns">
+		id, city_code, statistics_date, device_kind, run_num_time1, run_num_time2, run_num_time3, run_num_time4, run_num_time5, run_num_time6, run_num_time7, run_num_time8, run_num_time9, run_num_time10, run_num_time11, run_num_time12, repair_num_time1, repair_num_time2, repair_num_time3, repair_num_time4, repair_num_time5, repair_num_time6, repair_num_time7, repair_num_time8, repair_num_time9, repair_num_time10, repair_num_time11, repair_num_time12, alarm_num_time1,alarm_num_time2,alarm_num_time3,alarm_num_time4,alarm_num_time5,alarm_num_time6,alarm_num_time7,alarm_num_time8,alarm_num_time9,alarm_num_time10,alarm_num_time11,alarm_num_time12, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="cityCode  != null and cityCode != ''" >
+					AND city_code like CONCAT('%',#{cityCode},'%')
+				</if>
+				<if test="statisticsDate != null">
+					AND statistics_date = #{statisticsDate}
+				</if>
+				<if test="deviceKind  != null and deviceKind != ''" >
+					AND device_kind like CONCAT('%',#{deviceKind},'%')
+				</if>
+				<if test="runNumTime1  != null and runNumTime1 != ''">
+					AND run_num_time1 = #{runNumTime1}
+				</if>
+				<if test="runNumTime2  != null and runNumTime2 != ''">
+					AND run_num_time2 = #{runNumTime2}
+				</if>
+				<if test="runNumTime3  != null and runNumTime3 != ''">
+					AND run_num_time3 = #{runNumTime3}
+				</if>
+				<if test="runNumTime4  != null and runNumTime4 != ''">
+					AND run_num_time4 = #{runNumTime4}
+				</if>
+				<if test="runNumTime5  != null and runNumTime5 != ''">
+					AND run_num_time5 = #{runNumTime5}
+				</if>
+				<if test="runNumTime6  != null and runNumTime6 != ''">
+					AND run_num_time6 = #{runNumTime6}
+				</if>
+				<if test="runNumTime7  != null and runNumTime7 != ''">
+					AND run_num_time7 = #{runNumTime7}
+				</if>
+				<if test="runNumTime8  != null and runNumTime8 != ''">
+					AND run_num_time8 = #{runNumTime8}
+				</if>
+				<if test="runNumTime9  != null and runNumTime9 != ''">
+					AND run_num_time9 = #{runNumTime9}
+				</if>
+				<if test="runNumTime10  != null and runNumTime10 != ''">
+					AND run_num_time10 = #{runNumTime10}
+				</if>
+				<if test="runNumTime11  != null and runNumTime11 != ''">
+					AND run_num_time11 = #{runNumTime11}
+				</if>
+				<if test="runNumTime12  != null and runNumTime12 != ''">
+					AND run_num_time12 = #{runNumTime12}
+				</if>
+				<if test="repairNumTime1  != null and repairNumTime1 != ''">
+					AND repair_num_time1 = #{repairNumTime1}
+				</if>
+				<if test="repairNumTime2  != null and repairNumTime2 != ''">
+					AND repair_num_time2 = #{repairNumTime2}
+				</if>
+				<if test="repairNumTime3  != null and repairNumTime3 != ''">
+					AND repair_num_time3 = #{repairNumTime3}
+				</if>
+				<if test="repairNumTime4  != null and repairNumTime4 != ''">
+					AND repair_num_time4 = #{repairNumTime4}
+				</if>
+				<if test="repairNumTime5  != null and repairNumTime5 != ''">
+					AND repair_num_time5 = #{repairNumTime5}
+				</if>
+				<if test="repairNumTime6  != null and repairNumTime6 != ''">
+					AND repair_num_time6 = #{repairNumTime6}
+				</if>
+				<if test="repairNumTime7  != null and repairNumTime7 != ''">
+					AND repair_num_time7 = #{repairNumTime7}
+				</if>
+				<if test="repairNumTime8  != null and repairNumTime8 != ''">
+					AND repair_num_time8 = #{repairNumTime8}
+				</if>
+				<if test="repairNumTime9  != null and repairNumTime9 != ''">
+					AND repair_num_time9 = #{repairNumTime9}
+				</if>
+				<if test="repairNumTime10  != null and repairNumTime10 != ''">
+					AND repair_num_time10 = #{repairNumTime10}
+				</if>
+				<if test="repairNumTime11  != null and repairNumTime11 != ''">
+					AND repair_num_time11 = #{repairNumTime11}
+				</if>
+				<if test="repairNumTime12  != null and repairNumTime12 != ''">
+					AND repair_num_time12 = #{repairNumTime12}
+				</if>
+				<if test="alarmNumTime1  != null and alarmNumTime1 != ''">
+					AND alarm_num_time1 = #{alarmNumTime1}
+				</if>
+				<if test="alarmNumTime2  != null and alarmNumTime2 != ''">
+					AND alarm_num_time2 = #{alarmNumTime2}
+				</if>
+				<if test="alarmNumTime3  != null and alarmNumTime3 != ''">
+					AND alarm_num_time3 = #{alarmNumTime3}
+				</if>
+				<if test="alarmNumTime4  != null and alarmNumTime4 != ''">
+					AND alarm_num_time4 = #{alarmNumTime4}
+				</if>
+				<if test="alarmNumTime5  != null and alarmNumTime5 != ''">
+					AND alarm_num_time5 = #{alarmNumTime5}
+				</if>
+				<if test="alarmNumTime6  != null and alarmNumTime6 != ''">
+					AND alarm_num_time6 = #{alarmNumTime6}
+				</if>
+				<if test="alarmNumTime7  != null and alarmNumTime7 != ''">
+					AND alarm_num_time7 = #{alarmNumTime7}
+				</if>
+				<if test="alarmNumTime8  != null and alarmNumTime8 != ''">
+					AND alarm_num_time8 = #{alarmNumTime8}
+				</if>
+				<if test="alarmNumTime9  != null and alarmNumTime9 != ''">
+					AND alarm_num_time9 = #{alarmNumTime9}
+				</if>
+				<if test="alarmNumTime10  != null and alarmNumTime10 != ''">
+					AND alarm_num_time10 = #{alarmNumTime10}
+				</if>
+				<if test="alarmNumTime11  != null and alarmNumTime11 != ''">
+					AND alarm_num_time11 = #{alarmNumTime11}
+				</if>
+				<if test="alarmNumTime12  != null and alarmNumTime12 != ''">
+					AND alarm_num_time12 = #{alarmNumTime12}
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id like CONCAT('%',#{projectId},'%')
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="cityRunTimeStatisticsResultMap">
+		SELECT
+		<include refid="cityRunTimeStatisticsColumns"/>
+		FROM as_city_run_time_statistics
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="cityRunTimeStatisticsResultMap">
+		SELECT
+		<include refid="cityRunTimeStatisticsColumns"/>
+		FROM as_city_run_time_statistics
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="cityRunTimeStatisticsResultMap">
+		SELECT
+		<include refid="cityRunTimeStatisticsColumns"/>
+		FROM as_city_run_time_statistics
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_city_run_time_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="cityCode != null">
+                    city_code,
+                </if>
+                <if test="statisticsDate != null">
+                    statistics_date,
+                </if>
+                <if test="deviceKind != null">
+                    device_kind,
+                </if>
+                <if test="runNumTime1 != null">
+                    run_num_time1,
+                </if>
+                <if test="runNumTime2 != null">
+                    run_num_time2,
+                </if>
+                <if test="runNumTime3 != null">
+                    run_num_time3,
+                </if>
+                <if test="runNumTime4 != null">
+                    run_num_time4,
+                </if>
+                <if test="runNumTime5 != null">
+                    run_num_time5,
+                </if>
+                <if test="runNumTime6 != null">
+                    run_num_time6,
+                </if>
+                <if test="runNumTime7 != null">
+                    run_num_time7,
+                </if>
+                <if test="runNumTime8 != null">
+                    run_num_time8,
+                </if>
+                <if test="runNumTime9 != null">
+                    run_num_time9,
+                </if>
+                <if test="runNumTime10 != null">
+                    run_num_time10,
+                </if>
+                <if test="runNumTime11 != null">
+                    run_num_time11,
+                </if>
+                <if test="runNumTime12 != null">
+                    run_num_time12,
+                </if>
+                <if test="repairNumTime1 != null">
+                    repair_num_time1,
+                </if>
+                <if test="repairNumTime2 != null">
+                    repair_num_time2,
+                </if>
+                <if test="repairNumTime3 != null">
+                    repair_num_time3,
+                </if>
+                <if test="repairNumTime4 != null">
+                    repair_num_time4,
+                </if>
+                <if test="repairNumTime5 != null">
+                    repair_num_time5,
+                </if>
+                <if test="repairNumTime6 != null">
+                    repair_num_time6,
+                </if>
+                <if test="repairNumTime7 != null">
+                    repair_num_time7,
+                </if>
+                <if test="repairNumTime8 != null">
+                    repair_num_time8,
+                </if>
+                <if test="repairNumTime9 != null">
+                    repair_num_time9,
+                </if>
+                <if test="repairNumTime10 != null">
+                    repair_num_time10,
+                </if>
+                <if test="repairNumTime11 != null">
+                    repair_num_time11,
+                </if>
+                <if test="repairNumTime12 != null">
+                    repair_num_time12,
+                </if>
+				<if test="alarmNumTime1 != null">
+					alarm_num_time1,
+				</if>
+				<if test="alarmNumTime2 != null">
+					alarm_num_time2,
+				</if>
+				<if test="alarmNumTime3 != null">
+					alarm_num_time3,
+				</if>
+				<if test="alarmNumTime4 != null">
+					alarm_num_time4,
+				</if>
+				<if test="alarmNumTime5 != null">
+					alarm_num_time5,
+				</if>
+				<if test="alarmNumTime6 != null">
+					alarm_num_time6,
+				</if>
+				<if test="alarmNumTime7 != null">
+					alarm_num_time7,
+				</if>
+				<if test="alarmNumTime8 != null">
+					alarm_num_time8,
+				</if>
+				<if test="alarmNumTime9 != null">
+					alarm_num_time9,
+				</if>
+				<if test="alarmNumTime10 != null">
+					alarm_num_time10,
+				</if>
+				<if test="alarmNumTime11 != null">
+					alarm_num_time11,
+				</if>
+				<if test="alarmNumTime12 != null">
+					alarm_num_time12,
+				</if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="cityCode != null">
+                    #{cityCode},
+                </if>
+                <if test="statisticsDate != null">
+                    #{statisticsDate},
+                </if>
+                <if test="deviceKind != null">
+                    #{deviceKind},
+                </if>
+                <if test="runNumTime1 != null">
+                    #{runNumTime1},
+                </if>
+                <if test="runNumTime2 != null">
+                    #{runNumTime2},
+                </if>
+                <if test="runNumTime3 != null">
+                    #{runNumTime3},
+                </if>
+                <if test="runNumTime4 != null">
+                    #{runNumTime4},
+                </if>
+                <if test="runNumTime5 != null">
+                    #{runNumTime5},
+                </if>
+                <if test="runNumTime6 != null">
+                    #{runNumTime6},
+                </if>
+                <if test="runNumTime7 != null">
+                    #{runNumTime7},
+                </if>
+                <if test="runNumTime8 != null">
+                    #{runNumTime8},
+                </if>
+                <if test="runNumTime9 != null">
+                    #{runNumTime9},
+                </if>
+                <if test="runNumTime10 != null">
+                    #{runNumTime10},
+                </if>
+                <if test="runNumTime11 != null">
+                    #{runNumTime11},
+                </if>
+                <if test="runNumTime12 != null">
+                    #{runNumTime12},
+                </if>
+                <if test="repairNumTime1 != null">
+                    #{repairNumTime1},
+                </if>
+                <if test="repairNumTime2 != null">
+                    #{repairNumTime2},
+                </if>
+                <if test="repairNumTime3 != null">
+                    #{repairNumTime3},
+                </if>
+                <if test="repairNumTime4 != null">
+                    #{repairNumTime4},
+                </if>
+                <if test="repairNumTime5 != null">
+                    #{repairNumTime5},
+                </if>
+                <if test="repairNumTime6 != null">
+                    #{repairNumTime6},
+                </if>
+                <if test="repairNumTime7 != null">
+                    #{repairNumTime7},
+                </if>
+                <if test="repairNumTime8 != null">
+                    #{repairNumTime8},
+                </if>
+                <if test="repairNumTime9 != null">
+                    #{repairNumTime9},
+                </if>
+                <if test="repairNumTime10 != null">
+                    #{repairNumTime10},
+                </if>
+                <if test="repairNumTime11 != null">
+                    #{repairNumTime11},
+                </if>
+                <if test="repairNumTime12 != null">
+                    #{repairNumTime12},
+                </if>
+				<if test="alarmNumTime1 != null">
+					#{alarmNumTime1},
+				</if>
+				<if test="alarmNumTime2 != null">
+					#{alarmNumTime2},
+				</if>
+				<if test="alarmNumTime3 != null">
+					#{alarmNumTime3},
+				</if>
+				<if test="alarmNumTime4 != null">
+					#{alarmNumTime4},
+				</if>
+				<if test="alarmNumTime5 != null">
+					#{alarmNumTime5},
+				</if>
+				<if test="alarmNumTime6 != null">
+					#{alarmNumTime6},
+				</if>
+				<if test="alarmNumTime7 != null">
+					#{alarmNumTime7},
+				</if>
+				<if test="alarmNumTime8 != null">
+					#{alarmNumTime8},
+				</if>
+				<if test="alarmNumTime9 != null">
+					#{alarmNumTime9},
+				</if>
+				<if test="alarmNumTime10 != null">
+					#{alarmNumTime10},
+				</if>
+				<if test="alarmNumTime11 != null">
+					#{alarmNumTime11},
+				</if>
+				<if test="alarmNumTime12 != null">
+					#{alarmNumTime12},
+				</if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_city_run_time_statistics
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="cityCode != null">
+					city_code =  #{cityCode},
+				</if>
+				<if test="statisticsDate != null">
+					statistics_date =  #{statisticsDate},
+				</if>
+				<if test="deviceKind != null">
+					device_kind =  #{deviceKind},
+				</if>
+				<if test="runNumTime1 != null">
+					run_num_time1 =  #{runNumTime1},
+				</if>
+				<if test="runNumTime2 != null">
+					run_num_time2 =  #{runNumTime2},
+				</if>
+				<if test="runNumTime3 != null">
+					run_num_time3 =  #{runNumTime3},
+				</if>
+				<if test="runNumTime4 != null">
+					run_num_time4 =  #{runNumTime4},
+				</if>
+				<if test="runNumTime5 != null">
+					run_num_time5 =  #{runNumTime5},
+				</if>
+				<if test="runNumTime6 != null">
+					run_num_time6 =  #{runNumTime6},
+				</if>
+				<if test="runNumTime7 != null">
+					run_num_time7 =  #{runNumTime7},
+				</if>
+				<if test="runNumTime8 != null">
+					run_num_time8 =  #{runNumTime8},
+				</if>
+				<if test="runNumTime9 != null">
+					run_num_time9 =  #{runNumTime9},
+				</if>
+				<if test="runNumTime10 != null">
+					run_num_time10 =  #{runNumTime10},
+				</if>
+				<if test="runNumTime11 != null">
+					run_num_time11 =  #{runNumTime11},
+				</if>
+				<if test="runNumTime12 != null">
+					run_num_time12 =  #{runNumTime12},
+				</if>
+				<if test="repairNumTime1 != null">
+					repair_num_time1 =  #{repairNumTime1},
+				</if>
+				<if test="repairNumTime2 != null">
+					repair_num_time2 =  #{repairNumTime2},
+				</if>
+				<if test="repairNumTime3 != null">
+					repair_num_time3 =  #{repairNumTime3},
+				</if>
+				<if test="repairNumTime4 != null">
+					repair_num_time4 =  #{repairNumTime4},
+				</if>
+				<if test="repairNumTime5 != null">
+					repair_num_time5 =  #{repairNumTime5},
+				</if>
+				<if test="repairNumTime6 != null">
+					repair_num_time6 =  #{repairNumTime6},
+				</if>
+				<if test="repairNumTime7 != null">
+					repair_num_time7 =  #{repairNumTime7},
+				</if>
+				<if test="repairNumTime8 != null">
+					repair_num_time8 =  #{repairNumTime8},
+				</if>
+				<if test="repairNumTime9 != null">
+					repair_num_time9 =  #{repairNumTime9},
+				</if>
+				<if test="repairNumTime10 != null">
+					repair_num_time10 =  #{repairNumTime10},
+				</if>
+				<if test="repairNumTime11 != null">
+					repair_num_time11 =  #{repairNumTime11},
+				</if>
+				<if test="repairNumTime12 != null">
+					repair_num_time12 =  #{repairNumTime12},
+				</if>
+				<if test="alarmNumTime1 != null">
+					alarm_num_time1 =  #{alarmNumTime1},
+				</if>
+				<if test="alarmNumTime2 != null">
+					alarm_num_time2 =  #{alarmNumTime2},
+				</if>
+				<if test="alarmNumTime3 != null">
+					alarm_num_time3 =  #{alarmNumTime3},
+				</if>
+				<if test="alarmNumTime4 != null">
+					alarm_num_time4 =  #{alarmNumTime4},
+				</if>
+				<if test="alarmNumTime5 != null">
+					alarm_num_time5 =  #{alarmNumTime5},
+				</if>
+				<if test="alarmNumTime6 != null">
+					alarm_num_time6 =  #{alarmNumTime6},
+				</if>
+				<if test="alarmNumTime7 != null">
+					alarm_num_time7 =  #{alarmNumTime7},
+				</if>
+				<if test="alarmNumTime8 != null">
+					alarm_num_time8 =  #{alarmNumTime8},
+				</if>
+				<if test="alarmNumTime9 != null">
+					alarm_num_time9 =  #{alarmNumTime9},
+				</if>
+				<if test="alarmNumTime10 != null">
+					alarm_num_time10 =  #{alarmNumTime10},
+				</if>
+				<if test="alarmNumTime11 != null">
+					alarm_num_time11 =  #{alarmNumTime11},
+				</if>
+				<if test="alarmNumTime12 != null">
+					alarm_num_time12 =  #{alarmNumTime12},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_city_run_time_statistics
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_city_run_time_statistics
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findByCondition" resultMap="cityRunTimeStatisticsResultMap">
+		SELECT <include refid="cityRunTimeStatisticsColumns"/>
+		FROM as_city_run_time_statistics
+		where 1 = 1
+		<if test="cityCode != null and cityCode != ''">
+			and city_code = #{cityCode}
+		</if>
+		<if test="deviceKind != null and deviceKind != ''">
+			and device_kind = #{deviceKind}
+		</if>
+		<if test="statisticsDate != null">
+			and statistics_date = #{statisticsDate,jdbcType=DATE}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id = #{projectId}
+		</if>
+	</select>
+
+
+	<select id="periodRun" resultType="com.aswl.as.ibrs.api.module.CityRunTimeStatistics">
+		SELECT
+		sum(ifnull(alarm_num_time1,0)) as alarmNumTime1,
+		sum(ifnull(alarm_num_time2,0)) as alarmNumTime2,
+		sum(ifnull(alarm_num_time3,0)) as alarmNumTime3,
+		sum(ifnull(alarm_num_time4,0)) as alarmNumTime4,
+		sum(ifnull(alarm_num_time5,0)) as alarmNumTime5,
+		sum(ifnull(alarm_num_time6,0)) as alarmNumTime6,
+		sum(ifnull(alarm_num_time7,0)) as alarmNumTime7,
+		sum(ifnull(alarm_num_time8,0)) as alarmNumTime8,
+		sum(ifnull(alarm_num_time9,0)) as alarmNumTime9,
+		sum(ifnull(alarm_num_time10,0)) as alarmNumTime10,
+		sum(ifnull(alarm_num_time11,0)) as alarmNumTime11,
+		sum(ifnull(alarm_num_time12,0)) as alarmNumTime12,
+		sum(ifnull(run_num_time1,0)) as runNumTime1,
+		sum(ifnull(run_num_time2,0)) as runNumTime2,
+		sum(ifnull(run_num_time3,0)) as runNumTime3,
+		sum(ifnull(run_num_time4,0)) as runNumTime4,
+		sum(ifnull(run_num_time5,0)) as runNumTime5,
+		sum(ifnull(run_num_time6,0)) as runNumTime6,
+		sum(ifnull(run_num_time7,0)) as runNumTime7,
+		sum(ifnull(run_num_time8,0)) as runNumTime8,
+		sum(ifnull(run_num_time9,0)) as runNumTime9,
+		sum(ifnull(run_num_time10,0)) as runNumTime10,
+		sum(ifnull(run_num_time11,0)) as runNumTime11,
+		sum(ifnull(run_num_time12,0)) as runNumTime12,
+		SUM(IFNULL(repair_num_time1,0)) AS repairNumTime1,
+		SUM(IFNULL(repair_num_time2,0)) AS repairNumTime2,
+		SUM(IFNULL(repair_num_time3,0)) AS repairNumTime3,
+		SUM(IFNULL(repair_num_time4,0)) AS repairNumTime4,
+		SUM(IFNULL(repair_num_time5,0)) AS repairNumTime5,
+		SUM(IFNULL(repair_num_time6,0)) AS repairNumTime6,
+		SUM(IFNULL(repair_num_time7,0)) AS repairNumTime7,
+		SUM(IFNULL(repair_num_time8,0)) AS repairNumTime8,
+		SUM(IFNULL(repair_num_time9,0)) AS repairNumTime9,
+		SUM(IFNULL(repair_num_time10,0)) AS repairNumTime10,
+		SUM(IFNULL(repair_num_time11,0)) AS repairNumTime11,
+		SUM(IFNULL(repair_num_time12,0)) AS repairNumTime12
+		FROM as_city_run_time_statistics where 1 = 1
+		<if test="deviceKind != null and deviceKind != ''">
+			and device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND (statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="cityCode != null and cityCode != ''">
+			and city_code like concat(#{cityCode},'%')
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id = #{projectId}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.FlowInfoMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="flowInfoResultMap" type="com.aswl.as.ibrs.api.module.FlowInfo">
+			<id column="id"   property="id" />
+			<id column="flow_name"   property="flowName" />
+			<id column="form_id"   property="formId" />
+			<id column="flow_doc"   property="flowDoc" />
+			<id column="flow_type"   property="flowType" />
+			<id column="flow_status"   property="flowStatus" />
+			<id column="flow_icon"   property="flowIcon" />
+			<id column="flow_no"   property="flowNo" />
+			<id column="flow_sort"   property="flowSort" />
+			<id column="auto_name"   property="autoName" />
+			<id column="auto_num"   property="autoNum" />
+			<id column="auto_len"   property="autoLen" />
+			<id column="auto_edit"   property="autoEdit" />
+			<id column="flow_desc"   property="flowDesc" />
+			<id column="new_user"   property="newUser" />
+			<id column="org_id"   property="orgId" />
+			<id column="free_preset"   property="freePreset" />
+			<id column="free_other"   property="freeOther" />
+			<id column="list_flds_str"   property="listFldsStr" />
+			<id column="proce_pre_set"   property="procePreSet" />
+			<id column="model_id"   property="modelId" />
+			<id column="model_name"   property="modelName" />
+			<id column="attachment_id"   property="attachmentId" />
+			<id column="attachment_name"   property="attachmentName" />
+			<id column="view_user_ids"   property="viewUserIds" />
+			<id column="view_priv"   property="viewPriv" />
+			<id column="is_version"   property="isVersion" />
+			<id column="update_time"   property="updateTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="flowInfoColumns">
+		id, flow_name, form_id, flow_doc, flow_type, flow_status, flow_icon, flow_no, flow_sort, auto_name, auto_num, auto_len, auto_edit, flow_desc, new_user, org_id, free_preset, free_other, list_flds_str, proce_pre_set, model_id, model_name, attachment_id, attachment_name, view_user_ids, view_priv, is_version, update_time, application_code, tenant_code, 
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="flowName  != null and flowName != ''" >
+					and flow_name like CONCAT('%',#{flowName},'%')
+				</if>
+				<if test="formId  != null and formId != ''">
+					and form_id = #{formId}
+				</if>
+				<if test="flowDoc  != null and flowDoc != ''">
+					and flow_doc = #{flowDoc}
+				</if>
+				<if test="flowType  != null and flowType != ''">
+					and flow_type = #{flowType}
+				</if>
+				<if test="flowStatus  != null and flowStatus != ''">
+					and flow_status = #{flowStatus}
+				</if>
+				<if test="flowIcon  != null and flowIcon != ''" >
+					and flow_icon like CONCAT('%',#{flowIcon},'%')
+				</if>
+				<if test="flowNo  != null and flowNo != ''" >
+					and flow_no like CONCAT('%',#{flowNo},'%')
+				</if>
+				<if test="flowSort  != null and flowSort != ''">
+					and flow_sort = #{flowSort}
+				</if>
+				<if test="autoName  != null and autoName != ''" >
+					and auto_name like CONCAT('%',#{autoName},'%')
+				</if>
+				<if test="autoNum  != null and autoNum != ''">
+					and auto_num = #{autoNum}
+				</if>
+				<if test="autoLen  != null and autoLen != ''">
+					and auto_len = #{autoLen}
+				</if>
+				<if test="autoEdit  != null and autoEdit != ''">
+					and auto_edit = #{autoEdit}
+				</if>
+				<if test="flowDesc  != null and flowDesc != ''" >
+					and flow_desc like CONCAT('%',#{flowDesc},'%')
+				</if>
+				<if test="newUser  != null and newUser != ''">
+					and new_user = #{newUser}
+				</if>
+				<if test="orgId  != null and orgId != ''">
+					and org_id = #{orgId}
+				</if>
+				<if test="freePreset  != null and freePreset != ''">
+					and free_preset = #{freePreset}
+				</if>
+				<if test="freeOther  != null and freeOther != ''">
+					and free_other = #{freeOther}
+				</if>
+				<if test="listFldsStr  != null and listFldsStr != ''">
+					and list_flds_str = #{listFldsStr}
+				</if>
+				<if test="procePreSet  != null and procePreSet != ''">
+					and proce_pre_set = #{procePreSet}
+				</if>
+				<if test="modelId  != null and modelId != ''" >
+					and model_id like CONCAT('%',#{modelId},'%')
+				</if>
+				<if test="modelName  != null and modelName != ''" >
+					and model_name like CONCAT('%',#{modelName},'%')
+				</if>
+				<if test="attachmentId  != null and attachmentId != ''" >
+					and attachment_id like CONCAT('%',#{attachmentId},'%')
+				</if>
+				<if test="attachmentName  != null and attachmentName != ''" >
+					and attachment_name like CONCAT('%',#{attachmentName},'%')
+				</if>
+				<if test="viewUserIds  != null and viewUserIds != ''" >
+					and view_user_ids like CONCAT('%',#{viewUserIds},'%')
+				</if>
+				<if test="viewPriv  != null and viewPriv != ''">
+					and view_priv = #{viewPriv}
+				</if>
+				<if test="isVersion  != null and isVersion != ''">
+					and is_version = #{isVersion}
+				</if>
+				<if test="updateTime  != null and updateTime != ''">
+					and update_time = #{updateTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="flowInfoResultMap">
+		SELECT
+		<include refid="flowInfoColumns"/>
+		FROM as_flow_info
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="flowInfoResultMap">
+		SELECT
+		<include refid="flowInfoColumns"/>
+		FROM as_flow_info
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="flowInfoResultMap">
+		SELECT
+		<include refid="flowInfoColumns"/>
+		FROM as_flow_info
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_flow_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="flowName != null and flowName!=''">
+                    flow_name,
+                </if>
+                <if test="formId != null and formId!=''">
+                    form_id,
+                </if>
+                <if test="flowDoc != null and flowDoc!=''">
+                    flow_doc,
+                </if>
+                <if test="flowType != null and flowType!=''">
+                    flow_type,
+                </if>
+                <if test="flowStatus != null and flowStatus!=''">
+                    flow_status,
+                </if>
+                <if test="flowIcon != null and flowIcon!=''">
+                    flow_icon,
+                </if>
+                <if test="flowNo != null and flowNo!=''">
+                    flow_no,
+                </if>
+                <if test="flowSort != null and flowSort!=''">
+                    flow_sort,
+                </if>
+                <if test="autoName != null and autoName!=''">
+                    auto_name,
+                </if>
+                <if test="autoNum != null and autoNum!=''">
+                    auto_num,
+                </if>
+                <if test="autoLen != null and autoLen!=''">
+                    auto_len,
+                </if>
+                <if test="autoEdit != null and autoEdit!=''">
+                    auto_edit,
+                </if>
+                <if test="flowDesc != null and flowDesc!=''">
+                    flow_desc,
+                </if>
+                <if test="newUser != null and newUser!=''">
+                    new_user,
+                </if>
+                <if test="orgId != null and orgId!=''">
+                    org_id,
+                </if>
+                <if test="freePreset != null and freePreset!=''">
+                    free_preset,
+                </if>
+                <if test="freeOther != null and freeOther!=''">
+                    free_other,
+                </if>
+                <if test="listFldsStr != null and listFldsStr!=''">
+                    list_flds_str,
+                </if>
+                <if test="procePreSet != null and procePreSet!=''">
+                    proce_pre_set,
+                </if>
+                <if test="modelId != null and modelId!=''">
+                    model_id,
+                </if>
+                <if test="modelName != null and modelName!=''">
+                    model_name,
+                </if>
+                <if test="attachmentId != null and attachmentId!=''">
+                    attachment_id,
+                </if>
+                <if test="attachmentName != null and attachmentName!=''">
+                    attachment_name,
+                </if>
+                <if test="viewUserIds != null and viewUserIds!=''">
+                    view_user_ids,
+                </if>
+                <if test="viewPriv != null and viewPriv!=''">
+                    view_priv,
+                </if>
+                <if test="isVersion != null and isVersion!=''">
+                    is_version,
+                </if>
+                <if test="updateTime != null and updateTime!=''">
+                    update_time,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="flowName != null and flowName!=''">
+                    #{flowName},
+                </if>
+                <if test="formId != null and formId!=''">
+                    #{formId},
+                </if>
+                <if test="flowDoc != null and flowDoc!=''">
+                    #{flowDoc},
+                </if>
+                <if test="flowType != null and flowType!=''">
+                    #{flowType},
+                </if>
+                <if test="flowStatus != null and flowStatus!=''">
+                    #{flowStatus},
+                </if>
+                <if test="flowIcon != null and flowIcon!=''">
+                    #{flowIcon},
+                </if>
+                <if test="flowNo != null and flowNo!=''">
+                    #{flowNo},
+                </if>
+                <if test="flowSort != null and flowSort!=''">
+                    #{flowSort},
+                </if>
+                <if test="autoName != null and autoName!=''">
+                    #{autoName},
+                </if>
+                <if test="autoNum != null and autoNum!=''">
+                    #{autoNum},
+                </if>
+                <if test="autoLen != null and autoLen!=''">
+                    #{autoLen},
+                </if>
+                <if test="autoEdit != null and autoEdit!=''">
+                    #{autoEdit},
+                </if>
+                <if test="flowDesc != null and flowDesc!=''">
+                    #{flowDesc},
+                </if>
+                <if test="newUser != null and newUser!=''">
+                    #{newUser},
+                </if>
+                <if test="orgId != null and orgId!=''">
+                    #{orgId},
+                </if>
+                <if test="freePreset != null and freePreset!=''">
+                    #{freePreset},
+                </if>
+                <if test="freeOther != null and freeOther!=''">
+                    #{freeOther},
+                </if>
+                <if test="listFldsStr != null and listFldsStr!=''">
+                    #{listFldsStr},
+                </if>
+                <if test="procePreSet != null and procePreSet!=''">
+                    #{procePreSet},
+                </if>
+                <if test="modelId != null and modelId!=''">
+                    #{modelId},
+                </if>
+                <if test="modelName != null and modelName!=''">
+                    #{modelName},
+                </if>
+                <if test="attachmentId != null and attachmentId!=''">
+                    #{attachmentId},
+                </if>
+                <if test="attachmentName != null and attachmentName!=''">
+                    #{attachmentName},
+                </if>
+                <if test="viewUserIds != null and viewUserIds!=''">
+                    #{viewUserIds},
+                </if>
+                <if test="viewPriv != null and viewPriv!=''">
+                    #{viewPriv},
+                </if>
+                <if test="isVersion != null and isVersion!=''">
+                    #{isVersion},
+                </if>
+                <if test="updateTime != null and updateTime!=''">
+                    #{updateTime},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_flow_info
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="flowName != null and flowName!=''">
+					flow_name =  #{flowName},
+				</if>
+				<if test="formId != null and formId!=''">
+					form_id =  #{formId},
+				</if>
+				<if test="flowDoc != null and flowDoc!=''">
+					flow_doc =  #{flowDoc},
+				</if>
+				<if test="flowType != null and flowType!=''">
+					flow_type =  #{flowType},
+				</if>
+				<if test="flowStatus != null and flowStatus!=''">
+					flow_status =  #{flowStatus},
+				</if>
+				<if test="flowIcon != null and flowIcon!=''">
+					flow_icon =  #{flowIcon},
+				</if>
+				<if test="flowNo != null and flowNo!=''">
+					flow_no =  #{flowNo},
+				</if>
+				<if test="flowSort != null and flowSort!=''">
+					flow_sort =  #{flowSort},
+				</if>
+				<if test="autoName != null and autoName!=''">
+					auto_name =  #{autoName},
+				</if>
+				<if test="autoNum != null and autoNum!=''">
+					auto_num =  #{autoNum},
+				</if>
+				<if test="autoLen != null and autoLen!=''">
+					auto_len =  #{autoLen},
+				</if>
+				<if test="autoEdit != null and autoEdit!=''">
+					auto_edit =  #{autoEdit},
+				</if>
+				<if test="flowDesc != null and flowDesc!=''">
+					flow_desc =  #{flowDesc},
+				</if>
+				<if test="newUser != null and newUser!=''">
+					new_user =  #{newUser},
+				</if>
+				<if test="orgId != null and orgId!=''">
+					org_id =  #{orgId},
+				</if>
+				<if test="freePreset != null and freePreset!=''">
+					free_preset =  #{freePreset},
+				</if>
+				<if test="freeOther != null and freeOther!=''">
+					free_other =  #{freeOther},
+				</if>
+				<if test="listFldsStr != null and listFldsStr!=''">
+					list_flds_str =  #{listFldsStr},
+				</if>
+				<if test="procePreSet != null and procePreSet!=''">
+					proce_pre_set =  #{procePreSet},
+				</if>
+				<if test="modelId != null and modelId!=''">
+					model_id =  #{modelId},
+				</if>
+				<if test="modelName != null and modelName!=''">
+					model_name =  #{modelName},
+				</if>
+				<if test="attachmentId != null and attachmentId!=''">
+					attachment_id =  #{attachmentId},
+				</if>
+				<if test="attachmentName != null and attachmentName!=''">
+					attachment_name =  #{attachmentName},
+				</if>
+				<if test="viewUserIds != null and viewUserIds!=''">
+					view_user_ids =  #{viewUserIds},
+				</if>
+				<if test="viewPriv != null and viewPriv!=''">
+					view_priv =  #{viewPriv},
+				</if>
+				<if test="isVersion != null and isVersion!=''">
+					is_version =  #{isVersion},
+				</if>
+				<if test="updateTime != null and updateTime!=''">
+					update_time =  #{updateTime},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_flow_info SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_flow_info SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

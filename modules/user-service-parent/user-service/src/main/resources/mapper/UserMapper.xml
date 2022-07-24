@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.UserMapper">
+    <resultMap id="userResultMap" type="com.aswl.as.user.api.module.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="avatar_id" property="avatarId"/>
+        <result column="head_picture" property="headPicture"/>
+        <result column="email" property="email"/>
+        <result column="sex" property="sex"/>
+        <result column="born" property="born" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="dept_code" property="deptCode"/>
+        <result column="position_id" property="positionId"/>
+        <result column="position_name" property="positionName"/>
+        <result column="project_id" property="projectId"/>
+        <result column="project_name" property="projectName"/>
+        <result column="region_id" property="regionId"/>
+        <result column="region_code" property="regionCode"/>
+        <result column="sys_role" property="sysRole"/>
+        <result column="app_notice" property="appNotice"/>
+        <result column="sms_notice" property="smsNotice"/>
+        <result column="online_duration" property="onlineDuration"/>
+        <result column="online_duration_begin" property="onlineDurationBegin"/>
+        <result column="user_company" property="userCompany"/>
+        <result column="status" property="status"/>
+        <result column="creator" property="creator"/>
+        <result column="create_date" property="createDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier"/>
+        <result column="modify_date" property="modifyDate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="application_code" property="applicationCode"/>
+        <result column="tenant_code" property="tenantCode"/>
+    </resultMap>
+
+    <sql id="userColumns">
+        a.id,
+        a.name,
+        a.phone,
+        a.avatar_id,
+        a.head_picture,
+        a.email,
+        a.sex,
+        a.born,
+        a.dept_id,
+        a.dept_code,
+        a.position_id,
+        a.position_name,
+        a.project_id,
+        a.project_name,
+        a.region_id,
+        a.region_code,
+        a.sys_role,
+        a.app_notice,
+        a.sms_notice,
+        a.online_duration,
+        a.online_duration_begin,
+        a.user_company,
+        a.status,
+        a.creator,
+        a.create_date,
+        a.modifier,
+        a.modify_date,
+        a.del_flag,
+        a.application_code,
+        a.tenant_code
+    </sql>
+
+    <!-- where 条件 -->
+    <sql id="whereColumnList">
+        <if test="deptId != null and deptId !=''">
+           and a.dept_id = #{deptId}
+        </if>
+        <if test="deptCode!=null and deptCode!='' ">
+            and a.dept_code like CONCAT(#{deptCode},'%')
+        </if>
+        <if test="name != null and name != ''">
+            and a.name like CONCAT('%', #{name},'%')
+        </if>
+        <choose>
+            <when test='projectId != null and isSysAdminRole =="1" '>
+                
+                and (a.project_id in <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+              OR a.project_id IS NULL)
+            </when>
+            <otherwise>
+                <if test="projectId != null and projectId !=''">
+                and a.project_id IN
+                <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                </if>
+            </otherwise>
+        </choose>
+        <if test="regionId != null and regionId != ''">
+            and  a.region_id = #{regionId}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and  a.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="sysRole != null and sysRole !='' ">
+            AND a.sys_role in
+            <foreach item="item" index="index" collection="sysRole.split(',')" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="status != null and status != ''">
+            and a.status = #{status}
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            and a.tenant_code = #{tenantCode}
+        </if>
+        <if test="query!= null and query!=''">
+            and (a.name like CONCAT('%',#{query},'%') or b.identifier like CONCAT('%',#{query},'%'))
+        </if>
+         ORDER BY a.id desc
+    </sql>
+
+    <select id="get" resultMap="userResultMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="userCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sys_user a
+        WHERE a.del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="userResultMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        LEFT JOIN sys_user_auths b
+        on a.id =b.user_id
+        WHERE a.del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+    <select id="findListById" resultMap="userResultMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        WHERE a.id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="findUsersByProjectId" resultType="com.aswl.as.common.core.vo.UserVo">
+        SELECT
+        u.id as id,
+        CONCAT(u.name,"/",IFNULL(u.phone,"")) AS uNamePhone,
+        u.name as name,
+        u.phone as phone,
+        u.project_id as projectId,
+        r.role_code as roleCode
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur
+        ON u.id =ur.user_id
+        LEFT JOIN sys_role r
+        ON r.id =role_id
+        WHERE u.project_id = #{projectId}
+        AND (r.role_code LIKE CONCAT ('role_sys_admin_',#{tenantCode}) OR r.role_code LIKE CONCAT ('role_project_admin_',#{tenantCode}))
+    </select>
+    
+    <!-- 新增用户 -->
+    <insert id="insert">
+        insert into sys_user (
+        id,
+        name,
+        phone,
+        avatar_id,
+        head_picture,
+        email,
+        sex,
+        born,
+        dept_id,
+        dept_code,
+        position_id,
+        position_name,
+        project_id,
+        project_name,
+        region_id,
+        region_code,
+        sys_role,
+        user_company,
+        status,
+        creator,
+        create_date,
+        modifier,
+        modify_date,
+        del_flag,
+        application_code,
+        tenant_code
+        ) values (
+        #{id},
+        #{name},
+        #{phone},
+        #{avatarId},
+        #{headPicture},
+        #{email},
+        #{sex},
+        #{born, jdbcType=DATE, javaType=java.util.Date},
+        #{deptId},
+        #{deptCode},
+        #{positionId},
+        #{positionName},
+        #{projectId},
+        #{projectName},
+        #{regionId},
+         #{regionCode},
+         #{sysRole},
+         #{userCompany},
+        #{status},
+        #{creator},
+        #{createDate, jdbcType=TIMESTAMP, javaType=java.util.Date},
+        #{modifier},
+        #{modifyDate, jdbcType=TIMESTAMP, javaType=java.util.Date},
+        #{delFlag},
+        #{applicationCode},
+        #{tenantCode}
+        );
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="update">
+        update sys_user set
+        <if test="name != null">
+            name = #{name} ,
+        </if>
+        <if test="phone != null">
+            phone = #{phone} ,
+        </if>
+        <if test="avatarId != null">
+            avatar_id = #{avatarId} ,
+        </if>
+        <if test="headPicture!=null">
+            head_picture=#{headPicture},
+        </if>
+        <if test="email != null">
+            email = #{email} ,
+        </if>
+        <if test="sex != null">
+            sex = #{sex} ,
+        </if>
+        <choose>
+            <when test="born != null">
+                born = #{born},
+            </when>
+            <otherwise>
+                born = null,
+            </otherwise>
+        </choose>
+        <if test="deptId != null">
+            dept_id = #{deptId} ,
+        </if>
+        <if test="deptCode!=null">
+            dept_code = #{deptCode} ,
+        </if>
+        <if test="positionId!=null">
+            position_id = #{positionId} ,
+        </if>
+        <if test="positionName!=null">
+            position_name = #{positionName} ,
+        </if>
+        <if test="projectId!= null">
+            project_id = #{projectId},
+        </if>
+        <if test="projectName!= null">
+            project_name = #{projectName},
+        </if>
+        <if test="regionId!=null">
+            region_id = #{regionId} ,
+        </if>
+        <if test="regionCode!=null">
+            region_code = #{regionCode} ,
+        </if>
+        <if test="sysRole!= null">
+            sys_role = #{sysRole},
+        </if>
+        <if test="appNotice!= null">
+            app_notice = #{appNotice},
+        </if>
+        <if test="smsNotice!= null">
+            sms_notice = #{smsNotice},
+        </if>
+        <if test="onlineDuration!= null">
+            online_duration = #{onlineDuration},
+        </if>
+        <if test="onlineDurationBegin!= null">
+            online_duration_begin = #{onlineDurationBegin},
+        </if>
+        <if test="userCompany!= null">
+            user_company = #{userCompany},
+        </if>
+        <if test="status != null">
+            status = #{status} ,
+        </if>
+        <if test="creator != null">
+            creator = #{creator} ,
+        </if>
+        <if test="createDate != null">
+            create_date = #{createDate} ,
+        </if>
+        <if test="delFlag != null">
+            del_flag = #{delFlag} ,
+        </if>
+
+        <if test="applicationCode != null">
+            application_code = #{applicationCode} ,
+        </if>
+
+        <if test="tenantCode != null">
+            tenant_code = #{tenantCode} ,
+        </if>
+        modifier = #{modifier} ,
+        modify_date = #{modifyDate, jdbcType=TIMESTAMP, javaType=java.util.Date}
+        where id = #{id}
+    </update>
+
+    <update id="delete">
+        DELETE FROM sys_user WHERE id = #{id}
+    </update>
+    <update id="updateOnlineDuration">
+        update sys_user set online_duration = online_duration + #{onlineDuration},online_duration_begin = #{onlineDurationBegin} where id = #{id}   
+    </update>
+
+    <delete id="deleteAll">
+        DELETE FROM sys_user
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+
+    <select id="findSendNoticeUsers" resultMap="userResultMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        WHERE a.sys_role in (4,5)
+        AND a.project_id = #{projectId}  
+    </select>
+    <select id="findSendEmailUsers" resultMap="userResultMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        WHERE a.project_id = #{projectId}
+        AND a.email IS NOT NULL
+    </select>
+
+    <select id="findUserByProjectId" resultMap="userResultMap">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        WHERE a.project_id = #{projectId}
+    </select>
+    <select id="selectByTenantCode" resultMap="userResultMap">
+
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        WHERE a.tenant_code = #{tenantCode}
+    </select> 
+    
+    <delete id="deleteUserByTenantCode">
+         DELETE FROM sys_user WHERE tenant_code = #{tenantCode} 
+        
+    </delete>
+</mapper>

@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceEventAlarmMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceEventAlarmResultMap" type="com.aswl.as.ibrs.api.module.DeviceEventAlarm">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="rec_time"   property="recTime" />
+			<id column="region_no" property="regionNo"/>
+			<id column="is_alarm"   property="isAlarm" />
+			<id column="alarm_level"   property="alarmLevel" />
+			<id column="alarm_types"   property="alarmTypes" />
+			<id column="alarm_types_des"   property="alarmTypesDes" />
+			<id column="alarm_levels" property="alarmLevels"/>
+			<id column="alarm_dates" property="alarmDates"/>
+			<id column="prompt_types" property="promptTypes"/>
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="deviceEventAlarmColumns">
+		id, u_event_id, device_id,region_no, rec_time, is_alarm, alarm_level, alarm_types, alarm_types_des, alarm_levels, alarm_dates, prompt_types, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''">
+					and u_event_id = #{uEventId}
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="recTime  != null and recTime != ''">
+					and rec_time = #{recTime}
+				</if>
+				<if test="isAlarm  != null and isAlarm != ''">
+					and is_alarm = #{isAlarm}
+				</if>
+				<if test="alarmLevel  != null and alarmLevel != ''">
+					and alarm_level = #{alarmLevel}
+				</if>
+				<if test="alarmTypes  != null and alarmTypes != ''" >
+					and alarm_types like CONCAT('%',#{alarmTypes},'%')
+				</if>
+				<if test="alarmTypesDes  != null and alarmTypesDes != ''" >
+					and alarm_types_des like CONCAT('%',#{alarmTypesDes},'%')
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceEventAlarmResultMap">
+		SELECT
+		<include refid="deviceEventAlarmColumns"/>
+		FROM as_device_event_alarm
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="deviceEventAlarmResultMap">
+		SELECT
+		<include refid="deviceEventAlarmColumns"/>
+		FROM as_device_event_alarm
+		WHERE 1 = 1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceEventAlarmResultMap">
+		SELECT
+		<include refid="deviceEventAlarmColumns"/>
+		FROM as_device_event_alarm
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_event_alarm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null ">
+                    id,
+                </if>
+                <if test="uEventId != null ">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+			<if test="regionNo != null ">
+				region_no,
+			</if>
+                <if test="recTime != null ">
+                    rec_time,
+                </if>
+                <if test="isAlarm != null ">
+                    is_alarm,
+                </if>
+                <if test="alarmLevel != null">
+                    alarm_level,
+                </if>
+                <if test="alarmTypes != null">
+                    alarm_types,
+                </if>
+                <if test="alarmTypesDes != null">
+                    alarm_types_des,
+                </if>
+				<if test="alarmLevels != null">
+					alarm_levels,
+				</if>
+				<if test="alarmDates != null">
+					alarm_dates,
+				</if>
+				<if test="promptTypes != null">
+					prompt_types,
+				</if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null ">
+                    application_code,
+                </if>
+                <if test="tenantCode != null ">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null ">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+				<if test="regionNo != null">
+					#{regionNo},
+				</if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="isAlarm != null">
+                    #{isAlarm},
+                </if>
+                <if test="alarmLevel != null">
+                    #{alarmLevel},
+                </if>
+                <if test="alarmTypes != null">
+                    #{alarmTypes},
+                </if>
+                <if test="alarmTypesDes != null ">
+                    #{alarmTypesDes},
+                </if>
+				<if test="alarmLevels != null">
+					#{alarmLevels},
+				</if>
+				<if test="alarmDates != null">
+					#{alarmDates},
+				</if>
+				<if test="promptTypes != null">
+					#{promptTypes},
+				</if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_event_alarm
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+			<if test="regionNo != null">
+				region_no =  #{regionNo},
+			</if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="isAlarm != null">
+					is_alarm =  #{isAlarm},
+				</if>
+				<if test="alarmLevel != null">
+					alarm_level =  #{alarmLevel},
+				</if>
+				<if test="alarmTypes != null">
+					alarm_types =  #{alarmTypes},
+				</if>
+				<if test="alarmTypesDes != null">
+					alarm_types_des =  #{alarmTypesDes},
+				</if>
+				<if test="alarmLevels != null">
+					alarm_levels = #{alarmLevels},
+				</if>
+				<if test="alarmDates != null">
+					alarm_dates = #{alarmDates},
+				</if>
+				<if test="promptTypes != null">
+					prompt_types = #{promptTypes},
+				</if>
+				<if test="storeTime != null ">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_device_event_alarm SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_device_event_alarm SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getAlarmLevelCounts" resultType="java.util.Map">
+		SELECT
+		COUNT(*) AS counts
+		FROM as_device_event_alarm a
+		<if test="projectId!=null and projectId!='' ">
+			LEFT JOIN as_device d on a.device_id = d.id <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+		</if>
+		WHERE 1 = 1
+		<if test="alarmLevel == 1 or alarmLevel == 2">
+			AND a.is_alarm=1
+		</if>
+		<if test="regionCode!=null and regionCode!=''">
+			AND a.region_no LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="alarmLevel!=null and alarmLevel!=''">
+			AND a.alarm_level=#{alarmLevel}
+		</if>
+		<if test="tenantCode!=null and tenantCode!='' ">
+			AND a.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND d.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getAlarmTypeCounts" resultType="java.util.Map">
+		SELECT COUNT(*) AS counts
+		FROM as_device_event_alarm a
+		<if test="projectId!=null and projectId!='' ">
+			LEFT JOIN as_device d on a.device_id = d.id <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+		</if>
+		WHERE is_alarm=1
+		<if test="regionCode!=null and regionCode!=''">
+			AND a.region_no LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="alarmType  != null and alarmType != ''" >
+			AND a.alarm_types like CONCAT('%',#{alarmType},'%')
+		</if>
+		<if test="tenantCode!=null and tenantCode!='' ">
+			AND a.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND d.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getHealthyDataCounts" resultType="java.util.Map">
+
+SELECT SUM(t1.allsum) AS counts  FROM
+(
+SELECT model_count.device_num AS t,
+mmodel.metadata_num,
+mmodel.device_model_id,
+(model_count.device_num * mmodel.metadata_num) allsum
+  FROM
+(SELECT COUNT(device_model_id) metadata_num, device_model_id FROM as_event_uc_metadata_model GROUP BY device_model_id) mmodel
+INNER JOIN (SELECT COUNT(device_model_id) device_num, device_model_id FROM as_device GROUP BY device_model_id) model_count ON mmodel.device_model_id=model_count.device_model_id
+
+) t1
+</select>
+	<select id="getAlarmCounts" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		as_device_event_alarm t1
+		LEFT JOIN as_event_network  t2
+		ON t1.device_id=t2.device_id
+		<if test="projectId != null and projectId != '' ">
+			LEFT JOIN as_device d on t1.device_id = d.id  <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+		</if>
+		WHERE t1.is_alarm=1
+		<if test='flag!=null and flag=="1"'>
+			AND t1.alarm_level in (1)
+		</if>
+		<if test='flag!=null and flag=="2"'>
+			AND t1.alarm_level in (1,2)
+		</if>
+		AND t2.network_state=1
+		<if test="regionCode!=null and regionCode!=''">
+			AND t1.region_no LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="tenantCode!=null and tenantCode!='' ">
+			AND t1.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND d.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getOffAlarmDataCounts" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM as_device_event_alarm  t1
+		LEFT JOIN as_event_network t2 ON t1.device_id=t2.device_id
+		<if test="projectId!=null and projectId!='' ">
+			LEFT JOIN as_device d on t1.device_id = d.id <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+		</if>
+		WHERE t2.network_state IN (0,2,3)
+		<if test="regionCode!=null and regionCode!=''">
+				AND t1.region_no LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="tenantCode!=null and tenantCode!='' ">
+			AND t1.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND d.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getHistoryAlarm" resultType="com.aswl.as.ibrs.api.vo.DeviceEventAlarmVo">
+	SELECT
+	FROM_UNIXTIME(t1.begin_time) AS storeTime ,
+	t1.alarm_level AS alarmLevel,
+	t2.alarm_type_name AS alarmTypesDes,
+	t1.run_status AS status
+	 FROM as_flow_run t1
+	LEFT JOIN as_alarm_type t2
+	ON t1.alarm_type=t2.alarm_type
+	WHERE t1.begin_device_id=#{deviceId}
+</select>
+
+	<select id="getHistoryAlarmData" resultType="com.aswl.as.ibrs.api.vo.DeviceEventAlarmVo">
+	<!--SELECT -->
+	<!--t1.alarm_time AS alarm_time ,-->
+	<!--t1.alarm_level AS alarmLevel,-->
+	<!--t2.alarm_type_name AS alarmTypesDes,-->
+	<!--t1.run_status AS status-->
+	 <!--FROM as_flow_run t1-->
+	<!--LEFT JOIN as_alarm_type t2-->
+	<!--ON t1.alarm_type=t2.alarm_type-->
+	<!--WHERE 1=1-->
+	<!--<if test="id!=null and id !=''">-->
+	  <!--AND t1.begin_device_id=#{id}-->
+	<!--</if>-->
+	<!--<if test="startTime !=null and endTime !='' ">-->
+		 <!--AND t1.alarm_time BETWEEN #{startTime} AND #{endTime}-->
+	<!--</if>-->
+	<!--ORDER BY alarm_time DESC-->
+		SELECT
+		t1.device_id AS deviceId,
+		t1.u_event_id AS eventIds,
+		t1.store_time AS alarmTime,
+		t1.alarm_level AS alarmLevel,
+		t1.alarm_types_des AS alarmTypesDes,
+		t1.alarm_types AS alarmTypes,
+		CASE
+		WHEN find_in_set(t1.u_event_id,replace(t2.u_event_id,';',',')) > 0 and find_in_set(t1.alarm_types_des,replace(t2.alarm_types_des,';',',')) > 0
+		THEN '未恢复' ELSE '已恢复' END AS statusDes
+		FROM (
+		select * from
+		<foreach collection="tableNames" index="index" item="item" open="(" separator="union all" close=")">
+			select * from ${item}
+		</foreach>
+		AS s
+		) t1 JOIN as_device_event_alarm t2 ON t2.device_id = t1.device_id
+		WHERE t1.is_alarm = 1 <!-- and t2.is_alarm = 1 -->
+		<if test="id!=null and id !=''">
+		AND t1.device_id=#{id}
+		</if>
+		<if test="startTime !=null and endTime !='' ">
+		AND t1.store_time BETWEEN #{startTime} AND #{endTime}
+		</if>
+		<if test="alarmLevel != null and alarmLevel!=''">
+			AND t1.alarm_level = #{alarmLevel}
+		</if>
+		ORDER BY alarmTime DESC
+</select>
+
+	<select id="findAlarmInfo" resultType="java.lang.String">
+		SELECT CASE
+		WHEN find_in_set(#{eventIds},replace(t.u_event_id,';',',')) > 0 and find_in_set(#{alarmType},replace(t.alarm_types_des,';',',')) > 0
+		THEN CONCAT(#{alarmType},'(未恢复)') ELSE CONCAT(#{alarmType},'(已恢复)') END AS info
+		FROM as_device_event_alarm t
+		WHERE t.is_alarm =1
+		<if test="deviceId !=null and deviceId !=''">
+			AND t.device_id=#{deviceId}
+		</if>
+	</select>
+<select id="getHistoryAlarmCounts" resultType="com.aswl.as.ibrs.api.vo.DeviceEventAlarmVo" >
+<!--SELECT-->
+	<!--DATE_FORMAT(t1.alarm_time,'%Y-%m-%d') AS alarmTime ,-->
+	<!--COUNT(*)AS total,-->
+	<!--t1.alarm_level AS alarmLevel,-->
+	<!--t2.alarm_type_name AS alarmTypesDes,-->
+	<!--t1.run_status AS status-->
+	 <!--FROM as_flow_run t1-->
+	<!--LEFT JOIN as_alarm_type t2-->
+	<!--ON t1.alarm_type=t2.alarm_type-->
+	<!--WHERE 1=1-->
+	<!--<if test="id!=null and id !=''">-->
+		<!--AND t1.begin_device_id=#{id}-->
+	<!--</if>-->
+	<!--<if test="startTime !=null and endTime !='' ">-->
+		<!--AND t1.alarm_time BETWEEN #{startTime} AND #{endTime}-->
+	<!--</if>-->
+	<!--GROUP BY DATE_FORMAT(alarm_time,'%Y-%m-%d')-->
+	SELECT
+	DATE_FORMAT(t1.store_time,'%Y-%m-%d') AS alarmTime,
+	COUNT(*)AS total
+	FROM (
+	select * from
+	<foreach collection="tableNames" index="index" item="item" open="(" separator="union all" close=")">
+		select * from ${item}
+	</foreach>
+	AS s
+	) t1
+	WHERE t1.is_alarm = 1
+	<if test="id!=null and id !=''">
+		AND t1.device_id=#{id}
+	</if>
+	<if test="startTime !=null and endTime !='' ">
+		AND t1.store_time BETWEEN #{startTime} AND #{endTime}
+	</if>
+	GROUP BY DATE_FORMAT(t1.store_time,'%Y-%m-%d')
+</select>
+
+	<update id="updateByDeviceId">
+		UPDATE as_device_event_alarm
+		<set>
+			<if test="deviceId != null">
+				device_id =  #{deviceId},
+			</if>
+			<if test="eventIds != null">
+				u_event_id =  #{eventIds},
+			</if>
+			<if test="isAlarm != null">
+				is_alarm =  #{isAlarm},
+			</if>
+			<if test="alarmTypes != null">
+				alarm_types =  #{alarmTypes},
+			</if>
+			<if test="alarmTypeDes != null">
+				alarm_types_des =  #{alarmTypeDes},
+			</if>
+			<if test="alarmLevel != null">
+				alarm_level =  #{alarmLevel},
+			</if>
+			<if test="alarmLevels != null">
+				alarm_levels =  #{alarmLevels},
+			</if>
+			<if test="alarmDates != null">
+				alarm_dates =  #{alarmDates},
+			</if>
+		</set>
+		where device_id =  #{deviceId}
+	</update>
+	<select id="findByEventId" resultType="com.aswl.as.ibrs.api.vo.DeviceEventAlarmVo">
+
+		SELECT id,
+		u_event_id,
+		device_id,
+		alarm_types_des
+		FROM as_device_event_his_alarm_#{ym}
+		WHERE u_event_id=#{uEventId}
+	</select>
+
+	<update id="updateDeviceEventHisAlarm">
+		UPDATE as_device_event_his_alarm_#{recTime}
+				SET alarm_types_des =  #{alarmTypesDes}
+		WHERE u_event_id =  #{uEventId}
+	</update>
+
+	<select id="currentWrongBoxCount" resultType="int">
+		select count(1) as deviceCount from as_device_event_alarm as a LEFT JOIN as_device as b on a.device_id = b.id
+		LEFT JOIN as_device_model as c on b.device_model_id = c.id
+		LEFT JOIN as_device_type as d on c.device_type = d.device_type
+		LEFT JOIN as_device_kind as e on d.device_kind_id = e.id
+		where a.alarm_level = 1
+		<if test="tenantCode != null and tenantCode != ''">
+			and b.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND b.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="deviceKind != null and deviceKind != ''">
+			and e.type = #{deviceKind}
+		</if>
+		<if test="regionCode != null and regionCode != ''">
+			and b.region_code like concat(#{regionCode},'%')
+		</if>
+	</select>
+
+	<select id="getAlarmOrWrongCount" resultType="integer">
+		SELECT
+		COUNT(1)
+		FROM
+		as_device_event_alarm t1
+		LEFT JOIN as_event_network  t2
+		ON t1.device_id = t2.device_id
+		LEFT JOIN as_device as t3 on t1.device_id = t3.id
+		LEFT JOIN as_device_model as t4 on t3.device_model_id = t4.id
+		LEFT JOIN as_device_type as t5 on t4.device_type = t5.device_type
+		LEFT JOIN as_device_kind as t6 on t5.device_kind_id = t6.id
+		<if test="projectId != null and projectId != '' ">
+			LEFT JOIN as_device d on t1.device_id = d.id  <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+		</if>
+		WHERE t1.is_alarm=1
+		<if test='flag!=null and flag=="1"'>
+			AND t1.alarm_level = 1
+		</if>
+		<if test='flag!=null and flag=="2"'>
+			AND t1.alarm_level = 2
+		</if>
+		AND t2.network_state=1 AND (t3.debug != 1 or t3.debug is NULL)
+		<if test="regionCode!=null and regionCode!=''">
+			AND t3.region_code LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="tenantCode!=null and tenantCode!='' ">
+			AND t3.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND t3.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="kind != null and kind != ''">
+			AND t6.type = #{kind}
+		</if>
+	</select>
+
+
+	<select id="getNoWrongDeviceCount" resultType="int">
+		SELECT count(1)
+		FROM as_device_event_alarm a
+		LEFT JOIN as_device as b on a.device_id = b.id
+		where a.alarm_level != 1
+		<if test="regionCode != null and regionCode != ''">
+			AND b.region_code like concat(#{regionCode},'%')
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND b.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND b.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+
+	<select id="findTodayAlarmCount" resultType="com.aswl.as.ibrs.api.module.CityAlarmStatistics">
+		SELECT
+		count(1) as alarmNum,
+		t6.type as deviceKind,
+		t2.alarm_type as alarmType,
+		t4.id as deviceModelId,
+		sum(case t2.alarm_level when 1 then 1 else 0 end) as faultNum
+			from as_device_event_his_alarm_${month} as t1
+			LEFT JOIN as_alarm_type as t2 on LOCATE(t2.alarm_type,t1.alarm_types)
+			LEFT JOIN as_device as t3 on t1.device_id = t3.id
+			LEFT JOIN as_device_model t4 on t3.device_model_id = t4.id
+			LEFT JOIN as_device_type as t5 on t4.device_type = t5.device_type
+			LEFT JOIN as_device_kind as t6 on t5.device_kind_id = t6.id
+			where t2.alarm_level != 3 and t6.type = #{type} and DATE_FORMAT(t1.store_time,'%Y-%m-%d') = #{today} GROUP BY t2.alarm_type,t4.id
+	</select>
+
+
+	<select id="findPeriodAlarmNum" resultType="com.aswl.as.ibrs.api.module.CityRunTimeStatistics">
+		SELECT
+		  count(temp.alarmNumTime1) AS alarmNumTime1,
+		  count(temp.alarmNumTime2) AS alarmNumTime2,
+		  count(temp.alarmNumTime3) AS alarmNumTime3,
+		  count(temp.alarmNumTime4) AS alarmNumTime4,
+		  count(temp.alarmNumTime5) AS alarmNumTime5,
+		  count(temp.alarmNumTime6) AS alarmNumTime6,
+		  count(temp.alarmNumTime7) AS alarmNumTime7,
+		  count(temp.alarmNumTime8) AS alarmNumTime8,
+		  count(temp.alarmNumTime9) AS alarmNumTime9,
+		  count(temp.alarmNumTime10) AS alarmNumTime10,
+		  count(temp.alarmNumTime11) AS alarmNumTime11,
+		  count(temp.alarmNumTime12) AS alarmNumTime12
+		FROM (
+		SELECT
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 0
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 2 THEN
+		1
+		END AS alarmNumTime1,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 2
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 4 THEN
+		1
+		END AS alarmNumTime2,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 4
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 6 THEN
+		1
+		END AS alarmNumTime3,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 6
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 8 THEN
+		1
+		END AS alarmNumTime4,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 8
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 10 THEN
+		1
+		END AS alarmNumTime5,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 10
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 12 THEN
+		1
+		END AS alarmNumTime6,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 12
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 14 THEN
+		1
+		END AS alarmNumTime7,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 14
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 16 THEN
+		1
+		END AS alarmNumTime8,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 16
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 18 THEN
+		1
+		END AS alarmNumTime9,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 18
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 20 THEN
+		1
+		END AS alarmNumTime10,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 20
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 22 THEN
+		1
+		END AS alarmNumTime11,
+		CASE
+		WHEN FROM_UNIXTIME(t1.rec_time, '%H') >= 22
+		AND FROM_UNIXTIME(t1.rec_time, '%H') &lt; 24 THEN
+		1
+		END AS alarmNumTime12
+		FROM as_device_event_his_alarm_${yearMonth} as t1
+		LEFT JOIN as_device as t2 on t1.device_id = t2.id
+		LEFT JOIN as_device_model as t3 on t2.device_model_id = t3.id
+		LEFT JOIN as_device_type as t4 on t3.device_type = t4.device_type
+		LEFT JOIN as_device_kind as t5 on t4.device_kind_id = t5.id
+		LEFT JOIN as_alarm_type as t6 on locate(t6.alarm_type,t1.alarm_types)
+		where t5.type = #{type} and t6.alarm_level != 3 and date_format(t1.store_time,'%Y-%m-%d') = #{today}
+		) as temp
+	</select>
+
+	<select id="getDeviceStatusData" resultType="com.aswl.as.ibrs.api.vo.DeviceStatusVo">
+		SELECT b.alarm_type AS alarmType, b.alarm_type_name AS alarmTypeName, b.alarm_level AS alarmLevel,
+		b.code_cn AS codeCn, c.fld_code AS fldCode, c.fld_name AS fldName, d.status_group_name AS statusGroupName, d.`name` AS statusGroupNameCn
+		FROM as_device_event_alarm a
+		LEFT JOIN as_alarm_type b ON LOCATE(b.alarm_type, CONCAT(a.alarm_types,',',a.prompt_types))
+		LEFT JOIN as_event_uc_metadata c ON c.id = b.event_metadata_id
+		LEFT JOIN as_event_uc_status_group d ON d.id = c.event_status_group_id
+		WHERE a.device_id = #{id}
+		ORDER BY c.priority DESC
+	</select>
+
+	<select id="getFaultAlarmCount" resultType="map">
+		SELECT
+        SUM(CASE WHEN a.alarm_level =1 AND (LOCATE('IsOnlineAlarm',a.alarm_types) =0) THEN 1 ELSE 0 END) AS faultCount,
+        SUM(CASE a.alarm_level WHEN 2 THEN 1 ELSE 0 END) AS alarmCount,
+        SUM(CASE WHEN a.alarm_level =1 AND a.alarm_types LIKE CONCAT ('IsOnlineAlarm','%') THEN 1 ELSE 0 END) AS offLineCount
+		FROM
+		as_device_event_alarm a
+		LEFT JOIN as_device b
+		on a.device_id = b.id
+		LEFT JOIN as_device_model as am
+		on b.device_model_id = am.id
+		LEFT JOIN as_device_type as adt
+		on am.device_type = adt.device_type
+		LEFT JOIN as_device_kind as adk
+		on adt.device_kind_id = adk.id
+		where b.del_flag = 0
+		<if test="regionCode != null and regionCode != ''">
+			AND b.region_code like concat(#{regionCode},'%')
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND b.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND b.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="model != null and model != ''">
+			AND b.device_model_id = #{model}
+		</if>
+	</select>
+
+
+	<select id="getHisFaultAlarmCount" resultType="map">
+		select
+		sum(t.faultCount) as faultCount,
+		sum(t.alarmCount) as alarmCount,
+		sum(t.offLineCount) as offLineCount,
+		sum(ao.device_num) as deviceCount
+		from (SELECT aos.create_date,sum(aos.device_num) as device_num FROM as_online_statistics aos
+		LEFT JOIN as_region ar ON aos.region_no = ar.region_code
+		where 1 = 1
+		<if test="startTime != null and endTime != null">
+			AND aos.create_date BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND ar.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		GROUP BY aos.create_date
+		) as ao
+		LEFT JOIN (
+				select
+			count(case when temp.alarm_level =1 AND (LOCATE('IsOnlineAlarm',alarm_types) =0) THEN 1 ELSE 0 END) AS faultCount,
+			count(case when temp.alarm_level= 2 THEN 1 ELSE 0 END) AS alarmCount,
+			count(case when temp.alarm_level =1 AND alarm_types LIKE CONCAT ('IsOnlineAlarm','%') THEN 1 ELSE 0 END) AS offLineCount,
+				temp.date
+				from (
+						SELECT  a.device_id, FROM_UNIXTIME(a.rec_time,'%Y-%m-%d') as date ,a.alarm_type, a.alarm_type_name ,a.alarm_level,a.alarm_types
+						from (
+								select ad.device_id,ad.rec_time,b.alarm_type, b.alarm_type_name ,b.alarm_level,ad.alarm_types
+								from (
+										<foreach collection="tableNames" item="item" separator="union all">
+											SELECT device_id,rec_time,alarm_types,alarm_level
+											from ${item}
+											where 1 = 1
+											<if test="regionCode != null and regionCode != ''">
+												AND region_code like concat(#{regionCode},'%')
+											</if>
+											<if test="tenantCode != null and tenantCode != ''">
+												AND tenant_code = #{tenantCode}
+											</if>
+										</foreach>
+								) ad
+								LEFT JOIN as_device asd on  ad.device_id = asd.id
+								LEFT JOIN as_alarm_type b on LOCATE(b.alarm_type,ad.alarm_types)
+								where ad.alarm_level in ('1','2')
+								<if test="model != null and model != ''">
+									AND asd.device_model_id = #{model}
+								</if>
+								ORDER BY b.alarm_level asc
+						) a GROUP BY date,a.device_id HAVING MIN(a.alarm_level) ORDER BY date
+				) as temp GROUP BY temp.date
+		) as t on ao.create_date = t.date
+	</select>
+
+	<delete id="deleteHisByDeviceIds">
+			DELETE FROM ${hisTable}
+			where device_id in 
+			<foreach collection="idsList" item="item" separator="," open="(" close=")">
+			#{item}
+	</foreach>
+	</delete>
+
+	<select id="alarmTop" resultType="map">
+	select
+		<choose>
+			<when test="queryProjectId != null and queryProjectId != ''">
+				t3.region_name as regionName,
+				count(1) as alarmCount
+			</when>
+			<otherwise>
+				t5.project_name as projectName,
+				count(1) as alarmCount
+			</otherwise>
+		</choose>
+		FROM (SELECT s.* FROM (
+		<foreach collection="tableNames" item="item" separator="union all">
+			select device_id, region_no, alarm_types,rec_time FROM ${item}
+		</foreach>
+		) as s
+		) as t1 LEFT JOIN
+		as_region t3 on t1.region_no LIKE CONCAT (t3.region_code,'%')
+		LEFT JOIN as_alarm_type t4 on LOCATE(t4.alarm_type,t1.alarm_types)
+		LEFT JOIN as_project as t5 on t3.project_id = t5.project_id
+		LEFT JOIN as_device ad
+		on t1.device_id = ad.id
+		LEFT JOIN as_device_model as am
+		on ad.device_model_id = am.id
+		LEFT JOIN as_device_type as adt
+		on am.device_type = adt.device_type
+		LEFT JOIN as_device_kind as adk
+		on adt.device_kind_id = adk.id
+		where 1 = 1
+        <if test="alarmLevels.length>0">
+          AND t4.alarm_level in
+            <foreach collection="alarmLevels" separator="," open="(" close=")" item="item">
+              #{item}
+            </foreach>
+        </if>
+		<if test="startTime != null and endTime != null">
+			AND FROM_UNIXTIME(t1.rec_time,'%Y-%m-%d HH:mm:ss') BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="regionCode != null and regionCode != ''">
+			AND t1.region_no like concat(#{regionCode},'%')
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND t5.tenant_code = #{tenantCode}
+		</if>
+		<if test="kind != null and kind != ''">
+			AND adk.type = #{kind}
+		</if>
+		<choose>
+			<when test="queryProjectId != null and queryProjectId != ''">
+				AND t5.project_id in (${queryProjectId})
+				<choose>
+					<when test="regionId!= null and regionId != ''">
+						AND t3.parent_id =#{regionId}
+					</when>
+					<otherwise>
+						AND t3.parent_id = -1
+					</otherwise>
+				</choose>
+				group BY t3.id
+			</when>
+			<otherwise>
+				<if test="projectId  != null and projectId != ''" >
+					AND t5.project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				group BY t5.project_id
+			</otherwise>
+		</choose>
+
+	</select>
+</mapper>

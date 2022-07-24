@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsEventUcStatusGroupMapper">
+
+    <select id="osGetselectExtendStatusGroupOperationList" resultType="com.aswl.as.asos.modules.ibrs.entity.AsEventUcStatusOperation">
+        SELECT
+            t2.id AS id,
+            t2.title AS title
+        FROM as_event_uc_metadata_model_operation t1
+        LEFT JOIN as_event_uc_status_operation t2 ON t1.status_operation_id=t2.id
+        WHERE t1.event_metadata_model_id=#{eventMetadataModelId}
+    </select>
+
+    <select id="osGetExtendStatusGroupOperationList" resultType="com.aswl.as.asos.modules.ibrs.entity.AsEventUcStatusOperation">
+        SELECT
+            t2.id AS id,
+            t2.title AS title
+        FROM as_event_uc_metadata_status_operation t1
+        LEFT JOIN as_event_uc_status_operation t2
+        ON t1.status_operation_id=t2.id
+        WHERE t1.event_metadata_id=#{eventMetadataId}
+    </select>
+
+    <select id="osGetExtendStatusGroup" resultType="com.aswl.as.asos.modules.ibrs.entity.AsEventUcStatusGroupModel">
+        SELECT
+            t2.id AS id,
+            t1.id AS eventStatusGroupId,
+            t1.name AS name,
+            t1.status_group_name AS statusGroupName ,
+            t2.port_num AS portNum
+        FROM as_event_uc_status_group t1
+        LEFT JOIN as_event_uc_status_group_model t2
+        ON t1.id=t2.event_status_group_id
+        WHERE t2.device_model_id=#{deviceModelId}
+	</select>
+
+    <select id="osGetExtendStatusGroupAttribute" resultType="com.aswl.as.asos.modules.ibrs.entity.AsEventUcMetadata" parameterType="com.aswl.as.asos.modules.ibrs.entity.AsEventUcStatusGroupModel">
+        SELECT
+            t1.id AS id,
+            t1.vector_type AS vectorType,
+            t1.status_name AS statusName,
+            t1.fld_name AS fldName,
+            t2.port_serial AS portSerial,
+            t2.id AS metadataModel
+        FROM as_event_uc_metadata t1
+        LEFT JOIN as_event_uc_metadata_model t2
+        ON t1.id=t2.event_metadata_id
+        WHERE t2.device_model_id=#{deviceModelId}
+        AND t1.event_status_group_id=#{eventStatusGroupId}
+	</select>
+
+</mapper>

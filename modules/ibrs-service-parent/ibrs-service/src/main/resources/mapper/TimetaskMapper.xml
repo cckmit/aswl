@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.TimetaskMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="timetaskResultMap" type="com.aswl.as.ibrs.api.module.Timetask">
+			<id column="id"   property="id" />
+			<id column="cron_expression"   property="cronExpression" />
+			<id column="is_effect"   property="isEffect" />
+			<id column="is_start"   property="isStart" />
+			<id column="task_describe"   property="taskDescribe" />
+			<id column="task_id"   property="taskId" />
+			<id column="class_name"   property="className" />
+			<id column="run_server_ip"   property="runServerIp" />
+			<id column="run_server"   property="runServer" />
+			<id column="modifier"   property="modifier" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="modify_terminal"   property="modifyTerminal" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="create_terminal"   property="createTerminal" />
+			<id column="del_flag"   property="delFlag" />
+			<id column="remark"   property="remark" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="timetaskColumns">
+		id, cron_expression, is_effect, is_start, task_describe, task_id, class_name, run_server_ip, run_server, modifier, modify_date, modify_terminal, creator, create_date, create_terminal, del_flag, remark, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="cronExpression  != null and cronExpression != ''" >
+					and cron_expression like CONCAT('%',#{cronExpression},'%')
+				</if>
+				<if test="isEffect  != null and isEffect != ''" >
+					and is_effect = #{isEffect}
+				</if>
+				<if test="isStart  != null and isStart != ''" >
+					and is_start = #{isStart}
+				</if>
+				<if test="taskDescribe  != null and taskDescribe != ''" >
+					and task_describe like CONCAT('%',#{taskDescribe},'%')
+				</if>
+				<if test="taskId  != null and taskId != ''" >
+					and task_id like CONCAT('%',#{taskId},'%')
+				</if>
+				<if test="className  != null and className != ''" >
+					and class_name like CONCAT('%',#{className},'%')
+				</if>
+				<if test="runServerIp  != null and runServerIp != ''" >
+					and run_server_ip like CONCAT('%',#{runServerIp},'%')
+				</if>
+				<if test="runServer  != null and runServer != ''" >
+					and run_server like CONCAT('%',#{runServer},'%')
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					and modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="modifyDate  != null ">
+					and modify_date = #{modifyDate}
+				</if>
+				<if test="modifyTerminal  != null and modifyTerminal != ''" >
+					and modify_terminal like CONCAT('%',#{modifyTerminal},'%')
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null ">
+					and create_date = #{createDate}
+				</if>
+				<if test="createTerminal  != null and createTerminal != ''" >
+					and create_terminal like CONCAT('%',#{createTerminal},'%')
+				</if>
+				<if test="delFlag  != null and delFlag != ''">
+					and del_flag = #{delFlag}
+				</if>
+				<if test="remark  != null and remark != ''">
+					and remark = #{remark}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="timetaskResultMap">
+		SELECT
+		<include refid="timetaskColumns"/>
+		FROM as_timetask
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="timetaskResultMap">
+		SELECT
+		<include refid="timetaskColumns"/>
+		FROM as_timetask
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="timetaskResultMap">
+		SELECT
+		<include refid="timetaskColumns"/>
+		FROM as_timetask
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_timetask
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="cronExpression != null and cronExpression!=''">
+                    cron_expression,
+                </if>
+                <if test="isEffect != null and isEffect!=''">
+                    is_effect,
+                </if>
+                <if test="isStart != null and isStart!=''">
+                    is_start,
+                </if>
+                <if test="taskDescribe != null and taskDescribe!=''">
+                    task_describe,
+                </if>
+                <if test="taskId != null and taskId!=''">
+                    task_id,
+                </if>
+                <if test="className != null and className!=''">
+                    class_name,
+                </if>
+                <if test="runServerIp != null and runServerIp!=''">
+                    run_server_ip,
+                </if>
+                <if test="runServer != null and runServer!=''">
+                    run_server,
+                </if>
+                <if test="modifier != null and modifier!=''">
+                    modifier,
+                </if>
+                <if test="modifyDate != null ">
+                    modify_date,
+                </if>
+                <if test="modifyTerminal != null and modifyTerminal!=''">
+                    modify_terminal,
+                </if>
+                <if test="creator != null and creator!=''">
+                    creator,
+                </if>
+                <if test="createDate != null ">
+                    create_date,
+                </if>
+                <if test="createTerminal != null and createTerminal!=''">
+                    create_terminal,
+                </if>
+                <if test="delFlag != null ">
+                    del_flag,
+                </if>
+                <if test="remark != null and remark!=''">
+                    remark,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="cronExpression != null and cronExpression!=''">
+                    #{cronExpression},
+                </if>
+                <if test="isEffect != null and isEffect!=''">
+                    #{isEffect},
+                </if>
+                <if test="isStart != null and isStart!=''">
+                    #{isStart},
+                </if>
+                <if test="taskDescribe != null and taskDescribe!=''">
+                    #{taskDescribe},
+                </if>
+                <if test="taskId != null and taskId!=''">
+                    #{taskId},
+                </if>
+                <if test="className != null and className!=''">
+                    #{className},
+                </if>
+                <if test="runServerIp != null and runServerIp!=''">
+                    #{runServerIp},
+                </if>
+                <if test="runServer != null and runServer!=''">
+                    #{runServer},
+                </if>
+                <if test="modifier != null and modifier!=''">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null ">
+                    #{modifyDate},
+                </if>
+                <if test="modifyTerminal != null and modifyTerminal!=''">
+                    #{modifyTerminal},
+                </if>
+                <if test="creator != null and creator!=''">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="createTerminal != null and createTerminal!=''">
+                    #{createTerminal},
+                </if>
+                <if test="delFlag != null ">
+                    #{delFlag},
+                </if>
+                <if test="remark != null and remark!=''">
+                    #{remark},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_timetask
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="cronExpression != null and cronExpression!=''">
+					cron_expression =  #{cronExpression},
+				</if>
+				<if test="isEffect != null and isEffect!=''">
+					is_effect =  #{isEffect},
+				</if>
+				<if test="isStart != null and isStart!=''">
+					is_start =  #{isStart},
+				</if>
+				<if test="taskDescribe != null and taskDescribe!=''">
+					task_describe =  #{taskDescribe},
+				</if>
+				<if test="taskId != null and taskId!=''">
+					task_id =  #{taskId},
+				</if>
+				<if test="className != null and className!=''">
+					class_name =  #{className},
+				</if>
+				<if test="runServerIp != null and runServerIp!=''">
+					run_server_ip =  #{runServerIp},
+				</if>
+				<if test="runServer != null and runServer!=''">
+					run_server =  #{runServer},
+				</if>
+				<if test="modifier != null and modifier!=''">
+					modifier =  #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="modifyTerminal != null and modifyTerminal!=''">
+					modify_terminal =  #{modifyTerminal},
+				</if>
+				<if test="creator != null and creator!=''">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null ">
+					create_date =  #{createDate},
+				</if>
+				<if test="createTerminal != null and createTerminal!=''">
+					create_terminal =  #{createTerminal},
+				</if>
+				<if test="delFlag != null and delFlag!=''">
+					del_flag =  #{delFlag},
+				</if>
+				<if test="remark != null and remark!=''">
+					remark =  #{remark},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_timetask SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_timetask SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<update id="updateScheduler">
+		UPDATE as_timetask
+		<set>
+			<if test="id != null and id!=''">
+				id =  #{id},
+			</if>
+			<if test="cronExpression != null and cronExpression!=''">
+				cron_expression =  #{cronExpression},
+			</if>
+			<if test="isEffect != null and isEffect!=''">
+				is_effect =  #{isEffect},
+			</if>
+			<if test="isStart != null and isStart!=''">
+				is_start =  #{isStart},
+			</if>
+			<if test="taskDescribe != null and taskDescribe!=''">
+				task_describe =  #{taskDescribe},
+			</if>
+			<if test="taskId != null and taskId!=''">
+				task_id =  #{taskId},
+			</if>
+			<if test="className != null and className!=''">
+				class_name =  #{className},
+			</if>
+			<if test="runServerIp != null and runServerIp!=''">
+				run_server_ip =  #{runServerIp},
+			</if>
+			<if test="runServer != null and runServer!=''">
+				run_server =  #{runServer},
+			</if>
+			<if test="modifier != null and modifier!=''">
+				modifier =  #{modifier},
+			</if>
+			<if test="modifyDate != null">
+				modify_date =  #{modifyDate},
+			</if>
+			<if test="modifyTerminal != null and modifyTerminal!=''">
+				modify_terminal =  #{modifyTerminal},
+			</if>
+			<if test="creator != null and creator!=''">
+				creator =  #{creator},
+			</if>
+			<if test="createDate != null ">
+				create_date =  #{createDate},
+			</if>
+			<if test="createTerminal != null and createTerminal!=''">
+				create_terminal =  #{createTerminal},
+			</if>
+			<if test="delFlag != null and delFlag!=''">
+				del_flag =  #{delFlag},
+			</if>
+			<if test="remark != null and remark!=''">
+				remark =  #{remark},
+			</if>
+			<if test="applicationCode != null and applicationCode!=''">
+				application_code =  #{applicationCode},
+			</if>
+			<if test="tenantCode != null and tenantCode!=''">
+				tenant_code =  #{tenantCode},
+			</if>
+		</set>
+		where id =  #{id}
+	</update>
+	<delete id="deleteScheduler">
+		UPDATE as_timetask SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<select id="findById" resultType="com.aswl.as.ibrs.api.module.Timetask">
+		SELECT <include refid="timetaskColumns"/>
+		FROM as_timetask WHERE id = #{id}
+	</select>
+</mapper>

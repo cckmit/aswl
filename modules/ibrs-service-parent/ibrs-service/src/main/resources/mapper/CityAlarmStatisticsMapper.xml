@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.CityAlarmStatisticsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="cityAlarmStatisticsResultMap" type="com.aswl.as.ibrs.api.module.CityAlarmStatistics">
+			<id column="id"   property="id" />
+			<id column="statistics_date"   property="statisticsDate" />
+			<id column="city_code"   property="cityCode" />
+			<id column="device_kind"   property="deviceKind" />
+			<id column="device_model_id"   property="deviceModelId" />
+			<id column="alarm_type"   property="alarmType" />
+			<id column="alarm_num"   property="alarmNum" />
+			<id column="fault_num"   property="faultNum" />
+			<id column="run_num"   property="runNum" />
+			<id column="repair_num"   property="repairNum" />
+			<id column="avg_repair_time" property="avgRepairTime"/>
+			<id column="project_id"   property="projectId" />
+	</resultMap>
+
+	<sql id="cityAlarmStatisticsColumns">
+		id, statistics_date, city_code, device_kind, device_model_id, alarm_type, alarm_num, fault_num, run_num, repair_num, avg_repair_time, project_id
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="statisticsDate!= null">
+					and statistics_date = #{statisticsDate}
+				</if>
+				<if test="cityCode!= null and cityCode!= ''" >
+					and city_code LIKE CONCAT(#{cityCode},'%')
+				</if>
+				<if test="deviceKind!= null and deviceKind!= ''" >
+					and device_kind LIKE CONCAT(#{deviceKind},'%')
+				</if>
+				<if test="deviceModelId!= null and deviceModelId!= ''" >
+					and device_model_id LIKE CONCAT(#{deviceModelId},'%')
+				</if>
+				<if test="alarmType!= null and alarmType!= ''" >
+					and alarm_type LIKE CONCAT(#{alarmType},'%')
+				</if>
+				<if test="alarmNum!= null and alarmNum!= ''">
+					and alarm_num = #{alarmNum}
+				</if>
+				<if test="faultNum!= null and faultNum!= ''">
+					and fault_num = #{faultNum}
+				</if>
+				<if test="runNum!= null and runNum!= ''">
+					and run_num = #{runNum}
+				</if>
+				<if test="repairNum!= null and repairNum!= ''">
+					and repair_num = #{repairNum}
+				</if>
+				<if test="avgRepairTime!= null and avgRepairTime!= ''">
+					and avg_repair_time = #{avgRepairTime}
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+	</sql>
+
+	<select id="get" resultMap="cityAlarmStatisticsResultMap">
+		SELECT
+		<include refid="cityAlarmStatisticsColumns"/>
+		FROM as_city_alarm_statistics
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="cityAlarmStatisticsResultMap">
+		SELECT
+		<include refid="cityAlarmStatisticsColumns"/>
+		FROM as_city_alarm_statistics
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="cityAlarmStatisticsResultMap">
+		SELECT
+		<include refid="cityAlarmStatisticsColumns"/>
+		FROM as_city_alarm_statistics
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_city_alarm_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="statisticsDate != null">
+                    statistics_date,
+                </if>
+                <if test="cityCode != null">
+                    city_code,
+                </if>
+                <if test="deviceKind != null">
+                    device_kind,
+                </if>
+                <if test="deviceModelId != null">
+                    device_model_id,
+                </if>
+                <if test="alarmType != null">
+                    alarm_type,
+                </if>
+                <if test="alarmNum != null">
+                    alarm_num,
+                </if>
+                <if test="faultNum != null">
+                    fault_num,
+                </if>
+                <if test="runNum != null">
+                    run_num,
+                </if>
+                <if test="repairNum != null">
+                    repair_num,
+                </if>
+				<if test="avgRepairTime != null">
+					avg_repair_time,
+				</if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="statisticsDate != null">
+                    #{statisticsDate},
+                </if>
+                <if test="cityCode != null">
+                    #{cityCode},
+                </if>
+                <if test="deviceKind != null">
+                    #{deviceKind},
+                </if>
+                <if test="deviceModelId != null">
+                    #{deviceModelId},
+                </if>
+                <if test="alarmType != null">
+                    #{alarmType},
+                </if>
+                <if test="alarmNum != null">
+                    #{alarmNum},
+                </if>
+                <if test="faultNum != null">
+                    #{faultNum},
+                </if>
+                <if test="runNum != null">
+                    #{runNum},
+                </if>
+                <if test="repairNum != null">
+                    #{repairNum},
+                </if>
+				<if test="avgRepairTime != null">
+					#{avgRepairTime},
+				</if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_city_alarm_statistics
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="statisticsDate != null">
+					statistics_date =  #{statisticsDate},
+				</if>
+				<if test="cityCode != null">
+					city_code =  #{cityCode},
+				</if>
+				<if test="deviceKind != null">
+					device_kind =  #{deviceKind},
+				</if>
+				<if test="deviceModelId != null">
+					device_model_id =  #{deviceModelId},
+				</if>
+				<if test="alarmType != null">
+					alarm_type =  #{alarmType},
+				</if>
+				<if test="alarmNum != null">
+					alarm_num =  #{alarmNum},
+				</if>
+				<if test="faultNum != null">
+					fault_num =  #{faultNum},
+				</if>
+				<if test="runNum != null">
+					run_num =  #{runNum},
+				</if>
+				<if test="repairNum != null">
+					repair_num =  #{repairNum},
+				</if>
+				<if test="avgRepairTime != null">
+					avg_repair_time =  #{avgRepairTime},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_city_alarm_statistics
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_city_alarm_statistics
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getDeviceOnlineIntactTrend" resultType="java.util.Map">
+		select
+		<if test="timeUnit == 'day'">
+			CONCAT(DATE_FORMAT(online.statistics_date,'%Y-%m-%d'),'日')
+		</if>
+		<if test="timeUnit == 'month'">
+			CONCAT(DATE_FORMAT(online.statistics_date,'%Y-%m'),'月')
+		</if> as `date`,
+		IFNULL(SUM(online.online_num),0) AS onlineNum,
+		IFNULL(SUM(online.device_num),0)-IFNULL(SUM(online.intact_num),0) AS faultNum,
+		IFNULL(SUM(online.intact_num),0)AS intactNum,
+		IFNULL(SUM(online.device_num),0) AS deviceNum
+		FROM as_city_online_statistics online
+		where 1 = 1
+		<if test="cityCode != null and cityCode != ''">
+			and online.city_code LIKE CONCAT(#{cityCode},'%')
+		</if>
+		<if test="kind != null and kind != ''">
+			and online.device_kind = #{kind}
+		</if>
+		<if test="projectId != null and projectId !=''">
+			AND online.project_id = #{projectId}
+		</if>
+		<if test="timeUnit == 'day'">
+			and DATE_FORMAT(online.statistics_date,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d') GROUP BY DATE_FORMAT(online.statistics_date,'%Y-%m-%d');
+		</if>
+		<if test="timeUnit == 'month'">
+			and DATE_FORMAT(online.statistics_date,'%Y-%m') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m') and DATE_FORMAT(#{endTime},'%Y-%m') GROUP BY DATE_FORMAT(online.statistics_date,'%Y-%m');
+		</if>
+	</select>
+	<select id="findRepairRate" resultType="com.aswl.as.ibrs.api.vo.DeviceRepairRateVo">
+		SELECT
+		city.name AS cityName,
+		IFNULL(SUM(statistics.repair_num),0) AS repairNum,
+		IFNULL(SUM(statistics.run_num),0) AS runNum
+		FROM  as_city city
+		 JOIN as_city_alarm_statistics  statistics
+		ON statistics.city_code =city.code
+		WHERE 1=1
+		<if test="kind!= null and kind !=''">
+			AND statistics.device_kind = #{kind}
+		</if>
+		<if test="cityCode != null and cityCode != ''">
+			AND statistics.city_Code LIKE CONCAT (#{cityCode},'%')
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND statistics.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="startTime != null and endTime!= null">
+			AND statistics.statistics_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+		GROUP BY cityName
+	</select>
+
+	<select id="findByCondition" resultMap="cityAlarmStatisticsResultMap">
+		SELECT <include refid="cityAlarmStatisticsColumns"/>
+		FROM as_city_alarm_statistics where 1 = 1
+		<if test="statisticsDate != null">
+			and statistics_date = #{statisticsDate}
+		</if>
+		<if test="deviceKind != null">
+			and device_kind = #{deviceKind}
+		</if>
+		<if test="cityCode != null ">
+			and city_code = #{cityCode}
+		</if>
+		<if test="projectId != null ">
+			and project_Id = #{projectId}
+		</if>
+        <if test="alarmType != null ">
+            and alarm_type = #{alarmType}
+        </if>
+		<if test="deviceModelId != null">
+			and device_model_id = #{deviceModelId}
+		</if>
+	</select>
+
+
+	<select id="findDeviceCount" resultType="java.util.Map">
+		SELECT
+		IFNULL(SUM(online.device_num),0) AS deviceCount ,
+		IFNULL (SUM(online.online_num),0) AS onlineCount ,
+		IFNULL(SUM(online.device_num),0)-IFNULL(SUM(online.intact_num),0) AS faultCount,
+		IFNULL (SUM(online.device_num),0)- IFNULL(SUM(online.online_num),0) AS offlineCount,
+		IFNULL(SUM(online.intact_num),0) AS intactCount
+		FROM as_city_online_statistics online
+		WHERE 1=1
+		<if test="kind != null and kind !=''">
+			and online.device_kind = #{kind}
+		</if>
+		<if test="cityCode != null and cityCode !='' ">
+			and online.city_code = #{cityCode}
+		</if>
+		<if test="projectId != null and projectId!= '' ">
+			and online.project_Id = #{projectId}
+		</if>
+		<if test="startTime != null and endTime!= null">
+			AND online.statistics_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+	</select>
+    <select id="findCityDeviceCount" resultType="com.aswl.as.ibrs.api.vo.CityVo">
+		SELECT
+		city1.name,
+		city1.level,
+		SUM(IFNULL (t.deviceCount,0))AS deviceCount,
+		SUM(IFNULL (t.onlineCount,0)) AS onlineCount,
+		SUM(IFNULL (t.intactCount,0)) AS intactCount
+		FROM as_city city1 LEFT JOIN (
+		SELECT
+		city.code,
+		 IFNULL(SUM(online.device_num),0) AS deviceCount ,
+        IFNULL(SUM(online.online_num),0) AS onlineCount ,
+        IFNULL(SUM(online.intact_num),0) AS intactCount
+		FROM as_city city
+		JOIN as_city_online_statistics online
+		ON online.city_code =city.code
+		WHERE 1=1
+		<if test="kind != null and kind !=''">
+			and online.device_kind = #{kind}
+		</if>
+        <if test="projectId != null and projectId!= '' ">
+            and online.project_Id = #{projectId}
+        </if>
+        <if test="startTime != null and endTime!= null">
+            AND online.statistics_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+		GROUP BY city.id  )AS t
+		ON t.code LIKE CONCAT (city1.code,'%')
+		WHERE 1=1
+		<choose>
+			<when test="parentId != null and parentId != ''">
+				AND city1.parent_id = #{parentId}
+			</when>
+			<otherwise>
+				AND city1.parent_id = (SELECT id FROM as_city WHERE parent_id ="-1")
+			</otherwise>
+		</choose>
+		<if test="cityCode != null and cityCode !='' ">
+			and city1.code  LIKE CONCAT(#{cityCode},'%')
+		</if>
+		<if test='level!= null and level == "province" '>
+			AND city1.level in ('province','city')
+		</if>
+		GROUP BY city1.id
+		ORDER BY city1.code
+    </select>
+	<select id="findManufacturerDeviceCount" resultType="com.aswl.as.ibrs.api.vo.CityVo">
+	SELECT
+	 model.manufacturer,
+	model.device_model_name AS deviceModelName,
+	 IFNULL(SUM(online.device_num),0)AS deviceCount ,
+	 IFNULL(SUM(online.intact_num),0) AS intactCount ,
+	IFNULL(SUM(online.online_num ),0) AS onlineCount
+	 FROM  as_device_model model
+	JOIN as_city_online_statistics online
+	ON model.id=online.device_model_id
+	WHERE 1=1
+		<if test="kind != null and kind !=''">
+			and online.device_kind = #{kind}
+		</if>
+		<if test="cityCode != null and cityCode !='' ">
+			and online.city_code LIKE CONCAT(#{cityCode},'%')
+		</if>
+		<if test="projectId != null and projectId!= '' ">
+			and online.project_Id = #{projectId}
+		</if>
+		<if test="startTime != null and endTime!= null">
+			AND online.statistics_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+		<if test='groupName != null and groupName =="1"'>
+			GROUP BY model.manufacturer
+		</if>
+		<if test='groupName != null and groupName =="2"'>
+			GROUP BY model.device_type
+		</if>
+	</select>
+	<select id="findFaultTypeDeviceCount" resultType="java.util.Map">
+	SELECT
+	alarmType.alarm_type_name AS alarmTypeName,
+	SUM(statistics.fault_num) AS alarmCount
+	 FROM as_city_alarm_statistics statistics
+	LEFT JOIN as_alarm_type alarmType
+	ON statistics.alarm_type=alarmType.alarm_type
+	LEFT JOIN as_project project
+	ON project.project_id =statistics.project_id
+	LEFT JOIN as_device_model model
+	ON model.id =statistics.device_model_id
+	WHERE alarmType.alarm_level = 1
+	<if test="kind!= null and kind != ''">
+		AND statistics.device_kind = #{kind}
+	</if>
+	<if test="cityCode!= null and cityCode !=''">
+		AND statistics.city_code LIKE CONCAT(#{cityCode},'%')
+	</if>
+	<if test="projectId!= null and projectId!=''">
+		AND statistics.project_id = #{projectId}
+	</if>
+	<if test="startTime!= null and endTime!=null">
+		AND statistics.statistics_date BETWEEN #{startTime} AND #{endTime}
+	</if>
+	GROUP BY alarmType.alarm_type
+	ORDER BY alarmCount DESC
+    </select>
+
+    <select id="cityPlatDistrRate" resultType="com.aswl.as.ibrs.api.module.CityAlarmStatistics">
+        SELECT
+		sum(IFNULL(t1.run_num,0)) as runNum,
+		sum(IFNULL(t1.fault_num,0)) as faultNum,
+		sum(IFNULL(t1.repair_num,0)) as repairNum,
+		sum(IFNULL(t1.alarm_num,0)) as alarmNum
+        FROM as_city_alarm_statistics as t1
+        where 1 = 1
+        <if test="deviceKind != null and deviceKind != ''">
+            AND t1.device_kind = #{deviceKind}
+        </if>
+        <if test="startTime != null and endTime != null">
+            AND (t1.statistics_date BETWEEN #{startTime} and #{endTime})
+        </if>
+        <if test="cityCode != null and cityCode != ''">
+            AND t1.city_code like concat(#{cityCode},'%')
+        </if>
+        <if test="projectId != null and projectId != ''">
+            AND t1.project_id = #{projectId}
+        </if>
+    </select>
+
+	<select id="cityPlatAlarmTypeDistr" resultType="com.aswl.as.ibrs.api.module.CityAlarmStatistics">
+		SELECT
+		t2.alarm_type_name as alarmType,
+		sum(ifnull(t1.run_num,0)) as runNum
+		FROM as_city_alarm_statistics as t1
+		LEFT JOIN as_alarm_type as t2 on t1.alarm_type = t2.alarm_type
+		where 1 = 1
+		<if test="deviceKind != null and deviceKind != ''">
+			AND t1.device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND (t1.statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="cityCode != null and cityCode != ''">
+			AND t1.city_code like concat(#{cityCode},'%')
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND t1.project_id = #{projectId}
+		</if>
+		group by t1.alarm_type having alarmType is not null
+	</select>
+
+	<!--
+	<select id="cityPlatCityDistr" resultType="com.aswl.as.ibrs.api.dto.CityAlarmStatisticsDto">
+
+		select
+		t1.name as cityName,
+		sum(ifnull(t2.run_num,0)) as runNum,
+		sum(ifnull(t2.alarm_num,0)) as alarmNum
+		FROM (
+		SELECT code,name
+		FROM as_city
+		WHERE
+		<choose>
+			<when test="cityCode != null and cityCode != ''">
+				(code like CONCAT(#{cityCode},'___') or code = #{cityCode})
+			</when>
+			<otherwise>
+				(code like CONCAT((SELECT code FROM as_city WHERE parent_id = -1)
+				,'___') OR code = (SELECT code FROM as_city WHERE parent_id = -1))
+			</otherwise>
+		</choose>
+		) as t1
+		LEFT JOIN as_city_alarm_statistics as t2
+		ON t2.city_code LIKE CONCAT(t1.code,'%')
+		<if test="deviceKind != null and deviceKind != ''">
+			AND t2.device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND (t2.statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND t2.project_id = #{projectId}
+		</if>
+		group by t1.code having cityName is not null
+	</select>
+	-->
+	<select id="cityPlatCityDistr" resultType="com.aswl.as.ibrs.api.dto.CityAlarmStatisticsDto">
+		select
+		ac.name as cityName,
+		sum(ifnull(temp.alarmNum,0)) as alarmNum,
+		sum(ifnull(temp.runNum,0)) as runNum
+		from as_city as ac LEFT JOIN (select
+		t2.code,
+		sum(IFNULL(t1.alarm_num,0)) as alarmNum,
+		sum(ifnull(t1.run_num,0)) as runNum
+		from as_city_alarm_statistics t1 LEFT JOIN as_city t2 on t1.city_code = t2.code
+		where 1 = 1
+		<if test="deviceKind != null and deviceKind != ''">
+			AND t1.device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND (t1.statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND t1.project_id = #{projectId}
+		</if>
+		GROUP BY t2.id) as temp
+		on temp.code like CONCAT(ac.code,'%')
+		where 1 = 1
+		<choose>
+			<when test="parentId != null and parentId != ''">
+				and ac.parent_id = #{parentId}
+			</when>
+			<otherwise>
+				and ac.parent_id = (SELECT id FROM as_city WHERE parent_id = '-1')
+			</otherwise>
+		</choose>
+		GROUP BY ac.id
+	</select>
+
+	<select id="cityPlatMonthlyRepairReta" resultType="com.aswl.as.ibrs.api.dto.CityAlarmStatisticsDto">
+		SELECT
+        <if test="timeUnit == 'day'">
+          DATE_FORMAT(t1.statistics_date,'%Y-%m-%d') as `date`,
+        </if>
+        <if test="timeUnit == 'month'">
+            DATE_FORMAT(t1.statistics_date,'%Y-%m') as `date`,
+        </if>
+		sum(ifnull(t1.alarm_num,0)) as alarmNum,
+		sum(ifnull(t1.run_num,0)) as runNum,
+		sum(ifnull(t1.repair_num,0)) as repairNum
+		FROM as_city_alarm_statistics as t1
+		where 1 = 1
+		<if test="deviceKind != null and deviceKind != ''">
+			AND t1.device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND (t1.statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="cityCode != null and cityCode != ''">
+			AND t1.city_code like concat(#{cityCode},'%')
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND t1.project_id = #{projectId}
+		</if>
+		group by `date`
+	</select>
+
+	<!--
+	<select id="cityPlatCityRepair" resultType="com.aswl.as.ibrs.api.dto.CityAlarmStatisticsDto">
+
+		select
+		t1.name as cityName,
+		sum(ifnull(t2.run_num,0)) as runNum,
+		sum(ifnull(t2.repair_num,0)) as repairNum
+		FROM (
+		SELECT code,name
+		FROM as_city
+		WHERE
+		<choose>
+			<when test="cityCode != null and cityCode != ''">
+				(code like CONCAT(#{cityCode},'___') or code = #{cityCode})
+			</when>
+			<otherwise>
+				(code like CONCAT((SELECT code FROM as_city WHERE parent_id = -1)
+				,'___') OR code = (SELECT code FROM as_city WHERE parent_id = -1))
+			</otherwise>
+		</choose>
+		) as t1
+		LEFT JOIN as_city_alarm_statistics as t2
+		ON t2.city_code LIKE CONCAT(t1.code,'%')
+		<if test="deviceKind != null and deviceKind != ''">
+		AND t2.device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+		AND (t2.statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="projectId != null and projectId != ''">
+		AND t2.project_id = #{projectId}
+		</if>
+		group by t1.code having cityName is not null
+
+
+	</select>
+	-->
+	<select id="cityPlatCityRepair" resultType="com.aswl.as.ibrs.api.dto.CityAlarmStatisticsDto">
+		select
+		ac.name as cityName,
+		sum(ifnull(temp.repairNum,0)) as repairNum,
+		sum(ifnull(temp.runNum,0)) as runNum
+		from as_city as ac LEFT JOIN (select
+		t2.code,
+		sum(IFNULL(t1.repair_num,0)) as repairNum,
+		sum(ifnull(t1.run_num,0)) as runNum
+		from as_city_alarm_statistics t1 LEFT JOIN as_city t2 on t1.city_code = t2.code
+		where 1 = 1
+		<if test="deviceKind != null and deviceKind != ''">
+			AND t1.device_kind = #{deviceKind}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND (t1.statistics_date BETWEEN #{startTime} and #{endTime})
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND t1.project_id = #{projectId}
+		</if>
+		GROUP BY t2.id) as temp
+		on temp.code like CONCAT(ac.code,'%')
+		where 1 = 1
+		<choose>
+			<when test="parentId != null and parentId != ''">
+				and ac.parent_id = #{parentId}
+			</when>
+			<otherwise>
+				and ac.parent_id = (SELECT id FROM as_city WHERE parent_id = '-1')
+			</otherwise>
+		</choose>
+	    GROUP BY ac.id
+	</select>
+
+	<select id="wrongRate" resultType="map">
+		select
+		temp.boxRunNum,
+		temp.camRunNum,
+		temp.boxRepairNum,
+		temp.camRepairNum,
+		IFNULL(floor(temp.boxRepairTime/temp.boxRecord),0) as boxRepairAvgTime,
+		IFNULL(floor(temp.camRepairTime/temp.camRecord),0) as camRepairAvgTime
+		from (
+		SELECT
+		IFNULL(sum(case device_kind when '2' then IFNULL(run_num,0) else 0 end),0) AS boxRunNum,
+		IFNULL(sum(case device_kind when '3' then IFNULL(run_num,0) else 0 end),0) AS camRunNum,
+		IFNULL(sum(case device_kind when '2' then IFNULL(repair_num,0) else 0 end),0) AS boxRepairNum,
+		IFNULL(sum(case device_kind when '3' then IFNULL(repair_num,0) else 0 end),0) AS camRepairNum,
+		count(case when device_kind = '2' and repair_num > 0 then 1 else null end) as boxRecord,
+		count(case when device_kind = '3' and repair_num > 0 then 1 else null end) as camRecord,
+		IFNULL(sum(case device_kind when '2' then IFNULL(avg_repair_time,0) else 0 end),0) AS boxRepairTime,
+		IFNULL(sum(case device_kind when '3' then IFNULL(avg_repair_time,0) else 0 end),0) AS camRepairTime
+		from as_city_alarm_statistics
+		where 1 = 1
+		<if test="cityCode != null and cityCode != ''">
+			and city_code like concat(#{cityCode},'%')
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id = #{projectId}
+		</if>
+		<if test="startTime != null and endTime != null">
+			and (statistics_date between #{startTime} and #{endTime})
+		</if>
+		)
+		as temp
+	</select>
+
+</mapper>

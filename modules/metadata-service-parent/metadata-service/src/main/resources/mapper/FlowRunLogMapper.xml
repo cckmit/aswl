@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.FlowRunLogMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="flowRunLogResultMap" type="com.aswl.as.ibrs.api.module.FlowRunLog">
+			<id column="id"   property="id" />
+			<id column="run_id"   property="runId" />
+			<id column="run_name"   property="runName" />
+			<id column="run_status"   property="runStatus" />
+			<id column="flow_id"   property="flowId" />
+			<id column="prcs_id"   property="prcsId" />
+			<id column="flow_prcs"   property="flowPrcs" />
+			<id column="user_id"   property="userId" />
+			<id column="log_time"   property="logTime" />
+			<id column="ip"   property="ip" />
+			<id column="log_type"   property="logType" />
+			<id column="content"   property="content" />
+			<id column="remark"   property="remark" />
+	</resultMap>
+
+	<sql id="flowRunLogColumns">
+		id, run_id, run_name, run_status, flow_id, prcs_id, flow_prcs, user_id, log_time, ip, log_type, content, remark
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="runId  != null and runId != ''">
+					and run_id = #{runId}
+				</if>
+				<if test="runName  != null and runName != ''" >
+					and run_name like CONCAT('%',#{runName},'%')
+				</if>
+				<if test="runStatus  != null and runStatus != ''">
+					and run_status = #{runStatus}
+				</if>
+				<if test="flowId  != null and flowId != ''" >
+					and flow_id like CONCAT('%',#{flowId},'%')
+				</if>
+				<if test="prcsId  != null and prcsId != ''" >
+					and prcs_id like CONCAT('%',#{prcsId},'%')
+				</if>
+				<if test="flowPrcs  != null and flowPrcs != ''">
+					and flow_prcs = #{flowPrcs}
+				</if>
+				<if test="userId  != null and userId != ''" >
+					and user_id like CONCAT('%',#{userId},'%')
+				</if>
+				<if test="logTime  != null ">
+					and log_time = #{logTime}
+				</if>
+				<if test="ip  != null and ip != ''" >
+					and ip like CONCAT('%',#{ip},'%')
+				</if>
+				<if test="logType  != null and logType != ''">
+					and log_type = #{logType}
+				</if>
+				<if test="content  != null and content != ''">
+					and content = #{content}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="flowRunLogResultMap">
+		SELECT
+		<include refid="flowRunLogColumns"/>
+		FROM as_flow_run_log
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="flowRunLogResultMap">
+		SELECT
+		<include refid="flowRunLogColumns"/>
+		FROM as_flow_run_log
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="flowRunLogResultMap">
+		SELECT
+		<include refid="flowRunLogColumns"/>
+		FROM as_flow_run_log
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_flow_run_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="runId != null and runId!=''">
+                    run_id,
+                </if>
+                <if test="runName != null and runName!=''">
+                    run_name,
+                </if>
+                <if test="runStatus != null ">
+                    run_status,
+                </if>
+                <if test="flowId != null and flowId!=''">
+                    flow_id,
+                </if>
+                <if test="prcsId != null and prcsId!=''">
+                    prcs_id,
+                </if>
+                <if test="flowPrcs != null and flowPrcs!=''">
+                    flow_prcs,
+                </if>
+                <if test="userId != null and userId!=''">
+                    user_id,
+                </if>
+                <if test="logTime != null">
+                    log_time,
+                </if>
+                <if test="ip != null and ip!=''">
+                    ip,
+                </if>
+                <if test="logType != null and logType!=''">
+                    log_type,
+                </if>
+                <if test="content != null and content!=''">
+                    content,
+                </if>
+                <if test="remark != null and remark!=''">
+                    remark,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="runId != null and runId!=''">
+                    #{runId},
+                </if>
+                <if test="runName != null and runName!=''">
+                    #{runName},
+                </if>
+                <if test="runStatus != null ">
+                    #{runStatus},
+                </if>
+                <if test="flowId != null and flowId!=''">
+                    #{flowId},
+                </if>
+                <if test="prcsId != null and prcsId!=''">
+                    #{prcsId},
+                </if>
+                <if test="flowPrcs != null and flowPrcs!=''">
+                    #{flowPrcs},
+                </if>
+                <if test="userId != null and userId!=''">
+                    #{userId},
+                </if>
+                <if test="logTime != null ">
+                    #{logTime},
+                </if>
+                <if test="ip != null and ip!=''">
+                    #{ip},
+                </if>
+                <if test="logType != null and logType!=''">
+                    #{logType},
+                </if>
+                <if test="content != null and content!=''">
+                    #{content},
+                </if>
+                <if test="remark != null and remark!=''">
+                    #{remark},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_flow_run_log
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="runId != null and runId!=''">
+					run_id =  #{runId},
+				</if>
+				<if test="runName != null and runName!=''">
+					run_name =  #{runName},
+				</if>
+				<if test="runStatus != null ">
+					run_status =  #{runStatus},
+				</if>
+				<if test="flowId != null and flowId!=''">
+					flow_id =  #{flowId},
+				</if>
+				<if test="prcsId != null and prcsId!=''">
+					prcs_id =  #{prcsId},
+				</if>
+				<if test="flowPrcs != null and flowPrcs!=''">
+					flow_prcs =  #{flowPrcs},
+				</if>
+				<if test="userId != null and userId!=''">
+					user_id =  #{userId},
+				</if>
+				<if test="logTime != null">
+					log_time =  #{logTime},
+				</if>
+				<if test="ip != null and ip!=''">
+					ip =  #{ip},
+				</if>
+				<if test="logType != null and logType!=''">
+					log_type =  #{logType},
+				</if>
+				<if test="content != null and content!=''">
+					content =  #{content},
+				</if>
+				<if test="remark != null and remark!=''">
+					remark =  #{remark},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_flow_run_log SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_flow_run_log SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findWorkOrderHistory" resultType="com.aswl.as.ibrs.api.vo.DeviceFaultVo">
+		SELECT frl.content AS `comment`,frl.remark AS `remark`,date_format(frl.log_time,'%Y-%m-%d %H:%i:%s') AS handleTime,frl.user_id AS userId,
+		frl.run_status AS statusValue
+		FROM as_flow_run_log frl LEFT JOIN as_flow_run fr
+		ON fr.id = frl.run_id
+		WHERE frl.run_id = #{id}
+		ORDER BY handleTime DESC
+	</select>
+
+	<select id="findUserByRunId" resultType="com.aswl.as.ibrs.api.vo.FlowLogVo">
+		SELECT date_format(frl.log_time,'%Y-%m-%d %H:%i:%s') AS handleTime,frl.user_id AS userId
+		FROM as_flow_run_log frl
+		WHERE frl.run_id = #{id}
+		ORDER BY handleTime DESC
+		Limit 1
+	</select>
+</mapper>

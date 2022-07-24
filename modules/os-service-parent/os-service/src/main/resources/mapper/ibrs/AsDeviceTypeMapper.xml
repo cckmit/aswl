@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsDeviceTypeMapper">
+
+    <!-- TODO  -->
+    <resultMap id="BaseResultMap" type="com.aswl.as.asos.modules.ibrs.entity.AsDeviceType">
+
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="device_kind_id" jdbcType="VARCHAR" property="deviceKindId" />
+        <result column="device_type_name" jdbcType="VARCHAR" property="deviceTypeName" />
+        <result column="is_report_status" jdbcType="BIT" property="isReportStatus" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_terminal" jdbcType="VARCHAR" property="createTerminal" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+        <result column="modify_terminal" jdbcType="VARCHAR" property="modifyTerminal" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+
+        <result column="device_kind_name" jdbcType="VARCHAR" property="deviceKindName" />
+    </resultMap>
+
+    <!--  设备类型 -->
+    <select id="countAsDeviceTypes" resultType="java.lang.Integer" >
+        select count(1)
+        from as_device_type t
+        left join as_device_kind k on t.device_kind_id=k.id
+        <where>
+            <if test="deviceKindId != null and deviceKindId !=''">
+                and t.device_kind_id = #{deviceKindId}
+            </if>
+            <if test="deviceTypeName != null and deviceTypeName !=''">
+                and t.device_type_name like concat('%',#{deviceTypeName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAsDeviceTypes" resultMap="BaseResultMap" >
+        select
+        t.id as id,t.device_type as device_type,t.device_kind_id as device_kind_id,t.device_type_name as device_type_name,t.is_report_status as is_report_status,t.creator as creator,t.create_date as create_date,
+        t.create_terminal as create_terminal,t.modifier as modifier,t.modify_date as modify_date,t.modify_terminal as modify_terminal,t.del_flag as del_flag,t.remark as remark,k.device_kind_name as device_kind_name
+        from as_device_type t
+        left join as_device_kind k on t.device_kind_id=k.id
+        <where>
+            <if test="deviceKindId != null and deviceKindId !=''">
+                and t.device_kind_id = #{deviceKindId}
+            </if>
+            <if test="deviceTypeName != null and deviceTypeName !=''">
+                and t.device_type_name like concat('%',#{deviceTypeName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        <if test="limit1 != null">
+            limit #{limit1},#{limit2}
+        </if>
+    </select>
+
+</mapper>

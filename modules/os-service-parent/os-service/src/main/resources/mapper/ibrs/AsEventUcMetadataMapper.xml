@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsEventUcMetadataMapper">
+
+    <select id="osFindEventUcMetadataByDeviceModelId" resultType="com.aswl.as.asos.modules.ibrs.entity.AsEventUcMetadata">
+    SELECT
+     t1.id AS id,
+     t1.status_name AS statusName ,
+     t1.fld_name AS fldName,
+     t1.vector_type AS vectorType ,
+     t2.id AS metadataModel,
+     t1.is_alarm AS isAlarm
+     FROM as_event_uc_metadata t1
+     LEFT JOIN as_event_uc_metadata_model t2
+     ON t1.id=t2.event_metadata_id
+     WHERE t2.device_model_id=#{deviceModelId}
+    AND t1.is_status_group=0
+    </select>
+
+</mapper>

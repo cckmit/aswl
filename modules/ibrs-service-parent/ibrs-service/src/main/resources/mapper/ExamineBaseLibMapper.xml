@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineBaseLibMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="examineBaseLibResultMap" type="com.aswl.as.ibrs.api.module.ExamineBaseLib">
+			<id column="id"   property="id" />
+			<id column="title"   property="title" />
+			<id column="code"   property="code" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="examineBaseLibColumns">
+		id, title, code, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="title  != null and title != ''" >
+					AND title like CONCAT('%',#{title},'%')
+				</if>
+				<if test="code  != null and code != ''" >
+					AND code like CONCAT('%',#{code},'%')
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="examineBaseLibResultMap">
+		SELECT
+		<include refid="examineBaseLibColumns"/>
+		FROM as_examine_base_lib
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="examineBaseLibResultMap">
+		SELECT
+		<include refid="examineBaseLibColumns"/>
+		FROM as_examine_base_lib
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="examineBaseLibResultMap">
+		SELECT
+		<include refid="examineBaseLibColumns"/>
+		FROM as_examine_base_lib
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_examine_base_lib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="title != null">
+                    title,
+                </if>
+                <if test="code != null">
+                    code,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="title != null">
+                    #{title},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_examine_base_lib
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="title != null">
+					title =  #{title},
+				</if>
+				<if test="code != null">
+					code =  #{code},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_examine_base_lib
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_examine_base_lib
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getByStandardId" resultType="com.aswl.as.ibrs.api.module.ExamineBaseLib">
+		SELECT
+		t1.id as id,
+		t1.title as title,
+		t1.code as code,
+		t1.store_time as storeTime,
+		t1.application_code as applicationCode,
+		t1.tenant_code as tenantCode
+		FROM as_examine_base_lib as t1 LEFT JOIN as_examine_item as t2 on t1.id = t2.examine_base_lib_id
+		LEFT JOIN as_examine_standard as t3 on t2.examine_standard_id = t3.id WHERE t3.id = #{standardId}
+	</select>
+
+	<select id="findAllTitleByStandardId" resultType="string">
+		SELECT t1.title FROM
+		as_examine_base_lib as t1 LEFT JOIN as_examine_item as t2 on t1.id = t2.examine_base_lib_id
+		WHERE examine_standard_id = #{standardId}
+	</select>
+</mapper>

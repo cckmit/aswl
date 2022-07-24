@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ContentNoticeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="contentNoticeResultMap" type="com.aswl.as.ibrs.api.module.ContentNotice">
+			<id column="id"   property="id" />
+			<id column="content"   property="content" />
+			<id column="is_release"   property="isRelease" />
+			<id column="release_time"   property="releaseTime" />
+			<id column="modifier"   property="modifier" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="del_flag"   property="delFlag" />
+	</resultMap>
+
+	<sql id="contentNoticeColumns">
+		id, content, is_release, release_time, modifier, modify_date, creator, create_date, del_flag
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="content  != null and content != ''">
+					AND content = #{content}
+				</if>
+				<if test="isRelease != null ">
+					<choose>
+						<when test=" isRelease == 1 ">
+							AND (is_release = #{isRelease} or now() > release_time )
+						</when>
+						<otherwise>
+							AND is_release = #{isRelease}
+						</otherwise>
+					</choose>
+				</if>
+				<if test="releaseTime  != null and releaseTime != ''">
+					AND release_time = #{releaseTime}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					AND modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''">
+					AND modify_date = #{modifyDate}
+				</if>
+				<if test="creator  != null and creator != ''" >
+					AND creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					AND create_date = #{createDate}
+				</if>
+				<if test="delFlag  != null and delFlag != ''">
+					AND del_flag = #{delFlag}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="contentNoticeResultMap">
+		SELECT
+		<include refid="contentNoticeColumns"/>
+		FROM as_content_notice
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="contentNoticeResultMap">
+		SELECT
+		<include refid="contentNoticeColumns"/>
+		FROM as_content_notice
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="contentNoticeResultMap">
+		SELECT
+		<include refid="contentNoticeColumns"/>
+		FROM as_content_notice
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_content_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="content != null">
+                    content,
+                </if>
+                <if test="isRelease != null">
+                    is_release,
+                </if>
+                <if test="releaseTime != null">
+                    release_time,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="content != null">
+                    #{content},
+                </if>
+                <if test="isRelease != null">
+                    #{isRelease},
+                </if>
+                <if test="releaseTime != null">
+                    #{releaseTime},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_content_notice
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="content != null">
+					content =  #{content},
+				</if>
+				<if test="isRelease != null">
+					is_release =  #{isRelease},
+				</if>
+				<if test="releaseTime != null">
+					release_time =  #{releaseTime},
+				</if>
+				<if test="modifier != null">
+					modifier =  #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="delFlag != null">
+					del_flag =  #{delFlag},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_content_notice
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_content_notice
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

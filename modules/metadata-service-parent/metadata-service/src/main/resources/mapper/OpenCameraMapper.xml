@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.OpenCameraMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="openCameraResultMap" type="com.aswl.as.ibrs.api.module.OpenCamera">
+			<id column="id"   property="id" />
+			<id column="camera_ip"   property="cameraIp" />
+			<id column="camera_username" property="cameraUserName"/>
+			<id column="camera_pwd" property="cameraPwd"/>
+			<id column="brand_type" property="brandType"/>
+			<id column="stream_path" property="streamPath"/>
+			<id column="device_id"   property="deviceId" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+	</resultMap>
+
+	<sql id="openCameraColumns">
+			id, camera_ip,camera_username,camera_pwd,brand_type,stream_path, device_id, creator, create_date
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="cameraIp  != null and cameraIp != ''" >
+					and camera_ip like CONCAT('%',#{cameraIp},'%')
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and deviceId like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+	</sql>
+
+	<select id="findOpenCameraByDeviceId" resultMap="openCameraResultMap">
+		SELECT
+		<include refid="openCameraColumns"/>
+		FROM as_open_camera
+		WHERE device_id = #{deviedId}
+	</select>
+</mapper>

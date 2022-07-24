@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ThresholdSettingMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="thresholdSettingResultMap" type="com.aswl.as.ibrs.api.module.ThresholdSetting">
+			<id column="id"   property="id" />
+			<id column="temperature_value"   property="temperatureValue" />
+			<id column="electric_current_value"   property="electricCurrentValue" />
+			<id column="electric_quantity_value"   property="electricQuantityValue" />
+			<id column="voltage_fld01"   property="voltageFld01" />
+			<id column="voltage_fld02"   property="voltageFld02" />
+			<id column="voltage_fld03"   property="voltageFld03" />
+			<id column="voltage_fld04"   property="voltageFld04" />
+			<id column="voltage_fld05"   property="voltageFld05" />
+			<id column="voltage_fld06"   property="voltageFld06" />
+			<id column="voltage_fld07"   property="voltageFld07" />
+			<id column="voltage_fld08"   property="voltageFld08" />
+			<id column="user_id"   property="userId" />
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="thresholdSettingColumns">
+		id, temperature_value, electric_current_value, electric_quantity_value, voltage_fld01, voltage_fld02, voltage_fld03, voltage_fld04, voltage_fld05, voltage_fld06, voltage_fld07, voltage_fld08, user_id, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="temperatureValue!= null and temperatureValue!= ''" >
+					and temperature_value LIKE CONCAT(#{temperatureValue},'%')
+				</if>
+				<if test="electricCurrentValue!= null and electricCurrentValue!= ''" >
+					and electric_current_value LIKE CONCAT(#{electricCurrentValue},'%')
+				</if>
+				<if test="electricQuantityValue!= null and electricQuantityValue!= ''" >
+					and electric_quantity_value LIKE CONCAT(#{electricQuantityValue},'%')
+				</if>
+				<if test="voltageFld01!= null and voltageFld01!= ''" >
+					and voltage_fld01 LIKE CONCAT(#{voltageFld01},'%')
+				</if>
+				<if test="voltageFld02!= null and voltageFld02!= ''" >
+					and voltage_fld02 LIKE CONCAT(#{voltageFld02},'%')
+				</if>
+				<if test="voltageFld03!= null and voltageFld03!= ''" >
+					and voltage_fld03 LIKE CONCAT(#{voltageFld03},'%')
+				</if>
+				<if test="voltageFld04!= null and voltageFld04!= ''" >
+					and voltage_fld04 LIKE CONCAT(#{voltageFld04},'%')
+				</if>
+				<if test="voltageFld05!= null and voltageFld05!= ''" >
+					and voltage_fld05 LIKE CONCAT(#{voltageFld05},'%')
+				</if>
+				<if test="voltageFld06!= null and voltageFld06!= ''" >
+					and voltage_fld06 LIKE CONCAT(#{voltageFld06},'%')
+				</if>
+				<if test="voltageFld07!= null and voltageFld07!= ''" >
+					and voltage_fld07 LIKE CONCAT(#{voltageFld07},'%')
+				</if>
+				<if test="voltageFld08!= null and voltageFld08!= ''" >
+					and voltage_fld08 LIKE CONCAT(#{voltageFld08},'%')
+				</if>
+				<if test="userId!= null and userId!= ''" >
+					and user_id LIKE CONCAT(#{userId},'%')
+				</if>
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="thresholdSettingResultMap">
+		SELECT
+		<include refid="thresholdSettingColumns"/>
+		FROM as_threshold_setting
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="thresholdSettingResultMap">
+		SELECT
+		<include refid="thresholdSettingColumns"/>
+		FROM as_threshold_setting
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="thresholdSettingResultMap">
+		SELECT
+		<include refid="thresholdSettingColumns"/>
+		FROM as_threshold_setting
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_threshold_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="temperatureValue != null">
+                    temperature_value,
+                </if>
+                <if test="electricCurrentValue != null">
+                    electric_current_value,
+                </if>
+                <if test="electricQuantityValue != null">
+                    electric_quantity_value,
+                </if>
+                <if test="voltageFld01 != null">
+                    voltage_fld01,
+                </if>
+                <if test="voltageFld02 != null">
+                    voltage_fld02,
+                </if>
+                <if test="voltageFld03 != null">
+                    voltage_fld03,
+                </if>
+                <if test="voltageFld04 != null">
+                    voltage_fld04,
+                </if>
+                <if test="voltageFld05 != null">
+                    voltage_fld05,
+                </if>
+                <if test="voltageFld06 != null">
+                    voltage_fld06,
+                </if>
+                <if test="voltageFld07 != null">
+                    voltage_fld07,
+                </if>
+                <if test="voltageFld08 != null">
+                    voltage_fld08,
+                </if>
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="temperatureValue != null">
+                    #{temperatureValue},
+                </if>
+                <if test="electricCurrentValue != null">
+                    #{electricCurrentValue},
+                </if>
+                <if test="electricQuantityValue != null">
+                    #{electricQuantityValue},
+                </if>
+                <if test="voltageFld01 != null">
+                    #{voltageFld01},
+                </if>
+                <if test="voltageFld02 != null">
+                    #{voltageFld02},
+                </if>
+                <if test="voltageFld03 != null">
+                    #{voltageFld03},
+                </if>
+                <if test="voltageFld04 != null">
+                    #{voltageFld04},
+                </if>
+                <if test="voltageFld05 != null">
+                    #{voltageFld05},
+                </if>
+                <if test="voltageFld06 != null">
+                    #{voltageFld06},
+                </if>
+                <if test="voltageFld07 != null">
+                    #{voltageFld07},
+                </if>
+                <if test="voltageFld08 != null">
+                    #{voltageFld08},
+                </if>
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_threshold_setting
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="temperatureValue != null">
+					temperature_value =  #{temperatureValue},
+				</if>
+				<if test="electricCurrentValue != null">
+					electric_current_value =  #{electricCurrentValue},
+				</if>
+				<if test="electricQuantityValue != null">
+					electric_quantity_value =  #{electricQuantityValue},
+				</if>
+				<if test="voltageFld01 != null">
+					voltage_fld01 =  #{voltageFld01},
+				</if>
+				<if test="voltageFld02 != null">
+					voltage_fld02 =  #{voltageFld02},
+				</if>
+				<if test="voltageFld03 != null">
+					voltage_fld03 =  #{voltageFld03},
+				</if>
+				<if test="voltageFld04 != null">
+					voltage_fld04 =  #{voltageFld04},
+				</if>
+				<if test="voltageFld05 != null">
+					voltage_fld05 =  #{voltageFld05},
+				</if>
+				<if test="voltageFld06 != null">
+					voltage_fld06 =  #{voltageFld06},
+				</if>
+				<if test="voltageFld07 != null">
+					voltage_fld07 =  #{voltageFld07},
+				</if>
+				<if test="voltageFld08 != null">
+					voltage_fld08 =  #{voltageFld08},
+				</if>
+				<if test="userId != null">
+					user_id =  #{userId},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_threshold_setting
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_threshold_setting
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

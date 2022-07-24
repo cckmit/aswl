@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventHisBaseMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventHisBaseResultMap" type="com.aswl.as.metadata.api.module.EventHisBase">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_date"   property="recDate" />
+			<id column="rec_time"   property="recTime" />
+			<id column="use_status"   property="useStatus" />
+			<id column="iot_status"   property="iotStatus" />
+			<id column="key_mac"   property="keyMac" />
+			<id column="ciphertext_id"   property="ciphertextId" />
+			<id column="auth_time"   property="authTime" />
+			<id column="auth_status"   property="authStatus" />
+			<id column="gate_switch"   property="gateSwitch" />
+			<id column="lighting_switch"   property="lightingSwitch" />
+			<id column="utc_time"   property="utcTime" />
+			<id column="lng"   property="lng" />
+			<id column="lat"   property="lat" />
+			<id column="altitude"   property="altitude" />
+			<id column="fld01"   property="fld01" />
+			<id column="fld02"   property="fld02" />
+			<id column="fld03"   property="fld03" />
+			<id column="fld04"   property="fld04" />
+			<id column="fld05"   property="fld05" />
+			<id column="fld06"   property="fld06" />
+			<id column="fld07"   property="fld07" />
+			<id column="fld08"   property="fld08" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventHisBaseColumns">
+		id, u_event_id, device_id, region_no, rec_date, rec_time, use_status, iot_status, key_mac, ciphertext_id, auth_time, auth_status, gate_switch, lighting_switch, utc_time, lng, lat, altitude, fld01, fld02, fld03, fld04, fld05, fld06, fld07, fld08, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''">
+					and u_event_id = #{uEventId}
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="recDate  != null">
+					and rec_date = #{recDate}
+				</if>
+				<if test="recTime  != null and recTime != ''">
+					and rec_time = #{recTime}
+				</if>
+				<if test="useStatus  != null and useStatus != ''">
+					and use_status = #{useStatus}
+				</if>
+				<if test="iotStatus  != null and iotStatus != ''">
+					and iot_status = #{iotStatus}
+				</if>
+				<if test="keyMac  != null and keyMac != ''" >
+					and key_mac like CONCAT('%',#{keyMac},'%')
+				</if>
+				<if test="ciphertextId  != null and ciphertextId != ''" >
+					and ciphertext_id like CONCAT('%',#{ciphertextId},'%')
+				</if>
+				<if test="authTime  != null and authTime != ''">
+					and auth_time = #{authTime}
+				</if>
+				<if test="authStatus  != null and authStatus != ''">
+					and auth_status = #{authStatus}
+				</if>
+				<if test="gateSwitch  != null and gateSwitch != ''">
+					and gate_switch = #{gateSwitch}
+				</if>
+				<if test="lightingSwitch  != null and lightingSwitch != ''">
+					and lighting_switch = #{lightingSwitch}
+				</if>
+				<if test="utcTime  != null and utcTime != ''">
+					and utc_time = #{utcTime}
+				</if>
+				<if test="lng  != null and lng != ''">
+					and lng = #{lng}
+				</if>
+				<if test="lat  != null and lat != ''">
+					and lat = #{lat}
+				</if>
+				<if test="altitude  != null and altitude != ''">
+					and altitude = #{altitude}
+				</if>
+				<if test="fld01  != null and fld01 != ''" >
+					and fld01 like CONCAT('%',#{fld01},'%')
+				</if>
+				<if test="fld02  != null and fld02 != ''" >
+					and fld02 like CONCAT('%',#{fld02},'%')
+				</if>
+				<if test="fld03  != null and fld03 != ''" >
+					and fld03 like CONCAT('%',#{fld03},'%')
+				</if>
+				<if test="fld04  != null and fld04 != ''" >
+					and fld04 like CONCAT('%',#{fld04},'%')
+				</if>
+				<if test="fld05  != null and fld05 != ''" >
+					and fld05 like CONCAT('%',#{fld05},'%')
+				</if>
+				<if test="fld06  != null and fld06 != ''" >
+					and fld06 like CONCAT('%',#{fld06},'%')
+				</if>
+				<if test="fld07  != null and fld07 != ''" >
+					and fld07 like CONCAT('%',#{fld07},'%')
+				</if>
+				<if test="fld08  != null and fld08 != ''" >
+					and fld08 like CONCAT('%',#{fld08},'%')
+				</if>
+				<if test="storeTime  != null">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventHisBaseResultMap">
+		SELECT
+		<include refid="eventHisBaseColumns"/>
+		FROM as_event_his_base
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventHisBaseResultMap">
+		SELECT
+		<include refid="eventHisBaseColumns"/>
+		FROM as_event_his_base
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventHisBaseResultMap">
+		SELECT
+		<include refid="eventHisBaseColumns"/>
+		FROM as_event_his_base
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_his_base_${yearMonth}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="uEventId != null and uEventId!=''">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    device_id,
+                </if>
+                <if test="regionNo != null and regionNo!=''">
+                    region_no,
+                </if>
+                <if test="recDate != null">
+                    rec_date,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="useStatus != null and useStatus!=''">
+                    use_status,
+                </if>
+                <if test="iotStatus != null and iotStatus!=''">
+                    iot_status,
+                </if>
+                <if test="keyMac != null and keyMac!=''">
+                    key_mac,
+                </if>
+                <if test="ciphertextId != null and ciphertextId!=''">
+                    ciphertext_id,
+                </if>
+                <if test="authTime != null and authTime!=''">
+                    auth_time,
+                </if>
+                <if test="authStatus != null and authStatus!=''">
+                    auth_status,
+                </if>
+                <if test="gateSwitch != null and gateSwitch!=''">
+                    gate_switch,
+                </if>
+                <if test="lightingSwitch != null and lightingSwitch!=''">
+                    lighting_switch,
+                </if>
+                <if test="utcTime != null and utcTime!=''">
+                    utc_time,
+                </if>
+                <if test="lng != null and lng!=''">
+                    lng,
+                </if>
+                <if test="lat != null and lat!=''">
+                    lat,
+                </if>
+                <if test="altitude != null and altitude!=''">
+                    altitude,
+                </if>
+                <if test="fld01 != null and fld01!=''">
+                    fld01,
+                </if>
+                <if test="fld02 != null and fld02!=''">
+                    fld02,
+                </if>
+                <if test="fld03 != null and fld03!=''">
+                    fld03,
+                </if>
+                <if test="fld04 != null and fld04!=''">
+                    fld04,
+                </if>
+                <if test="fld05 != null and fld05!=''">
+                    fld05,
+                </if>
+                <if test="fld06 != null and fld06!=''">
+                    fld06,
+                </if>
+                <if test="fld07 != null and fld07!=''">
+                    fld07,
+                </if>
+                <if test="fld08 != null and fld08!=''">
+                    fld08,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="uEventId != null and uEventId!=''">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null and regionNo!=''">
+                    #{regionNo},
+                </if>
+                <if test="recDate != null">
+                    #{recDate},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="useStatus != null and useStatus!=''">
+                    #{useStatus},
+                </if>
+                <if test="iotStatus != null and iotStatus!=''">
+                    #{iotStatus},
+                </if>
+                <if test="keyMac != null and keyMac!=''">
+                    #{keyMac},
+                </if>
+                <if test="ciphertextId != null and ciphertextId!=''">
+                    #{ciphertextId},
+                </if>
+                <if test="authTime != null and authTime!=''">
+                    #{authTime},
+                </if>
+                <if test="authStatus != null and authStatus!=''">
+                    #{authStatus},
+                </if>
+                <if test="gateSwitch != null and gateSwitch!=''">
+                    #{gateSwitch},
+                </if>
+                <if test="lightingSwitch != null and lightingSwitch!=''">
+                    #{lightingSwitch},
+                </if>
+                <if test="utcTime != null and utcTime!=''">
+                    #{utcTime},
+                </if>
+                <if test="lng != null and lng!=''">
+                    #{lng},
+                </if>
+                <if test="lat != null and lat!=''">
+                    #{lat},
+                </if>
+                <if test="altitude != null and altitude!=''">
+                    #{altitude},
+                </if>
+                <if test="fld01 != null and fld01!=''">
+                    #{fld01},
+                </if>
+                <if test="fld02 != null and fld02!=''">
+                    #{fld02},
+                </if>
+                <if test="fld03 != null and fld03!=''">
+                    #{fld03},
+                </if>
+                <if test="fld04 != null and fld04!=''">
+                    #{fld04},
+                </if>
+                <if test="fld05 != null and fld05!=''">
+                    #{fld05},
+                </if>
+                <if test="fld06 != null and fld06!=''">
+                    #{fld06},
+                </if>
+                <if test="fld07 != null and fld07!=''">
+                    #{fld07},
+                </if>
+                <if test="fld08 != null and fld08!=''">
+                    #{fld08},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_his_base
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null and uEventId!=''">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null and deviceId!=''">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null and regionNo!=''">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recDate != null">
+					rec_date =  #{recDate},
+				</if>
+				<if test="recTime != null and recTime!=''">
+					rec_time =  #{recTime},
+				</if>
+				<if test="useStatus != null and useStatus!=''">
+					use_status =  #{useStatus},
+				</if>
+				<if test="iotStatus != null and iotStatus!=''">
+					iot_status =  #{iotStatus},
+				</if>
+				<if test="keyMac != null and keyMac!=''">
+					key_mac =  #{keyMac},
+				</if>
+				<if test="ciphertextId != null and ciphertextId!=''">
+					ciphertext_id =  #{ciphertextId},
+				</if>
+				<if test="authTime != null and authTime!=''">
+					auth_time =  #{authTime},
+				</if>
+				<if test="authStatus != null and authStatus!=''">
+					auth_status =  #{authStatus},
+				</if>
+				<if test="gateSwitch != null and gateSwitch!=''">
+					gate_switch =  #{gateSwitch},
+				</if>
+				<if test="lightingSwitch != null and lightingSwitch!=''">
+					lighting_switch =  #{lightingSwitch},
+				</if>
+				<if test="utcTime != null and utcTime!=''">
+					utc_time =  #{utcTime},
+				</if>
+				<if test="lng != null and lng!=''">
+					lng =  #{lng},
+				</if>
+				<if test="lat != null and lat!=''">
+					lat =  #{lat},
+				</if>
+				<if test="altitude != null and altitude!=''">
+					altitude =  #{altitude},
+				</if>
+				<if test="fld01 != null and fld01!=''">
+					fld01 =  #{fld01},
+				</if>
+				<if test="fld02 != null and fld02!=''">
+					fld02 =  #{fld02},
+				</if>
+				<if test="fld03 != null and fld03!=''">
+					fld03 =  #{fld03},
+				</if>
+				<if test="fld04 != null and fld04!=''">
+					fld04 =  #{fld04},
+				</if>
+				<if test="fld05 != null and fld05!=''">
+					fld05 =  #{fld05},
+				</if>
+				<if test="fld06 != null and fld06!=''">
+					fld06 =  #{fld06},
+				</if>
+				<if test="fld07 != null and fld07!=''">
+					fld07 =  #{fld07},
+				</if>
+				<if test="fld08 != null and fld08!=''">
+					fld08 =  #{fld08},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_event_his_base SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_event_his_base SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

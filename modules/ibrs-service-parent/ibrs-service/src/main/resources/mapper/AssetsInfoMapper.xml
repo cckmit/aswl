@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AssetsInfoMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="assetsInfoResultMap" type="com.aswl.as.ibrs.api.module.AssetsInfo">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="basic_no"   property="basicNo" />
+			<id column="custom_no"   property="customNo" />
+			<id column="supplier"   property="supplier" />
+			<id column="supplier_tel" property="supplierTel"/>
+			<id column="manufacturers" property="manufacturers"/>
+			<id column="manufacturers_tel" property="manufacturersTel"/>
+			<id column="integrator" property="integrator"/>
+			<id column="integrator_tel" property="integratorTel"/>
+			<id column="principal" property="principal"/>
+			<id column="principal_tel" property="principalTel"/>
+			<id column="guarantee_period"   property="guaranteePeriod" />
+			<id column="measure_unit"   property="measureUnit" />
+			<id column="quantity"   property="quantity" />
+			<id column="status"   property="status" />
+			<id column="category_id"   property="categoryId" />
+			<id column="category_name"   property="categoryName" />
+			<id column="remark"   property="remark" />
+			<id column="create_date"   property="createDate" />
+			<id column="creator"   property="creator" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="assetsInfoColumns">
+		id, name, basic_no, custom_no, supplier, supplier_tel,manufacturers,manufacturers_tel,integrator,integrator_tel,principal,principal_tel,
+		guarantee_period, measure_unit, quantity, status, category_id, category_name, remark, create_date, creator, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name!= null and name!= ''" >
+					and name LIKE CONCAT(#{name},'%')
+				</if>
+				<if test="basicNo!= null and basicNo!= ''" >
+					and basic_no LIKE CONCAT(#{basicNo},'%')
+				</if>
+				<if test="customNo!= null and customNo!= ''">
+					and custom_no = #{customNo}
+				</if>
+				<if test="supplier!= null and supplier!= ''" >
+					and supplier LIKE CONCAT(#{supplier},'%')
+				</if>
+				<if test="guaranteePeriod!= null and guaranteePeriod!= ''" >
+					and guarantee_period LIKE CONCAT(#{guaranteePeriod},'%')
+				</if>
+				<if test="measureUnit!= null and measureUnit!= ''" >
+					and measure_unit LIKE CONCAT(#{measureUnit},'%')
+				</if>
+				<if test="quantity!= null and quantity!= ''">
+					and quantity = #{quantity}
+				</if>
+				<if test="status!= null and status!= ''">
+					and status = #{status}
+				</if>
+				<if test="categoryId!= null and categoryId!= ''" >
+					and category_id LIKE CONCAT(#{categoryId},'%')
+				</if>
+				<if test="categoryName!= null and categoryName!= ''" >
+					and category_name LIKE CONCAT(#{categoryName},'%')
+				</if>
+				<if test="remark!= null and remark!= ''" >
+					and remark LIKE CONCAT(#{remark},'%')
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="creator!= null and creator!= ''" >
+					and creator LIKE CONCAT(#{creator},'%')
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="assetsInfoResultMap">
+		SELECT
+		<include refid="assetsInfoColumns"/>
+		FROM as_assets_info
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="assetsInfoResultMap">
+		SELECT
+		<include refid="assetsInfoColumns"/>
+		FROM as_assets_info
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="assetsInfoResultMap">
+		SELECT
+		<include refid="assetsInfoColumns"/>
+		FROM as_assets_info
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findInfo" resultType="com.aswl.as.ibrs.api.vo.AssetsInfoVo">
+	SELECT
+	info.id as id,
+	 info.`name` as name,
+	info.basic_no as basicNo ,
+	info.supplier as supplier ,
+	info.supplier_tel as supplierTel,
+	info.manufacturers as manufacturers,
+	info.manufacturers_tel as manufacturersTel,
+	info.integrator as integrator,
+	info.integrator_tel as integratorTel,
+	info.principal as principal,
+	info.principal_tel as principalTel,
+	info.guarantee_period as guaranteePeriod,
+	info.measure_unit as measureUnit,
+	info.quantity as quantity,
+	info.status as status,
+	info.remark as remark,
+	info.category_id as categoryId,
+	info.category_name as categoryName,
+	info.create_date,
+	COALESCE(SUM(CASE WHEN detail.status= 0 THEN 1 ELSE 0 END),0) AS freeNum,
+	COALESCE(SUM(CASE WHEN detail.status= 1 THEN 1 ELSE 0 END),0) AS inuseNum,
+	COALESCE(SUM(CASE WHEN detail.status= 2 THEN 1 ELSE 0 END),0) AS maintainNum,
+	COALESCE(SUM(CASE WHEN detail.status= 3 THEN 1 ELSE 0 END),0) AS scrapNum,
+	COALESCE(SUM(CASE WHEN detail.status= 4 THEN 1 ELSE 0 END),0) AS borrowNum,
+	COALESCE(SUM(CASE WHEN detail.status= 5 THEN 1 ELSE 0 END),0) AS faultNum
+	 from as_assets_info info
+	left join as_assets_info_detail detail
+	on info.id = detail.assets_info_id
+    where 1=1
+	<if test="categoryId !=null and categoryId !=''">
+        and info.category_id = #{categoryId} 
+    </if>
+	group by info.id
+	order by info.create_date 
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_assets_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="basicNo != null">
+                    basic_no,
+                </if>
+                <if test="customNo != null">
+                    custom_no,
+                </if>
+                <if test="supplier != null">
+                    supplier,
+                </if>
+				<if test="supplierTel!= null">
+					supplier_tel,
+				</if>
+				<if test="manufacturers!= null">
+					manufacturers,
+				</if>
+				<if test="manufacturersTel!= null">
+					manufacturers_tel,
+				</if>
+				<if test="integrator!= null">
+					integrator,
+				</if>
+				<if test="integratorTel!= null">
+					integrator_tel,
+				</if>
+				<if test="principal!= null">
+					principal,
+				</if>
+				<if test="principalTel!= null">
+					principal_tel,
+				</if>
+                <if test="guaranteePeriod != null">
+                    guarantee_period,
+                </if>
+                <if test="measureUnit != null">
+                    measure_unit,
+                </if>
+                <if test="quantity != null">
+                    quantity,
+                </if>
+                <if test="status != null">
+                    status,
+                </if>
+                <if test="categoryId != null">
+                    category_id,
+                </if>
+                <if test="categoryName != null">
+                    category_name,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="basicNo != null">
+                    #{basicNo},
+                </if>
+                <if test="customNo != null">
+                    #{customNo},
+                </if>
+                <if test="supplier != null">
+                    #{supplier},
+                </if>
+				<if test="supplierTel!= null">
+					#{supplierTel},
+				</if>
+				<if test="manufacturers!= null">
+					#{manufacturers},
+				</if>
+				<if test="manufacturersTel!= null">
+					#{manufacturersTel},
+				</if>
+				<if test="integrator!= null">
+					#{integrator},
+				</if>
+				<if test="integratorTel!= null">
+					#{integratorTel},
+				</if>
+				<if test="principal!= null">
+					#{principal},
+				</if>
+				<if test="principalTel!= null">
+					#{principalTel},
+				</if>
+                <if test="guaranteePeriod != null">
+                    #{guaranteePeriod},
+                </if>
+                <if test="measureUnit != null">
+                    #{measureUnit},
+                </if>
+                <if test="quantity != null">
+                    #{quantity},
+                </if>
+                <if test="status != null">
+                    #{status},
+                </if>
+                <if test="categoryId != null">
+                    #{categoryId},
+                </if>
+                <if test="categoryName != null">
+                    #{categoryName},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_assets_info
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="basicNo != null">
+					basic_no =  #{basicNo},
+				</if>
+				<if test="customNo != null">
+					custom_no =  #{customNo},
+				</if>
+				<if test="supplier != null">
+					supplier =  #{supplier},
+				</if>
+				<if test="supplierTel!= null">
+					supplier_tel = #{supplierTel},
+				</if>
+				<if test="manufacturers!= null">
+					manufacturers = #{manufacturers},
+				</if>
+				<if test="manufacturersTel!= null">
+					manufacturers_tel = #{manufacturersTel},
+				</if>
+				<if test="integrator!= null">
+					integrator = #{integrator},
+				</if>
+				<if test="integratorTel!= null">
+					integrator_tel = #{integratorTel},
+				</if>
+				<if test="principal!= null">
+					principal = #{principal},
+				</if>
+				<if test="principalTel!= null">
+					principal_tel = #{principalTel},
+				</if>
+				<if test="guaranteePeriod != null">
+					guarantee_period =  #{guaranteePeriod},
+				</if>
+				<if test="measureUnit != null">
+					measure_unit =  #{measureUnit},
+				</if>
+				<if test="quantity != null">
+					quantity =  #{quantity},
+				</if>
+				<if test="status != null">
+					status =  #{status},
+				</if>
+				<if test="categoryId != null">
+					category_id =  #{categoryId},
+				</if>
+				<if test="categoryName != null">
+					category_name =  #{categoryName},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_assets_info
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_assets_info
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

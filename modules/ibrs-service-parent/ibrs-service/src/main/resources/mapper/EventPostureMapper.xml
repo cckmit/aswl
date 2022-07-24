@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventPostureMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventPostureResultMap" type="com.aswl.as.ibrs.api.module.EventPosture">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="offset_x"   property="offsetX" />
+			<id column="offset_y"   property="offsetY" />
+			<id column="offset_z"   property="offsetZ" />
+			<id column="accel_speed_x"   property="accelSpeedX" />
+			<id column="accel_speed_y"   property="accelSpeedY" />
+			<id column="accel_speed_z"   property="accelSpeedZ" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventPostureColumns">
+		id, u_event_id, device_id, region_no, rec_time, offset_x, offset_y, offset_z, accel_speed_x, accel_speed_y, accel_speed_z, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null" >
+					and u_event_id like CONCAT('%',#{uEventId},'%')
+				</if>
+				<if test="deviceId  != null" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="recTime  != null">
+					and rec_time = #{recTime}
+				</if>
+				<if test="offsetX  != null">
+					and offset_x = #{offsetX}
+				</if>
+				<if test="offsetY  != null">
+					and offset_y = #{offsetY}
+				</if>
+				<if test="offsetZ  != null">
+					and offset_z = #{offsetZ}
+				</if>
+				<if test="accelSpeedX  != null">
+					and accel_speed_x = #{accelSpeedX}
+				</if>
+				<if test="accelSpeedY  != null">
+					and accel_speed_y = #{accelSpeedY}
+				</if>
+				<if test="accelSpeedZ  != null">
+					and accel_speed_z = #{accelSpeedZ}
+				</if>
+				<if test="storeTime  != null">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventPostureResultMap">
+		SELECT
+		<include refid="eventPostureColumns"/>
+		FROM as_event_posture
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventPostureResultMap">
+		SELECT
+		<include refid="eventPostureColumns"/>
+		FROM as_event_posture
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventPostureResultMap">
+		SELECT
+		<include refid="eventPostureColumns"/>
+		FROM as_event_posture
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_posture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="offsetX != null">
+                    offset_x,
+                </if>
+                <if test="offsetY != null">
+                    offset_y,
+                </if>
+                <if test="offsetZ != null">
+                    offset_z,
+                </if>
+                <if test="accelSpeedX != null">
+                    accel_speed_x,
+                </if>
+                <if test="accelSpeedY != null">
+                    accel_speed_y,
+                </if>
+                <if test="accelSpeedZ != null">
+                    accel_speed_z,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="offsetX != null">
+                    #{offsetX},
+                </if>
+                <if test="offsetY != null">
+                    #{offsetY},
+                </if>
+                <if test="offsetZ != null">
+                    #{offsetZ},
+                </if>
+                <if test="accelSpeedX != null">
+                    #{accelSpeedX},
+                </if>
+                <if test="accelSpeedY != null">
+                    #{accelSpeedY},
+                </if>
+                <if test="accelSpeedZ != null">
+                    #{accelSpeedZ},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_posture
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recTime != null">
+					rec_time =  #{recTime},
+				</if>
+				<if test="offsetX != null">
+					offset_x =  #{offsetX},
+				</if>
+				<if test="offsetY != null">
+					offset_y =  #{offsetY},
+				</if>
+				<if test="offsetZ != null">
+					offset_z =  #{offsetZ},
+				</if>
+				<if test="accelSpeedX != null">
+					accel_speed_x =  #{accelSpeedX},
+				</if>
+				<if test="accelSpeedY != null">
+					accel_speed_y =  #{accelSpeedY},
+				</if>
+				<if test="accelSpeedZ != null">
+					accel_speed_z =  #{accelSpeedZ},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_event_posture SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_event_posture SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteByDeviceIds">
+		DELETE FROM as_event_posture where device_id in (${deviceIds})
+	</delete>
+
+	<select id="findByDeviceId" resultMap="eventPostureResultMap">
+		SELECT
+		<include refid="eventPostureColumns"/>
+		FROM as_event_posture
+		WHERE device_id = #{deviceId}
+	</select>
+</mapper>

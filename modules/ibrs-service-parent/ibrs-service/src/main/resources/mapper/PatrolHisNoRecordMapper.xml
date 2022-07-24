@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.PatrolHisNoRecordMapper">
+    <select id="findByPatrolKeyIdAndPeriod" resultType="com.aswl.as.ibrs.api.module.PatrolHisNoRecord">
+        SELECT * FROM
+        <foreach collection="tables" open="(" close=")" separator="union all" item="item">
+            SELECT * FROM ${item}
+        </foreach> as s
+        <where>
+            <if test="patrolKeyId != null and patrolKeyId != ''">
+                and s.cipher_id = #{patrolKeyId}
+            </if>
+            <if test="periodBeginTime != null and periodBeginTime != ''">
+                and s.period_begin_date = #{periodBeginTime}
+            </if>
+            <if test="periodEndTime != null and periodEndTime != ''">
+                and s.period_end_date = #{periodEndTime}
+            </if>
+            <if test="regionCode != null and regionCode != ''">
+                and s.region_no = #{regionCode}
+            </if>
+        </where>
+    </select>
+
+    <insert id="batchInsert">
+        INSERT INTO ${noRecordHisTable}
+        (
+        id,
+        device_id,
+        region_no,
+        cipher_id,
+        period_begin_date,
+        period_end_date,
+        store_time,
+        application_code,
+        tenant_code
+        ) VALUES
+        <foreach collection="patrolHisNoRecordList" separator="," item="item">
+        (
+        #{item.id},
+        #{item.deviceId},
+        #{item.regionNo},
+        #{item.cipherId},
+        #{item.periodBeginDate},
+        #{item.periodEndDate},
+        #{item.storeTime},
+        #{item.applicationCode},
+        #{item.tenantCode}
+        )
+        </foreach>
+    </insert>
+
+    <select id="findByPage" resultType="com.aswl.as.ibrs.api.vo.PatrolHisNoRecordVo">
+        SELECT
+        d.user_name as regionLeaderName,
+        a.cipher_id as idCipher,
+        c.region_name as regionName,
+        b.device_name as deviceName,
+        CONCAT(a.period_begin_date,'至',a.period_end_date) as patrolPeriod,
+        count(1) as noPatrolNum,
+        p.project_name as projectName,
+        b.id as deviceId
+        FROM
+        <foreach collection="tableNames" open="(" close=")" separator="union all" item="item">
+            SELECT * FROM ${item}
+        </foreach> as a
+        LEFT JOIN as_device as b on a.device_id = b.id
+        LEFT JOIN as_region as c on a.region_no = c.region_code
+        LEFT JOIN as_region_leader as d on b.region_id = d.region_id
+        LEFT JOIN as_project as p on b.project_id = p.project_id
+        <where>
+            <if test="regionLeaderName != null and regionLeaderName != ''">
+                AND d.user_name = #{regionLeaderName}
+            </if>
+            <if test="regionLeaderId != null and regionLeaderId != ''">
+                AND d.id = #{regionLeaderId}
+            </if>
+            <if test="idCipher != null and idCipher != ''">
+                AND a.cipher_id = #{idCipher}
+            </if>
+            <if test="deviceId != null and deviceId != ''">
+                AND b.id = #{deviceId}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND b.device_name = #{deviceName}
+            </if>
+            <if test="regionCode != null and regionCode != ''">
+                AND b.region_code like  concat(#{regionCode},'%')
+            </if>
+            <if test="patrolStartTime != null and patrolEndTime != null">
+               AND DATE_FORMAT(a.store_time,'%Y-%m-%d') between #{patrolStartTime} and #{patrolEndTime}
+            </if>
+            <if test="tenantCode != null and tenantCode != ''">
+               AND a.tenant_code = #{tenantCode}
+            </if>
+            <if test="projectId  != null and projectId != ''" >
+                AND b.project_id IN
+                <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="query!= null and query!=''">
+                and (d.user_name like concat(#{query},'%') or a.cipher_id like concat(#{query},'%') or b.device_name like concat(#{query},'%'))
+            </if>
+        </where>
+        GROUP BY b.id
+        ORDER BY b.device_name IS NULL
+    </select>
+
+    <select id="getNoRecordExamineTime" resultType="com.aswl.as.ibrs.api.vo.PatrolHisNoRecordVo">
+        SELECT
+        t1.id as id,
+        t1.device_id as deviceId,
+        t1.cipher_id as cipherId,
+        t1.period_begin_date as periodBeginDate,
+        t1.period_end_date as periodEndDate,
+        t1.store_time as storeTime,
+        t1.application_code as applicationCode,
+        t1.tenant_code as tenantCode,
+        t1.region_no as regionCode,
+        t2.region_name as regionName
+        FROM ${tableName} as t1
+        LEFT JOIN as_region as t2
+        on t1.region_no = t2.region_code
+        WHERE 1 = 1
+        <if test="regionCode != null and regionCode">
+            AND t1.region_no like concat(#{regionCode},'%')
+        </if>
+        <if test="tenantCode != null and tenantCode != ''">
+            AND t1.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND t2.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND store_time BETWEEN #{previousMonthStart} and #{previousMonthEnd}
+    </select>
+</mapper>

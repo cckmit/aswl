@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.DeviceSettingsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceSettingsResultMap" type="com.aswl.as.ibrs.api.module.DeviceSettings">
+			<id column="id"   property="id" />
+			<id column="device_id"   property="deviceId" />
+			<id column="set_type"   property="setType" />
+			<id column="mode"   property="mode" />
+			<id column="value"   property="value" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="deviceSettingsColumns">
+		id, device_id, set_type, mode, value, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="deviceId  != null and deviceId != ''" >
+					AND device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="setType  != null and setType != ''" >
+					AND set_type like CONCAT('%',#{setType},'%')
+				</if>
+				<if test="mode  != null and mode != ''" >
+					AND mode like CONCAT('%',#{mode},'%')
+				</if>
+				<if test="value  != null and value != ''">
+					AND value = #{value}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceSettingsResultMap">
+		SELECT
+		<include refid="deviceSettingsColumns"/>
+		FROM as_device_settings
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="deviceSettingsResultMap">
+		SELECT
+		<include refid="deviceSettingsColumns"/>
+		FROM as_device_settings
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceSettingsResultMap">
+		SELECT
+		<include refid="deviceSettingsColumns"/>
+		FROM as_device_settings
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_settings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="setType != null">
+                    set_type,
+                </if>
+                <if test="mode != null">
+                    mode,
+                </if>
+                <if test="value != null">
+                    value,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="setType != null">
+                    #{setType},
+                </if>
+                <if test="mode != null">
+                    #{mode},
+                </if>
+                <if test="value != null">
+                    #{value},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_settings
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="setType != null">
+					set_type =  #{setType},
+				</if>
+				<if test="mode != null">
+					mode =  #{mode},
+				</if>
+				<if test="value != null">
+					value =  #{value},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_device_settings
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_device_settings
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<insert id="insertBatch">
+		INSERT INTO as_device_settings
+		(
+		id,
+		device_id,
+		set_type,
+		mode,
+		value,
+		store_time,
+		application_code,
+		tenant_code
+		)
+		VALUES
+		<foreach item="item" index="index" collection="list"
+				 separator="," >
+			(
+			#{item.id},
+			#{item.deviceId},
+			#{item.setType},
+			#{item.mode},
+			#{item.value},
+			#{item.storeTime},
+			#{item.applicationCode},
+			#{item.tenantCode}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteByMode">
+		DELETE FROM as_device_settings WHERE set_type=#{setType}
+	</delete>
+
+
+
+    <delete id="deleteBath"  parameterType = "java.util.List">
+    DELETE  FROM  as_device_settings WHERE
+		<foreach collection="list" item="item" separator=" or " index="index">
+			(device_id = #{item.deviceId} and set_type = #{item.setType})
+		</foreach>
+    </delete>
+
+   <select id="findDeviceSettings"  resultMap="deviceSettingsResultMap">
+    SELECT
+     <include refid="deviceSettingsColumns"/>
+     FROM as_device_settings
+    WHERE device_id=#{deviceId}
+    AND set_type=#{setType}
+
+   </select>
+</mapper>

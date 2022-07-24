@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsProjectMapper">
+
+    <select id="selectProjectForProjectCode" resultType="com.aswl.as.asos.modules.ibrs.entity.AsProject">
+        select project_code from as_project where project_code like concat(#{projectCode},'%') order by create_at desc limit 1
+    </select>
+
+</mapper>

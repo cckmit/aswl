@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.AlarmLevelMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="alarmLevelResultMap" type="com.aswl.as.ibrs.api.module.AlarmLevel">
+        <id column="id" property="id"/>
+        <id column="alarm_level" property="alarmLevel"/>
+        <id column="alarm_level_name" property="alarmLevelName"/>
+        <id column="alarm_level_name_en" property="alarmLevelNameEn"/>
+        <id column="remark" property="remark"/>
+        <id column="remark_en" property="remarkEn"/>
+    </resultMap>
+
+    <sql id="alarmLevelColumns">
+		id,alarm_level,alarm_level_name, alarm_level_name_en, remark, remark_en
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+        <if test="alarmLevel  != null and alarmLevel != ''">
+            and alarm_level=#{alarmLevel}
+        </if>
+        <if test="alarmLevelName  != null and alarmLevelName != ''">
+            and alarm_level_name like CONCAT('%',#{alarmLevelName},'%')
+        </if>
+        <if test="alarmLevelNameEn  != null and alarmLevelNameEn != ''">
+            and alarm_level_name_en like CONCAT('%',#{alarmLevelNameEn},'%')
+        </if>
+        <if test="remark  != null and remark != ''">
+            and remark like CONCAT('%',#{remark},'%')
+        </if>
+        <if test="remarkEn  != null and remarkEn != ''">
+            and remark_en like CONCAT('%',#{remarkEn},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+        FROM as_alarm_level
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+        FROM as_alarm_level
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="alarmLevelResultMap">
+        SELECT
+        <include refid="alarmLevelColumns"/>
+        FROM as_alarm_level
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_alarm_level
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                alarm_level,
+            </if>
+            <if test="alarmLevelName != null and alarmLevelName!=''">
+                alarm_level_name,
+            </if>
+            <if test="alarmLevelNameEn != null and alarmLevelNameEn!=''">
+                alarm_level_name_en,
+            </if>
+            <if test="remark != null and remark!=''">
+                remark,
+            </if>
+            <if test="remarkEn != null and remarkEn!=''">
+                remark_en,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                #{alarmLevel},
+            </if>
+            <if test="alarmLevelName != null and alarmLevelName!=''">
+                #{alarmLevelName},
+            </if>
+            <if test="alarmLevelNameEn != null and alarmLevelNameEn!=''">
+                #{alarmLevelNameEn},
+            </if>
+            <if test="remark != null and remark!=''">
+                #{remark},
+            </if>
+            <if test="remarkEn != null and remarkEn!=''">
+                #{remarkEn},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_alarm_level
+        <set>
+            <if test="id != null and id!=''">
+                id = #{id},
+            </if>
+            <if test="alarmLevel != null and alarmLevel!=''">
+                alarm_level= #{alarmLevel},
+            </if>
+            <if test="alarmLevelName != null and alarmLevelName!=''">
+                alarm_level_name = #{alarmLevelName},
+            </if>
+            <if test="alarmLevelNameEn != null and alarmLevelNameEn!=''">
+                alarm_level_name_en = #{alarmLevelNameEn},
+            </if>
+            <if test="remark != null and remark!=''">
+                remark = #{remark},
+            </if>
+            <if test="remarkEn != null and remarkEn!=''">
+                remark_en = #{remarkEn},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM as_alarm_level
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM as_alarm_level
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+    <select id="findAlarmLevel" resultType="java.util.Map">
+		SELECT id AS level,alarm_level_name AS alarmLevelName,alarm_level_name_en AS alarmLevelNameEn
+		FROM as_alarm_level
+		ORDER BY level ASC
+	</select>
+
+    <select id="loadMinLevelByAlarmTypes" resultMap="alarmLevelResultMap">
+        SELECT * FROM as_alarm_level
+        WHERE alarm_level =
+        (SELECT MIN(alarm_level) FROM as_alarm_type
+        WHERE 1=2
+        <if test="alarmTypes != null and alarmTypes.size > 0">
+            OR alarm_type IN
+            <foreach item="item" index="index" collection="alarmTypes" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        AND tenant_code = #{tenantCode}
+        LIMIT 0,1
+    </select>
+</mapper>

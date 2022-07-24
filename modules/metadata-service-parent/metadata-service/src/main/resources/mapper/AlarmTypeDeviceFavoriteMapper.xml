@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.AlarmTypeDeviceFavoriteMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmTypeDeviceFavoriteResultMap" type="com.aswl.as.ibrs.api.module.AlarmTypeDeviceFavorite">
+			<id column="id"   property="id" />
+			<id column="user_id"   property="userId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="alarm_type"   property="alarmType" />
+			<id column="remark"   property="remark" />
+	</resultMap>
+
+	<sql id="alarmTypeDeviceFavoriteColumns">
+		id, user_id, device_id, alarm_type, remark
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="userId  != null and userId != ''" >
+					and user_id like CONCAT('%',#{userId},'%')
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="alarmType  != null and alarmType != ''" >
+					and alarm_type like CONCAT('%',#{alarmType},'%')
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmTypeDeviceFavoriteResultMap">
+		SELECT
+		<include refid="alarmTypeDeviceFavoriteColumns"/>
+		FROM as_alarm_type_device_favorite
+		WHERE id = #{id} 
+	</select>
+
+	<select id="findList" resultMap="alarmTypeDeviceFavoriteResultMap">
+		SELECT
+		<include refid="alarmTypeDeviceFavoriteColumns"/>
+		FROM as_alarm_type_device_favorite
+		WHERE 1 = 1 
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmTypeDeviceFavoriteResultMap">
+		SELECT
+		<include refid="alarmTypeDeviceFavoriteColumns"/>
+		FROM as_alarm_type_device_favorite
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_type_device_favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="userId != null and userId!=''">
+                    user_id,
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    device_id,
+                </if>
+                <if test="alarmType != null and alarmType!=''">
+                    alarm_type,
+                </if>
+                <if test="remark != null and remark!=''">
+                    remark,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="userId != null and userId!=''">
+                    #{userId},
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    #{deviceId},
+                </if>
+                <if test="alarmType != null and alarmType!=''">
+                    #{alarmType},
+                </if>
+                <if test="remark != null and remark!=''">
+                    #{remark},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_type_device_favorite
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="userId != null and userId!=''">
+					user_id =  #{userId},
+				</if>
+				<if test="deviceId != null and deviceId!=''">
+					device_id =  #{deviceId},
+				</if>
+				<if test="alarmType != null and alarmType!=''">
+					alarm_type =  #{alarmType},
+				</if>
+				<if test="remark != null and remark!=''">
+					remark =  #{remark},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_alarm_type_device_favorite SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_alarm_type_device_favorite SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findUserWatchDeviceAlarmType" resultType="com.aswl.as.ibrs.api.vo.UserWatchVo">
+		SELECT u.id AS id,u.alarm_type AS alarmType
+		FROM as_alarm_type_device_favorite u
+		WHERE u.user_id = #{userId} and u.device_id = #{deviceId}
+	</select>
+
+	<select id="findGlobalDeviceAlarmType" resultType="com.aswl.as.ibrs.api.vo.UserWatchVo">
+		SELECT u.id AS id,u.alarm_type AS alarmType
+		FROM as_alarm_type_device_favorite u
+		WHERE u.user_id is NULL
+	</select>
+
+	<insert id="batchInsert">
+        INSERT INTO as_alarm_type_device_favorite
+        (
+        id,
+        user_id,
+        device_id,
+        alarm_type
+        )
+        VALUES
+        <foreach item="item" index="index" collection="alarmTypeDeviceFavorite"
+                 separator="," >
+           (
+            #{item.id},
+            #{item.userId},
+            #{item.deviceId},
+            #{item.alarmType}
+			)
+        </foreach>
+	</insert>
+
+	<update id="batchUpdate">
+		update as_alarm_type_device_favorite
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="alarm_type =case" suffix="end,">
+				<foreach collection="alarmTypeDeviceFavorite" item="i" index="index">
+					<if test="i.alarmType!=null">
+						when user_id=#{i.userId} AND device_id =#{i.deviceId} then #{i.alarmType}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+		where
+		<foreach collection="alarmTypeDeviceFavorite" separator="or" item="i" index="index" >
+			user_id=#{i.userId} AND device_id =#{i.deviceId}
+		</foreach>
+	</update>
+
+    <select id="findUserWatchDevices" resultType="map">
+		SELECT device_id AS deviceId
+		FROM as_alarm_type_device_favorite
+		WHERE user_id = #{userId}
+	</select>
+
+	<select id="getFavorite" resultType="com.aswl.as.ibrs.api.module.AlarmTypeDeviceFavorite">
+		select
+		user_id as userId,
+		device_id as deviceId,
+		alarm_type as alarmType,
+		remark
+		from as_alarm_type_device_favorite where user_id = #{userId} and device_id = #{deviceId}
+	</select>
+
+	<select id="getAlarmTypeDeviceFavoriteByUserId" resultMap="alarmTypeDeviceFavoriteResultMap">
+		SELECT <include refid="alarmTypeDeviceFavoriteColumns"/>
+		FROM as_alarm_type_device_favorite where user_id = #{userId}
+	</select>
+</mapper>

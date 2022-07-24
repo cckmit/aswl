@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.QrcodeBatchMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="qrcodeBatchResultMap" type="com.aswl.as.ibrs.api.module.QrcodeBatch">
+			<id column="id"   property="id" />
+			<id column="project_id"   property="projectId" />
+			<id column="project_name"   property="projectName" />
+			<id column="device_model_id"   property="deviceModelId" />
+			<id column="device_model_name"   property="deviceModelName" />
+			<id column="area_name" property="areaName"/>
+			<id column="manufacturer" property="manufacturer"/>
+			<id column="after_sales_service_tel" property="afterSalesServiceTel"/>
+			<id column="after_sales_support_tel" property="afterSalesSupportTel"/>
+			<id column="manufacturer_tel" property="manufacturerTel"/>
+			<id column="doc_file" property="docFile"/>
+			<id column="qrcode_start_sn"   property="qrcodeStartSn" />
+			<id column="qrcode_end_sn"   property="qrcodeEndSn" />
+			<id column="qrcode_num"   property="qrcodeNum" />
+			<id column="logo"   property="logo" />
+			<id column="zip_url"   property="zipUrl" />
+			<id column="produce_date"   property="produceDate" />
+			<id column="create_date"   property="createDate" />
+	</resultMap>
+
+	<sql id="qrcodeBatchColumns">
+		id, project_id, project_name, device_model_id, device_model_name,area_name,manufacturer,after_sales_service_tel,after_sales_support_tel,manufacturer_tel,doc_file, qrcode_start_sn, qrcode_end_sn, qrcode_num, logo, zip_url, produce_date, create_date
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+				<if test="projectName!= null and projectName!= ''" >
+					and project_name LIKE CONCAT(#{projectName},'%')
+				</if>
+				<if test="deviceModelId!= null and deviceModelId!= ''" >
+					and device_model_id LIKE CONCAT(#{deviceModelId},'%')
+				</if>
+				<if test="deviceModelName!= null and deviceModelName!= ''" >
+					and device_model_name LIKE CONCAT(#{deviceModelName},'%')
+				</if>
+				<if test="qrcodeStartSn!= null and qrcodeStartSn!= ''" >
+					and qrcode_start_sn LIKE CONCAT(#{qrcodeStartSn},'%')
+				</if>
+				<if test="qrcodeEndSn!= null and qrcodeEndSn!= ''" >
+					and qrcode_end_sn LIKE CONCAT(#{qrcodeEndSn},'%')
+				</if>
+				<if test="qrcodeNum!= null and qrcodeNum!= ''">
+					and qrcode_num = #{qrcodeNum}
+				</if>
+				<if test="logo!= null and logo!= ''" >
+					and logo LIKE CONCAT(#{logo},'%')
+				</if>
+				<if test="zipUrl!= null and zipUrl!= ''" >
+					and zip_url LIKE CONCAT(#{zipUrl},'%')
+				</if>
+				<if test="produceDate!= null and produceDate!= ''" >
+					and produce_date LIKE CONCAT(#{produceDate},'%')
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="qrcodeBatchResultMap">
+		SELECT
+		<include refid="qrcodeBatchColumns"/>
+		FROM as_qrcode_batch
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="qrcodeBatchResultMap">
+		SELECT
+		<include refid="qrcodeBatchColumns"/>
+		FROM as_qrcode_batch
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="qrcodeBatchResultMap">
+		SELECT
+		<include refid="qrcodeBatchColumns"/>
+		FROM as_qrcode_batch
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_qrcode_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="projectName != null">
+                    project_name,
+                </if>
+                <if test="deviceModelId != null">
+                    device_model_id,
+                </if>
+                <if test="deviceModelName != null">
+                    device_model_name,
+                </if>
+				<if test="areaName!= null">
+					area_name,
+				</if>
+				 <if test="manufacturer!= null">
+					 manufacturer,
+				</if>
+				<if test="afterSalesServiceTel!= null">
+					after_sales_service_tel,
+				</if>
+				<if test="afterSalesSupportTel!= null">
+					after_sales_support_tel,
+				</if>
+				<if test="manufacturerTel!= null">
+					manufacturer_tel,
+				</if>
+				<if test="docFile!= null">
+					doc_file,
+				</if>
+                <if test="qrcodeStartSn != null">
+                    qrcode_start_sn,
+                </if>
+                <if test="qrcodeEndSn != null">
+                    qrcode_end_sn,
+                </if>
+                <if test="qrcodeNum != null">
+                    qrcode_num,
+                </if>
+                <if test="logo != null">
+                    logo,
+                </if>
+                <if test="zipUrl != null">
+                    zip_url,
+                </if>
+                <if test="produceDate != null">
+                    produce_date,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="projectName != null">
+                    #{projectName},
+                </if>
+                <if test="deviceModelId != null">
+                    #{deviceModelId},
+                </if>
+                <if test="deviceModelName != null">
+                    #{deviceModelName},
+                </if>
+				<if test="areaName!= null">
+					#{areaName},
+				</if>
+				<if test="manufacturer!= null">
+					#{manufacturer},
+				</if>
+				<if test="afterSalesServiceTel!= null">
+					#{afterSalesServiceTel},
+				</if>
+				<if test="afterSalesSupportTel!= null">
+					#{afterSalesSupportTel},
+				</if>
+				<if test="manufacturerTel!= null">
+					#{manufacturerTel},
+				</if>
+				<if test="docFile!= null">
+					#{docFile},
+				</if>
+                <if test="qrcodeStartSn != null">
+                    #{qrcodeStartSn},
+                </if>
+                <if test="qrcodeEndSn != null">
+                    #{qrcodeEndSn},
+                </if>
+                <if test="qrcodeNum != null">
+                    #{qrcodeNum},
+                </if>
+                <if test="logo != null">
+                    #{logo},
+                </if>
+                <if test="zipUrl != null">
+                    #{zipUrl},
+                </if>
+                <if test="produceDate != null">
+                    #{produceDate},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_qrcode_batch
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="projectName != null">
+					project_name =  #{projectName},
+				</if>
+				<if test="deviceModelId != null">
+					device_model_id =  #{deviceModelId},
+				</if>
+				<if test="deviceModelName != null">
+					device_model_name =  #{deviceModelName},
+				</if>
+				<if test="areaName!= null">
+					area_name = #{areaName},
+				</if>
+				<if test="manufacturer!= null">
+					manufacturer = #{manufacturer},
+				</if>
+				<if test="afterSalesServiceTel!= null">
+					after_sales_service_tel = #{afterSalesServiceTel},
+				</if>
+				<if test="afterSalesSupportTel!= null">
+					after_sales_support_tel = #{afterSalesSupportTel},
+				</if>
+				<if test="manufacturerTel!= null">
+					manufacturer_tel = #{manufacturerTel},
+				</if>
+				<if test="docFile!= null">
+					doc_file = #{docFile},
+				</if>
+				<if test="qrcodeStartSn != null">
+					qrcode_start_sn =  #{qrcodeStartSn},
+				</if>
+				<if test="qrcodeEndSn != null">
+					qrcode_end_sn =  #{qrcodeEndSn},
+				</if>
+				<if test="qrcodeNum != null">
+					qrcode_num =  #{qrcodeNum},
+				</if>
+				<if test="logo != null">
+					logo =  #{logo},
+				</if>
+				<if test="zipUrl != null">
+					zip_url =  #{zipUrl},
+				</if>
+				<if test="produceDate != null">
+					produce_date =  #{produceDate},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_qrcode_batch
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_qrcode_batch
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="queryQrCodeBath" resultType="com.aswl.as.ibrs.api.vo.QrCodeDeviceVo">
+		SELECT
+		a.project_name AS projectName,
+		a.device_model_name AS deviceModelName,
+		a.produce_date AS produceDate,
+		a.area_name AS areaName,
+		a.manufacturer AS manufacturer,
+		a.after_sales_service_tel AS afterSalesServiceTel,
+		a.after_sales_support_tel AS afterSalesSupportTel,
+		a.manufacturer_tel AS manufacturerTel,
+		a.doc_file AS docFile,
+		c.qr_code AS qrCode,
+		c.factory_code AS factoryCode,
+		c.is_used AS isused
+		FROM as_qrcode_batch a
+		LEFT JOIN as_device_qrcode c
+		ON a.id =c.qrcode_bath_id
+		WHERE  1=1
+		AND c.qr_code = #{qrcode}
+	</select>
+
+</mapper>

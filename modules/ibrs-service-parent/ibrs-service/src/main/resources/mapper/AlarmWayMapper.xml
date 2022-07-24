@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmWayMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmWayResultMap" type="com.aswl.as.ibrs.api.module.AlarmWay">
+			<id column="id"   property="id" />
+			<id column="alarm_method"   property="alarmMethod" />
+			<id column="alarm_method_name"   property="alarmMethodName" />
+			<id column="is_on"   property="isOn" />
+			<id column="priority"   property="priority" />
+			<id column="terminal_type_group"   property="terminalTypeGroup" />
+			<id column="create_terminal"   property="createTerminal" />
+			<id column="modify_terminal"   property="modifyTerminal" />
+			<id column="lowest_alarm_level"   property="lowestAlarmLevel" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="modifier"   property="modifier" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="remark"   property="remark" />
+	</resultMap>
+
+	<sql id="alarmWayColumns">
+		id, alarm_method, alarm_method_name, is_on, priority, terminal_type_group, create_terminal, modify_terminal, lowest_alarm_level, creator, create_date, modifier, modify_date, remark
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="alarmMethod  != null and alarmMethod != ''" >
+					and alarm_method like CONCAT('%',#{alarmMethod},'%')
+				</if>
+				<if test="alarmMethodName  != null and alarmMethodName != ''" >
+					and alarm_method_name like CONCAT('%',#{alarmMethodName},'%')
+				</if>
+				<if test="isOn  != null and isOn != ''">
+					and is_on = #{isOn}
+				</if>
+				<if test="priority  != null and priority != ''">
+					and priority = #{priority}
+				</if>
+				<if test="terminalTypeGroup  != null and terminalTypeGroup != ''" >
+					and terminal_type_group like CONCAT('%',#{terminalTypeGroup},'%')
+				</if>
+				<if test="createTerminal  != null and createTerminal != ''" >
+					and create_terminal like CONCAT('%',#{createTerminal},'%')
+				</if>
+				<if test="modifyTerminal  != null and modifyTerminal != ''" >
+					and modify_terminal like CONCAT('%',#{modifyTerminal},'%')
+				</if>
+				<if test="lowestAlarmLevel  != null and lowestAlarmLevel != ''">
+					and lowest_alarm_level = #{lowestAlarmLevel}
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					and modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''">
+					and modify_date = #{modifyDate}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmWayResultMap">
+		SELECT
+		<include refid="alarmWayColumns"/>
+		FROM as_alarm_way
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmWayResultMap">
+		SELECT
+		<include refid="alarmWayColumns"/>
+		FROM as_alarm_way
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmWayResultMap">
+		SELECT
+		<include refid="alarmWayColumns"/>
+		FROM as_alarm_way
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_way
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="alarmMethod != null">
+                    alarm_method,
+                </if>
+                <if test="alarmMethodName != null ">
+                    alarm_method_name,
+                </if>
+                <if test="isOn != null ">
+                    is_on,
+                </if>
+                <if test="priority != null ">
+                    priority,
+                </if>
+                <if test="terminalTypeGroup != null">
+                    terminal_type_group,
+                </if>
+                <if test="createTerminal != null">
+                    create_terminal,
+                </if>
+                <if test="modifyTerminal != null ">
+                    modify_terminal,
+                </if>
+                <if test="lowestAlarmLevel != null">
+                    lowest_alarm_level,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="alarmMethod != null">
+                    #{alarmMethod},
+                </if>
+                <if test="alarmMethodName != null">
+                    #{alarmMethodName},
+                </if>
+                <if test="isOn != null">
+                    #{isOn},
+                </if>
+                <if test="priority != null">
+                    #{priority},
+                </if>
+                <if test="terminalTypeGroup != null ">
+                    #{terminalTypeGroup},
+                </if>
+                <if test="createTerminal != null">
+                    #{createTerminal},
+                </if>
+                <if test="modifyTerminal != null">
+                    #{modifyTerminal},
+                </if>
+                <if test="lowestAlarmLevel != null">
+                    #{lowestAlarmLevel},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null ">
+                    #{modifyDate},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_way
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="alarmMethod != null">
+					alarm_method =  #{alarmMethod},
+				</if>
+				<if test="alarmMethodName != null ">
+					alarm_method_name =  #{alarmMethodName},
+				</if>
+				<if test="isOn != null">
+					is_on =  #{isOn},
+				</if>
+				<if test="priority != null ">
+					priority =  #{priority},
+				</if>
+				<if test="terminalTypeGroup != null ">
+					terminal_type_group =  #{terminalTypeGroup},
+				</if>
+				<if test="createTerminal != null">
+					create_terminal =  #{createTerminal},
+				</if>
+				<if test="modifyTerminal != null">
+					modify_terminal =  #{modifyTerminal},
+				</if>
+				<if test="lowestAlarmLevel != null ">
+					lowest_alarm_level =  #{lowestAlarmLevel},
+				</if>
+				<if test="creator != null ">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="modifier != null">
+					modifier =  #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_alarm_way
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_alarm_way
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

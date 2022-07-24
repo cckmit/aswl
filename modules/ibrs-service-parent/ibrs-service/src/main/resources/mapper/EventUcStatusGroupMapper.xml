@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventUcStatusGroupMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventUcStatusGroupResultMap" type="com.aswl.as.ibrs.api.module.EventUcStatusGroup">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="name_en" property="nameEn"/>
+			<id column="status_group_name"   property="statusGroupName" />
+			<id column="max_port_num"   property="maxPortNum" />
+	</resultMap>
+
+	<sql id="eventUcStatusGroupColumns">
+		id, name,name_en, status_group_name, max_port_num
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					and name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="statusGroupName  != null and statusGroupName != ''" >
+					and status_group_name like CONCAT('%',#{statusGroupName},'%')
+				</if>
+				<if test="maxPortNum  != null and maxPortNum != ''">
+					and max_port_num = #{maxPortNum}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventUcStatusGroupResultMap">
+		SELECT
+		<include refid="eventUcStatusGroupColumns"/>
+		FROM as_event_uc_status_group
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventUcStatusGroupResultMap">
+		SELECT
+		<include refid="eventUcStatusGroupColumns"/>
+		FROM as_event_uc_status_group
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventUcStatusGroupResultMap">
+		SELECT
+		<include refid="eventUcStatusGroupColumns"/>
+		FROM as_event_uc_status_group
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_uc_status_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="statusGroupName != null">
+                    status_group_name,
+                </if>
+                <if test="maxPortNum != null">
+                    max_port_num,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="statusGroupName != null">
+                    #{statusGroupName},
+                </if>
+                <if test="maxPortNum != null">
+                    #{maxPortNum},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_uc_status_group
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="statusGroupName != null">
+					status_group_name =  #{statusGroupName},
+				</if>
+				<if test="maxPortNum != null">
+					max_port_num =  #{maxPortNum},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_uc_status_group
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_uc_status_group
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getExtendStatusGroup" resultType="com.aswl.as.ibrs.api.vo.EventUcStatusGroupModelVo">
+
+	SELECT
+	 t2.id AS id,
+	 t1.id AS groupId,
+	 t1.name AS name,
+	 t1.status_group_name AS statusGroupName ,
+	 t2.port_num AS portNum
+	 FROM as_event_uc_status_group t1
+	LEFT JOIN as_event_uc_status_group_model t2
+	ON t1.id=t2.event_status_group_id
+	WHERE t2.device_model_id=#{deviceModelId}
+	</select>
+
+	<select id="getExtendStatusGroupAttribute" resultType="com.aswl.as.ibrs.api.vo.EventUcMetadataVo">
+	SELECT
+	 t1.id AS id,
+	 t1.vector_type AS vectorType,
+	 t1.status_name AS statusName,
+	 t1.fld_name AS fldName,
+	 t2.port_serial AS portSerial,
+	 t2.id AS metadataModel,
+	 t2.event_metadata_id as eventUcMetadataId
+	FROM as_event_uc_metadata t1
+	LEFT JOIN as_event_uc_metadata_model t2
+	ON t1.id=t2.event_metadata_id
+	WHERE t2.device_model_id=#{deviceModelId}
+	AND t1.event_status_group_id=#{groupId}
+
+	</select>
+
+    <select id="getSelectExtendStatusGroupOperationList" resultType="com.aswl.as.ibrs.api.vo.EventUcStatusOperationVo">
+    SELECT
+    t2.id AS id,
+    t2.title AS title,
+    t1.status_operation_id AS statusOperationId,
+    t1.event_metadata_model_id AS eventMetadataModelId
+     FROM as_event_uc_metadata_model_operation t1
+    LEFT JOIN as_event_uc_status_operation t2
+    ON t1.status_operation_id=t2.id
+     WHERE t1.event_metadata_model_id=#{eventMetadataModelId}
+    </select>
+
+
+	<select id="getExtendStatusGroupOperationList" resultType="com.aswl.as.ibrs.api.vo.EventUcStatusOperationVo">
+	SELECT
+	 t2.id AS id,
+	 t2.title AS title
+	 FROM as_event_uc_metadata_status_operation t1
+	LEFT JOIN as_event_uc_status_operation t2
+	ON t1.status_operation_id=t2.id
+	WHERE t1.event_metadata_id=#{eventMetadataId}
+    </select>
+
+</mapper>

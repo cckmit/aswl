@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AddressBaseMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="addressBaseResultMap" type="com.aswl.as.ibrs.api.module.AddressBase">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="address"   property="address" />
+			<id column="latitude"   property="latitude" />
+			<id column="longitude"   property="longitude" />
+			<id column="ip"   property="ip" />
+
+			<id column="region_no"   property="regionNo" />
+
+			<id column="is_used"   property="isUsed" />
+			<id column="bind_device_id"   property="bindDeviceId" />
+			<id column="remark"   property="remark" />
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+
+
+			<id column="alarmLevel"   property="alarmLevel" />
+			<id column="alarmTypeName"   property="alarmTypeName" />
+			<id column="isOnline"   property="isOnline" />
+			<id column="cameraCount"   property="cameraCount" />
+
+	</resultMap>
+
+	<sql id="addressBaseColumns">
+		id, name, address, latitude, longitude, ip, region_no, is_used, bind_device_id, remark, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					AND name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="address  != null and address != ''" >
+					AND address like CONCAT('%',#{address},'%')
+				</if>
+				<if test="latitude  != null and latitude != ''">
+					AND latitude = #{latitude}
+				</if>
+				<if test="longitude  != null and longitude != ''">
+					AND longitude = #{longitude}
+				</if>
+				<if test="ip  != null and ip != ''" >
+					AND ip like CONCAT('%',#{ip},'%')
+				</if>
+
+				<if test="regionNo  != null and regionNo != ''" >
+					AND region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+
+				<if test="isUsed  != null and isUsed != ''">
+					AND is_used = #{isUsed}
+				</if>
+				<if test="bindDeviceId  != null and bindDeviceId != ''" >
+					AND bind_device_id = #{bindDeviceId}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					AND remark like CONCAT('%',#{remark},'%')
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="addressBaseResultMap">
+		SELECT
+		<include refid="addressBaseColumns"/>
+		FROM as_address_base
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="addressBaseResultMap">
+		SELECT
+		<include refid="addressBaseColumns"/>
+		FROM as_address_base
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+	<!-- TODO 获取查询列表 -->
+	<!-- 从 findDeviceAlarmInfoByCondition 作为模板，生成对应的数据 -->
+	<!--
+		d.id AS id,d.parent_device_id AS parentId,d.device_name AS deviceName,d.device_code AS deviceCode,d.ip AS ip,r.region_name AS regionName,r.region_code AS regionCode, k.type AS type,
+		CASE WHEN a.is_alarm = 1 THEN FROM_UNIXTIME(a.rec_time,'%Y-%m-%d %H:%i:%s') WHEN a.is_alarm = 0 THEN "" END AS alarmTime, CASE WHEN a.is_alarm = 1 THEN TIMESTAMPDIFF(SECOND,FROM_UNIXTIME(a.rec_time,'%Y-%m-%d %H:%i:%s'),
+		DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')) WHEN a.is_alarm = 0 THEN "" END AS intervalTime,
+		CASE a.alarm_level WHEN 1 THEN '故障' WHEN 2 THEN '预警' WHEN 3 THEN '正常' ELSE "" END AS alarmLevel, a.alarm_types_des AS alarmTypeName,d.latitude AS latitude,d.longitude AS longitude,
+		n.network_state AS isOnline,IFNULL(temp.cnt,0) as cnt
+		-->
+	<select id="findListForApp" resultMap="addressBaseResultMap">
+		SELECT b.*, CASE tep.alarm_level WHEN 1 THEN '故障' WHEN 2 THEN '预警' WHEN 3 THEN '正常' ELSE '' END AS alarmLevel, tep.alarm_types_des AS alarmTypeName, IFNULL(tep.network_state,0) AS isOnline,
+		tep.device_name AS deviceName,tep.pic_url AS picUrl
+		FROM as_address_base b
+		LEFT JOIN (
+		SELECT d.id, a.alarm_level ,a.alarm_types_des,n.network_state,d.device_name,m.pic_url
+		FROM as_device d
+		LEFT JOIN   as_device_event_alarm a
+		ON d.id = a.device_id
+		LEFT JOIN as_device_model m
+		ON d.device_model_id = m.id
+		LEFT JOIN as_device_type t
+		ON m.device_type = t.device_type
+		LEFT JOIN as_device_kind k
+		ON t.device_kind_id = k.id
+		LEFT JOIN as_region r
+		ON r.id = d.region_id
+		LEFT JOIN as_event_network n
+		ON n.device_id = d.id  WHERE d.del_flag = 0
+		<if test="tenantCode  != null and tenantCode != ''" >
+		AND d.tenant_code = #{tenantCode}
+		</if>
+	 ) AS tep ON tep.id = b.bind_device_id  WHERE 1=1
+		<if test="name  != null and name != ''" >
+			AND b.name like CONCAT('%',#{name},'%')
+		</if>
+		<if test="address  != null and address != ''" >
+			AND b.address like CONCAT('%',#{address},'%')
+		</if>
+		<if test="latitude  != null and latitude != ''">
+			AND b.latitude = #{latitude}
+		</if>
+		<if test="longitude  != null and longitude != ''">
+			AND b.longitude = #{longitude}
+		</if>
+		<if test="ip  != null and ip != ''" >
+			AND b.ip like CONCAT('%',#{ip},'%')
+		</if>
+		<if test="regionNo  != null and regionNo != ''" >
+			AND b.region_no like CONCAT(#{regionNo},'%')
+		</if>
+
+		<if test="isUsed  != null and isUsed != ''">
+			AND b.is_used = #{isUsed}
+		</if>
+		<if test="bindDeviceId  != null and bindDeviceId != ''" >
+			AND b.bind_device_id = #{bindDeviceId}
+		</if>
+		<if test="remark  != null and remark != ''" >
+			AND b.remark like CONCAT('%',#{remark},'%')
+		</if>
+			<if test="projectId  != null and projectId != ''" >
+				AND b.project_id IN
+				<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		<if test="applicationCode  != null and applicationCode != ''" >
+			AND b.application_code = #{applicationCode}
+		</if>
+		<if test="tenantCode  != null and tenantCode != ''" >
+			AND b.tenant_code = #{tenantCode}
+		</if>
+		<if test="query!= null and  query !=''">
+			AND ( b.name like CONCAT(#{query},'%') OR b.address like CONCAT(#{address},'%'))
+		</if>
+	</select>
+
+
+	<select id="findListById" resultMap="addressBaseResultMap">
+		SELECT
+		<include refid="addressBaseColumns"/>
+		FROM as_address_base
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_address_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="address != null">
+                    address,
+                </if>
+                <if test="latitude != null">
+                    latitude,
+                </if>
+                <if test="longitude != null">
+                    longitude,
+                </if>
+                <if test="ip != null">
+                    ip,
+                </if>
+				<if test="regionNo != null">
+					region_no,
+				</if>
+                <if test="isUsed != null">
+                    is_used,
+                </if>
+                <if test="bindDeviceId != null">
+                    bind_device_id,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="address != null">
+                    #{address},
+                </if>
+                <if test="latitude != null">
+                    #{latitude},
+                </if>
+                <if test="longitude != null">
+                    #{longitude},
+                </if>
+                <if test="ip != null">
+                    #{ip},
+                </if>
+				<if test="regionNo != null">
+					#{regionNo},
+				</if>
+                <if test="isUsed != null">
+                    #{isUsed},
+                </if>
+                <if test="bindDeviceId != null">
+                    #{bindDeviceId},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_address_base
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="address != null">
+					address =  #{address},
+				</if>
+				<if test="latitude != null">
+					latitude =  #{latitude},
+				</if>
+				<if test="longitude != null">
+					longitude =  #{longitude},
+				</if>
+				<if test="ip != null">
+					ip =  #{ip},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+				<if test="isUsed != null">
+					is_used =  #{isUsed},
+				</if>
+				<if test="bindDeviceId != null">
+					bind_device_id =  #{bindDeviceId},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_address_base
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_address_base
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findCamByDeviceParentId" resultType="com.aswl.as.ibrs.api.vo.DeviceAlarmVo">
+		SELECT d.id AS id,n.network_state AS isOnline,
+		k.type  AS type,d.device_name AS deviceName
+		FROM as_device d LEFT JOIN as_event_network n
+		ON d.id = n.device_id LEFT JOIN as_device_model m
+		ON d.device_model_id = m.id LEFT JOIN as_device_type t
+		ON m.device_type = t.device_type LEFT JOIN as_device_kind k
+		ON t.device_kind_id = k.id
+		WHERE d.del_flag = 0
+		AND  d.parent_device_id = #{bindDeviceId}
+	</select>
+</mapper>

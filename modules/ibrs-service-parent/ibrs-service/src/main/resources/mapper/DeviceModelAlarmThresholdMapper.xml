@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceModelAlarmThresholdMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceModelAlarmThresholdResultMap" type="com.aswl.as.ibrs.api.module.DeviceModelAlarmThreshold">
+			<id column="id"   property="id" />
+			<id column="event_metadata_model_id"   property="eventMetadataModelId" />
+			<id column="max_value"   property="maxValue" />
+			<id column="min_value"   property="minValue" />
+			<id column="status_value"   property="statusValue" />
+	</resultMap>
+
+	<sql id="deviceModelAlarmThresholdColumns">
+		id, event_metadata_model_id, max_value, min_value, status_value
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="eventMetadataModelId  != null and eventMetadataModelId != ''" >
+					and event_metadata_model_id =#{eventMetadataModelId}
+				</if>
+				<if test="maxValue  != null">
+					and max_value = #{maxValue}
+				</if>
+				<if test="minValue  != null">
+					and min_value = #{minValue}
+				</if>
+				<if test="statusValue  != null">
+					and status_value = #{statusValue}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceModelAlarmThresholdResultMap">
+		SELECT
+		<include refid="deviceModelAlarmThresholdColumns"/>
+		FROM as_device_model_alarm_threshold
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="deviceModelAlarmThresholdResultMap">
+		SELECT
+		<include refid="deviceModelAlarmThresholdColumns"/>
+		FROM as_device_model_alarm_threshold
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceModelAlarmThresholdResultMap">
+		SELECT
+		<include refid="deviceModelAlarmThresholdColumns"/>
+		FROM as_device_model_alarm_threshold
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_model_alarm_threshold
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null ">
+                    id,
+                </if>
+                <if test="eventMetadataModelId != null ">
+                    event_metadata_model_id,
+                </if>
+                <if test="maxValue != null ">
+                    max_value,
+                </if>
+                <if test="minValue != null">
+                    min_value,
+                </if>
+                <if test="statusValue != null">
+                    status_value,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="eventMetadataModelId != null">
+                    #{eventMetadataModelId},
+                </if>
+                <if test="maxValue != null">
+                    #{maxValue},
+                </if>
+                <if test="minValue != null">
+                    #{minValue},
+                </if>
+                <if test="statusValue != null">
+                    #{statusValue},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_model_alarm_threshold
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="eventMetadataModelId != null">
+					event_metadata_model_id =  #{eventMetadataModelId},
+				</if>
+				<if test="maxValue != null">
+					max_value =  #{maxValue},
+				</if>
+				<if test="minValue != null">
+					min_value =  #{minValue},
+				</if>
+				<if test="statusValue != null">
+					status_value =  #{statusValue},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM as_device_model_alarm_threshold
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_device_model_alarm_threshold
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteByEventMetadataModelId">
+		DELETE FROM as_device_model_alarm_threshold
+		WHERE event_metadata_model_id  = #{eventMetadataModelId}
+	</delete>
+
+	<select id="findByMetadataModelId" resultMap="deviceModelAlarmThresholdResultMap">
+		select max_value,
+		min_value,
+		status_value,
+		event_metadata_model_id
+		from as_device_model_alarm_threshold
+		WHERE
+		event_metadata_model_id IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND  #{fldCode} > min_value
+		AND  #{fldCode} &lt;= max_value
+	</select>
+
+	<select id="findAlarmThresholdByMetadataModelId" resultMap="deviceModelAlarmThresholdResultMap">
+		SELECT
+		<include refid="deviceModelAlarmThresholdColumns"/>
+		 FROM
+		as_device_model_alarm_threshold
+		WHERE event_metadata_model_id=#{metadataModelId}
+	</select>
+
+	<insert id="insertBatch">
+		INSERT INTO as_device_model_alarm_threshold
+		(
+		id,
+		event_metadata_model_id,
+		max_value,
+		min_value,
+		status_value
+		)
+		VALUES
+		<foreach item="item" index="index" collection="list"
+				 separator="," >
+			(
+			#{item.id},
+			#{item.eventMetadataModelId},
+			#{item.maxValue},
+			#{item.minValue},
+			#{item.statusValue}
+			)
+		</foreach>
+	</insert>
+
+</mapper>

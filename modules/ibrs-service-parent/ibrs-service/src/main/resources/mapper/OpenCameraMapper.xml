@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.OpenCameraMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="openCameraResultMap" type="com.aswl.as.ibrs.api.module.OpenCamera">
+			<id column="id"   property="id" />
+			<id column="camera_ip"   property="cameraIp" />
+			<id column="camera_username" property="cameraUserName"/>
+			<id column="camera_pwd" property="cameraPwd"/>
+			<id column="brand_type" property="brandType"/>
+			<id column="stream_path" property="streamPath"/>
+			<id column="device_id"   property="deviceId" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+	</resultMap>
+
+	<sql id="openCameraColumns">
+		id, camera_ip,camera_username,camera_pwd,brand_type,stream_path, device_id, creator, create_date
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="cameraIp  != null and cameraIp != ''" >
+					and camera_ip like CONCAT('%',#{cameraIp},'%')
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and deviceId like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="openCameraResultMap">
+		SELECT
+		<include refid="openCameraColumns"/>
+		FROM as_open_camera
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="openCameraResultMap">
+		SELECT
+		<include refid="openCameraColumns"/>
+		FROM as_open_camera
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+	<select id="findOpenCameraInfo" resultType="com.aswl.as.ibrs.api.vo.OpenCameraVo">
+	SELECT
+	 t1.id AS id,
+	 t1.camera_ip AS cameraIp,
+	 t1.camera_username AS cameraUserName,
+	 t1.camera_pwd AS cameraPwd,
+	 t1.brand_type AS brandType,
+	 t1.stream_path AS streamPath,
+	 t2.device_name AS deviceName,
+	 t2.ip AS ip,
+	 t2.id AS deviceId,
+	 t2.device_code AS deviceCode,
+	 t3.region_name AS regionName,
+	 t4.project_name AS projectName,
+     t4.project_id as projectId,
+     t3.region_code as regionCode,
+	 t2.tenant_code as tenantCode 
+	FROM as_open_camera t1
+	LEFT JOIN as_device t2  ON t1.device_id=t2.id
+	LEFT JOIN as_region t3  ON t3.id=t2.region_id
+	LEFT JOIN as_project t4 ON t2.project_id=t4.project_id
+	WHERE 1=1
+	<if test="brandType!=null and brandType!=''">
+		AND t1.brand_type =#{brandType}
+	</if>
+	<if test="tenantCode != null and tenantCode != null">
+		AND t2.tenant_code = #{tenantCode}
+	</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND t2.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	<if test="regionCode != null and regionCode != ''">
+		AND t3.region_code like concat(#{regionCode},'%')
+	</if>
+	<if test="query!=null and query!=''">
+	 AND (t1.camera_ip LIKE CONCAT(#{query},'%')  OR t2.device_name LIKE CONCAT(#{query},'%') OR t2.ip LIKE CONCAT(#{query},'%'))
+	</if>
+	</select>
+	<select id="findListById" resultMap="openCameraResultMap">
+		SELECT
+		<include refid="openCameraColumns"/>
+		FROM as_open_camera
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_open_camera
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="cameraIp != null">
+                    camera_ip,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+				<if test="cameraUserName != null">
+					camera_username,
+				</if>
+				<if test="cameraPwd != null">
+					camera_pwd,
+				</if>
+				<if test="brandType != null">
+					brand_type,
+				</if>
+				<if test="streamPath != null">
+					stream_path,
+				</if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="cameraIp != null">
+                    #{cameraIp},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+				<if test="cameraUserName != null">
+					#{cameraUserName},
+				</if>
+				<if test="cameraPwd != null">
+					#{cameraPwd},
+				</if>
+				<if test="brandType != null">
+					#{brandType},
+				</if>
+				<if test="streamPath != null">
+					#{streamPath},
+				</if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_open_camera
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="cameraIp != null">
+					camera_ip =  #{cameraIp},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="cameraUserName != null">
+					camera_username =  #{cameraUserName},
+				</if>
+				<if test="cameraPwd != null">
+					camera_pwd =  #{cameraPwd},
+				</if>
+				<if test="brandType != null">
+					brand_type =  #{brandType},
+				</if>
+				<if test="streamPath != null">
+					stream_path =  #{streamPath},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_open_camera
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_open_camera
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<select id="findByIp" resultType="java.lang.Integer">
+
+		SELECT COUNT(1) AS count
+		 FROM as_open_camera
+		 WHERE camera_ip=#{ip}
+	</select>
+</mapper>

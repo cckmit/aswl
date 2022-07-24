@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.RatingStandardMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="ratingStandardResultMap" type="com.aswl.as.ibrs.api.module.RatingStandard">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="online_rate_max"   property="onlineRateMax" />
+			<id column="online_rate_min"   property="onlineRateMin" />
+			<id column="normal_rate_max"   property="normalRateMax" />
+			<id column="normal_rate_min"   property="normalRateMin" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="ratingStandardColumns">
+		id, name, online_rate_max, online_rate_min, normal_rate_max, normal_rate_min, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					AND name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="onlineRateMax  != null and onlineRateMax != ''">
+					AND online_rate_max = #{onlineRateMax}
+				</if>
+				<if test="onlineRateMin  != null and onlineRateMin != ''">
+					AND online_rate_min = #{onlineRateMin}
+				</if>
+				<if test="normalRateMax  != null and normalRateMax != ''">
+					AND normal_rate_max = #{normalRateMax}
+				</if>
+				<if test="normalRateMin  != null and normalRateMin != ''">
+					AND normal_rate_min = #{normalRateMin}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="ratingStandardResultMap">
+		SELECT
+		<include refid="ratingStandardColumns"/>
+		FROM as_rating_standard
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="ratingStandardResultMap">
+		SELECT
+		<include refid="ratingStandardColumns"/>
+		FROM as_rating_standard
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+		ORDER BY online_rate_max DESC
+	</select>
+
+
+	<select id="findListById" resultMap="ratingStandardResultMap">
+		SELECT
+		<include refid="ratingStandardColumns"/>
+		FROM as_rating_standard
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_rating_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="onlineRateMax != null">
+                    online_rate_max,
+                </if>
+                <if test="onlineRateMin != null">
+                    online_rate_min,
+                </if>
+                <if test="normalRateMax != null">
+                    normal_rate_max,
+                </if>
+                <if test="normalRateMin != null">
+                    normal_rate_min,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="onlineRateMax != null">
+                    #{onlineRateMax},
+                </if>
+                <if test="onlineRateMin != null">
+                    #{onlineRateMin},
+                </if>
+                <if test="normalRateMax != null">
+                    #{normalRateMax},
+                </if>
+                <if test="normalRateMin != null">
+                    #{normalRateMin},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_rating_standard
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="onlineRateMax != null">
+					online_rate_max =  #{onlineRateMax},
+				</if>
+				<if test="onlineRateMin != null">
+					online_rate_min =  #{onlineRateMin},
+				</if>
+				<if test="normalRateMax != null">
+					normal_rate_max =  #{normalRateMax},
+				</if>
+				<if test="normalRateMin != null">
+					normal_rate_min =  #{normalRateMin},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_rating_standard
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_rating_standard
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findAll" resultMap="ratingStandardResultMap">
+		SELECT <include refid="ratingStandardColumns"/>
+		FROM as_rating_standard ORDER BY online_rate_max
+	</select>
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.user.mapper.UserMobileBindingMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="userMobileBindingResultMap" type="com.aswl.as.user.api.module.UserMobileBinding">
+			<id column="id"   property="id" />
+			<id column="user_id"   property="userId" />
+			<id column="mobile_meid"   property="mobileMeid" />
+			<id column="mobile_model"   property="mobileModel" />
+			<id column="is_auth"   property="isAuth" />
+			<id column="create_date"   property="createDate" />
+			<id column="login_time"   property="loginTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="userMobileBindingColumns">
+		id, user_id, mobile_meid, mobile_model, is_auth, create_date, login_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="userId!= null and userId!= ''" >
+					and user_id LIKE CONCAT(#{userId},'%')
+				</if>
+				<if test="mobileMeid!= null and mobileMeid!= ''" >
+					and mobile_meid LIKE CONCAT(#{mobileMeid},'%')
+				</if>
+				<if test="mobileModel!= null and mobileModel!= ''" >
+					and mobile_model LIKE CONCAT(#{mobileModel},'%')
+				</if>
+				<if test="isAuth!= null and isAuth!= ''">
+					and is_auth = #{isAuth}
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="loginTime!= null and loginTime!= ''">
+					and login_time = #{loginTime}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="userMobileBindingResultMap">
+		SELECT
+		<include refid="userMobileBindingColumns"/>
+		FROM sys_user_mobile_binding
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="userMobileBindingResultMap">
+		SELECT
+		<include refid="userMobileBindingColumns"/>
+		FROM sys_user_mobile_binding
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="userMobileBindingResultMap">
+		SELECT
+		<include refid="userMobileBindingColumns"/>
+		FROM sys_user_mobile_binding
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findByMobileMeid" resultType="java.lang.Integer">
+		SELECT  COUNT (1) count FROM sys_user_mobile_binding WHERE mobile_model = #{mobileMeid}
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO sys_user_mobile_binding
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="mobileMeid != null">
+                    mobile_meid,
+                </if>
+                <if test="mobileModel != null">
+                    mobile_model,
+                </if>
+                <if test="isAuth != null">
+                    is_auth,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="loginTime != null">
+                    login_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="mobileMeid != null">
+                    #{mobileMeid},
+                </if>
+                <if test="mobileModel != null">
+                    #{mobileModel},
+                </if>
+                <if test="isAuth != null">
+                    #{isAuth},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="loginTime != null">
+                    #{loginTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE sys_user_mobile_binding
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="userId != null">
+					user_id =  #{userId},
+				</if>
+				<if test="mobileMeid != null">
+					mobile_meid =  #{mobileMeid},
+				</if>
+				<if test="mobileModel != null">
+					mobile_model =  #{mobileModel},
+				</if>
+				<if test="isAuth != null">
+					is_auth =  #{isAuth},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="loginTime != null">
+					login_time =  #{loginTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+	<update id="updateByMobileMeid">
+		UPDATE sys_user_mobile_binding SET login_time = NOW() WHERE mobile_meid =  #{mobileMeid}
+		
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  sys_user_mobile_binding
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  sys_user_mobile_binding
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

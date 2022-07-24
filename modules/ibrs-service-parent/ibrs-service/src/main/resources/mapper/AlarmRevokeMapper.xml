@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmRevokeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmRevokeResultMap" type="com.aswl.as.ibrs.api.module.AlarmRevoke">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="alarm_types"   property="alarmTypes" />
+			<id column="alarm_types_des"   property="alarmTypesDes" />
+			<id column="creator"   property="creator" />
+			<id column="createDate"   property="createDate" />
+			<id column="remarks"   property="remarks" />
+	</resultMap>
+
+	<sql id="alarmRevokeColumns">
+		id, u_event_id, device_id, alarm_types, alarm_types_des, creator, createDate, remarks
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''" >
+					AND u_event_id =#{uEventId}
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					AND device_id #{deviceId}
+				</if>
+				<if test="alarmTypes  != null and alarmTypes != ''" >
+					AND alarm_types like CONCAT('%',#{alarmTypes},'%')
+				</if>
+				<if test="alarmTypesDes  != null and alarmTypesDes != ''" >
+					AND alarm_types_des like CONCAT('%',#{alarmTypesDes},'%')
+				</if>
+				<if test="creator  != null and creator != ''" >
+					AND creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					AND createDate = #{createDate}
+				</if>
+				<if test="remarks  != null and remarks != ''" >
+					AND remarks like CONCAT('%',#{remarks},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmRevokeResultMap">
+		SELECT
+		<include refid="alarmRevokeColumns"/>
+		FROM as_alarm_revoke
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmRevokeResultMap">
+		SELECT
+		<include refid="alarmRevokeColumns"/>
+		FROM as_alarm_revoke
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmRevokeResultMap">
+		SELECT
+		<include refid="alarmRevokeColumns"/>
+		FROM as_alarm_revoke
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_revoke
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="uEventId != null">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="alarmTypes != null">
+                    alarm_types,
+                </if>
+                <if test="alarmTypesDes != null">
+                    alarm_types_des,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    createDate,
+                </if>
+                <if test="remarks != null">
+                    remarks,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="uEventId != null">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="alarmTypes != null">
+                    #{alarmTypes},
+                </if>
+                <if test="alarmTypesDes != null">
+                    #{alarmTypesDes},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="remarks != null">
+                    #{remarks},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_revoke
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="alarmTypes != null">
+					alarm_types =  #{alarmTypes},
+				</if>
+				<if test="alarmTypesDes != null">
+					alarm_types_des =  #{alarmTypesDes},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					createDate =  #{createDate},
+				</if>
+				<if test="remarks != null">
+					remarks =  #{remarks},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_alarm_revoke
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_alarm_revoke
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

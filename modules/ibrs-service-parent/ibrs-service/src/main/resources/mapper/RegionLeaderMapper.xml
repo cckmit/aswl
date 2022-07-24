@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.RegionLeaderMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="regionLeaderResultMap" type="com.aswl.as.ibrs.api.module.RegionLeader">
+			<id column="id"   property="id" />
+			<id column="user_id"   property="userId" />
+			<id column="region_id"   property="regionId" />
+			<id column="region_code"   property="regionCode" />
+			<id column="user_name"   property="userName" />
+			<id column="user_mobile"   property="userMobile" />
+			<id column="is_receive_alarm"   property="isReceiveAlarm" />
+			<id column="receive_start_at"   property="receiveStartAt" />
+			<id column="receive_end_at"   property="receiveEndAt" />
+			<id column="remark"   property="remark" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+			<id column="is_patrol" property="isPatrol"/>
+			<id column="patrol_key_id" property="patrolKeyId"/>
+			<id column="patrol_period_num" property="patrolPeriodNum"/>
+			<id column="patrol_period_unit" property="patrolPeriodUnit"/>
+			<id column="patrol_period" property="patrolPeriod"/>
+			<id column="patrol_period_begin_time" property="patrolPeriodBeginTime"/>
+	</resultMap>
+
+	<sql id="regionLeaderColumns">
+		id, user_id, region_id, region_code, user_name, user_mobile, is_receive_alarm, receive_start_at, receive_end_at, remark, application_code, tenant_code,
+		is_patrol,patrol_key_id,patrol_period_num,patrol_period_unit,patrol_period,patrol_period_begin_time
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+				<if test="userId  != null and userId != ''" >
+					and user_id like CONCAT('%',#{userId},'%')
+				</if>
+				<if test="regionId  != null and regionId != ''" >
+					and region_id like CONCAT(#{regionId},'%')
+				</if>
+				<if test="regionCode  != null and regionCode != ''" >
+					and region_code = #{regionCode}
+				</if>
+				<if test="userName  != null and userName != ''" >
+					and user_name like CONCAT('%',#{userName},'%')
+				</if>
+				<if test="userMobile  != null and userMobile != ''" >
+					and user_mobile like CONCAT('%',#{userMobile},'%')
+				</if>
+				<if test="isReceiveAlarm  != null and isReceiveAlarm != ''">
+					and is_receive_alarm = #{isReceiveAlarm}
+				</if>
+				<if test="receiveStartAt  != null and receiveStartAt != ''">
+					and receive_start_at = #{receiveStartAt}
+				</if>
+				<if test="receiveEndAt  != null and receiveEndAt != ''">
+					and receive_end_at = #{receiveEndAt}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+				<if test="isPatrol != null and isPatrol != ''">
+					and is_patrol = #{isPatrol}
+				</if>
+				<if test="patrolKeyId != null and patrolKeyId != ''">
+					and patrol_key_id = #{patrol_key_id}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="regionLeaderResultMap">
+		SELECT
+		<include refid="regionLeaderColumns"/>
+		FROM as_region_leader
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="regionLeaderResultMap">
+		SELECT
+		l.id as id, l.user_id as user_id, l.region_id as region_id, l.region_code as region_code, l.user_name as user_name,l.user_mobile as user_mobile,
+		l.is_receive_alarm as is_receive_alarm, l.receive_start_at as receive_start_at, l.receive_end_at as receive_end_at, l.remark as remark,
+		l.application_code as application_code, l.tenant_code as tenant_code,l.is_patrol as is_patrol,
+		l.patrol_key_id as patrol_key_id,
+		l.patrol_period_num as patrol_period_num,
+		l.patrol_period_unit as patrol_period_unit,
+		l.patrol_period as patrol_period,
+		l.patrol_period_begin_time as patrol_period_begin_time
+		FROM as_region_leader l
+		left join as_region r on l.region_id=r.id
+		WHERE 1=1
+
+		<if test="userId  != null and userId != ''" >
+			and l.user_id like CONCAT('%',#{userId},'%')
+		</if>
+		<if test="regionId  != null and regionId != ''" >
+			and l.region_id like CONCAT(#{regionId},'%')
+		</if>
+		<if test="regionCode  != null and regionCode != ''" >
+			and l.region_code = #{regionCode}
+		</if>
+		<if test="userName  != null and userName != ''" >
+			and l.user_name like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="userMobile  != null and userMobile != ''" >
+			and l.user_mobile like CONCAT('%',#{userMobile},'%')
+		</if>
+		<if test="isReceiveAlarm  != null and isReceiveAlarm != ''">
+			and l.is_receive_alarm = #{isReceiveAlarm}
+		</if>
+		<if test="receiveStartAt  != null and receiveStartAt != ''">
+			and l.receive_start_at = #{receiveStartAt}
+		</if>
+		<if test="receiveEndAt  != null and receiveEndAt != ''">
+			and l.receive_end_at = #{receiveEndAt}
+		</if>
+		<if test="patrolKeyId != null and patrolKeyId != ''">
+			and l.patrol_key_id = #{patrolKeyId}
+		</if>
+		<if test="remark  != null and remark != ''" >
+			and l.remark like CONCAT('%',#{remark},'%')
+		</if>
+		<if test="applicationCode  != null and applicationCode != ''" >
+			and l.application_code like CONCAT('%',#{applicationCode},'%')
+		</if>
+		<if test="tenantCode  != null and tenantCode != ''" >
+			and l.tenant_code like CONCAT('%',#{tenantCode},'%')
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND r.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+
+		<!--
+		<include refid="whereColumnList"/>
+		-->
+
+	</select>
+
+
+	<select id="findRegionLeaderInfo" resultType="com.aswl.as.ibrs.api.vo.RegionLeaderVo">
+		SELECT
+		t1.id as id,
+		t1.region_id as regionId,
+		t1.region_code as regionCode,
+		t2.region_name as regionName,
+		t1.user_name as userName,
+		t1.user_mobile as userMobile,
+		t1.is_receive_alarm as isReceiveAlarm,
+		t1.receive_start_at as receiveStartAt,
+		t1.receive_end_at as receiveEndAt,
+		t1.remark as remark,
+		t1.is_patrol as isPatrol,
+		t1.patrol_key_id as patrolKeyId,
+		t1.patrol_period_num as patrolPeriodNum,
+		t1.patrol_period_unit as patrolPeriodUnit,
+		t1.patrol_period as patrolPeriod,
+		t1.patrol_period_begin_time as patrolPeriodBeginTime,
+		t2.project_id as projectId,
+		t3.project_name as projectName
+		FROM as_region_leader t1
+		LEFT JOIN as_region t2 ON t1.region_id=t2.id
+		LEFT JOIN as_project t3 on t2.project_id = t3.project_id
+		WHERE 1=1
+		<if test="userName  != null and userName != ''" >
+			and t1.user_name = #{userName}
+		</if>
+		<if test="userMobile  != null and userMobile != ''" >
+			and t1.user_mobile =#{userMobile}
+		</if>
+		<if test="regionCode  != null and regionCode != ''" >
+			and t1.region_code like CONCAT(#{regionCode},'%')
+		</if>
+		<if test="tenantCode  != null and tenantCode != ''" >
+			and t1.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND t2.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="findListById" resultMap="regionLeaderResultMap">
+		SELECT
+		<include refid="regionLeaderColumns"/>
+		FROM as_region_leader
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_region_leader
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="regionId != null">
+                    region_id,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+                <if test="userName != null">
+                    user_name,
+                </if>
+                <if test="userMobile != null">
+                    user_mobile,
+                </if>
+                <if test="isReceiveAlarm != null">
+                    is_receive_alarm,
+                </if>
+                <if test="receiveStartAt != null">
+                    receive_start_at,
+                </if>
+                <if test="receiveEndAt != null">
+                    receive_end_at,
+                </if>
+				<if test="isPatrol != null">
+					is_patrol,
+				</if>
+				<if test="patrolKeyId != null and patrolKeyId != ''">
+					patrol_key_id,
+				</if>
+				<if test="patrolPeriodNum != null and patrolPeriodNum != ''">
+					patrol_period_num,
+				</if>
+				<if test="patrolPeriodUnit != null and patrolPeriodUnit != ''">
+					patrol_period_unit,
+				</if>
+				<if test="patrolPeriod != null and patrolPeriod != ''">
+					patrol_period,
+				</if>
+				<if test="patrolPeriodBeginTime != null">
+					patrol_period_begin_time,
+				</if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="regionId != null">
+                    #{regionId},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+                <if test="userName != null">
+                    #{userName},
+                </if>
+                <if test="userMobile != null">
+                    #{userMobile},
+                </if>
+                <if test="isReceiveAlarm != null">
+                    #{isReceiveAlarm},
+                </if>
+                <if test="receiveStartAt != null">
+                    #{receiveStartAt},
+                </if>
+                <if test="receiveEndAt != null">
+                    #{receiveEndAt},
+                </if>
+				<if test="isPatrol != null">
+					#{isPatrol},
+				</if>
+				<if test="patrolKeyId != null and patrolKeyId != ''">
+					#{patrolKeyId},
+				</if>
+				<if test="patrolPeriodNum != null and patrolPeriodNum != ''">
+					#{patrolPeriodNum},
+				</if>
+				<if test="patrolPeriodUnit != null and patrolPeriodUnit != ''">
+					#{patrolPeriodUnit},
+				</if>
+				<if test="patrolPeriod != null and patrolPeriod != ''">
+					#{patrolPeriod},
+				</if>
+				<if test="patrolPeriodBeginTime != null">
+					#{patrolPeriodBeginTime},
+				</if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_region_leader
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="userId != null">
+					user_id =  #{userId},
+				</if>
+				<if test="regionId != null">
+					region_id =  #{regionId},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="userName != null">
+					user_name =  #{userName},
+				</if>
+				<if test="userMobile != null">
+					user_mobile =  #{userMobile},
+				</if>
+				<if test="isReceiveAlarm != null">
+					is_receive_alarm =  #{isReceiveAlarm},
+				</if>
+				<if test="receiveStartAt != null">
+					receive_start_at =  #{receiveStartAt},
+				</if>
+				<if test="receiveEndAt != null">
+					receive_end_at =  #{receiveEndAt},
+				</if>
+				<if test="isPatrol != null">
+					is_patrol = #{isPatrol},
+				</if>
+				<if test="patrolKeyId != null and patrolKeyId != ''">
+					patrol_key_id = #{patrolKeyId},
+				</if>
+				<if test="patrolPeriodNum != null and patrolPeriodNum != ''">
+					patrol_period_num = #{patrolPeriodNum},
+				</if>
+				<if test="patrolPeriodUnit != null and patrolPeriodUnit != ''">
+					patrol_period_unit = #{patrolPeriodUnit},
+				</if>
+				<if test="patrolPeriod != null and patrolPeriod != ''">
+					patrol_period = #{patrolPeriod},
+				</if>
+				<if test="patrolPeriodBeginTime != null">
+					patrol_period_begin_time = #{patrolPeriodBeginTime},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+	<update id="updateByUserId">
+		UPDATE as_region_leader
+		<set>
+			<if test="id != null">
+				id =  #{id},
+			</if>
+			<if test="userId != null">
+				user_id =  #{userId},
+			</if>
+			<if test="regionId != null">
+				region_id =  #{regionId},
+			</if>
+			<if test="regionCode != null">
+				region_code =  #{regionCode},
+			</if>
+			<if test="userName != null">
+				user_name =  #{userName},
+			</if>
+			<if test="userMobile != null">
+				user_mobile =  #{userMobile},
+			</if>
+			<if test="isReceiveAlarm != null">
+				is_receive_alarm =  #{isReceiveAlarm},
+			</if>
+			<if test="receiveStartAt != null">
+				receive_start_at =  #{receiveStartAt},
+			</if>
+			<if test="receiveEndAt != null">
+				receive_end_at =  #{receiveEndAt},
+			</if>
+			<if test="isPatrol != null">
+				is_patrol = #{isPatrol},
+			</if>
+			<if test="patrolKeyId != null and patrolKeyId != ''">
+				patrol_key_id = #{patrolKeyId},
+			</if>
+			<if test="patrolPeriodNum != null and patrolPeriodNum != ''">
+				patrol_period_num = #{patrolPeriodNum},
+			</if>
+			<if test="patrolPeriodUnit != null and patrolPeriodUnit != ''">
+				patrol_period_unit = #{patrolPeriodUnit},
+			</if>
+			<if test="patrolPeriod != null and patrolPeriod != ''">
+				patrol_period = #{patrolPeriod},
+			</if>
+			<if test="patrolPeriodBeginTime != null">
+				patrol_period_begin_time = #{patrolPeriodBeginTime},
+			</if>
+			<if test="remark != null">
+				remark =  #{remark},
+			</if>
+			<if test="applicationCode != null">
+				application_code =  #{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				tenant_code =  #{tenantCode},
+			</if>
+		</set>
+		where user_id =  #{userId}	
+	</update>
+
+	<delete id="delete">
+	DELETE FROM  as_region_leader
+	WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteByUserId">
+		DELETE FROM  as_region_leader
+		WHERE user_id IN
+		<foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_region_leader
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteByRegionIds">
+		DELETE FROM as_region_leader
+		WHERE region_id in
+		<foreach collection="regionIds" item="item" index="index"  open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>		
+		
+	</delete>
+
+	<select id="findByRegionCode" resultMap="regionLeaderResultMap">
+	 SELECT
+	 <include refid="regionLeaderColumns"/>
+	 FROM as_region_leader
+	 WHERE region_code=#{regionCode}
+	</select>
+
+    <select id="findByRegionId" resultMap="regionLeaderResultMap">
+        SELECT
+        <include refid="regionLeaderColumns"/>
+        FROM as_region_leader
+        WHERE is_patrol = 1 and region_id = #{regionId}
+    </select>
+    <select id="getRegionLeaderByUserIds" resultType="com.aswl.as.ibrs.api.module.RegionLeader">
+		SELECT
+		<include refid="regionLeaderColumns"/>
+		FROM as_region_leader a
+		WHERE a.user_id IN
+		<foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		
+	</select>
+
+	<select id="findRegionLeaderByUserId" resultMap="regionLeaderResultMap">
+		SELECT
+		<include refid="regionLeaderColumns"/>
+		FROM as_region_leader WHERE user_id = #{userId}
+	</select>
+
+</mapper>

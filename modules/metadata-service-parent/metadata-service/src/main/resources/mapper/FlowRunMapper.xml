@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.FlowRunMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="flowRunResultMap"
+		type="com.aswl.as.ibrs.api.module.FlowRun">
+		<id column="id" property="id" />
+		<id column="run_no" property="runNo" />
+		<id column="run_name" property="runName" />
+		<id column="run_status" property="runStatus" />
+		<id column="flow_id" property="flowId" />
+		<id column="begin_user_id" property="beginUserId" />
+		<id column="begin_org_id" property="beginOrgId" />
+		<id column="begin_device_id" property="beginDeviceId" />
+		<id column="begin_u_event_id" property="beginUEventId" />
+		<id column="begin_time" property="beginTime" />
+		<id column="end_time" property="endTime" />
+		<id column="alarm_type" property="alarmType" />
+		<id column="alarm_time" property="alarmTime" />
+		<id column="attachment_ids" property="attachmentIds" />
+		<id column="attachment_names" property="attachmentNames" />
+		<id column="del_flag" property="delFlag" />
+		<id column="cur_user_id" property="curUserId" />
+		<id column="maintain_user_id" property="maintainUserId" />
+		<id column="alarm_level" property="alarmLevel" />
+		<id column="prcs_user_ids" property="prcsUserIds" />
+		<id column="focus_user_ids" property="focusUserIds" />
+		<id column="chked_user_ids" property="chkedUserIds" />
+		<id column="parent_run" property="parentRun" />
+		<id column="view_user_ids" property="viewUserIds" />
+		<id column="is_archive" property="isArchive" />
+		<id column="force_over" property="forceOver" />
+		<id column="application_code" property="applicationCode" />
+		<id column="tenant_code" property="tenantCode" />
+		<id property="type" column="type" />
+		<id property="priority" column="priority" />
+	</resultMap>
+
+	<sql id="flowRunColumns">
+		id, run_no, run_name, run_status, flow_id, begin_user_id,
+		begin_org_id, begin_device_id, begin_u_event_id, begin_time, end_time,
+		alarm_type,alarm_time, attachment_ids, attachment_names, del_flag,
+		cur_user_id,
+		maintain_user_id,alarm_level, prcs_user_ids,
+		focus_user_ids,
+		chked_user_ids, parent_run, view_user_ids, is_archive,
+		force_over,
+		application_code, tenant_code , type , priority
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+		<if test="runNo  != null">
+			and run_no like CONCAT('%',#{runNo},'%')
+		</if>
+		<if test="runName  != null">
+			and run_name like CONCAT('%',#{runName},'%')
+		</if>
+		<if test="runStatus  != null">
+			and run_status = #{runStatus}
+		</if>
+		<if test="flowId  != null">
+			and flow_id like CONCAT('%',#{flowId},'%')
+		</if>
+		<if test="beginUserId  != null">
+			and begin_user_id like CONCAT('%',#{beginUserId},'%')
+		</if>
+		<if test="beginOrgId  != null">
+			and begin_org_id like CONCAT('%',#{beginOrgId},'%')
+		</if>
+		<if test="beginDeviceId  != null">
+			and begin_device_id like CONCAT('%',#{beginDeviceId},'%')
+		</if>
+		<if test="beginUEventId  != null">
+			and begin_u_event_id like CONCAT('%',#{beginUEventId},'%')
+		</if>
+		<if test="beginTime  != null">
+			and begin_time = #{beginTime}
+		</if>
+		<if test="endTime  != null">
+			and end_time = #{endTime}
+		</if>
+		<if test="alarmType  != null">
+			and alarm_type = #{alarmType}
+		</if>
+		<if test="alarmTime  != null">
+			and alarm_time = #{alarmTime}
+		</if>
+		<if test="attachmentIds  != null">
+			and attachment_ids like CONCAT('%',#{attachmentIds},'%')
+		</if>
+		<if test="attachmentNames  != null">
+			and attachment_names like
+			CONCAT('%',#{attachmentNames},'%')
+		</if>
+		<if test="delFlag  != null">
+			and del_flag = #{delFlag}
+		</if>
+		<if test="curUserId  != null">
+			and cur_user_id like CONCAT('%',#{curUserId},'%')
+		</if>
+		<if test="maintainUserId  != null">
+			and maintain_user_id like CONCAT(#{maintainUserId},'%')
+		</if>
+		<if test="alarmLevel  != null">
+			and alarm_level = #{alarmLevel}
+		</if>
+		<if test="prcsUserIds  != null">
+			and prcs_user_ids like CONCAT('%',#{prcsUserIds},'%')
+		</if>
+		<if test="focusUserIds  != null">
+			and focus_user_ids like CONCAT('%',#{focusUserIds},'%')
+		</if>
+		<if test="chkedUserIds  != null">
+			and chked_user_ids like CONCAT('%',#{chkedUserIds},'%')
+		</if>
+		<if test="parentRun  != null">
+			and parent_run = #{parentRun}
+		</if>
+		<if test="viewUserIds  != null">
+			and view_user_ids like CONCAT('%',#{viewUserIds},'%')
+		</if>
+		<if test="isArchive  != null">
+			and is_archive = #{isArchive}
+		</if>
+		<if test="forceOver  != null">
+			and force_over like CONCAT('%',#{forceOver},'%')
+		</if>
+		<if test="applicationCode  != null">
+			and application_code like
+			CONCAT('%',#{applicationCode},'%')
+		</if>
+		<if test="tenantCode  != null">
+			and tenant_code like CONCAT('%',#{tenantCode},'%')
+		</if>
+	</sql>
+
+	<select id="get" resultMap="flowRunResultMap">
+		SELECT
+		<include refid="flowRunColumns" />
+		FROM as_flow_run
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="flowRunResultMap">
+		SELECT
+		<include refid="flowRunColumns" />
+		FROM as_flow_run
+		WHERE del_flag = 0
+		<include refid="whereColumnList" />
+		AND run_status != 1 
+		ORDER BY
+		begin_time DESC
+	</select>
+
+
+	<select id="findListById" resultMap="flowRunResultMap">
+		SELECT
+		<include refid="flowRunColumns" />
+		FROM as_flow_run
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+		INSERT INTO as_flow_run
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="runNo != null">
+				run_no,
+			</if>
+			<if test="runName != null">
+				run_name,
+			</if>
+			<if test="runStatus != null">
+				run_status,
+			</if>
+			<if test="flowId != null">
+				flow_id,
+			</if>
+			<if test="beginUserId != null">
+				begin_user_id,
+			</if>
+			<if test="beginOrgId != null">
+				begin_org_id,
+			</if>
+			<if test="beginDeviceId != null">
+				begin_device_id,
+			</if>
+			<if test="beginUEventId != null">
+				begin_u_event_id,
+			</if>
+			<if test="beginTime != null">
+				begin_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="alarmType != null">
+				alarm_type,
+			</if>
+			<if test="alarmTime  != null">
+				alarm_time,
+			</if>
+			<if test="attachmentIds != null">
+				attachment_ids,
+			</if>
+			<if test="attachmentNames != null">
+				attachment_names,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="curUserId != null">
+				cur_user_id,
+			</if>
+			<if test="maintainUserId != null">
+				maintain_user_id,
+			</if>
+			<if test="alarmLevel != null">
+				alarm_level,
+			</if>
+			<if test="prcsUserIds != null">
+				prcs_user_ids,
+			</if>
+			<if test="focusUserIds != null">
+				focus_user_ids,
+			</if>
+			<if test="chkedUserIds != null">
+				chked_user_ids,
+			</if>
+			<if test="parentRun != null">
+				parent_run,
+			</if>
+			<if test="viewUserIds != null">
+				view_user_ids,
+			</if>
+			<if test="isArchive != null">
+				is_archive,
+			</if>
+			<if test="forceOver != null">
+				force_over,
+			</if>
+			<if test="applicationCode != null">
+				application_code,
+			</if>
+			<if test="tenantCode != null">
+				tenant_code,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="priority != null">
+				priority
+			</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="runNo != null">
+				#{runNo},
+			</if>
+			<if test="runName != null">
+				#{runName},
+			</if>
+			<if test="runStatus != null">
+				#{runStatus},
+			</if>
+			<if test="flowId != null">
+				#{flowId},
+			</if>
+			<if test="beginUserId != null">
+				#{beginUserId},
+			</if>
+			<if test="beginOrgId != null">
+				#{beginOrgId},
+			</if>
+			<if test="beginDeviceId != null">
+				#{beginDeviceId},
+			</if>
+			<if test="beginUEventId != null">
+				#{beginUEventId},
+			</if>
+			<if test="beginTime != null">
+				#{beginTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+			<if test="alarmType != null">
+				#{alarmType},
+			</if>
+			<if test="alarmTime  != null">
+				#{alarmTime},
+			</if>
+			<if test="attachmentIds != null">
+				#{attachmentIds},
+			</if>
+			<if test="attachmentNames != null">
+				#{attachmentNames},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+			<if test="curUserId != null">
+				#{curUserId},
+			</if>
+			<if test="maintainUserId != null">
+				#{maintainUserId},
+			</if>
+			<if test="alarmLevel != null">
+				#{alarmLevel},
+			</if>
+			<if test="prcsUserIds != null">
+				#{prcsUserIds},
+			</if>
+			<if test="focusUserIds != null">
+				#{focusUserIds},
+			</if>
+			<if test="chkedUserIds != null">
+				#{chkedUserIds},
+			</if>
+			<if test="parentRun != null">
+				#{parentRun},
+			</if>
+			<if test="viewUserIds != null">
+				#{viewUserIds},
+			</if>
+			<if test="isArchive != null">
+				#{isArchive},
+			</if>
+			<if test="forceOver != null">
+				#{forceOver},
+			</if>
+			<if test="applicationCode != null">
+				#{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				#{tenantCode},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="priority != null">
+				#{priority}
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update">
+		UPDATE as_flow_run
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="runNo != null">
+				run_no = #{runNo},
+			</if>
+			<if test="runName != null">
+				run_name = #{runName},
+			</if>
+			<if test="runStatus != null">
+				run_status = #{runStatus},
+			</if>
+			<if test="flowId != null">
+				flow_id = #{flowId},
+			</if>
+			<if test="beginUserId != null">
+				begin_user_id = #{beginUserId},
+			</if>
+			<if test="beginOrgId != null">
+				begin_org_id = #{beginOrgId},
+			</if>
+			<if test="beginDeviceId != null">
+				begin_device_id = #{beginDeviceId},
+			</if>
+			<if test="beginUEventId != null">
+				begin_u_event_id = #{beginUEventId},
+			</if>
+			<if test="beginTime != null">
+				begin_time = #{beginTime},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime},
+			</if>
+			<if test="alarmType != null">
+				alarm_type = #{alarmType},
+			</if>
+			<if test="alarmTime  != null">
+				alarm_time = #{alarmTime},
+			</if>
+			<if test="attachmentIds != null">
+				attachment_ids = #{attachmentIds},
+			</if>
+			<if test="attachmentNames != null">
+				attachment_names = #{attachmentNames},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+			<if test="curUserId != null">
+				cur_user_id = #{curUserId},
+			</if>
+			<if test="maintainUserId != null">
+				maintain_user_id = #{maintainUserId},
+			</if>
+			<if test="alarmLevel != null">
+				alarm_level = #{alarmLevel},
+			</if>
+			<if test="prcsUserIds != null">
+				prcs_user_ids = #{prcsUserIds},
+			</if>
+			<if test="focusUserIds != null">
+				focus_user_ids = #{focusUserIds},
+			</if>
+			<if test="chkedUserIds != null">
+				chked_user_ids = #{chkedUserIds},
+			</if>
+			<if test="parentRun != null">
+				parent_run = #{parentRun},
+			</if>
+			<if test="viewUserIds != null">
+				view_user_ids = #{viewUserIds},
+			</if>
+			<if test="isArchive != null">
+				is_archive = #{isArchive},
+			</if>
+			<if test="forceOver != null">
+				force_over = #{forceOver},
+			</if>
+			<if test="applicationCode != null">
+				application_code = #{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				tenant_code = #{tenantCode},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="priority != null">
+				priority = #{priority}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_flow_run SET
+		del_flag = 1
+		WHERE ID = #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_flow_run SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

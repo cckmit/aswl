@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.CommunicationOperatorMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="communicationOperatorResultMap" type="com.aswl.as.ibrs.api.module.CommunicationOperator">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="remark"   property="remark" />
+			<id column="create_date"   property="createDate" />
+			<id column="application_code"   property="applicationCode" />
+	</resultMap>
+
+	<sql id="communicationOperatorColumns">
+		id, name, remark, create_date, application_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name!= null and name!= ''" >
+					and name LIKE CONCAT(#{name},'%')
+				</if>
+				<if test="remark!= null and remark!= ''" >
+					and remark LIKE CONCAT(#{remark},'%')
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="communicationOperatorResultMap">
+		SELECT
+		<include refid="communicationOperatorColumns"/>
+		FROM as_communication_operator
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="communicationOperatorResultMap">
+		SELECT
+		<include refid="communicationOperatorColumns"/>
+		FROM as_communication_operator
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="communicationOperatorResultMap">
+		SELECT
+		<include refid="communicationOperatorColumns"/>
+		FROM as_communication_operator
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_communication_operator
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_communication_operator
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_communication_operator
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_communication_operator
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

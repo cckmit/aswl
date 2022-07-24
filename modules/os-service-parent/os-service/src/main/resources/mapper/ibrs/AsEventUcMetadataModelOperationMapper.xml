@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsEventUcMetadataModelOperationMapper">
+
+    <!-- TODO 删除 -->
+    <delete id="osDeleteByEventMetadataModelId">
+		DELETE FROM as_event_uc_metadata_model_operation
+		WHERE event_metadata_model_id=#{eventMetadataModelId}
+	</delete>
+
+    <insert id="osInsertBatch">
+        INSERT INTO as_event_uc_metadata_model_operation
+        (
+        id,
+        event_metadata_model_id,
+        status_operation_id
+        )
+        VALUES
+        <foreach item="item" index="index" collection="list"
+                 separator="," >
+            (
+            #{item.id},
+            #{item.eventMetadataModelId},
+            #{item.statusOperationId}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

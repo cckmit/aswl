@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ProjectMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="projectResultMap" type="com.aswl.as.ibrs.api.module.Project">
+			<id column="project_id"   property="projectId" />
+			<id column="project_id"   property="id" />
+			<id column="parent_id" property="parentId"/>
+			<id column="project_code"   property="projectCode" />
+			<id column="project_name"   property="projectName" />
+			<id column="project_owner"   property="projectOwner" />
+			<id column="project_des"   property="projectDes" />
+			<id column="contacts"   property="contacts" />
+			<id column="telephone"   property="telephone" />
+			<id column="email"   property="email" />
+			<id column="project_addr"   property="projectAddr" />
+			<id column="project_area"   property="projectArea" />
+			<id column="project_area_des"   property="projectAreaDes" />
+			<id column="design_dept_name"   property="designDeptName" />
+			<id column="design_dept_leader"   property="designDeptLeader" />
+			<id column="design_dept_phone"   property="designDeptPhone" />
+			<id column="build_dept_name"   property="buildDeptName" />
+			<id column="build_dept_leader"   property="buildDeptLeader" />
+			<id column="build_dept_phone"   property="buildDeptPhone" />
+			<id column="maintain_dept_name"   property="maintainDeptName" />
+			<id column="maintain_dept_leader"   property="maintainDeptLeader" />
+			<id column="maintain_dept_phone"   property="maintainDeptPhone" />
+			<id column="call_bid_date"   property="callBidDate" />
+			<id column="throw_bid_date"   property="throwBidDate" />
+			<id column="win_bid_date"   property="winBidDate" />
+			<id column="finish_bid_date"   property="finishBidDate" />
+			<id column="check_bid_date"   property="checkBidDate" />
+			<id column="maintain_start_date"   property="maintainStartDate" />
+			<id column="maintain_end_date"   property="maintainEndDate" />
+			<id column="start_at"   property="startAt" />
+			<id column="end_at"   property="endAt" />
+			<id column="creator_id"   property="creatorId" />
+			<id column="create_at"   property="createAt" />
+			<id column="updater_id"   property="updaterId" />
+			<id column="update_at"   property="updateAt" />
+			<id column="remark"   property="remark" />
+			<id column="city_id" property="cityId"/>
+			<id column="admin_account" property="adminAccount"/>
+			<id column="box_num" property="boxNum"/>
+			<id column="camera_num" property="cameraNum"/>
+			<id column="longitude" property="longitude"/>
+			<id column="latitude" property="latitude"/>
+			<id column="sys_logo" property="sysLogo"/>
+			<id column="sys_name" property="sysName"/>
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="projectColumns">
+		project_id,parent_id, project_code, project_name, project_owner, project_des, contacts, telephone, email, project_addr, project_area, project_area_des, design_dept_name, design_dept_leader, design_dept_phone, build_dept_name, build_dept_leader, build_dept_phone, maintain_dept_name, maintain_dept_leader, maintain_dept_phone, call_bid_date, throw_bid_date, win_bid_date, finish_bid_date, check_bid_date, maintain_start_date, maintain_end_date, start_at, end_at, creator_id, create_at, updater_id, update_at,
+		 remark, city_id,admin_account,box_num,camera_num,longitude,latitude,sys_logo,sys_name,application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="projectCode  != null and projectCode != ''" >
+					and project_code like CONCAT('%',#{projectCode},'%')
+				</if>
+				<if test="projectName  != null and projectName != ''" >
+					and project_name like CONCAT('%',#{projectName},'%')
+				</if>
+				<if test="projectOwner  != null and projectOwner != ''" >
+					and project_owner like CONCAT('%',#{projectOwner},'%')
+				</if>
+				<if test="query  != null and query != ''" >
+					and project_name like CONCAT('%',#{query},'%')
+				</if>
+				<if test="query  != null and query != ''" >
+					or build_dept_name like CONCAT('%',#{query},'%')
+				</if>
+				<if test="projectDes  != null and projectDes != ''" >
+					and project_des like CONCAT('%',#{projectDes},'%')
+				</if>
+				<if test="contacts  != null and contacts != ''" >
+					and contacts like CONCAT('%',#{contacts},'%')
+				</if>
+				<if test="telephone  != null and telephone != ''" >
+					and telephone like CONCAT('%',#{telephone},'%')
+				</if>
+				<if test="email  != null and email != ''" >
+					and email like CONCAT('%',#{email},'%')
+				</if>
+				<if test="projectAddr  != null and projectAddr != ''" >
+					and project_addr like CONCAT('%',#{projectAddr},'%')
+				</if>
+				<if test="projectArea  != null and projectArea != ''">
+					and project_area = #{projectArea}
+				</if>
+				<if test="projectAreaDes  != null and projectAreaDes != ''" >
+					and project_area_des like CONCAT('%',#{projectAreaDes},'%')
+				</if>
+				<if test="designDeptName  != null and designDeptName != ''" >
+					and design_dept_name like CONCAT('%',#{designDeptName},'%')
+				</if>
+				<if test="designDeptLeader  != null and designDeptLeader != ''" >
+					and design_dept_leader like CONCAT('%',#{designDeptLeader},'%')
+				</if>
+				<if test="designDeptPhone  != null and designDeptPhone != ''" >
+					and design_dept_phone like CONCAT('%',#{designDeptPhone},'%')
+				</if>
+				<if test="buildDeptName  != null and buildDeptName != ''" >
+					and build_dept_name like CONCAT('%',#{buildDeptName},'%')
+				</if>
+				<if test="buildDeptLeader  != null and buildDeptLeader != ''" >
+					and build_dept_leader like CONCAT('%',#{buildDeptLeader},'%')
+				</if>
+				<if test="buildDeptPhone  != null and buildDeptPhone != ''" >
+					and build_dept_phone like CONCAT('%',#{buildDeptPhone},'%')
+				</if>
+				<if test="maintainDeptName  != null and maintainDeptName != ''" >
+					and maintain_dept_name like CONCAT('%',#{maintainDeptName},'%')
+				</if>
+				<if test="maintainDeptLeader  != null and maintainDeptLeader != ''" >
+					and maintain_dept_leader like CONCAT('%',#{maintainDeptLeader},'%')
+				</if>
+				<if test="maintainDeptPhone  != null and maintainDeptPhone != ''" >
+					and maintain_dept_phone like CONCAT('%',#{maintainDeptPhone},'%')
+				</if>
+				<if test="callBidDate  != null ">
+					and call_bid_date = #{callBidDate}
+				</if>
+				<if test="throwBidDate  != null ">
+					and throw_bid_date = #{throwBidDate}
+				</if>
+				<if test="winBidDate  != null ">
+					and win_bid_date = #{winBidDate}
+				</if>
+				<if test="finishBidDate  != null ">
+					and finish_bid_date = #{finishBidDate}
+				</if>
+				<if test="checkBidDate  != null ">
+					and check_bid_date = #{checkBidDate}
+				</if>
+				<if test="maintainStartDate  != null ">
+					and maintain_start_date = #{maintainStartDate}
+				</if>
+				<if test="maintainEndDate  != null ">
+					and maintain_end_date = #{maintainEndDate}
+				</if>
+				<if test="startAt  != null and startAt != ''">
+					and start_at = #{startAt}
+				</if>
+				<if test="endAt  != null and endAt != ''">
+					and end_at = #{endAt}
+				</if>
+				<if test="creatorId  != null and creatorId != ''" >
+					and creator_id like CONCAT('%',#{creatorId},'%')
+				</if>
+				<if test="createAt  != null and createAt != ''">
+					and create_at = #{createAt}
+				</if>
+				<if test="updaterId  != null and updaterId != ''" >
+					and updater_id like CONCAT('%',#{updaterId},'%')
+				</if>
+				<if test="updateAt  != null and updateAt != ''">
+					and update_at = #{updateAt}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+				<if test="cityId  != null and cityId != ''" >
+					and city_id = #{cityId}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code = #{tenantCode}
+				</if>
+				<if test="lonMin!=null and lonMin != '' and lonMax!=null and lonMax!='' ">
+					and longitude between #{lonMin} and #{lonMax}
+				</if>
+				<if test="latMin!=null and latMin!='' and latMax!=null and  latMax !='' ">
+					and   latitude between #{latMin} and #{latMax}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="projectResultMap">
+		SELECT
+		<include refid="projectColumns"/>
+		FROM as_project
+		WHERE project_id = #{projectId}
+	</select>
+
+	<select id="findList" resultMap="projectResultMap">
+		SELECT
+		project_id,
+		parent_id,
+		"2" AS type,
+		project_code,
+		project_name,
+		project_owner,
+		project_des,
+		contacts,
+		telephone,
+		email,
+		project_addr,
+		project_area,
+		project_area_des,
+		design_dept_name,
+		design_dept_leader,
+		design_dept_phone,
+		build_dept_name,
+		build_dept_leader,
+		build_dept_phone,
+		maintain_dept_name,
+		maintain_dept_leader,
+		maintain_dept_phone,
+		call_bid_date,
+		throw_bid_date,
+		win_bid_date,
+		finish_bid_date,
+		check_bid_date,
+		maintain_start_date,
+		maintain_end_date,
+		start_at, end_at,
+		creator_id,
+		create_at,
+		updater_id,
+		update_at,
+		remark,
+		city_id,
+		application_code,
+		tenant_code,
+		admin_account,
+		box_num,
+		camera_num,
+		longitude,
+		latitude,
+		sys_logo,
+		sys_name
+		FROM as_project
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="projectResultMap">
+		SELECT
+		<include refid="projectColumns"/>
+		FROM as_project
+		WHERE project_id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="projectId != null and projectId!=''">
+                    project_id,
+                </if>
+				<if test="parentId != null and parentId!= ''">
+					parent_id,
+				</if>
+                <if test="projectCode != null and projectCode!=''">
+                    project_code,
+                </if>
+                <if test="projectName != null and projectName!=''">
+                    project_name,
+                </if>
+                <if test="projectOwner != null and projectOwner!=''">
+                    project_owner,
+                </if>
+                <if test="projectDes != null and projectDes!=''">
+                    project_des,
+                </if>
+                <if test="contacts != null and contacts!=''">
+                    contacts,
+                </if>
+                <if test="telephone != null and telephone!=''">
+                    telephone,
+                </if>
+                <if test="email != null and email!=''">
+                    email,
+                </if>
+                <if test="projectAddr != null and projectAddr!=''">
+                    project_addr,
+                </if>
+                <if test="projectArea != null and projectArea!=''">
+                    project_area,
+                </if>
+                <if test="projectAreaDes != null and projectAreaDes!=''">
+                    project_area_des,
+                </if>
+                <if test="designDeptName != null and designDeptName!=''">
+                    design_dept_name,
+                </if>
+                <if test="designDeptLeader != null and designDeptLeader!=''">
+                    design_dept_leader,
+                </if>
+                <if test="designDeptPhone != null and designDeptPhone!=''">
+                    design_dept_phone,
+                </if>
+                <if test="buildDeptName != null and buildDeptName!=''">
+                    build_dept_name,
+                </if>
+                <if test="buildDeptLeader != null and buildDeptLeader!=''">
+                    build_dept_leader,
+                </if>
+                <if test="buildDeptPhone != null and buildDeptPhone!=''">
+                    build_dept_phone,
+                </if>
+                <if test="maintainDeptName != null and maintainDeptName!=''">
+                    maintain_dept_name,
+                </if>
+                <if test="maintainDeptLeader != null and maintainDeptLeader!=''">
+                    maintain_dept_leader,
+                </if>
+                <if test="maintainDeptPhone != null and maintainDeptPhone!=''">
+                    maintain_dept_phone,
+                </if>
+                <if test="callBidDate != null ">
+                    call_bid_date,
+                </if>
+                <if test="throwBidDate != null ">
+                    throw_bid_date,
+                </if>
+                <if test="winBidDate != null ">
+                    win_bid_date,
+                </if>
+                <if test="finishBidDate != null ">
+                    finish_bid_date,
+                </if>
+                <if test="checkBidDate != null ">
+                    check_bid_date,
+                </if>
+                <if test="maintainStartDate != null ">
+                    maintain_start_date,
+                </if>
+                <if test="maintainEndDate != null ">
+                    maintain_end_date,
+                </if>
+                <if test="startAt != null ">
+                    start_at,
+                </if>
+                <if test="endAt != null  ">
+                    end_at,
+                </if>
+                <if test="creatorId != null and creatorId!=''">
+                    creator_id,
+                </if>
+                <if test="createAt != null ">
+                    create_at,
+                </if>
+                <if test="updaterId != null and updaterId!=''">
+                    updater_id,
+                </if>
+                <if test="updateAt != null ">
+                    update_at,
+                </if>
+                <if test="remark != null and remark!=''">
+                    remark,
+                </if>
+				<if test="cityId  != null and cityId != ''" >
+					city_id,
+				</if>
+				<if test="adminAccount!= null and adminAccount!=''">
+					admin_account,
+				</if>
+				<if test="boxNum!= null and boxNum!=''">
+					box_num,
+				</if>
+				<if test="cameraNum!= null and cameraNum !=''">
+					camera_num,
+				</if>
+				<if test="longitude!= null">
+					longitude,
+				</if>
+				<if test="latitude!= null">
+					latitude,
+				</if>
+				<if test="sysLogo!= null">
+					sys_logo,
+				</if>
+				<if test="sysName!= null">
+					sys_name,
+				</if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="projectId != null and projectId!=''">
+                    #{projectId},
+                </if>
+				<if test="parentId != null and parentId!= ''">
+					#{parentId},
+				</if>
+                <if test="projectCode != null and projectCode!=''">
+                    #{projectCode},
+                </if>
+                <if test="projectName != null and projectName!=''">
+                    #{projectName},
+                </if>
+                <if test="projectOwner != null and projectOwner!=''">
+                    #{projectOwner},
+                </if>
+                <if test="projectDes != null and projectDes!=''">
+                    #{projectDes},
+                </if>
+                <if test="contacts != null and contacts!=''">
+                    #{contacts},
+                </if>
+                <if test="telephone != null and telephone!=''">
+                    #{telephone},
+                </if>
+                <if test="email != null and email!=''">
+                    #{email},
+                </if>
+                <if test="projectAddr != null and projectAddr!=''">
+                    #{projectAddr},
+                </if>
+                <if test="projectArea != null and projectArea!=''">
+                    #{projectArea},
+                </if>
+                <if test="projectAreaDes != null and projectAreaDes!=''">
+                    #{projectAreaDes},
+                </if>
+                <if test="designDeptName != null and designDeptName!=''">
+                    #{designDeptName},
+                </if>
+                <if test="designDeptLeader != null and designDeptLeader!=''">
+                    #{designDeptLeader},
+                </if>
+                <if test="designDeptPhone != null and designDeptPhone!=''">
+                    #{designDeptPhone},
+                </if>
+                <if test="buildDeptName != null and buildDeptName!=''">
+                    #{buildDeptName},
+                </if>
+                <if test="buildDeptLeader != null and buildDeptLeader!=''">
+                    #{buildDeptLeader},
+                </if>
+                <if test="buildDeptPhone != null and buildDeptPhone!=''">
+                    #{buildDeptPhone},
+                </if>
+                <if test="maintainDeptName != null and maintainDeptName!=''">
+                    #{maintainDeptName},
+                </if>
+                <if test="maintainDeptLeader != null and maintainDeptLeader!=''">
+                    #{maintainDeptLeader},
+                </if>
+                <if test="maintainDeptPhone != null and maintainDeptPhone!=''">
+                    #{maintainDeptPhone},
+                </if>
+                <if test="callBidDate != null ">
+                    #{callBidDate},
+                </if>
+                <if test="throwBidDate != null ">
+                    #{throwBidDate},
+                </if>
+                <if test="winBidDate != null ">
+                    #{winBidDate},
+                </if>
+                <if test="finishBidDate != null ">
+                    #{finishBidDate},
+                </if>
+                <if test="checkBidDate != null ">
+                    #{checkBidDate},
+                </if>
+                <if test="maintainStartDate != null ">
+                    #{maintainStartDate},
+                </if>
+                <if test="maintainEndDate != null ">
+                    #{maintainEndDate},
+                </if>
+                <if test="startAt != null ">
+                    #{startAt},
+                </if>
+                <if test="endAt != null ">
+                    #{endAt},
+                </if>
+                <if test="creatorId != null and creatorId!=''">
+                    #{creatorId},
+                </if>
+                <if test="createAt != null ">
+                    #{createAt},
+                </if>
+                <if test="updaterId != null and updaterId!=''">
+                    #{updaterId},
+                </if>
+                <if test="updateAt != null ">
+                    #{updateAt},
+                </if>
+                <if test="remark != null and remark!=''">
+                    #{remark},
+                </if>
+				<if test="cityId  != null and cityId != ''" >
+					#{cityId},
+				</if>
+				<if test="adminAccount!= null and adminAccount!=''">
+					#{adminAccount},
+				</if>
+				<if test="boxNum!= null and boxNum!=''">
+					#{boxNum},
+				</if>
+				<if test="cameraNum!= null and cameraNum !=''">
+					#{cameraNum},
+				</if>
+				<if test="longitude!= null">
+					#{longitude},
+				</if>
+				<if test="latitude!= null">
+					#{latitude},
+				</if>
+				<if test="sysLogo!= null">
+					#{sysLogo},
+				</if>
+				<if test="sysName!= null">
+				#{sysName},
+				</if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_project
+		<set>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="parentId != null">
+					parent_id = #{parentId},
+				</if>
+				<if test="projectCode != null">
+					project_code =  #{projectCode},
+				</if>
+				<if test="projectName != null">
+					project_name =  #{projectName},
+				</if>
+				<if test="projectOwner != null">
+					project_owner =  #{projectOwner},
+				</if>
+				<if test="projectDes != null">
+					project_des =  #{projectDes},
+				</if>
+				<if test="contacts != null">
+					contacts =  #{contacts},
+				</if>
+				<if test="telephone != null">
+					telephone =  #{telephone},
+				</if>
+				<if test="email != null">
+					email =  #{email},
+				</if>
+				<if test="projectAddr != null">
+					project_addr =  #{projectAddr},
+				</if>
+				<if test="projectArea != null">
+					project_area =  #{projectArea},
+				</if>
+				<if test="projectAreaDes != null">
+					project_area_des =  #{projectAreaDes},
+				</if>
+				<if test="designDeptName != null">
+					design_dept_name =  #{designDeptName},
+				</if>
+				<if test="designDeptLeader != null">
+					design_dept_leader =  #{designDeptLeader},
+				</if>
+				<if test="designDeptPhone != null">
+					design_dept_phone =  #{designDeptPhone},
+				</if>
+				<if test="buildDeptName != null">
+					build_dept_name =  #{buildDeptName},
+				</if>
+				<if test="buildDeptLeader != null">
+					build_dept_leader =  #{buildDeptLeader},
+				</if>
+				<if test="buildDeptPhone != null">
+					build_dept_phone =  #{buildDeptPhone},
+				</if>
+				<if test="maintainDeptName != null">
+					maintain_dept_name =  #{maintainDeptName},
+				</if>
+				<if test="maintainDeptLeader != null">
+					maintain_dept_leader =  #{maintainDeptLeader},
+				</if>
+				<if test="maintainDeptPhone != null">
+					maintain_dept_phone =  #{maintainDeptPhone},
+				</if>
+				<if test="callBidDate != null ">
+					call_bid_date =  #{callBidDate},
+				</if>
+				<if test="throwBidDate != null ">
+					throw_bid_date =  #{throwBidDate},
+				</if>
+				<if test="winBidDate != null ">
+					win_bid_date =  #{winBidDate},
+				</if>
+				<if test="finishBidDate != null ">
+					finish_bid_date =  #{finishBidDate},
+				</if>
+				<if test="checkBidDate != null ">
+					check_bid_date =  #{checkBidDate},
+				</if>
+				<if test="maintainStartDate != null ">
+					maintain_start_date =  #{maintainStartDate},
+				</if>
+				<if test="maintainEndDate != null ">
+					maintain_end_date =  #{maintainEndDate},
+				</if>
+				<if test="startAt != null ">
+					start_at =  #{startAt},
+				</if>
+				<if test="endAt != null ">
+					end_at =  #{endAt},
+				</if>
+				<if test="creatorId != null">
+					creator_id =  #{creatorId},
+				</if>
+				<if test="createAt != null ">
+					create_at =  #{createAt},
+				</if>
+				<if test="updaterId != null">
+					updater_id =  #{updaterId},
+				</if>
+				<if test="updateAt != null ">
+					update_at =  #{updateAt},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="cityId  != null" >
+					city_id = #{cityId},
+				</if>
+				<if test="adminAccount!= null">
+					admin_account= #{adminAccount},
+				</if>
+				<if test="boxNum!= null">
+					box_num = #{boxNum},
+				</if>
+				<if test="cameraNum!= null">
+					camera_num = #{cameraNum},
+				</if>
+				<if test="longitude!= null">
+					longitude = #{longitude},
+				</if>
+				<if test="latitude!= null">
+					latitude = #{latitude},
+				</if>
+				<if test="sysLogo!= null">
+					sys_logo = #{sysLogo},
+				</if>
+				<if test="sysName!= null">
+					sys_name = #{sysName},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where project_id =  #{projectId}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_project
+		WHERE project_id =  #{projectId}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_project
+		WHERE project_id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteByProjectIds">
+		
+		
+		
+	</delete>
+
+	<select id="selectProjectForProjectCode" resultType="com.aswl.as.ibrs.api.module.Project">
+		select project_code from as_project where project_code like concat(#{projectCode},'%') order by create_at desc limit 1
+	</select>
+
+	<select id="findProjectByRegionCode" resultType="com.aswl.as.ibrs.api.module.Project">
+		select a.* from
+		as_project as a
+		LEFT JOIN as_region as b
+		on a.project_id = b.project_id
+		where 1 = 1
+		<if test="regionCode != null and regionCode != ''">
+			and b.region_code = #{regionCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND a.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			and a.tenant_code = #{tenantCode}
+		</if>
+	</select>
+
+    <select id="getProjectDeviceList" resultType="com.aswl.as.ibrs.api.vo.ProjectDeviceVo">
+		SELECT
+		t2.device_name AS deviceName,t2.device_code AS deviceCode,t3.region_name AS regionName,
+		t6.device_kind_name AS deviceKindName,t5.device_type_name AS deviceTypeName,t4.device_model_name AS deviceModelName,
+		t4.person_in_charge AS vendorLeader,t4.linkman AS afterSaleLeader,t4.tel_num AS afterSalePhone,
+		t4.description AS description,
+		CASE  WHEN t4.description = '' OR t4.description is null THEN  0 ELSE 1 END AS flag
+		FROM as_project t1 LEFT JOIN as_device t2 ON t2.project_id = t1.project_id
+		LEFT JOIN as_region t3 ON t3.id = t2.region_id
+		LEFT JOIN as_device_model t4 ON t4.id = t2.device_model_id
+		LEFT JOIN as_device_type t5 ON t5.device_type = t4.device_type
+		LEFT JOIN as_device_kind t6 ON t6.id = t5.device_kind_id
+		WHERE 1=1
+		<if test="projectId  != null and projectId != ''" >
+			AND t1.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="deviceName  != null and deviceName != ''">
+			and t2.device_name LIKE CONCAT('%',#{deviceName},'%')
+		</if>
+		<if test="kind != null and kind!= ''">
+			AND t6.type = #{kind}
+		</if>
+		<if test="model != null and model!= ''">
+			AND t4.device_model_name LIKE CONCAT('%', #{model},'%')
+		</if>
+		<if test="type != null and type!= ''">
+			AND t5.device_type_name LIKE CONCAT('%', #{type},'%')
+		</if>
+		<if test="tenantCode  != null and tenantCode != ''">
+			and tenant_code = #{tenantCode}
+		</if>
+	</select>
+
+	<select id="findById" resultType="string">
+		SELECT project_code FROM as_project
+		where 1 = 1
+		<if test="projectId != null and projectId != ''">
+			AND project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+
+	<select id="findListProject" resultMap="projectResultMap">
+		SELECT <include refid="projectColumns"/>
+		FROM as_project WHERE 1 = 1
+		<if test="projectId != null and projectId != ''">
+			AND project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND tenant_code = #{tenantCode}
+		</if>
+	</select>
+
+	<select id="findProject" resultMap="projectResultMap">
+		SELECT
+		a.project_id, a.parent_id, a.project_code, a.project_name, a.project_owner, a.project_des, a.contacts, a.telephone,
+		a.email, a.project_addr,a.project_area, a.project_area_des, a.design_dept_name, a.design_dept_leader,
+		a.design_dept_phone, a.build_dept_name, a.build_dept_leader, a.build_dept_phone, a.maintain_dept_name,
+		a.maintain_dept_leader, a.maintain_dept_phone, a.call_bid_date, a.throw_bid_date, a.win_bid_date,
+		a.finish_bid_date, a.check_bid_date, a.maintain_start_date, a.maintain_end_date, a.start_at, end_at,
+		a.creator_id, a.create_at, a.updater_id, a.update_at, a.remark, a.application_code, a.tenant_code,a.sys_logo,a.sys_name
+		FROM as_project as a LEFT JOIN (select * from as_region where region_code like concat(#{regionCode},'%')) as b on a.project_id = b.project_id
+		where 1 = 1
+		<if test="projectId != null and projectId != ''">
+			and a.project_id IN 
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			and a.tenant_code = #{tenantCode}
+		</if>
+		<if test="regionCode != null and regionCode != ''">
+			and b.region_code like concat(#{regionCode},'%')
+		</if>
+		group by a.project_id
+	</select>
+
+	<select id="findByCode" resultMap="projectResultMap">
+		SELECT <include refid="projectColumns"/>
+		FROM as_project where 1 = 1
+		<if test="_parameter != null and _parameter !=  ''">
+			and project_code = #{projectCode}
+		</if>
+	</select>
+
+	<insert id="cityPlatformInsert">
+		INSERT INTO as_project
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="projectId != null and projectId!=''">
+				project_id,
+			</if>
+			<if test="projectCode != null and projectCode!=''">
+				project_code,
+			</if>
+			<if test="projectName != null and projectName!=''">
+				project_name,
+			</if>
+			<if test="projectOwner != null and projectOwner!=''">
+				project_owner,
+			</if>
+			<if test="projectDes != null and projectDes!=''">
+				project_des,
+			</if>
+			<if test="contacts != null and contacts!=''">
+				contacts,
+			</if>
+			<if test="telephone != null and telephone!=''">
+				telephone,
+			</if>
+			<if test="email != null and email!=''">
+				email,
+			</if>
+			<if test="projectAddr != null and projectAddr!=''">
+				project_addr,
+			</if>
+			<if test="projectArea != null and projectArea!=''">
+				project_area,
+			</if>
+			<if test="projectAreaDes != null and projectAreaDes!=''">
+				project_area_des,
+			</if>
+			<if test="designDeptName != null and designDeptName!=''">
+				design_dept_name,
+			</if>
+			<if test="designDeptLeader != null and designDeptLeader!=''">
+				design_dept_leader,
+			</if>
+			<if test="designDeptPhone != null and designDeptPhone!=''">
+				design_dept_phone,
+			</if>
+			<if test="buildDeptName != null and buildDeptName!=''">
+				build_dept_name,
+			</if>
+			<if test="buildDeptLeader != null and buildDeptLeader!=''">
+				build_dept_leader,
+			</if>
+			<if test="buildDeptPhone != null and buildDeptPhone!=''">
+				build_dept_phone,
+			</if>
+			<if test="maintainDeptName != null and maintainDeptName!=''">
+				maintain_dept_name,
+			</if>
+			<if test="maintainDeptLeader != null and maintainDeptLeader!=''">
+				maintain_dept_leader,
+			</if>
+			<if test="maintainDeptPhone != null and maintainDeptPhone!=''">
+				maintain_dept_phone,
+			</if>
+			<if test="callBidDate != null ">
+				call_bid_date,
+			</if>
+			<if test="throwBidDate != null ">
+				throw_bid_date,
+			</if>
+			<if test="winBidDate != null ">
+				win_bid_date,
+			</if>
+			<if test="finishBidDate != null ">
+				finish_bid_date,
+			</if>
+			<if test="checkBidDate != null ">
+				check_bid_date,
+			</if>
+			<if test="maintainStartDate != null ">
+				maintain_start_date,
+			</if>
+			<if test="maintainEndDate != null ">
+				maintain_end_date,
+			</if>
+			<if test="startAt != null ">
+				start_at,
+			</if>
+			<if test="endAt != null  ">
+				end_at,
+			</if>
+			<if test="creatorId != null and creatorId!=''">
+				creator_id,
+			</if>
+			<if test="createAt != null ">
+				create_at,
+			</if>
+			<if test="updaterId != null and updaterId!=''">
+				updater_id,
+			</if>
+			<if test="updateAt != null ">
+				update_at,
+			</if>
+			<if test="remark != null and remark!=''">
+				remark,
+			</if>
+			<if test="cityId  != null and cityId != ''" >
+				city_id,
+			</if>
+			<if test="applicationCode != null and applicationCode!=''">
+				application_code,
+			</if>
+			<if test="tenantCode != null and tenantCode!=''">
+				tenant_code,
+			</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="projectId != null and projectId!=''">
+				#{projectId},
+			</if>
+			<if test="projectCode != null and projectCode!=''">
+				#{projectCode},
+			</if>
+			<if test="projectName != null and projectName!=''">
+				#{projectName},
+			</if>
+			<if test="projectOwner != null and projectOwner!=''">
+				#{projectOwner},
+			</if>
+			<if test="projectDes != null and projectDes!=''">
+				#{projectDes},
+			</if>
+			<if test="contacts != null and contacts!=''">
+				#{contacts},
+			</if>
+			<if test="telephone != null and telephone!=''">
+				#{telephone},
+			</if>
+			<if test="email != null and email!=''">
+				#{email},
+			</if>
+			<if test="projectAddr != null and projectAddr!=''">
+				#{projectAddr},
+			</if>
+			<if test="projectArea != null and projectArea!=''">
+				#{projectArea},
+			</if>
+			<if test="projectAreaDes != null and projectAreaDes!=''">
+				#{projectAreaDes},
+			</if>
+			<if test="designDeptName != null and designDeptName!=''">
+				#{designDeptName},
+			</if>
+			<if test="designDeptLeader != null and designDeptLeader!=''">
+				#{designDeptLeader},
+			</if>
+			<if test="designDeptPhone != null and designDeptPhone!=''">
+				#{designDeptPhone},
+			</if>
+			<if test="buildDeptName != null and buildDeptName!=''">
+				#{buildDeptName},
+			</if>
+			<if test="buildDeptLeader != null and buildDeptLeader!=''">
+				#{buildDeptLeader},
+			</if>
+			<if test="buildDeptPhone != null and buildDeptPhone!=''">
+				#{buildDeptPhone},
+			</if>
+			<if test="maintainDeptName != null and maintainDeptName!=''">
+				#{maintainDeptName},
+			</if>
+			<if test="maintainDeptLeader != null and maintainDeptLeader!=''">
+				#{maintainDeptLeader},
+			</if>
+			<if test="maintainDeptPhone != null and maintainDeptPhone!=''">
+				#{maintainDeptPhone},
+			</if>
+			<if test="callBidDate != null ">
+				#{callBidDate},
+			</if>
+			<if test="throwBidDate != null ">
+				#{throwBidDate},
+			</if>
+			<if test="winBidDate != null ">
+				#{winBidDate},
+			</if>
+			<if test="finishBidDate != null ">
+				#{finishBidDate},
+			</if>
+			<if test="checkBidDate != null ">
+				#{checkBidDate},
+			</if>
+			<if test="maintainStartDate != null ">
+				#{maintainStartDate},
+			</if>
+			<if test="maintainEndDate != null ">
+				#{maintainEndDate},
+			</if>
+			<if test="startAt != null ">
+				#{startAt},
+			</if>
+			<if test="endAt != null ">
+				#{endAt},
+			</if>
+			<if test="creatorId != null and creatorId!=''">
+				#{creatorId},
+			</if>
+			<if test="createAt != null ">
+				#{createAt},
+			</if>
+			<if test="updaterId != null and updaterId!=''">
+				#{updaterId},
+			</if>
+			<if test="updateAt != null ">
+				#{updateAt},
+			</if>
+			<if test="remark != null and remark!=''">
+				#{remark},
+			</if>
+			<if test="cityId  != null and cityId != ''" >
+				#{cityId},
+			</if>
+			<if test="applicationCode != null and applicationCode!=''">
+				#{applicationCode},
+			</if>
+			<if test="tenantCode != null and tenantCode!=''">
+				#{tenantCode},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="findSubProjectIds" resultType="string">
+		SELECT project_id
+		FROM as_project
+		WHERE 1=1
+		AND parent_id IN
+		<foreach collection="projectIds" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findByProjectId" resultMap="projectResultMap">
+		SELECT
+		<include refid="projectColumns"/>
+		FROM as_project
+		WHERE project_id = #{projectId}
+	</select>
+	<select id="findNumByProjectId" resultType="java.util.Map">
+	  SELECT SUM(IFNULL(box_num,0)) AS boxNum,SUM(IFNULL(camera_num,0)) AS cameraNum FROM as_project
+	  WHERE
+		<if test="projectId  != null and projectId != ''" >
+			AND project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+	<select id="findMinParentId" resultType="java.lang.String">			
+       SELECT MIN(parent_id) AS parentId   FROM as_project WHERE project_id IN
+		<foreach collection="projectIds" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findProjectByParentId" resultMap="projectResultMap">
+		SELECT
+		<include refid="projectColumns"/>
+		FROM as_project
+		WHERE parent_id = #{projectId}	
+	</select>
+	<select id="findProjectByTenantCode" resultMap="projectResultMap">
+		SELECT
+		<include refid="projectColumns"/>
+		FROM as_project
+		WHERE tenant_code = #{tenantCode}
+	</select>
+    <select id="findProjectAlarmLevel" resultType="com.aswl.as.ibrs.api.vo.ProjectVo">
+        select
+        ap.project_id as projectId,
+        ap.project_name as projectName,
+        ap.longitude as longitude,
+        ap.latitude as latitude,
+		ifnull(min(adea.alarm_level),3) as alarmLevel
+        from as_project ap
+        left join as_device ad
+        on ap.project_id = ad.project_id
+        left join as_device_event_alarm adea
+        on adea.device_id = ad.id
+		WHERE 1=1
+		<if test="projectId  != null and projectId != ''" >
+			AND ap.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode  != null and tenantCode != ''" >
+			and ap.tenant_code = #{tenantCode}
+		</if>
+		<if test="lonMin!=null and lonMin != '' and lonMax!=null and lonMax!='' ">
+			and ap.longitude between #{lonMin} and #{lonMax}
+		</if>
+		<if test="latMin!=null and latMin!='' and latMax!=null and  latMax !='' ">
+			and ap.latitude between #{latMin} and #{latMax}
+		</if>
+		group by ap.project_id
+	</select>
+
+</mapper>

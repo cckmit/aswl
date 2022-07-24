@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventUcMetadataMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="eventUcMetadataResultMap" type="com.aswl.as.ibrs.api.module.EventUcMetadata">
+        <id column="id" property="id"/>
+        <id column="tab_code" property="tabCode"/>
+        <id column="tab_name" property="tabName"/>
+        <id column="fld_code" property="fldCode"/>
+        <id column="fld_name" property="fldName"/>
+        <id column="fld_type" property="fldType"/>
+        <id column="fld_unit" property="fldUnit"/>
+        <id column="status_name" property="statusName"/>
+        <id column="priority" property="priority"/>
+        <id column="enable" property="enable"/>
+        <id column="is_alarm" property="isAlarm"/>
+        <id column="vector_type" property="vectorType"/>
+        <id column="icon_path" property="iconPath"/>
+        <id column="is_status_group" property="isStatusGroup"/>
+        <id column="event_status_group_id" property="eventStatusGroupId"/>
+        <id column="remark" property="remark"/>
+        <id column="create_date" property="createDate"/>
+        <id column="create_by" property="createBy"/>
+        <id column="create_name" property="createName"/>
+        <id column="update_date" property="updateDate"/>
+        <id column="update_by" property="updateBy"/>
+        <id column="update_name" property="updateName"/>
+    </resultMap>
+
+    <sql id="eventUcMetadataColumns">
+		id, tab_code, tab_name, fld_code, fld_name, fld_type, fld_unit,status_name, priority, enable, is_alarm, vector_type, icon_path, is_status_group, event_status_group_id, remark, create_date, create_by, create_name, update_date, update_by, update_name
+	</sql>
+	
+    <select id="findByStatusName" resultMap="eventUcMetadataResultMap">
+        SELECT
+        <include refid="eventUcMetadataColumns"/>
+        FROM as_event_uc_metadata
+        WHERE status_name = #{statusName}
+    </select>
+
+
+
+    <select id="findByModelTab" resultType="string">
+        SELECT group_concat(t1.fld_code) FROM as_event_uc_metadata t1
+        LEFT JOIN as_event_uc_metadata_model t2
+        on t1.id = t2.event_metadata_id
+        <where>
+            <if test="tableCode != null and tableCode != ''">
+                AND t1.tab_code = #{tableCode}
+            </if>
+            <if test="deviceModelId != null and deviceModelId != ''">
+                AND t2.device_model_id = #{deviceModelId}
+            </if>
+        </where>
+    </select>
+    
+</mapper>

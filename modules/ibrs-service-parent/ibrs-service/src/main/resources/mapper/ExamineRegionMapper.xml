@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineRegionMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="examineRegionResultMap" type="com.aswl.as.ibrs.api.module.ExamineRegion">
+			<id column="id"   property="id" />
+			<id column="examine_standard_id"   property="examineStandardId" />
+			<id column="region_no"   property="regionNo" />
+	</resultMap>
+
+	<sql id="examineRegionColumns">
+		id, examine_standard_id, region_no
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="examineStandardId  != null and examineStandardId != ''" >
+					AND examine_standard_id like CONCAT('%',#{examineStandardId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					AND region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="examineRegionResultMap">
+		SELECT
+		<include refid="examineRegionColumns"/>
+		FROM as_examine_region
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="examineRegionResultMap">
+		SELECT
+		<include refid="examineRegionColumns"/>
+		FROM as_examine_region
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="examineRegionResultMap">
+		SELECT
+		<include refid="examineRegionColumns"/>
+		FROM as_examine_region
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<insert id="insert">
+        INSERT INTO as_examine_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="examineStandardId != null">
+                    examine_standard_id,
+                </if>
+                <if test="regionNo != null">
+                    region_no,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="examineStandardId != null">
+                    #{examineStandardId},
+                </if>
+                <if test="regionNo != null">
+                    #{regionNo},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_examine_region
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="examineStandardId != null">
+					examine_standard_id =  #{examineStandardId},
+				</if>
+				<if test="regionNo != null">
+					region_no =  #{regionNo},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_examine_region
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_examine_region
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

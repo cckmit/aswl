@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AttachmentMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="attachmentResultMap" type="com.aswl.as.ibrs.api.module.Attachment">
+			<id column="id"   property="id" />
+			<id column="file_id"   property="fileId" />
+			<id column="file_name"   property="fileName" />
+			<id column="extend"   property="extend" />
+			<id column="business_key"   property="businessKey" />
+			<id column="download_url"   property="downloadUrl" />
+			<id column="remark"   property="remark" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="project_id"   property="projectId" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="attachmentColumns">
+		id, file_id, file_name, extend, business_key, download_url, remark, creator, create_date, project_id, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="fileId  != null and fileId != ''" >
+					and file_id like CONCAT('%',#{fileId},'%')
+				</if>
+				<if test="fileName  != null and fileName != ''" >
+					and file_name like CONCAT('%',#{fileName},'%')
+				</if>
+				<if test="extend  != null and extend != ''" >
+					and extend like CONCAT('%',#{extend},'%')
+				</if>
+				<if test="businessKey  != null and businessKey != ''" >
+					and business_key like CONCAT('%',#{businessKey},'%')
+				</if>
+				<if test="downloadUrl  != null and downloadUrl != ''" >
+					and download_url like CONCAT('%',#{downloadUrl},'%')
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark like CONCAT('%',#{remark},'%')
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="projectId  != null and projectId != ''" >
+					AND project_id IN
+					<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="attachmentResultMap">
+		SELECT
+		<include refid="attachmentColumns"/>
+		FROM as_attachment
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="attachmentResultMap">
+		SELECT
+		<include refid="attachmentColumns"/>
+		FROM as_attachment
+		WHERE 1 = 1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="attachmentResultMap">
+		SELECT
+		<include refid="attachmentColumns"/>
+		FROM as_attachment
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="fileId != null and fileId!=''">
+                    file_id,
+                </if>
+                <if test="fileName != null and fileName!=''">
+                    file_name,
+                </if>
+                <if test="extend != null and extend!=''">
+                    extend,
+                </if>
+                <if test="businessKey != null and businessKey!=''">
+                    business_key,
+                </if>
+                <if test="downloadUrl != null and downloadUrl!=''">
+                    download_url,
+                </if>
+                <if test="remark != null and remark!=''">
+                    remark,
+                </if>
+                <if test="creator != null and creator!=''">
+                    creator,
+                </if>
+                <if test="createDate != null ">
+                    create_date,
+                </if>
+                <if test="projectId != null and projectId!=''">
+                    project_id,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="fileId != null and fileId!=''">
+                    #{fileId},
+                </if>
+                <if test="fileName != null and fileName!=''">
+                    #{fileName},
+                </if>
+                <if test="extend != null and extend!=''">
+                    #{extend},
+                </if>
+                <if test="businessKey != null and businessKey!=''">
+                    #{businessKey},
+                </if>
+                <if test="downloadUrl != null and downloadUrl!=''">
+                    #{downloadUrl},
+                </if>
+                <if test="remark != null and remark!=''">
+                    #{remark},
+                </if>
+                <if test="creator != null and creator!=''">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="projectId != null and projectId!=''">
+                    #{projectId},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_attachment
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="fileId != null and fileId!=''">
+					file_id =  #{fileId},
+				</if>
+				<if test="fileName != null and fileName!=''">
+					file_name =  #{fileName},
+				</if>
+				<if test="extend != null and extend!=''">
+					extend =  #{extend},
+				</if>
+				<if test="businessKey != null and businessKey!=''">
+					business_key =  #{businessKey},
+				</if>
+				<if test="downloadUrl != null and downloadUrl!=''">
+					download_url =  #{downloadUrl},
+				</if>
+				<if test="remark != null and remark!=''">
+					remark =  #{remark},
+				</if>
+				<if test="creator != null and creator!=''">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null ">
+					create_date =  #{createDate},
+				</if>
+				<if test="projectId != null and projectId!=''">
+					project_id =  #{projectId},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM as_attachment
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_attachment
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventPatrolMapper">
+
+    <insert id="save">
+        INSERT INTO as_event_bt_patrol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="deviceId != null and deviceId != ''">
+                device_id,
+            </if>
+            <if test="regionNo != null and regionNo != ''">
+                region_no,
+            </if>
+            <if test="recTime != null and recTime != ''">
+                rec_time,
+            </if>
+            <if test="keyMac != null and keyMac != ''">
+                key_mac,
+            </if>
+            <if test="idCipher != null and idCipher != ''">
+                id_cipher,
+            </if>
+            <if test="authTime != null">
+                auth_time,
+            </if>
+            <if test="storeTime != null">
+                store_time,
+            </if>
+            <if test="applicationCode != null and applicationCode != ''">
+                application_code,
+            </if>
+            <if test="tenantCode != null and tenantCode != ''">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="deviceId != null and deviceId != ''">
+                #{deviceId},
+            </if>
+            <if test="regionNo != null and regionNo != ''">
+                #{regionNo},
+            </if>
+            <if test="recTime != null and recTime != ''">
+                #{recTime},
+            </if>
+            <if test="keyMac != null and keyMac != ''">
+                #{keyMac},
+            </if>
+            <if test="idCipher != null and idCipher != ''">
+                #{idCipher},
+            </if>
+            <if test="authTime != null">
+                #{authTime},
+            </if>
+            <if test="storeTime != null">
+                #{storeTime},
+            </if>
+            <if test="applicationCode != null and applicationCode != ''">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode != ''">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        update as_event_bt_patrol
+        <set>
+            <if test="deviceId != null and deviceId != ''">
+                device_id = #{deviceId},
+            </if>
+            <if test="regionNo != null and regionNo != ''">
+                region_no = #{regionNo},
+            </if>
+            <if test="recTime != null and recTime != ''">
+                rec_time = #{recTime},
+            </if>
+            <if test="keyMac != null and keyMac != ''">
+                key_mac = #{keyMac},
+            </if>
+            <if test="idCipher != null and idCipher != ''">
+                id_cipher = #{idCipher},
+            </if>
+            <if test="authTime != null">
+                auth_time = #{authTime},
+            </if>
+            <if test="storeTime != null">
+                store_time = #{storeTime},
+            </if>
+            <if test="applicationCode != null and applicationCode != ''">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode != ''">
+                tenant_code = #{tenantCode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

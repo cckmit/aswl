@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineStatisticsRecordMapper">
+
+    <insert id="insert">
+        INSERT INTO as_examine_statistics_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="examineStatisticsId != null">
+                examine_statistics_id,
+            </if>
+            <if test="examineBaseLibId != null">
+                examine_base_lib_id,
+            </if>
+            <if test="regionNo != null">
+                region_no,
+            </if>
+            <if test="regionName != null">
+                region_name,
+            </if>
+            <if test="relateId != null">
+                relate_id,
+            </if>
+            <if test="storeTime != null">
+                store_time,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="examineStatisticsId != null">
+                #{examineStatisticsId},
+            </if>
+            <if test="examineBaseLibId != null">
+                #{examineBaseLibId},
+            </if>
+            <if test="regionNo != null">
+                #{regionNo},
+            </if>
+            <if test="regionName != null">
+                #{regionName},
+            </if>
+            <if test="relateId != null">
+                #{relateId},
+            </if>
+            <if test="storeTime != null">
+                #{storeTime},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO as_examine_statistics_record
+        (
+        id,
+        examine_statistics_id,
+        examine_base_lib_id,
+        region_no,
+        region_name,
+        relate_id,
+        store_time,
+        application_code,
+        tenant_code
+        )
+        VALUES
+        <foreach collection="recordList" separator="," item="item">
+            (
+            #{item.id},
+            #{item.examineStatisticsId},
+            #{item.examineBaseLibId},
+            #{item.regionNo},
+            #{item.regionName},
+            #{item.relateId},
+            #{item.storeTime},
+            #{item.applicationCode},
+            #{item.tenantCode}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getByPeriodAndStandardId" resultType="com.aswl.as.ibrs.api.module.ExamineStatisticsRecord">
+        SELECT
+        t1.id as id,
+        t1.examine_statistics_id as examineStatisticsId,
+        t1.examine_base_lib_id as examineBaseLibId,
+        t1.region_no as regionNo,
+        t1.region_name as regionName,
+        t1.relate_id as relateId,
+        t1.store_time as storeTime,
+        t1.application_code as applicationCode,
+        t1.tenant_code as tenantCode
+        FROM as_examine_statistics_record as t1
+        LEFT JOIN as_examine_statistics as t2 on t1.examine_statistics_id = t2.id
+        LEFT JOIN as_examine_standard as t3 on t2.examine_standard_id = t3.id
+        where 1 = 1
+        <if test="standardId != null and standardId != ''">
+            and t3.id = #{standardId}
+        </if>
+        <if test="periodStart != null and periodEnd != null">
+            and t1.store_time between #{periodStart} and #{periodEnd}
+        </if>
+    </select>
+
+    <select id="findDeductDetails" resultType="com.aswl.as.ibrs.api.dto.DeductScopeDto">
+        SELECT
+        t4.title as title,
+        t2.region_name as regionName,
+        CONCAT(t3.device_name,'未巡检') as event,
+        t3.device_name as deviceName
+        FROM
+        <foreach collection="hisTables" item="item" separator="union all" open="(" close=")">
+            SELECT * from ${item}
+        </foreach> as t1
+        LEFT JOIN as_examine_statistics_record as t2 on t1.id = t2.relate_id
+        LEFT JOIN as_device as t3 on t1.device_id = t3.id
+        LEFT JOIN as_examine_base_lib as t4 on t2.examine_base_lib_id = t4.id
+        LEFT JOIN as_examine_statistics as t5 on t2.examine_statistics_id = t5.id
+        where 1 = 1
+        <if test="relateId != null and relateId != ''">
+            AND t1.id = #{relateId}
+        </if>
+        <if test="standardId != null and standardId != ''">
+            and t5.examine_standard_id = #{standardId}
+        </if>
+        <if test="periodStart != null and periodEnd != null">
+            AND t2.store_time between #{periodStart} and #{periodEnd}
+        </if>
+    </select>
+
+    <select id="findDeductDetailsWithFlowRun" resultType="com.aswl.as.ibrs.api.dto.DeductScopeDto">
+        SELECT
+        tab.title,
+        tab.regionName,
+        tab.event,
+        tab.deviceName,
+        tab.alarmTypeName,
+        tab.alarmTime,
+        tab.responseTime,
+        case when tab.endTime is null then ((TIMESTAMPDIFF(SECOND, '1970-01-01 08:00:00', NOW())- tab.beginTime - tab.responseTime)) ELSE((tab.endTime-tab.beginTime-tab.responseTime)) end as delayTime
+        FROM (
+        SELECT
+        t4.title as title,
+        t1.region_name as regionName,
+        CONCAT(t5.device_name,',',t3.alarm_type_name) as event,
+        t5.device_name as deviceName,
+        t3.alarm_type_name as alarmTypeName,
+        t2.alarm_time as alarmTime,
+        t6.respond_time as responseTime,
+        t2.begin_time as beginTime,
+        t2.end_time as endTime
+        FROM as_examine_statistics_record as t1
+        LEFT JOIN as_flow_run as t2 on t1.relate_id = t2.id
+        LEFT JOIN as_alarm_type as t3 on t2.alarm_type = t3.alarm_type
+        LEFT JOIN as_examine_base_lib as t4 on t1.examine_base_lib_id = t4.id
+        LEFT JOIN as_device as t5 on t2.begin_device_id = t5.id
+        LEFT JOIN as_examine_statistics as t7 on t1.examine_statistics_id = t7.id
+        LEFT JOIN as_examine_time_part_config as t6
+        on (DATE_FORMAT(t2.alarm_time,'%H:%i:%s') BETWEEN DATE_FORMAT(t6.begin_time,'%H:%i:%s') and DATE_FORMAT(t6.end_time,'%H:%i:%s'))
+        LEFT JOIN as_examine_standard as t8 on t7.examine_standard_id = t8.id
+        LEFT JOIN as_examine_item t9 on t9.id = t6.examine_item_id
+        where 1 = 1
+        <if test="relateId != null and relateId != ''">
+            and t2.id = #{relateId}
+        </if>
+        <if test="standardId != null and standardId != ''">
+            and t7.examine_standard_id = #{standardId}
+        </if>
+        <if test="itemId != null and itemId != ''">
+            and t6.examine_item_id = #{itemId}
+        </if>
+        <if test="periodStart != null and periodEnd != null">
+            and t1.store_time between #{periodStart} and #{periodEnd}
+        </if>
+        ) as tab
+    </select>
+
+    <select id="detailsRecord" resultType="com.aswl.as.ibrs.api.module.ExamineStatisticsRecord">
+        SELECT * FROM as_examine_statistics_record
+        WHERE examine_statistics_id = #{statisticId}
+    </select>
+
+    <select id="findDeductDetailsNoRecord" resultType="com.aswl.as.ibrs.api.dto.DeductScopeDto">
+        SELECT
+
+        t3.region_name as regionName,
+        t2.device_name as deviceName,
+        concat(t2.device_name,'未巡检') as event
+          from (
+          SELECT * FROM
+          <foreach collection="hisTables" open="(" close=")" separator="union all" item="item">
+              SELECT * FROM ${item}
+          </foreach> as s
+          ) as t1
+        LEFT JOIN as_device as t2 on t1.device_id = t2.id
+        left JOIN as_region as t3 on t2.region_id = t3.id
+        WHERE t1.id = #{relateId}
+    </select>
+
+
+    <select id="findDeductDetailsFlowRun" resultType="com.aswl.as.ibrs.api.dto.DeductScopeDto">
+        select
+        t3.region_name as regionName,
+        concat(t2.device_name,t4.alarm_type_name) as event,
+        t2.device_name as deviceName,
+        t4.alarm_type_name as alarmTypeName,
+        t1.alarm_time as alarmTime,
+        case when t1.run_status = 1 then FROM_UNIXTIME(t1.end_time,'%Y-%m-%d %H:%m:%s') ELSE DATE_FORMAT(now(),'%Y-%m-%d %H:%m:%s') end as handleTime
+        from
+        as_flow_run as t1 LEFT JOIN as_device as t2 on t1.begin_device_id = t2.id
+        LEFT JOIN as_region as t3 on t3.id = t2.region_id
+        LEFT JOIN as_alarm_type as t4 on t1.alarm_type = t4.alarm_type
+        WHERE t1.id = #{relateId}
+    </select>
+</mapper>

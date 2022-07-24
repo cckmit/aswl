@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmSettingsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmSettingsResultMap" type="com.aswl.as.ibrs.api.module.AlarmSettings">
+			<id column="id"   property="id" />
+			<id column="times"   property="times" />
+			<id column="interval_time"   property="intervalTime" />
+			<id column="alarm_type"   property="alarmType" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="project_id" property="projectId"/>
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="alarmSettingsColumns">
+		id, times, interval_time, alarm_type, store_time, application_code, project_id, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="times  != null and times != ''">
+					AND times = #{times}
+				</if>
+				<if test="intervalTime  != null and intervalTime != ''">
+					AND interval_time = #{intervalTime}
+				</if>
+				<if test="alarmType  != null and alarmType != ''" >
+					AND alarm_type like CONCAT('%',#{alarmType},'%')
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					AND store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					AND application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+                <if test="projectId  != null and projectId != ''" >
+                    AND project_id IN
+                    <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					AND tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmSettingsResultMap">
+		SELECT
+		<include refid="alarmSettingsColumns"/>
+		FROM as_alarm_settings
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="alarmSettingsResultMap">
+		SELECT
+		<include refid="alarmSettingsColumns"/>
+		FROM as_alarm_settings
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmSettingsResultMap">
+		SELECT
+		<include refid="alarmSettingsColumns"/>
+		FROM as_alarm_settings
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_settings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="times != null">
+                    times,
+                </if>
+                <if test="intervalTime != null">
+                    interval_time,
+                </if>
+                <if test="alarmType != null">
+                    alarm_type,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+				<if test="projectId  != null" >
+					project_id,
+				</if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="times != null">
+                    #{times},
+                </if>
+                <if test="intervalTime != null">
+                    #{intervalTime},
+                </if>
+                <if test="alarmType != null">
+                    #{alarmType},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+				<if test="projectId  != null">
+					 #{projectId},
+				</if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_settings
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="times != null">
+					times =  #{times},
+				</if>
+				<if test="intervalTime != null">
+					interval_time =  #{intervalTime},
+				</if>
+				<if test="alarmType != null">
+					alarm_type =  #{alarmType},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="projectId  != null">
+				    project_id = #{projectId},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_alarm_settings
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_alarm_settings
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+
+	<select id="getByTenantCode" resultType="com.aswl.as.ibrs.api.module.AlarmSettings">
+		SELECT <include refid="alarmSettingsColumns"/>
+		FROM as_alarm_settings a
+		WHERE 1 = 1
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+		<if test="tenantCode != null and tenantCode != null">
+			AND tenant_code = #{tenantCode}
+		</if>
+	</select>
+    <select id="getProjectAlarmSettings" resultType="com.aswl.as.ibrs.api.vo.AlarmSettingsVo">
+	SELECT	
+	ap.project_id AS projectId ,
+	ap.project_name AS projectName ,
+	aas.id as id,	
+	aas.times AS times,
+	aas.interval_time AS intervalTime,
+	aas.alarm_type AS alarmType,
+	aas.store_time AS storeTime
+	 FROM as_project ap
+	LEFT JOIN as_alarm_settings aas
+	ON ap.project_id =aas.project_id 
+	WHERE 1=1
+    <if test="projectId  != null and projectId != ''" >
+      AND ap.project_id IN
+       <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+       </foreach>
+     </if>
+	<if test="tenantCode != null and tenantCode != null">
+	  AND ap.tenant_code = #{tenantCode}
+	 </if>	
+	</select>
+</mapper>

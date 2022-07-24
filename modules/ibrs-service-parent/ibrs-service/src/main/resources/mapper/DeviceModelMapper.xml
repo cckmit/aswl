@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceModelMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceModelResultMap" type="com.aswl.as.ibrs.api.module.DeviceModel">
+			<id column="id"  property="id" />
+			<id column="device_model_name"  property="deviceModelName" />
+			<id column="device_type"  property="deviceType" />
+			<id column="acpower_number"  property="acpowerNumber" />
+			<id column="dcpower_number"  property="dcpowerNumber" />
+			<id column="rj45_number"  property="rj45Number" />
+			<id column="fibre_optical_number"  property="fibreOpticalNumber" />
+			<id column="max_temperature"  property="maxTemperature" />
+			<id column="max_voltage1"  property="maxVoltage1" />
+			<id column="max_voltage2"  property="maxVoltage2" />
+			<id column="max_voltage3"  property="maxVoltage3" />
+			<id column="max_voltage4"  property="maxVoltage4" />
+			<id column="max_voltage5"  property="maxVoltage5" />
+			<id column="min_temperature"  property="minTemperature" />
+			<id column="min_voltage1"  property="minVoltage1" />
+			<id column="min_voltage2"  property="minVoltage2" />
+			<id column="min_voltage3"  property="minVoltage3" />
+			<id column="min_voltage4"  property="minVoltage4" />
+			<id column="min_voltage5"  property="minVoltage5" />
+			<id column="creator"  property="creator" />
+			<id column="create_date"  property="createDate" />
+			<id column="create_terminal"  property="createTerminal" />
+			<id column="modifier"  property="modifier" />
+			<id column="modify_date"  property="modifyDate" />
+			<id column="modify_terminal"  property="modifyTerminal" />
+			<id column="del_flag"  property="delFlag" />
+			<id column="pic_url" property="picUrl"/>
+			<id column="description" property="description"/>
+			<id column="doc_file" property="docFile"/>
+			<id column="person_in_charge" property="personInCharge" />
+			<id column="linkman" property="linkman" />
+			<id column="tel_num" property="telNum" />
+			<id column="manufacturer" property="manufacturer"/>
+			<id column="after_sales_tel" property="afterSalesTel"/>
+			<id column="after_sales_support" property="afterSalesSupport"/>
+			<id column="remark"  property="remark" />
+			<id column="is_edit"  property="isEdit" />
+	</resultMap>
+
+	<sql id="deviceModelColumns">
+		id, device_model_name, device_type, acpower_number, dcpower_number, rj45_number, fibre_optical_number, max_temperature,
+		max_voltage1, max_voltage2, max_voltage3, max_voltage4, max_voltage5, min_temperature, min_voltage1, min_voltage2, min_voltage3,
+		min_voltage4, min_voltage5, creator, create_date, create_terminal, modifier, modify_date, modify_terminal, del_flag,remark,pic_url,
+		description,person_in_charge,linkman,tel_num, is_edit,manufacturer
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+				<if test="deviceModelName  != null and deviceModelName != ''" >
+					and device_model_name LIKE CONCAT('%',#{deviceModelName},'%')
+				</if>
+				<if test="deviceType  != null and deviceType != ''" >
+					and device_type = #{deviceType}
+				</if>
+				<if test="acpowerNumber  != null and acpowerNumber != ''" >
+					and acpower_number = #{acpowerNumber}
+				</if>
+				<if test="dcpowerNumber  != null and dcpowerNumber != ''" >
+					and dcpower_number = #{dcpowerNumber}
+				</if>
+				<if test="rj45Number  != null and rj45Number != ''" >
+					and rj45_number = #{rj45Number}
+				</if>
+				<if test="fibreOpticalNumber  != null and fibreOpticalNumber != ''" >
+					and fibre_optical_number = #{fibreOpticalNumber}
+				</if>
+				<if test="maxTemperature  != null and maxTemperature != ''" >
+					and max_temperature = #{maxTemperature}
+				</if>
+				<if test="maxVoltage1  != null and maxVoltage1 != ''" >
+					and max_voltage1 = #{maxVoltage1}
+				</if>
+				<if test="maxVoltage2  != null and maxVoltage2 != ''" >
+					and max_voltage2 = #{maxVoltage2}
+				</if>
+				<if test="maxVoltage3  != null and maxVoltage3 != ''" >
+					and max_voltage3 = #{maxVoltage3}
+				</if>
+				<if test="maxVoltage4  != null and maxVoltage4 != ''" >
+					and max_voltage4 = #{maxVoltage4}
+				</if>
+				<if test="maxVoltage5  != null and maxVoltage5 != ''" >
+					and max_voltage5 = #{maxVoltage5}
+				</if>
+				<if test="minTemperature  != null and minTemperature != ''" >
+					and min_temperature = #{minTemperature}
+				</if>
+				<if test="minVoltage1  != null and minVoltage1 != ''" >
+					and min_voltage1 = #{minVoltage1}
+				</if>
+				<if test="minVoltage2  != null and minVoltage2 != ''" >
+					and min_voltage2 = #{minVoltage2}
+				</if>
+				<if test="minVoltage3  != null and minVoltage3 != ''" >
+					and min_voltage3 = #{minVoltage3}
+				</if>
+				<if test="minVoltage4  != null and minVoltage4 != ''" >
+					and min_voltage4 = #{minVoltage4}
+				</if>
+				<if test="minVoltage5  != null and minVoltage5 != ''" >
+					and min_voltage5 = #{minVoltage5}
+				</if>
+				<if test="creator  != null and creator != ''" >
+					and creator = #{creator}
+				</if>
+				<if test="createDate  != null and createDate != ''" >
+					and create_date = #{createDate}
+				</if>
+				<if test="createTerminal  != null and createTerminal != ''" >
+					and create_terminal = #{createTerminal}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					and modifier = #{modifier}
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''" >
+					and modify_date = #{modifyDate}
+				</if>
+				<if test="modifyTerminal  != null and modifyTerminal != ''" >
+					and modify_terminal = #{modifyTerminal}
+				</if>
+				<if test="delFlag  != null and delFlag != ''" >
+					and del_flag = #{delFlag}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and remark = #{remark}
+				</if>
+				<if test="personInCharge != null and personInCharge != ''">
+					and person_in_charge = #{personInCharge}
+				</if>
+				<if test="linkman != null and linkman != ''">
+					and linkman = #{linkman}
+				</if>
+				<if test="telNum != null and telNum != ''">
+					and tel_num = #{telNum}
+				</if>
+				<if test="isEdit != null" >
+					and is_edit = #{isEdit}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceModelResultMap">
+		SELECT
+		<include refid="deviceModelColumns"/>
+		FROM as_device_model
+		WHERE id = #{id} and del_flag = 0
+	</select>
+	
+	<select id="findAll" resultMap="deviceModelResultMap">
+		SELECT 
+		<include refid="deviceModelColumns"/>
+		FROM as_device_model
+
+	</select>
+
+	<select id="findList"  resultType="com.aswl.as.ibrs.api.vo.DeviceModelVo">
+		SELECT
+		<include refid="deviceModelColumns"/>
+		FROM as_device_model
+		WHERE dm.del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceModelResultMap">
+		SELECT
+		<include refid="deviceModelColumns"/>
+		FROM as_device_model
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceModelName != null">
+                    device_model_name,
+                </if>
+                <if test="deviceType != null">
+                    device_type,
+                </if>
+                <if test="acpowerNumber != null">
+                    acpower_number,
+                </if>
+                <if test="dcpowerNumber != null">
+                    dcpower_number,
+                </if>
+                <if test="rj45Number != null">
+                    rj45_number,
+                </if>
+                <if test="fibreOpticalNumber != null">
+                    fibre_optical_number,
+                </if>
+                <if test="maxTemperature != null">
+                    max_temperature,
+                </if>
+                <if test="maxVoltage1 != null">
+                    max_voltage1,
+                </if>
+                <if test="maxVoltage2 != null">
+                    max_voltage2,
+                </if>
+                <if test="maxVoltage3 != null">
+                    max_voltage3,
+                </if>
+                <if test="maxVoltage4 != null">
+                    max_voltage4,
+                </if>
+                <if test="maxVoltage5 != null">
+                    max_voltage5,
+                </if>
+                <if test="minTemperature != null">
+                    min_temperature,
+                </if>
+                <if test="minVoltage1 != null">
+                    min_voltage1,
+                </if>
+                <if test="minVoltage2 != null">
+                    min_voltage2,
+                </if>
+                <if test="minVoltage3 != null">
+                    min_voltage3,
+                </if>
+                <if test="minVoltage4 != null">
+                    min_voltage4,
+                </if>
+                <if test="minVoltage5 != null">
+                    min_voltage5,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="createTerminal != null">
+                    create_terminal,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="modifyTerminal != null">
+                    modify_terminal,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+				<if test="isEdit != null">
+					is_edit,
+				</if>
+				<if test="picUrl != null">
+					pic_url,
+				</if>
+				<if test="description != null">
+					description,
+				</if>
+				<if test="docFile != null">
+					doc_file,
+				</if>
+				<if test="personInCharge != null">
+					person_in_charge,
+				</if>
+				<if test="linkman != null">
+					linkman,
+				</if>
+				<if test="telNum != null">
+					tel_num,
+				</if>
+				<if test="manufacturer != null">
+					manufacturer,
+				</if>
+				<if test="afterSalesTel != null">
+					after_sales_tel,
+				</if>
+				<if test="afterSalesSupport != null">
+					after_sales_support,
+				</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="deviceModelName != null">
+                    #{deviceModelName},
+                </if>
+                <if test="deviceType != null">
+                    #{deviceType},
+                </if>
+                <if test="acpowerNumber != null">
+                    #{acpowerNumber},
+                </if>
+                <if test="dcpowerNumber != null">
+                    #{dcpowerNumber},
+                </if>
+                <if test="rj45Number != null">
+                    #{rj45Number},
+                </if>
+                <if test="fibreOpticalNumber != null">
+                    #{fibreOpticalNumber},
+                </if>
+                <if test="maxTemperature != null">
+                    #{maxTemperature},
+                </if>
+                <if test="maxVoltage1 != null">
+                    #{maxVoltage1},
+                </if>
+                <if test="maxVoltage2 != null">
+                    #{maxVoltage2},
+                </if>
+                <if test="maxVoltage3 != null">
+                    #{maxVoltage3},
+                </if>
+                <if test="maxVoltage4 != null">
+                    #{maxVoltage4},
+                </if>
+                <if test="maxVoltage5 != null">
+                    #{maxVoltage5},
+                </if>
+                <if test="minTemperature != null">
+                    #{minTemperature},
+                </if>
+                <if test="minVoltage1 != null">
+                    #{minVoltage1},
+                </if>
+                <if test="minVoltage2 != null">
+                    #{minVoltage2},
+                </if>
+                <if test="minVoltage3 != null">
+                    #{minVoltage3},
+                </if>
+                <if test="minVoltage4 != null">
+                    #{minVoltage4},
+                </if>
+                <if test="minVoltage5 != null">
+                    #{minVoltage5},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="createTerminal != null">
+                    #{createTerminal},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="modifyTerminal != null">
+                    #{modifyTerminal},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+				<if test="isEdit != null">
+					#{isEdit},
+				</if>
+				<if test="picUrl != null">
+					#{picUrl},
+				</if>
+				<if test="description != null">
+					#{description},
+				</if>
+				<if test="docFile != null">
+					#{docFile},
+				</if>
+				<if test="personInCharge != null">
+					#{personInCharge},
+				</if>
+				<if test="linkman != null">
+					#{linkman},
+				</if>
+				<if test="telNum != null">
+					#{telNum},
+				</if>
+				<if test="manufacturer != null">
+					#{manufacturer},
+				</if>
+				<if test="afterSalesTel != null">
+					#{afterSalesTel},
+				</if>
+				<if test="afterSalesSupport != null">
+					#{afterSalesSupport},
+				</if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_model
+			<set>
+				<if test="deviceModelName != null">
+					device_model_name = #{deviceModelName},
+				</if>
+				<if test="deviceType != null">
+					device_type = #{deviceType},
+				</if>
+				<if test="acpowerNumber != null">
+					acpower_number = #{acpowerNumber},
+				</if>
+				<if test="dcpowerNumber != null">
+					dcpower_number = #{dcpowerNumber},
+				</if>
+				<if test="rj45Number != null">
+					rj45_number = #{rj45Number},
+				</if>
+				<if test="fibreOpticalNumber != null">
+					fibre_optical_number = #{fibreOpticalNumber},
+				</if>
+				<if test="maxTemperature != null">
+					max_temperature = #{maxTemperature},
+				</if>
+				<if test="maxVoltage1 != null">
+					max_voltage1 = #{maxVoltage1},
+				</if>
+				<if test="maxVoltage2 != null">
+					max_voltage2 = #{maxVoltage2},
+				</if>
+				<if test="maxVoltage3 != null">
+					max_voltage3 = #{maxVoltage3},
+				</if>
+				<if test="maxVoltage4 != null">
+					max_voltage4 = #{maxVoltage4},
+				</if>
+				<if test="maxVoltage5 != null">
+					max_voltage5 = #{maxVoltage5},
+				</if>
+				<if test="minTemperature != null">
+					min_temperature = #{minTemperature},
+				</if>
+				<if test="minVoltage1 != null">
+					min_voltage1 = #{minVoltage1},
+				</if>
+				<if test="minVoltage2 != null">
+					min_voltage2 = #{minVoltage2},
+				</if>
+				<if test="minVoltage3 != null">
+					min_voltage3 = #{minVoltage3},
+				</if>
+				<if test="minVoltage4 != null">
+					min_voltage4 = #{minVoltage4},
+				</if>
+				<if test="minVoltage5 != null">
+					min_voltage5 = #{minVoltage5},
+				</if>
+				<if test="creator != null">
+					creator = #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date = #{createDate},
+				</if>
+				<if test="createTerminal != null">
+					create_terminal = #{createTerminal},
+				</if>
+				<if test="modifier != null">
+					modifier = #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date = #{modifyDate},
+				</if>
+				<if test="modifyTerminal != null">
+					modify_terminal = #{modifyTerminal},
+				</if>
+				<if test="delFlag != null">
+					del_flag = #{delFlag},
+				</if>
+				<if test="remark != null">
+					remark = #{remark},
+				</if>
+				<if test="isEdit != null">
+					is_edit = #{isEdit},
+				</if>
+				<if test="picUrl != null">
+					pic_url=#{picUrl},
+				</if>
+				<if test="description != null">
+					description=#{description},
+				</if>
+				<if test="docFile != null">
+					doc_file= #{docFile},
+				</if>
+				<if test="personInCharge != null">
+					person_in_charge = #{personInCharge},
+				</if>
+				<if test="linkman != null">
+					linkman = #{linkman},
+				</if>
+				<if test="telNum != null">
+					tel_num = #{telNum},
+				</if>
+				<if test="manufacturer != null">
+					manufacturer = #{manufacturer},
+				</if>
+				<if test="afterSalesTel != null">
+					after_sales_tel = #{afterSalesTel},
+				</if>
+				<if test="afterSalesSupport != null">
+					after_sales_support =#{afterSalesSupport},
+				</if>
+			</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_device_model
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_device_model
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findByDeviceModelName" resultMap="deviceModelResultMap">
+		SELECT
+		<include refid="deviceModelColumns"/>
+		FROM as_device_model WHERE device_model_name=#{deviceModelName}
+
+	</select>
+
+	<!---->
+	<select id="getDeviceModelByUser" resultType="string">
+		select m.device_model_name from as_region r
+		INNER JOIN as_device d on r.id = d.region_id
+		inner join as_device_model m on d.device_model_id = m.id
+		where r.creator = #{userName} GROUP BY m.device_model_name;
+	</select>
+
+
+	<select id="getByDeviceId" resultMap="deviceModelResultMap">
+		SELECT
+		a.id,
+		a.device_model_name,
+		a.device_type,
+		a.acpower_number,
+		a.dcpower_number,
+		a.rj45_number,
+		a.fibre_optical_number
+		FROM as_device_model as a LEFT JOIN as_device as b
+		ON a.id = b.device_model_id where b.id = #{id}
+	</select>
+	<select id="findDeviceModelsByKind" resultType="com.aswl.as.ibrs.api.vo.DeviceModelVo">
+		SELECT 
+		adm.device_type as deviceType ,
+		adm.device_model_name as deviceModelName ,
+		adk.type as kind
+		FROM as_device_model adm
+		LEFT JOIN as_device_type adt
+		ON adm.device_type =adt.device_type
+		LEFT JOIN as_device_kind adk
+		ON adt.device_kind_id =adk.id
+		WHERE 1=1
+	</select>
+	<select id="findPageInfo" resultType="com.aswl.as.ibrs.api.vo.DeviceModelVo">
+		SELECT
+		dm.id AS id,
+		dm.device_model_name AS deviceModelName,
+		dk.id AS deviceKindId,
+		dk.device_kind_name AS deviceKindName,
+		dt.device_type AS deviceType,
+		dt.device_type_name AS deviceTypeName,
+		dm.max_temperature AS maxTemperature,
+		dm.min_temperature AS minTemperature,
+		dm.max_voltage1 AS maxVoltage1,
+		dm.min_voltage1 AS minVoltage1,
+		dm.max_voltage2 AS maxVoltage2,
+		dm.min_voltage2 AS minVoltage2,
+		dm.max_voltage3 AS maxVoltage3,
+		dm.min_voltage3 AS minVoltage3,
+		dm.max_voltage4 AS maxVoltage4,
+		dm.min_voltage4 AS minVoltage4,
+		dm.max_voltage5 AS maxVoltage5,
+		dm.min_voltage5 AS minVoltage5,
+		dm.dcpower_number AS dcpowerNumber,
+		dm.acpower_number AS acpowerNumber,
+		dm.rj45_number AS rj45Number,
+		dm.fibre_optical_number AS fibreOpticalNumber,
+		dm.remark AS remark,
+		dm.create_date,
+		dm.pic_url AS picUrl,
+		dm.description AS description,
+		dm.person_in_charge AS personInCharge,
+		dm.linkman AS linkman,
+		dm.tel_num AS telNum,
+		dm.manufacturer AS manufacturer,
+        dm.is_edit AS isEdit
+		FROM as_device_model dm
+		JOIN as_device_type dt
+		ON dt.device_type=dm.device_type
+		JOIN as_device_kind dk
+		ON dk.id=dt.device_kind_id
+		WHERE dm.del_flag = 0
+		<if test="deviceModelName != null and deviceModelName !=''">
+			AND  dm.device_model_name LIKE CONCAT ('%',#{deviceModelName},'%') 
+	  </if>
+	  <if test="kind != null and kind != ''">
+		  AND dk.type = #{kind}
+	  </if>
+	</select>
+</mapper>

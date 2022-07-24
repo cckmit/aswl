@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventHisPatrolMapper">
+    <insert id="save">
+        INSERT INTO ${hisTableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="eventHisPatrol.id != null and eventHisPatrol.id != ''">
+                id,
+            </if>
+            <if test="eventHisPatrol.deviceId != null and eventHisPatrol.deviceId != ''">
+                device_id,
+            </if>
+            <if test="eventHisPatrol.regionNo != null and eventHisPatrol.regionNo != ''">
+                region_no,
+            </if>
+            <if test="eventHisPatrol.recTime != null and eventHisPatrol.recTime != ''">
+                rec_time,
+            </if>
+            <if test="eventHisPatrol.keyMac != null and eventHisPatrol.keyMac != ''">
+                key_mac,
+            </if>
+            <if test="eventHisPatrol.idCipher != null and eventHisPatrol.idCipher != ''">
+                id_cipher,
+            </if>
+            <if test="eventHisPatrol.authTime != null">
+                auth_time,
+            </if>
+            <if test="eventHisPatrol.storeTime != null">
+                store_time,
+            </if>
+            <if test="eventHisPatrol.applicationCode != null and eventHisPatrol.applicationCode != ''">
+                application_code,
+            </if>
+            <if test="eventHisPatrol.tenantCode != null and eventHisPatrol.tenantCode != ''">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="eventHisPatrol.id != null and eventHisPatrol.id != ''">
+                #{eventHisPatrol.id},
+            </if>
+            <if test="eventHisPatrol.deviceId != null and eventHisPatrol.deviceId != ''">
+                #{eventHisPatrol.deviceId},
+            </if>
+            <if test="eventHisPatrol.regionNo != null and eventHisPatrol.regionNo != ''">
+                #{eventHisPatrol.regionNo},
+            </if>
+            <if test="eventHisPatrol.recTime != null and eventHisPatrol.recTime != ''">
+                #{eventHisPatrol.recTime},
+            </if>
+            <if test="eventHisPatrol.keyMac != null and eventHisPatrol.keyMac != ''">
+                #{eventHisPatrol.keyMac},
+            </if>
+            <if test="eventHisPatrol.idCipher != null and eventHisPatrol.idCipher != ''">
+                #{eventHisPatrol.idCipher},
+            </if>
+            <if test="eventHisPatrol.authTime != null">
+                #{eventHisPatrol.authTime},
+            </if>
+            <if test="eventHisPatrol.storeTime != null">
+                #{eventHisPatrol.storeTime},
+            </if>
+            <if test="eventHisPatrol.applicationCode != null and eventHisPatrol.applicationCode != ''">
+                #{eventHisPatrol.applicationCode},
+            </if>
+            <if test="eventHisPatrol.tenantCode != null and eventHisPatrol.tenantCode != ''">
+                #{eventHisPatrol.tenantCode},
+            </if>
+        </trim>
+    </insert>
+</mapper>

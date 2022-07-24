@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventUcStatusOperationMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventUcStatusOperationResultMap" type="com.aswl.as.ibrs.api.module.EventUcStatusOperation">
+			<id column="id"   property="id" />
+			<id column="title"   property="title" />
+			<id column="oper_name"   property="operName" />
+			<id column="oper_code"   property="operCode" />
+			<id column="oper_sort"   property="operSort" />
+			<id column="create_date"   property="createDate" />
+			<id column="create_by"   property="createBy" />
+			<id column="update_date"   property="updateDate" />
+			<id column="update_by"   property="updateBy" />
+			<id column="sys_org_code"   property="sysOrgCode" />
+			<id column="sys_region_code"   property="sysRegionCode" />
+	</resultMap>
+
+	<sql id="eventUcStatusOperationColumns">
+		id, title, oper_name, oper_code, oper_sort, create_date, create_by, update_date, update_by, sys_org_code, sys_region_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="title  != null and title != ''" >
+					and title like CONCAT('%',#{title},'%')
+				</if>
+				<if test="operName  != null and operName != ''" >
+					and oper_name like CONCAT('%',#{operName},'%')
+				</if>
+				<if test="operCode  != null and operCode != ''" >
+					and oper_code like CONCAT('%',#{operCode},'%')
+				</if>
+				<if test="operSort  != null and operSort != ''">
+					and oper_sort = #{operSort}
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="createBy  != null and createBy != ''" >
+					and create_by like CONCAT('%',#{createBy},'%')
+				</if>
+				<if test="updateDate  != null and updateDate != ''">
+					and update_date = #{updateDate}
+				</if>
+				<if test="updateBy  != null and updateBy != ''" >
+					and update_by like CONCAT('%',#{updateBy},'%')
+				</if>
+				<if test="sysOrgCode  != null and sysOrgCode != ''" >
+					and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+				</if>
+				<if test="sysRegionCode  != null and sysRegionCode != ''" >
+					and sys_region_code like CONCAT('%',#{sysRegionCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventUcStatusOperationResultMap">
+		SELECT
+		<include refid="eventUcStatusOperationColumns"/>
+		FROM as_event_uc_status_operation
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventUcStatusOperationResultMap">
+		SELECT
+		<include refid="eventUcStatusOperationColumns"/>
+		FROM as_event_uc_status_operation
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventUcStatusOperationResultMap">
+		SELECT
+		<include refid="eventUcStatusOperationColumns"/>
+		FROM as_event_uc_status_operation
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_uc_status_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="title != null">
+                    title,
+                </if>
+                <if test="operName != null">
+                    oper_name,
+                </if>
+                <if test="operCode != null">
+                    oper_code,
+                </if>
+                <if test="operSort != null">
+                    oper_sort,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="createBy != null">
+                    create_by,
+                </if>
+                <if test="updateDate != null">
+                    update_date,
+                </if>
+                <if test="updateBy != null">
+                    update_by,
+                </if>
+                <if test="sysOrgCode != null">
+                    sys_org_code,
+                </if>
+                <if test="sysRegionCode != null">
+                    sys_region_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="title != null">
+                    #{title},
+                </if>
+                <if test="operName != null">
+                    #{operName},
+                </if>
+                <if test="operCode != null">
+                    #{operCode},
+                </if>
+                <if test="operSort != null">
+                    #{operSort},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="createBy != null">
+                    #{createBy},
+                </if>
+                <if test="updateDate != null">
+                    #{updateDate},
+                </if>
+                <if test="updateBy != null">
+                    #{updateBy},
+                </if>
+                <if test="sysOrgCode != null">
+                    #{sysOrgCode},
+                </if>
+                <if test="sysRegionCode != null">
+                    #{sysRegionCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_uc_status_operation
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="title != null">
+					title =  #{title},
+				</if>
+				<if test="operName != null">
+					oper_name =  #{operName},
+				</if>
+				<if test="operCode != null">
+					oper_code =  #{operCode},
+				</if>
+				<if test="operSort != null">
+					oper_sort =  #{operSort},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="createBy != null">
+					create_by =  #{createBy},
+				</if>
+				<if test="updateDate != null">
+					update_date =  #{updateDate},
+				</if>
+				<if test="updateBy != null">
+					update_by =  #{updateBy},
+				</if>
+				<if test="sysOrgCode != null">
+					sys_org_code =  #{sysOrgCode},
+				</if>
+				<if test="sysRegionCode != null">
+					sys_region_code =  #{sysRegionCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_uc_status_operation
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_uc_status_operation
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+<select id="selectEventUcStatusOperation" resultType="com.aswl.as.ibrs.api.vo.EventUcStatusOperationVo">
+	SELECT
+	t2.title AS title,
+	t2.id AS id,
+	t1.event_metadata_model_id AS metadataId
+	FROM as_event_uc_metadata_model_operation t1
+	LEFT JOIN as_event_uc_status_operation t2
+	ON t1.status_operation_id=t2.id
+	WHERE t1.id=#{metadataModelOperationId}
+
+</select>
+
+</mapper>

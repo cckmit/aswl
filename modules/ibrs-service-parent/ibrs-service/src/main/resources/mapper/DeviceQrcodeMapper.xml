@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceQrcodeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceQrcodeResultMap" type="com.aswl.as.ibrs.api.module.DeviceQrcode">
+			<id column="qr_code_id"   property="qrCodeId" />
+			<id column="qr_code"   property="qrCode" />
+			<id column="factory_code"   property="factoryCode" />
+			<id column="is_used"   property="isUsed" />
+			<id column="visit_time"   property="visitTime" />
+			<id column="qrcode_bath_id" property="qrCodeBathId"/>
+			<id column="remark"   property="remark" />
+	</resultMap>
+
+	<sql id="deviceQrcodeColumns">
+		qr_code_id, qr_code, factory_code, is_used, visit_time, remark
+	</sql>
+	<!-- where 条件 -->
+	<sql id="whereColumnList">
+
+				<if test="qrCode  != null and qrCode != ''" >
+					AND qr_code like CONCAT('%',#{qrCode},'%')
+				</if>
+				<if test="factoryCode  != null and factoryCode != ''" >
+					AND factory_code like CONCAT('%',#{factoryCode},'%')
+				</if>
+				<if test="isUsed  != null and isUsed != ''">
+					AND is_used = #{isUsed}
+				</if>
+				<if test="visitTime  != null and visitTime != ''">
+					AND visit_time = #{visitTime}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					AND remark like CONCAT('%',#{remark},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceQrcodeResultMap">
+		SELECT
+		<include refid="deviceQrcodeColumns"/>
+		FROM as_device_qrcode
+		WHERE qr_code_id = #{qrCodeId}
+	</select>
+
+	<select id="findList" resultMap="deviceQrcodeResultMap">
+		SELECT
+		<include refid="deviceQrcodeColumns"/>
+		FROM as_device_qrcode
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceQrcodeResultMap">
+		SELECT
+		<include refid="deviceQrcodeColumns"/>
+		FROM as_device_qrcode
+		WHERE qr_code_id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_qrcode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="qrCodeId != null">
+                    qr_code_id,
+                </if>
+                <if test="qrCode != null">
+                    qr_code,
+                </if>
+                <if test="factoryCode != null">
+                    factory_code,
+                </if>
+                <if test="isUsed != null">
+                    is_used,
+                </if>
+                <if test="visitTime != null">
+                    visit_time,
+                </if>
+				<if test="qrCodeBathId != null">
+					qrcode_bath_id,
+				</if>
+                <if test="remark != null">
+                    remark,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="qrCodeId != null">
+                    #{qrCodeId},
+                </if>
+                <if test="qrCode != null">
+                    #{qrCode},
+                </if>
+                <if test="factoryCode != null">
+                    #{factoryCode},
+                </if>
+                <if test="isUsed != null">
+                    #{isUsed},
+                </if>
+                <if test="visitTime != null">
+                    #{visitTime},
+                </if>
+				<if test="qrCodeBathId != null">
+					#{qrCodeBathId},
+				</if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_qrcode
+		<set>
+				<if test="qrCodeId != null">
+					qr_code_id =  #{qrCodeId},
+				</if>
+				<if test="qrCode != null">
+					qr_code =  #{qrCode},
+				</if>
+				<if test="factoryCode != null">
+					factory_code =  #{factoryCode},
+				</if>
+				<if test="isUsed != null">
+					is_used =  #{isUsed},
+				</if>
+				<if test="visitTime != null">
+					visit_time =  #{visitTime},
+				</if>
+				<if test="qrCodeBathId != null">
+					qrcode_bath_id =#{qrCodeBathId},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+		</set>
+		WHERE qr_code_id =  #{qrCodeId}
+	</update>
+    <update id="updateByQrCode">
+		UPDATE as_device_qrcode set is_used =1 AND qr_code = #{qrCode}
+	</update>
+
+    <delete id="delete">
+		DELETE FROM  as_device_qrcode
+		WHERE qr_code_id =  #{qrCodeId}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_device_qrcode
+		WHERE qr_code_id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="getDeviceIdByQrCode" parameterType="com.aswl.as.ibrs.api.dto.DeviceQrcodeDto" resultType="com.aswl.as.ibrs.api.vo.DeviceQrcodeVo" >
+		select qr.id as qr_code_id, qr.qr_code as qr_code, qr.factory_code as factory_code, qr.is_used as is_used, qr.visit_time as visit_time,
+		qr.remark as remark, d.id as device_id
+		from as_device_qrcode qr
+		left join as_device d on qr.factory_code = d.factory_code
+		where qr_code = #{qrCode}
+	</select>
+
+</mapper>

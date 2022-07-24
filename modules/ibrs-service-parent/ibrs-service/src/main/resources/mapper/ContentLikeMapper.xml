@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ContentLikeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="contentLikeResultMap" type="com.aswl.as.ibrs.api.module.ContentLike">
+			<id column="id"   property="id" />
+			<id column="category"   property="category" />
+			<id column="content_id"   property="contentId" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+	</resultMap>
+
+	<sql id="contentLikeColumns">
+		id, category, content_id, creator, create_date
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="category  != null and category != ''">
+					AND category = #{category}
+				</if>
+				<if test="contentId  != null and contentId != ''" >
+					AND content_id like CONCAT('%',#{contentId},'%')
+				</if>
+				<if test="creator  != null and creator != ''" >
+					AND creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					AND create_date = #{createDate}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="contentLikeResultMap">
+		SELECT
+		<include refid="contentLikeColumns"/>
+		FROM as_content_like
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="contentLikeResultMap">
+		SELECT
+		<include refid="contentLikeColumns"/>
+		FROM as_content_like
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="contentLikeResultMap">
+		SELECT
+		<include refid="contentLikeColumns"/>
+		FROM as_content_like
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_content_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="category != null">
+                    category,
+                </if>
+                <if test="contentId != null">
+                    content_id,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="category != null">
+                    #{category},
+                </if>
+                <if test="contentId != null">
+                    #{contentId},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_content_like
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="category != null">
+					category =  #{category},
+				</if>
+				<if test="contentId != null">
+					content_id =  #{contentId},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_content_like
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_content_like
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

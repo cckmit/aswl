@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventSecCtlPowerOutputMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventSecCtlPowerOutputResultMap" type="com.aswl.as.ibrs.api.module.EventSecCtlPowerOutput">
+		<id column="id"   property="id" />
+		<id column="u_event_id"   property="uEventId" />
+		<id column="device_id"   property="deviceId" />
+		<id column="region_no"   property="regionNo" />
+		<id column="rec_time"   property="recTime" />
+		<id column="vol01"   property="vol01" />
+		<id column="vol02"   property="vol02" />
+		<id column="vol03"   property="vol03" />
+		<id column="vol04"   property="vol04" />
+		<id column="vol05"   property="vol05" />
+		<id column="vol06"   property="vol06" />
+		<id column="vol07"   property="vol07" />
+		<id column="vol08"   property="vol08" />
+		<id column="vol09"   property="vol09" />
+		<id column="vol10"   property="vol10" />
+		<id column="vol11"   property="vol11" />
+		<id column="vol12"   property="vol12" />
+		<id column="vol13"   property="vol13" />
+		<id column="vol14"   property="vol14" />
+		<id column="vol15"   property="vol15" />
+		<id column="vol16"   property="vol16" />
+		<id column="rate01"   property="rate01" />
+		<id column="rate02"   property="rate02" />
+		<id column="rate03"   property="rate03" />
+		<id column="rate04"   property="rate04" />
+		<id column="rate05"   property="rate05" />
+		<id column="rate06"   property="rate06" />
+		<id column="rate07"   property="rate07" />
+		<id column="rate08"   property="rate08" />
+		<id column="rate09"   property="rate09" />
+		<id column="rate10"   property="rate10" />
+		<id column="rate11"   property="rate11" />
+		<id column="rate12"   property="rate12" />
+		<id column="rate13"   property="rate13" />
+		<id column="rate14"   property="rate14" />
+		<id column="rate15"   property="rate15" />
+		<id column="rate16"   property="rate16" />
+		<id column="elec01"   property="elec01" />
+		<id column="elec02"   property="elec02" />
+		<id column="elec03"   property="elec03" />
+		<id column="elec04"   property="elec04" />
+		<id column="elec05"   property="elec05" />
+		<id column="elec06"   property="elec06" />
+		<id column="elec07"   property="elec07" />
+		<id column="elec08"   property="elec08" />
+		<id column="elec09"   property="elec09" />
+		<id column="elec10"   property="elec10" />
+		<id column="elec11"   property="elec11" />
+		<id column="elec12"   property="elec12" />
+		<id column="elec13"   property="elec13" />
+		<id column="elec14"   property="elec14" />
+		<id column="elec15"   property="elec15" />
+		<id column="elec16"   property="elec16" />
+		<id column="store_time"   property="storeTime" />
+		<id column="application_code"   property="applicationCode" />
+		<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventSecCtlPowerOutputColumns">
+		id, u_event_id, device_id, region_no, rec_time, vol01, vol02, vol03, vol04, vol05, vol06, vol07, vol08, vol09, vol10, vol11, vol12, vol13, vol14, vol15, vol16, rate01, rate02, rate03, rate04, rate05, rate06, rate07, rate08, rate09, rate10, rate11, rate12, rate13, rate14, rate15, rate16, elec01, elec02, elec03, elec04, elec05, elec06, elec07, elec08, elec09, elec10, elec11, elec12, elec13, elec14, elec15, elec16, store_time, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+		<if test="uEventId!= null and uEventId!= ''" >
+			and u_event_id LIKE CONCAT(#{uEventId},'%')
+		</if>
+		<if test="deviceId!= null and deviceId!= ''" >
+			and device_id LIKE CONCAT(#{deviceId},'%')
+		</if>
+		<if test="regionNo!= null and regionNo!= ''" >
+			and region_no LIKE CONCAT(#{regionNo},'%')
+		</if>
+		<if test="recTime!= null and recTime!= ''">
+			and rec_time = #{recTime}
+		</if>
+		<if test="vol01!= null and vol01!= ''">
+			and vol01 = #{vol01}
+		</if>
+		<if test="vol02!= null and vol02!= ''">
+			and vol02 = #{vol02}
+		</if>
+		<if test="vol03!= null and vol03!= ''">
+			and vol03 = #{vol03}
+		</if>
+		<if test="vol04!= null and vol04!= ''">
+			and vol04 = #{vol04}
+		</if>
+		<if test="vol05!= null and vol05!= ''">
+			and vol05 = #{vol05}
+		</if>
+		<if test="vol06!= null and vol06!= ''">
+			and vol06 = #{vol06}
+		</if>
+		<if test="vol07!= null and vol07!= ''">
+			and vol07 = #{vol07}
+		</if>
+		<if test="vol08!= null and vol08!= ''">
+			and vol08 = #{vol08}
+		</if>
+		<if test="vol09!= null and vol09!= ''">
+			and vol09 = #{vol09}
+		</if>
+		<if test="vol10!= null and vol10!= ''">
+			and vol10 = #{vol10}
+		</if>
+		<if test="vol11!= null and vol11!= ''">
+			and vol11 = #{vol11}
+		</if>
+		<if test="vol12!= null and vol12!= ''">
+			and vol12 = #{vol12}
+		</if>
+		<if test="vol13!= null and vol13!= ''">
+			and vol13 = #{vol13}
+		</if>
+		<if test="vol14!= null and vol14!= ''">
+			and vol14 = #{vol14}
+		</if>
+		<if test="vol15!= null and vol15!= ''">
+			and vol15 = #{vol15}
+		</if>
+		<if test="vol16!= null and vol16!= ''">
+			and vol16 = #{vol16}
+		</if>
+		<if test="rate01!= null and rate01!= ''">
+			and rate01 = #{rate01}
+		</if>
+		<if test="rate02!= null and rate02!= ''">
+			and rate02 = #{rate02}
+		</if>
+		<if test="rate03!= null and rate03!= ''">
+			and rate03 = #{rate03}
+		</if>
+		<if test="rate04!= null and rate04!= ''">
+			and rate04 = #{rate04}
+		</if>
+		<if test="rate05!= null and rate05!= ''">
+			and rate05 = #{rate05}
+		</if>
+		<if test="rate06!= null and rate06!= ''">
+			and rate06 = #{rate06}
+		</if>
+		<if test="rate07!= null and rate07!= ''">
+			and rate07 = #{rate07}
+		</if>
+		<if test="rate08!= null and rate08!= ''">
+			and rate08 = #{rate08}
+		</if>
+		<if test="rate09!= null and rate09!= ''">
+			and rate09 = #{rate09}
+		</if>
+		<if test="rate10!= null and rate10!= ''">
+			and rate10 = #{rate10}
+		</if>
+		<if test="rate11!= null and rate11!= ''">
+			and rate11 = #{rate11}
+		</if>
+		<if test="rate12!= null and rate12!= ''">
+			and rate12 = #{rate12}
+		</if>
+		<if test="rate13!= null and rate13!= ''">
+			and rate13 = #{rate13}
+		</if>
+		<if test="rate14!= null and rate14!= ''">
+			and rate14 = #{rate14}
+		</if>
+		<if test="rate15!= null and rate15!= ''">
+			and rate15 = #{rate15}
+		</if>
+		<if test="rate16!= null and rate16!= ''">
+			and rate16 = #{rate16}
+		</if>
+		<if test="elec01!= null and elec01!= ''">
+			and elec01 = #{elec01}
+		</if>
+		<if test="elec02!= null and elec02!= ''">
+			and elec02 = #{elec02}
+		</if>
+		<if test="elec03!= null and elec03!= ''">
+			and elec03 = #{elec03}
+		</if>
+		<if test="elec04!= null and elec04!= ''">
+			and elec04 = #{elec04}
+		</if>
+		<if test="elec05!= null and elec05!= ''">
+			and elec05 = #{elec05}
+		</if>
+		<if test="elec06!= null and elec06!= ''">
+			and elec06 = #{elec06}
+		</if>
+		<if test="elec07!= null and elec07!= ''">
+			and elec07 = #{elec07}
+		</if>
+		<if test="elec08!= null and elec08!= ''">
+			and elec08 = #{elec08}
+		</if>
+		<if test="elec09!= null and elec09!= ''">
+			and elec09 = #{elec09}
+		</if>
+		<if test="elec10!= null and elec10!= ''">
+			and elec10 = #{elec10}
+		</if>
+		<if test="elec11!= null and elec11!= ''">
+			and elec11 = #{elec11}
+		</if>
+		<if test="elec12!= null and elec12!= ''">
+			and elec12 = #{elec12}
+		</if>
+		<if test="elec13!= null and elec13!= ''">
+			and elec13 = #{elec13}
+		</if>
+		<if test="elec14!= null and elec14!= ''">
+			and elec14 = #{elec14}
+		</if>
+		<if test="elec15!= null and elec15!= ''">
+			and elec15 = #{elec15}
+		</if>
+		<if test="elec16!= null and elec16!= ''">
+			and elec16 = #{elec16}
+		</if>
+		<if test="storeTime!= null and storeTime!= ''">
+			and store_time = #{storeTime}
+		</if>
+		<if test="applicationCode!= null and applicationCode!= ''" >
+			and application_code LIKE CONCAT(#{applicationCode},'%')
+		</if>
+		<if test="tenantCode!= null and tenantCode!= ''" >
+			and tenant_code LIKE CONCAT(#{tenantCode},'%')
+		</if>
+	</sql>
+
+	<select id="get" resultMap="eventSecCtlPowerOutputResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerOutputColumns"/>
+		FROM as_event_sec_ctl_power_output
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="eventSecCtlPowerOutputResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerOutputColumns"/>
+		FROM as_event_sec_ctl_power_output
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventSecCtlPowerOutputResultMap">
+		SELECT
+		<include refid="eventSecCtlPowerOutputColumns"/>
+		FROM as_event_sec_ctl_power_output
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+		INSERT INTO as_event_sec_ctl_power_output
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uEventId != null">
+				u_event_id,
+			</if>
+			<if test="deviceId != null">
+				device_id,
+			</if>
+			<if test="regionNo != null">
+				region_no,
+			</if>
+			<if test="recTime != null">
+				rec_time,
+			</if>
+			<if test="vol01 != null">
+				vol01,
+			</if>
+			<if test="vol02 != null">
+				vol02,
+			</if>
+			<if test="vol03 != null">
+				vol03,
+			</if>
+			<if test="vol04 != null">
+				vol04,
+			</if>
+			<if test="vol05 != null">
+				vol05,
+			</if>
+			<if test="vol06 != null">
+				vol06,
+			</if>
+			<if test="vol07 != null">
+				vol07,
+			</if>
+			<if test="vol08 != null">
+				vol08,
+			</if>
+			<if test="vol09 != null">
+				vol09,
+			</if>
+			<if test="vol10 != null">
+				vol10,
+			</if>
+			<if test="vol11 != null">
+				vol11,
+			</if>
+			<if test="vol12 != null">
+				vol12,
+			</if>
+			<if test="vol13 != null">
+				vol13,
+			</if>
+			<if test="vol14 != null">
+				vol14,
+			</if>
+			<if test="vol15 != null">
+				vol15,
+			</if>
+			<if test="vol16 != null">
+				vol16,
+			</if>
+			<if test="rate01 != null">
+				rate01,
+			</if>
+			<if test="rate02 != null">
+				rate02,
+			</if>
+			<if test="rate03 != null">
+				rate03,
+			</if>
+			<if test="rate04 != null">
+				rate04,
+			</if>
+			<if test="rate05 != null">
+				rate05,
+			</if>
+			<if test="rate06 != null">
+				rate06,
+			</if>
+			<if test="rate07 != null">
+				rate07,
+			</if>
+			<if test="rate08 != null">
+				rate08,
+			</if>
+			<if test="rate09 != null">
+				rate09,
+			</if>
+			<if test="rate10 != null">
+				rate10,
+			</if>
+			<if test="rate11 != null">
+				rate11,
+			</if>
+			<if test="rate12 != null">
+				rate12,
+			</if>
+			<if test="rate13 != null">
+				rate13,
+			</if>
+			<if test="rate14 != null">
+				rate14,
+			</if>
+			<if test="rate15 != null">
+				rate15,
+			</if>
+			<if test="rate16 != null">
+				rate16,
+			</if>
+			<if test="elec01 != null">
+				elec01,
+			</if>
+			<if test="elec02 != null">
+				elec02,
+			</if>
+			<if test="elec03 != null">
+				elec03,
+			</if>
+			<if test="elec04 != null">
+				elec04,
+			</if>
+			<if test="elec05 != null">
+				elec05,
+			</if>
+			<if test="elec06 != null">
+				elec06,
+			</if>
+			<if test="elec07 != null">
+				elec07,
+			</if>
+			<if test="elec08 != null">
+				elec08,
+			</if>
+			<if test="elec09 != null">
+				elec09,
+			</if>
+			<if test="elec10 != null">
+				elec10,
+			</if>
+			<if test="elec11 != null">
+				elec11,
+			</if>
+			<if test="elec12 != null">
+				elec12,
+			</if>
+			<if test="elec13 != null">
+				elec13,
+			</if>
+			<if test="elec14 != null">
+				elec14,
+			</if>
+			<if test="elec15 != null">
+				elec15,
+			</if>
+			<if test="elec16 != null">
+				elec16,
+			</if>
+			<if test="storeTime != null">
+				store_time,
+			</if>
+			<if test="applicationCode != null">
+				application_code,
+			</if>
+			<if test="tenantCode != null">
+				tenant_code,
+			</if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="uEventId != null">
+				#{uEventId},
+			</if>
+			<if test="deviceId != null">
+				#{deviceId},
+			</if>
+			<if test="regionNo != null">
+				#{regionNo},
+			</if>
+			<if test="recTime != null">
+				#{recTime},
+			</if>
+			<if test="vol01 != null">
+				#{vol01},
+			</if>
+			<if test="vol02 != null">
+				#{vol02},
+			</if>
+			<if test="vol03 != null">
+				#{vol03},
+			</if>
+			<if test="vol04 != null">
+				#{vol04},
+			</if>
+			<if test="vol05 != null">
+				#{vol05},
+			</if>
+			<if test="vol06 != null">
+				#{vol06},
+			</if>
+			<if test="vol07 != null">
+				#{vol07},
+			</if>
+			<if test="vol08 != null">
+				#{vol08},
+			</if>
+			<if test="vol09 != null">
+				#{vol09},
+			</if>
+			<if test="vol10 != null">
+				#{vol10},
+			</if>
+			<if test="vol11 != null">
+				#{vol11},
+			</if>
+			<if test="vol12 != null">
+				#{vol12},
+			</if>
+			<if test="vol13 != null">
+				#{vol13},
+			</if>
+			<if test="vol14 != null">
+				#{vol14},
+			</if>
+			<if test="vol15 != null">
+				#{vol15},
+			</if>
+			<if test="vol16 != null">
+				#{vol16},
+			</if>
+			<if test="rate01 != null">
+				#{rate01},
+			</if>
+			<if test="rate02 != null">
+				#{rate02},
+			</if>
+			<if test="rate03 != null">
+				#{rate03},
+			</if>
+			<if test="rate04 != null">
+				#{rate04},
+			</if>
+			<if test="rate05 != null">
+				#{rate05},
+			</if>
+			<if test="rate06 != null">
+				#{rate06},
+			</if>
+			<if test="rate07 != null">
+				#{rate07},
+			</if>
+			<if test="rate08 != null">
+				#{rate08},
+			</if>
+			<if test="rate09 != null">
+				#{rate09},
+			</if>
+			<if test="rate10 != null">
+				#{rate10},
+			</if>
+			<if test="rate11 != null">
+				#{rate11},
+			</if>
+			<if test="rate12 != null">
+				#{rate12},
+			</if>
+			<if test="rate13 != null">
+				#{rate13},
+			</if>
+			<if test="rate14 != null">
+				#{rate14},
+			</if>
+			<if test="rate15 != null">
+				#{rate15},
+			</if>
+			<if test="rate16 != null">
+				#{rate16},
+			</if>
+			<if test="elec01 != null">
+				#{elec01},
+			</if>
+			<if test="elec02 != null">
+				#{elec02},
+			</if>
+			<if test="elec03 != null">
+				#{elec03},
+			</if>
+			<if test="elec04 != null">
+				#{elec04},
+			</if>
+			<if test="elec05 != null">
+				#{elec05},
+			</if>
+			<if test="elec06 != null">
+				#{elec06},
+			</if>
+			<if test="elec07 != null">
+				#{elec07},
+			</if>
+			<if test="elec08 != null">
+				#{elec08},
+			</if>
+			<if test="elec09 != null">
+				#{elec09},
+			</if>
+			<if test="elec10 != null">
+				#{elec10},
+			</if>
+			<if test="elec11 != null">
+				#{elec11},
+			</if>
+			<if test="elec12 != null">
+				#{elec12},
+			</if>
+			<if test="elec13 != null">
+				#{elec13},
+			</if>
+			<if test="elec14 != null">
+				#{elec14},
+			</if>
+			<if test="elec15 != null">
+				#{elec15},
+			</if>
+			<if test="elec16 != null">
+				#{elec16},
+			</if>
+			<if test="storeTime != null">
+				#{storeTime},
+			</if>
+			<if test="applicationCode != null">
+				#{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				#{tenantCode},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_sec_ctl_power_output
+		<set>
+			<if test="id != null">
+				id =  #{id},
+			</if>
+			<if test="uEventId != null">
+				u_event_id =  #{uEventId},
+			</if>
+			<if test="deviceId != null">
+				device_id =  #{deviceId},
+			</if>
+			<if test="regionNo != null">
+				region_no =  #{regionNo},
+			</if>
+			<if test="recTime != null">
+				rec_time =  #{recTime},
+			</if>
+			<if test="vol01 != null">
+				vol01 =  #{vol01},
+			</if>
+			<if test="vol02 != null">
+				vol02 =  #{vol02},
+			</if>
+			<if test="vol03 != null">
+				vol03 =  #{vol03},
+			</if>
+			<if test="vol04 != null">
+				vol04 =  #{vol04},
+			</if>
+			<if test="vol05 != null">
+				vol05 =  #{vol05},
+			</if>
+			<if test="vol06 != null">
+				vol06 =  #{vol06},
+			</if>
+			<if test="vol07 != null">
+				vol07 =  #{vol07},
+			</if>
+			<if test="vol08 != null">
+				vol08 =  #{vol08},
+			</if>
+			<if test="vol09 != null">
+				vol09 =  #{vol09},
+			</if>
+			<if test="vol10 != null">
+				vol10 =  #{vol10},
+			</if>
+			<if test="vol11 != null">
+				vol11 =  #{vol11},
+			</if>
+			<if test="vol12 != null">
+				vol12 =  #{vol12},
+			</if>
+			<if test="vol13 != null">
+				vol13 =  #{vol13},
+			</if>
+			<if test="vol14 != null">
+				vol14 =  #{vol14},
+			</if>
+			<if test="vol15 != null">
+				vol15 =  #{vol15},
+			</if>
+			<if test="vol16 != null">
+				vol16 =  #{vol16},
+			</if>
+			<if test="rate01 != null">
+				rate01 =  #{rate01},
+			</if>
+			<if test="rate02 != null">
+				rate02 =  #{rate02},
+			</if>
+			<if test="rate03 != null">
+				rate03 =  #{rate03},
+			</if>
+			<if test="rate04 != null">
+				rate04 =  #{rate04},
+			</if>
+			<if test="rate05 != null">
+				rate05 =  #{rate05},
+			</if>
+			<if test="rate06 != null">
+				rate06 =  #{rate06},
+			</if>
+			<if test="rate07 != null">
+				rate07 =  #{rate07},
+			</if>
+			<if test="rate08 != null">
+				rate08 =  #{rate08},
+			</if>
+			<if test="rate09 != null">
+				rate09 =  #{rate09},
+			</if>
+			<if test="rate10 != null">
+				rate10 =  #{rate10},
+			</if>
+			<if test="rate11 != null">
+				rate11 =  #{rate11},
+			</if>
+			<if test="rate12 != null">
+				rate12 =  #{rate12},
+			</if>
+			<if test="rate13 != null">
+				rate13 =  #{rate13},
+			</if>
+			<if test="rate14 != null">
+				rate14 =  #{rate14},
+			</if>
+			<if test="rate15 != null">
+				rate15 =  #{rate15},
+			</if>
+			<if test="rate16 != null">
+				rate16 =  #{rate16},
+			</if>
+			<if test="elec01 != null">
+				elec01 =  #{elec01},
+			</if>
+			<if test="elec02 != null">
+				elec02 =  #{elec02},
+			</if>
+			<if test="elec03 != null">
+				elec03 =  #{elec03},
+			</if>
+			<if test="elec04 != null">
+				elec04 =  #{elec04},
+			</if>
+			<if test="elec05 != null">
+				elec05 =  #{elec05},
+			</if>
+			<if test="elec06 != null">
+				elec06 =  #{elec06},
+			</if>
+			<if test="elec07 != null">
+				elec07 =  #{elec07},
+			</if>
+			<if test="elec08 != null">
+				elec08 =  #{elec08},
+			</if>
+			<if test="elec09 != null">
+				elec09 =  #{elec09},
+			</if>
+			<if test="elec10 != null">
+				elec10 =  #{elec10},
+			</if>
+			<if test="elec11 != null">
+				elec11 =  #{elec11},
+			</if>
+			<if test="elec12 != null">
+				elec12 =  #{elec12},
+			</if>
+			<if test="elec13 != null">
+				elec13 =  #{elec13},
+			</if>
+			<if test="elec14 != null">
+				elec14 =  #{elec14},
+			</if>
+			<if test="elec15 != null">
+				elec15 =  #{elec15},
+			</if>
+			<if test="elec16 != null">
+				elec16 =  #{elec16},
+			</if>
+			<if test="storeTime != null">
+				store_time =  #{storeTime},
+			</if>
+			<if test="applicationCode != null">
+				application_code =  #{applicationCode},
+			</if>
+			<if test="tenantCode != null">
+				tenant_code =  #{tenantCode},
+			</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_sec_ctl_power_output
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_sec_ctl_power_output
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

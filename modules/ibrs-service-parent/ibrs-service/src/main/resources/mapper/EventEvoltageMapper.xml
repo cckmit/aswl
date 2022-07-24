@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventEvoltageMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="eventEvoltageResultMap" type="com.aswl.as.ibrs.api.module.EventEvoltage">
+			<id column="id"   property="id" />
+			<id column="u_event_id"   property="uEventId" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_no"   property="regionNo" />
+			<id column="rec_time"   property="recTime" />
+			<id column="temperature"   property="temperature" />
+			<id column="humidity"   property="humidity" />
+			<id column="fld01"   property="fld01" />
+			<id column="val01"   property="val01" />
+			<id column="fld02"   property="fld02" />
+			<id column="val02"   property="val02" />
+			<id column="fld03"   property="fld03" />
+			<id column="val03"   property="val03" />
+			<id column="fld04"   property="fld04" />
+			<id column="val04"   property="val04" />
+			<id column="fld05"   property="fld05" />
+			<id column="val05"   property="val05" />
+			<id column="fld06"   property="fld06" />
+			<id column="val06"   property="val06" />
+			<id column="fld07"   property="fld07" />
+			<id column="val07"   property="val07" />
+			<id column="fld08"   property="fld08" />
+			<id column="val08"   property="val08" />
+			<id column="fld09"   property="fld09" />
+			<id column="val09"   property="val09" />
+			<id column="fld10"   property="fld10" />
+			<id column="val10"   property="val10" />
+			<id column="fld11"   property="fld11" />
+			<id column="val11"   property="val11" />
+			<id column="fld12"   property="fld12" />
+			<id column="val12"   property="val12" />
+			<id column="fld13"   property="fld13" />
+			<id column="val13"   property="val13" />
+			<id column="fld14"   property="fld14" />
+			<id column="val14"   property="val14" />
+			<id column="fld15"   property="fld15" />
+			<id column="val15"   property="val15" />
+			<id column="fld16"   property="fld16" />
+			<id column="val16"   property="val16" />
+			<id column="store_time"   property="storeTime" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="eventEvoltageColumns">
+		id, u_event_id, device_id, region_no, rec_time, temperature, humidity, fld01, val01, fld02, val02, fld03, val03, fld04, val04, fld05, val05, fld06, val06, fld07, val07, fld08, val08, fld09, val09, fld10, val10, fld11, val11, fld12, val12, fld13, val13, fld14, val14, fld15, val15, fld16, val16, store_time, application_code, tenant_code, 
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="uEventId  != null and uEventId != ''">
+					and u_event_id = #{uEventId}
+				</if>
+				<if test="deviceId  != null and deviceId != ''" >
+					and device_id like CONCAT('%',#{deviceId},'%')
+				</if>
+				<if test="regionNo  != null and regionNo != ''" >
+					and region_no like CONCAT('%',#{regionNo},'%')
+				</if>
+				<if test="recTime  != null and recTime != ''">
+					and rec_time = #{recTime}
+				</if>
+				<if test="temperature  != null and temperature != ''" >
+					and temperature like CONCAT('%',#{temperature},'%')
+				</if>
+				<if test="humidity  != null and humidity != ''" >
+					and humidity like CONCAT('%',#{humidity},'%')
+				</if>
+				<if test="fld01  != null and fld01 != ''" >
+					and fld01 like CONCAT('%',#{fld01},'%')
+				</if>
+				<if test="val01  != null and val01 != ''">
+					and val01 = #{val01}
+				</if>
+				<if test="fld02  != null and fld02 != ''" >
+					and fld02 like CONCAT('%',#{fld02},'%')
+				</if>
+				<if test="val02  != null and val02 != ''">
+					and val02 = #{val02}
+				</if>
+				<if test="fld03  != null and fld03 != ''" >
+					and fld03 like CONCAT('%',#{fld03},'%')
+				</if>
+				<if test="val03  != null and val03 != ''">
+					and val03 = #{val03}
+				</if>
+				<if test="fld04  != null and fld04 != ''" >
+					and fld04 like CONCAT('%',#{fld04},'%')
+				</if>
+				<if test="val04  != null and val04 != ''">
+					and val04 = #{val04}
+				</if>
+				<if test="fld05  != null and fld05 != ''" >
+					and fld05 like CONCAT('%',#{fld05},'%')
+				</if>
+				<if test="val05  != null and val05 != ''">
+					and val05 = #{val05}
+				</if>
+				<if test="fld06  != null and fld06 != ''" >
+					and fld06 like CONCAT('%',#{fld06},'%')
+				</if>
+				<if test="val06  != null and val06 != ''">
+					and val06 = #{val06}
+				</if>
+				<if test="fld07  != null and fld07 != ''" >
+					and fld07 like CONCAT('%',#{fld07},'%')
+				</if>
+				<if test="val07  != null and val07 != ''">
+					and val07 = #{val07}
+				</if>
+				<if test="fld08  != null and fld08 != ''" >
+					and fld08 like CONCAT('%',#{fld08},'%')
+				</if>
+				<if test="val08  != null and val08 != ''">
+					and val08 = #{val08}
+				</if>
+				<if test="fld09  != null and fld09 != ''" >
+					and fld09 like CONCAT('%',#{fld09},'%')
+				</if>
+				<if test="val09  != null and val09 != ''">
+					and val09 = #{val09}
+				</if>
+				<if test="fld10  != null and fld10 != ''" >
+					and fld10 like CONCAT('%',#{fld10},'%')
+				</if>
+				<if test="val10  != null and val10 != ''">
+					and val10 = #{val10}
+				</if>
+				<if test="fld11  != null and fld11 != ''" >
+					and fld11 like CONCAT('%',#{fld11},'%')
+				</if>
+				<if test="val11  != null and val11 != ''">
+					and val11 = #{val11}
+				</if>
+				<if test="fld12  != null and fld12 != ''" >
+					and fld12 like CONCAT('%',#{fld12},'%')
+				</if>
+				<if test="val12  != null and val12 != ''">
+					and val12 = #{val12}
+				</if>
+				<if test="fld13  != null and fld13 != ''" >
+					and fld13 like CONCAT('%',#{fld13},'%')
+				</if>
+				<if test="val13  != null and val13 != ''">
+					and val13 = #{val13}
+				</if>
+				<if test="fld14  != null and fld14 != ''" >
+					and fld14 like CONCAT('%',#{fld14},'%')
+				</if>
+				<if test="val14  != null and val14 != ''">
+					and val14 = #{val14}
+				</if>
+				<if test="fld15  != null and fld15 != ''" >
+					and fld15 like CONCAT('%',#{fld15},'%')
+				</if>
+				<if test="val15  != null and val15 != ''">
+					and val15 = #{val15}
+				</if>
+				<if test="fld16  != null and fld16 != ''" >
+					and fld16 like CONCAT('%',#{fld16},'%')
+				</if>
+				<if test="val16  != null and val16 != ''">
+					and val16 = #{val16}
+				</if>
+				<if test="storeTime  != null and storeTime != ''">
+					and store_time = #{storeTime}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="eventEvoltageResultMap">
+		SELECT
+		<include refid="eventEvoltageColumns"/>
+		FROM as_event_evoltage
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultMap="eventEvoltageResultMap">
+		SELECT
+		<include refid="eventEvoltageColumns"/>
+		FROM as_event_evoltage
+		WHERE del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="eventEvoltageResultMap">
+		SELECT
+		<include refid="eventEvoltageColumns"/>
+		FROM as_event_evoltage
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_event_evoltage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    id,
+                </if>
+                <if test="uEventId != null and uEventId!=''">
+                    u_event_id,
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    device_id,
+                </if>
+                <if test="regionNo != null and regionNo!=''">
+                    region_no,
+                </if>
+                <if test="recTime != null">
+                    rec_time,
+                </if>
+                <if test="temperature != null and temperature!=''">
+                    temperature,
+                </if>
+                <if test="humidity != null and humidity!=''">
+                    humidity,
+                </if>
+                <if test="fld01 != null and fld01!=''">
+                    fld01,
+                </if>
+                <if test="val01 != null and val01!=''">
+                    val01,
+                </if>
+                <if test="fld02 != null and fld02!=''">
+                    fld02,
+                </if>
+                <if test="val02 != null and val02!=''">
+                    val02,
+                </if>
+                <if test="fld03 != null and fld03!=''">
+                    fld03,
+                </if>
+                <if test="val03 != null and val03!=''">
+                    val03,
+                </if>
+                <if test="fld04 != null and fld04!=''">
+                    fld04,
+                </if>
+                <if test="val04 != null and val04!=''">
+                    val04,
+                </if>
+                <if test="fld05 != null and fld05!=''">
+                    fld05,
+                </if>
+                <if test="val05 != null and val05!=''">
+                    val05,
+                </if>
+                <if test="fld06 != null and fld06!=''">
+                    fld06,
+                </if>
+                <if test="val06 != null and val06!=''">
+                    val06,
+                </if>
+                <if test="fld07 != null and fld07!=''">
+                    fld07,
+                </if>
+                <if test="val07 != null and val07!=''">
+                    val07,
+                </if>
+                <if test="fld08 != null and fld08!=''">
+                    fld08,
+                </if>
+                <if test="val08 != null and val08!=''">
+                    val08,
+                </if>
+                <if test="fld09 != null and fld09!=''">
+                    fld09,
+                </if>
+                <if test="val09 != null and val09!=''">
+                    val09,
+                </if>
+                <if test="fld10 != null and fld10!=''">
+                    fld10,
+                </if>
+                <if test="val10 != null and val10!=''">
+                    val10,
+                </if>
+                <if test="fld11 != null and fld11!=''">
+                    fld11,
+                </if>
+                <if test="val11 != null and val11!=''">
+                    val11,
+                </if>
+                <if test="fld12 != null and fld12!=''">
+                    fld12,
+                </if>
+                <if test="val12 != null and val12!=''">
+                    val12,
+                </if>
+                <if test="fld13 != null and fld13!=''">
+                    fld13,
+                </if>
+                <if test="val13 != null and val13!=''">
+                    val13,
+                </if>
+                <if test="fld14 != null and fld14!=''">
+                    fld14,
+                </if>
+                <if test="val14 != null and val14!=''">
+                    val14,
+                </if>
+                <if test="fld15 != null and fld15!=''">
+                    fld15,
+                </if>
+                <if test="val15 != null and val15!=''">
+                    val15,
+                </if>
+                <if test="fld16 != null and fld16!=''">
+                    fld16,
+                </if>
+                <if test="val16 != null and val16!=''">
+                    val16,
+                </if>
+                <if test="storeTime != null">
+                    store_time,
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    application_code,
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null and id!=''">
+                    #{id},
+                </if>
+                <if test="uEventId != null and uEventId!=''">
+                    #{uEventId},
+                </if>
+                <if test="deviceId != null and deviceId!=''">
+                    #{deviceId},
+                </if>
+                <if test="regionNo != null and regionNo!=''">
+                    #{regionNo},
+                </if>
+                <if test="recTime != null">
+                    #{recTime},
+                </if>
+                <if test="temperature != null and temperature!=''">
+                    #{temperature},
+                </if>
+                <if test="humidity != null and humidity!=''">
+                    #{humidity},
+                </if>
+                <if test="fld01 != null and fld01!=''">
+                    #{fld01},
+                </if>
+                <if test="val01 != null and val01!=''">
+                    #{val01},
+                </if>
+                <if test="fld02 != null and fld02!=''">
+                    #{fld02},
+                </if>
+                <if test="val02 != null and val02!=''">
+                    #{val02},
+                </if>
+                <if test="fld03 != null and fld03!=''">
+                    #{fld03},
+                </if>
+                <if test="val03 != null and val03!=''">
+                    #{val03},
+                </if>
+                <if test="fld04 != null and fld04!=''">
+                    #{fld04},
+                </if>
+                <if test="val04 != null and val04!=''">
+                    #{val04},
+                </if>
+                <if test="fld05 != null and fld05!=''">
+                    #{fld05},
+                </if>
+                <if test="val05 != null and val05!=''">
+                    #{val05},
+                </if>
+                <if test="fld06 != null and fld06!=''">
+                    #{fld06},
+                </if>
+                <if test="val06 != null and val06!=''">
+                    #{val06},
+                </if>
+                <if test="fld07 != null and fld07!=''">
+                    #{fld07},
+                </if>
+                <if test="val07 != null and val07!=''">
+                    #{val07},
+                </if>
+                <if test="fld08 != null and fld08!=''">
+                    #{fld08},
+                </if>
+                <if test="val08 != null and val08!=''">
+                    #{val08},
+                </if>
+                <if test="fld09 != null and fld09!=''">
+                    #{fld09},
+                </if>
+                <if test="val09 != null and val09!=''">
+                    #{val09},
+                </if>
+                <if test="fld10 != null and fld10!=''">
+                    #{fld10},
+                </if>
+                <if test="val10 != null and val10!=''">
+                    #{val10},
+                </if>
+                <if test="fld11 != null and fld11!=''">
+                    #{fld11},
+                </if>
+                <if test="val11 != null and val11!=''">
+                    #{val11},
+                </if>
+                <if test="fld12 != null and fld12!=''">
+                    #{fld12},
+                </if>
+                <if test="val12 != null and val12!=''">
+                    #{val12},
+                </if>
+                <if test="fld13 != null and fld13!=''">
+                    #{fld13},
+                </if>
+                <if test="val13 != null and val13!=''">
+                    #{val13},
+                </if>
+                <if test="fld14 != null and fld14!=''">
+                    #{fld14},
+                </if>
+                <if test="val14 != null and val14!=''">
+                    #{val14},
+                </if>
+                <if test="fld15 != null and fld15!=''">
+                    #{fld15},
+                </if>
+                <if test="val15 != null and val15!=''">
+                    #{val15},
+                </if>
+                <if test="fld16 != null and fld16!=''">
+                    #{fld16},
+                </if>
+                <if test="val16 != null and val16!=''">
+                    #{val16},
+                </if>
+                <if test="storeTime != null">
+                    #{storeTime,jdbcType=TIMESTAMP, javaType=java.util.Date},
+                </if>
+                <if test="applicationCode != null and applicationCode!=''">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null and tenantCode!=''">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_event_evoltage
+		<set>
+				<if test="id != null and id!=''">
+					id =  #{id},
+				</if>
+				<if test="uEventId != null and uEventId!=''">
+					u_event_id =  #{uEventId},
+				</if>
+				<if test="deviceId != null and deviceId!=''">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionNo != null and regionNo!=''">
+					region_no =  #{regionNo},
+				</if>
+				<if test="recTime != null and recTime!=''">
+					rec_time =  #{recTime},
+				</if>
+				<if test="temperature != null and temperature!=''">
+					temperature =  #{temperature},
+				</if>
+				<if test="humidity != null and humidity!=''">
+					humidity =  #{humidity},
+				</if>
+				<if test="fld01 != null and fld01!=''">
+					fld01 =  #{fld01},
+				</if>
+				<if test="val01 != null and val01!=''">
+					val01 =  #{val01},
+				</if>
+				<if test="fld02 != null and fld02!=''">
+					fld02 =  #{fld02},
+				</if>
+				<if test="val02 != null and val02!=''">
+					val02 =  #{val02},
+				</if>
+				<if test="fld03 != null and fld03!=''">
+					fld03 =  #{fld03},
+				</if>
+				<if test="val03 != null and val03!=''">
+					val03 =  #{val03},
+				</if>
+				<if test="fld04 != null and fld04!=''">
+					fld04 =  #{fld04},
+				</if>
+				<if test="val04 != null and val04!=''">
+					val04 =  #{val04},
+				</if>
+				<if test="fld05 != null and fld05!=''">
+					fld05 =  #{fld05},
+				</if>
+				<if test="val05 != null and val05!=''">
+					val05 =  #{val05},
+				</if>
+				<if test="fld06 != null and fld06!=''">
+					fld06 =  #{fld06},
+				</if>
+				<if test="val06 != null and val06!=''">
+					val06 =  #{val06},
+				</if>
+				<if test="fld07 != null and fld07!=''">
+					fld07 =  #{fld07},
+				</if>
+				<if test="val07 != null and val07!=''">
+					val07 =  #{val07},
+				</if>
+				<if test="fld08 != null and fld08!=''">
+					fld08 =  #{fld08},
+				</if>
+				<if test="val08 != null and val08!=''">
+					val08 =  #{val08},
+				</if>
+				<if test="fld09 != null and fld09!=''">
+					fld09 =  #{fld09},
+				</if>
+				<if test="val09 != null and val09!=''">
+					val09 =  #{val09},
+				</if>
+				<if test="fld10 != null and fld10!=''">
+					fld10 =  #{fld10},
+				</if>
+				<if test="val10 != null and val10!=''">
+					val10 =  #{val10},
+				</if>
+				<if test="fld11 != null and fld11!=''">
+					fld11 =  #{fld11},
+				</if>
+				<if test="val11 != null and val11!=''">
+					val11 =  #{val11},
+				</if>
+				<if test="fld12 != null and fld12!=''">
+					fld12 =  #{fld12},
+				</if>
+				<if test="val12 != null and val12!=''">
+					val12 =  #{val12},
+				</if>
+				<if test="fld13 != null and fld13!=''">
+					fld13 =  #{fld13},
+				</if>
+				<if test="val13 != null and val13!=''">
+					val13 =  #{val13},
+				</if>
+				<if test="fld14 != null and fld14!=''">
+					fld14 =  #{fld14},
+				</if>
+				<if test="val14 != null and val14!=''">
+					val14 =  #{val14},
+				</if>
+				<if test="fld15 != null and fld15!=''">
+					fld15 =  #{fld15},
+				</if>
+				<if test="val15 != null and val15!=''">
+					val15 =  #{val15},
+				</if>
+				<if test="fld16 != null and fld16!=''">
+					fld16 =  #{fld16},
+				</if>
+				<if test="val16 != null and val16!=''">
+					val16 =  #{val16},
+				</if>
+				<if test="storeTime != null">
+					store_time =  #{storeTime},
+				</if>
+				<if test="applicationCode != null and applicationCode!=''">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null and tenantCode!=''">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_event_evoltage
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_event_evoltage
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

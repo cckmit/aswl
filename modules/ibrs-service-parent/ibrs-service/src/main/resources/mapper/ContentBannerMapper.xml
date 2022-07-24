@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ContentBannerMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="contentBannerResultMap" type="com.aswl.as.ibrs.api.module.ContentBanner">
+			<id column="id"   property="id" />
+
+			<id column="banner_image"   property="bannerImage" />
+			<id column="display_position"   property="displayPosition" />
+			<id column="content_link"   property="contentLink" />
+			<id column="is_release"   property="isRelease" />
+			<id column="clicks"   property="clicks" />
+			<id column="modifier"   property="modifier" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="creator"   property="creator" />
+			<id column="create_date"   property="createDate" />
+			<id column="sort"   property="sort" />
+			<id column="del_flag"   property="delFlag" />
+
+			<id column="category"   property="category" />
+			<id column="content_id"   property="contentId" />
+
+			<!-- title现在是从其它表查询出来，并没有保存在数据库 -->
+			<id column="title"   property="title" />
+
+	</resultMap>
+
+	<sql id="contentBannerColumns">
+		id, banner_image, title, display_position, content_link, is_release, clicks, modifier, modify_date, creator, create_date, sort, del_flag,category,content_id
+		<!-- title, -->
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<!-- -->
+				<if test="title  != null and title != ''" >
+					AND title like CONCAT('%',#{title},'%')
+				</if>
+
+
+				<if test="bannerImage  != null and bannerImage != ''" >
+					AND banner_image like CONCAT('%',#{bannerImage},'%')
+				</if>
+				<if test="displayPosition  != null and displayPosition != ''" >
+					AND display_position like CONCAT('%',#{displayPosition},'%')
+				</if>
+				<if test="contentLink  != null and contentLink != ''" >
+					AND content_link like CONCAT('%',#{contentLink},'%')
+				</if>
+				<if test="isRelease  != null and isRelease != ''">
+					AND is_release = #{isRelease}
+				</if>
+				<if test="clicks  != null and clicks != ''">
+					AND clicks = #{clicks}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					AND modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''">
+					AND modify_date = #{modifyDate}
+				</if>
+				<if test="creator  != null and creator != ''" >
+					AND creator like CONCAT('%',#{creator},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					AND create_date = #{createDate}
+				</if>
+				<if test="sort  != null and sort != ''">
+					AND sort = #{sort}
+				</if>
+				<if test="delFlag  != null and delFlag != ''">
+					AND del_flag = #{delFlag}
+				</if>
+				<if test="category  != null and category != ''">
+					AND category = #{category}
+				</if>
+				<if test="contentId  != null and contentId != ''">
+					AND content_id = #{contentId}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="contentBannerResultMap">
+		SELECT
+		<include refid="contentBannerColumns"/>
+		FROM as_content_banner
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="contentBannerResultMap">
+		SELECT
+
+		<!--
+		<include refid="contentBannerColumns"/>
+		-->
+
+		b.id as id, b.banner_image as banner_image, b.display_position as display_position, b.content_link as content_link,
+		b.is_release as is_release, b.clicks as clicks, b.modifier as modifier, b.modify_date as modify_date, b.creator as creator, b.create_date as create_date, b.sort as sort, b.del_flag as del_flag,
+		b.category as category,b.content_id as content_id,
+
+		case when b.category=1 then p.title when b.category=2 then m.title when b.category=2 then i.title else b.title END as title
+
+		FROM as_content_banner b
+
+		left join as_content_product p on b.category=1 and b.content_id = p.id
+		left join as_content_malfunction m on b.category=2 and b.content_id = m.id
+		left join as_content_industry i on b.category=3 and b.content_id = i.id
+
+		WHERE b.del_flag=0
+
+		<if test="displayPosition != null">
+			and b.display_position=#{displayPosition}
+		</if>
+		<if test="isRelease != null">
+			and b.is_release=#{isRelease}
+		</if>
+		<if test="title != null and title !=''">
+			and
+			(
+			(b.category=1 and p.title like concat('%',#{title,jdbcType=VARCHAR},'%') )
+			or
+			(b.category=2 and m.title like concat('%',#{title,jdbcType=VARCHAR},'%') )
+			or
+			(b.category=3 and i.title like concat('%',#{title,jdbcType=VARCHAR},'%') )
+			or
+			(b.category=4 and b.title like concat('%',#{title,jdbcType=VARCHAR},'%') )
+			)
+		</if>
+
+		<!--
+		<include refid="whereColumnList"/>
+		-->
+	</select>
+
+
+	<select id="findListById" resultMap="contentBannerResultMap">
+		SELECT
+		<include refid="contentBannerColumns"/>
+		FROM as_content_banner
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_content_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <!-- -->
+                <if test="title != null">
+                    title,
+                </if>
+
+                <if test="bannerImage != null">
+                    banner_image,
+                </if>
+                <if test="displayPosition != null">
+                    display_position,
+                </if>
+                <if test="contentLink != null">
+                    content_link,
+                </if>
+                <if test="isRelease != null">
+                    is_release,
+                </if>
+                <if test="clicks != null">
+                    clicks,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="creator != null">
+                    creator,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="sort != null">
+                    sort,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+
+				<if test="category != null">
+					category,
+				</if>
+				<if test="contentId != null">
+					content_id,
+				</if>
+
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <!-- -->
+                <if test="title != null">
+                    #{title},
+                </if>
+
+                <if test="bannerImage != null">
+                    #{bannerImage},
+                </if>
+                <if test="displayPosition != null">
+                    #{displayPosition},
+                </if>
+                <if test="contentLink != null">
+                    #{contentLink},
+                </if>
+                <if test="isRelease != null">
+                    #{isRelease},
+                </if>
+                <if test="clicks != null">
+                    #{clicks},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="creator != null">
+                    #{creator},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="sort != null">
+                    #{sort},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+				<if test="category != null">
+					#{category},
+				</if>
+				<if test="contentId != null">
+					#{contentId},
+				</if>
+
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_content_banner
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<!-- -->
+				<if test="title != null">
+					title =  #{title},
+				</if>
+
+				<if test="bannerImage != null">
+					banner_image =  #{bannerImage},
+				</if>
+				<if test="displayPosition != null">
+					display_position =  #{displayPosition},
+				</if>
+				<if test="contentLink != null">
+					content_link =  #{contentLink},
+				</if>
+				<if test="isRelease != null">
+					is_release =  #{isRelease},
+				</if>
+				<if test="clicks != null">
+					clicks =  #{clicks},
+				</if>
+				<if test="modifier != null">
+					modifier =  #{modifier},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="creator != null">
+					creator =  #{creator},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="sort != null">
+					sort =  #{sort},
+				</if>
+				<if test="delFlag != null">
+					del_flag =  #{delFlag},
+				</if>
+				<if test="category != null">
+					category =  #{category},
+				</if>
+				<if test="contentId != null">
+					content_id =  #{contentId},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_content_banner
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_content_banner
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<update id="addClicks">
+		update as_content_banner set clicks=clicks+1
+		WHERE id =  #{id}
+	</update>
+
+	<update id="addLikes">
+		update as_content_banner set likes=likes + (#{addCount})
+		WHERE id =  #{id}
+	</update>
+
+</mapper>

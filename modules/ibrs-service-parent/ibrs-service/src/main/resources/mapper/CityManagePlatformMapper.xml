@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.CityManagePlatformMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="cityManagePlatformResultMap" type="com.aswl.as.ibrs.api.module.CityManagePlatform">
+			<id column="id"   property="id" />
+			<id column="project_id"   property="projectId" />
+			<id column="region_code"   property="regionCode" />
+			<id column="long_range_control"   property="longRangeControl" />
+			<id column="data_upload"   property="dataUpload" />
+			<id column="create_date"   property="createDate" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="cityManagePlatformColumns">
+		id, project_id, region_code, long_range_control, data_upload, create_date, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+				<if test="regionCode!= null and regionCode!= ''" >
+					and region_code LIKE CONCAT(#{regionCode},'%')
+				</if>
+				<if test="longRangeControl!= null and longRangeControl!= ''">
+					and long_range_control = #{longRangeControl}
+				</if>
+				<if test="dataUpload!= null and dataUpload!= ''">
+					and data_upload = #{dataUpload}
+				</if>
+				<if test="createDate!= null and createDate!= ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="cityManagePlatformResultMap">
+		SELECT
+		<include refid="cityManagePlatformColumns"/>
+		FROM as_city_manage_platform
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="cityManagePlatformResultMap">
+		SELECT
+		<include refid="cityManagePlatformColumns"/>
+		FROM as_city_manage_platform
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="cityManagePlatformResultMap">
+		SELECT
+		<include refid="cityManagePlatformColumns"/>
+		FROM as_city_manage_platform
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<insert id="insert">
+        INSERT INTO as_city_manage_platform
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+                <if test="longRangeControl != null">
+                    long_range_control,
+                </if>
+                <if test="dataUpload != null">
+                    data_upload,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+                <if test="longRangeControl != null">
+                    #{longRangeControl},
+                </if>
+                <if test="dataUpload != null">
+                    #{dataUpload},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_city_manage_platform
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="longRangeControl != null">
+					long_range_control =  #{longRangeControl},
+				</if>
+				<if test="dataUpload != null">
+					data_upload =  #{dataUpload},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_city_manage_platform
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_city_manage_platform
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+
+	<select id="findPageInfo" resultType="com.aswl.as.ibrs.api.vo.CityManagePlatformVo">
+	SELECT
+	mp.id as id, 
+	ap.project_id as projectId,
+	ap.project_name as projectName,
+	mp.long_range_control as longRangeControl,
+	mp.data_upload as dataUpload
+	 FROM as_project ap
+	LEFT JOIN as_city_manage_platform mp
+	ON ap.project_id = mp.project_id
+	WHERE 1=1
+		<if test="projectId  != null and projectId != ''" >
+			AND ap.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+   <if test="tenantCode != null and tenantCode != ''">
+	   AND ap.tenant_code = #{tenantCode}
+	</if>
+	</select>	
+	
+</mapper>

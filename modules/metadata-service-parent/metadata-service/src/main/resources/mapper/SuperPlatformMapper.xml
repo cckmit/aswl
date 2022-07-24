@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.SuperPlatformMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="superPlatformResultMap" type="com.aswl.as.ibrs.api.module.SuperPlatform">
+        <id column="id" property="id"/>
+        <id column="client_id" property="clientId"/>
+        <id column="client_secret" property="clientSecret"/>
+        <id column="org_name" property="orgName"/>
+        <id column="app_name" property="appName"/>
+        <id column="api_url" property="apiUrl"/>
+        <id column="status" property="status"/>
+        <id column="creator" property="creator"/>
+        <id column="create_name" property="createName"/>
+        <id column="create_date" property="createDate"/>
+        <id column="modifier" property="modifier"/>
+        <id column="update_name" property="updateName"/>
+        <id column="modifier_date" property="modifyDate"/>
+        <id column="sys_org_code" property="sysOrgCode"/>
+        <id column="region_code" property="regionCode"/>
+         <id column="callback_url" property="callbackUrl"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="del_date" property="delDate"/>
+        <id column="remark" property="remark"/>
+        
+    </resultMap>
+
+    <sql id="superPlatformColumns">
+		id, client_id, client_secret, org_name, app_name, api_url, status, creator, create_name, create_date, modifier, update_name, modifier_date, sys_org_code, region_code, callback_url, del_flag, del_date, remark
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="clientId  != null and clientId != ''">
+            and client_id like CONCAT('%',#{clientId},'%')
+        </if>
+        <if test="clientSecret  != null and clientSecret != ''">
+            and client_secret like CONCAT('%',#{clientSecret},'%')
+        </if>
+        <if test="orgName  != null and orgName != ''">
+            and org_name like CONCAT('%',#{orgName},'%')
+        </if>
+        <if test="appName  != null and appName != ''">
+            and app_name like CONCAT('%',#{appName},'%')
+        </if>
+        <if test="apiUrl  != null and apiUrl != ''">
+            and api_url like CONCAT('%',#{apiUrl},'%')
+        </if>
+        <if test="status  != null and status != ''">
+            and status = #{status}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator like CONCAT('%',#{creator},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="createDate  != null ">
+            and create_date = #{createDate}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier like CONCAT('%',#{modifier},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+        <if test="modifyDate != null">
+            and modifier_date = #{modifyDate}
+        </if>
+        <if test="sysOrgCode  != null and sysOrgCode != ''">
+            and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+        </if>
+        <if test="sysRegionOcde  != null and sysRegionOcde != ''">
+            and region_code like CONCAT('%',#{regionCode},'%')
+        </if>
+        <if test="delFlag  != null and delFlag != ''">
+            and del_flag = #{delFlag}
+        </if>
+        <if test="remark  != null and remark != ''">
+            and remark like CONCAT('%',#{remark},'%')
+        </if>
+    </sql>
+
+    <select id="findByRegionCode" resultMap="superPlatformResultMap">
+        SELECT
+        <include refid="superPlatformColumns"/>
+        FROM as_super_platform
+        WHERE region_code = #{regionCode} and del_flag = 1
+    </select>
+</mapper>

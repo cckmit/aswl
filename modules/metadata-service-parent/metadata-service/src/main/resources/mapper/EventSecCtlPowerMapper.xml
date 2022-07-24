@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.EventSecCtlPowerMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="eventSecCtlPowerResultMap" type="com.aswl.as.ibrs.api.module.EventSecCtlPower">
+        <id column="id"   property="id" />
+        <id column="u_event_id"   property="uEventId" />
+        <id column="device_id"   property="deviceId" />
+        <id column="region_no"   property="regionNo" />
+        <id column="rec_time"   property="recTime" />
+        <id column="fld01"   property="fld01" />
+        <id column="fld02"   property="fld02" />
+        <id column="fld03"   property="fld03" />
+        <id column="fld04"   property="fld04" />
+        <id column="fld05"   property="fld05" />
+        <id column="fld06"   property="fld06" />
+        <id column="fld07"   property="fld07" />
+        <id column="fld08"   property="fld08" />
+        <id column="fld09"   property="fld09" />
+        <id column="fld10"   property="fld10" />
+        <id column="fld11"   property="fld11" />
+        <id column="fld12"   property="fld12" />
+        <id column="fld13"   property="fld13" />
+        <id column="fld14"   property="fld14" />
+        <id column="fld15"   property="fld15" />
+        <id column="fld16"   property="fld16" />
+        <id column="alarm01"   property="alarm01" />
+        <id column="alarm02"   property="alarm02" />
+        <id column="alarm03"   property="alarm03" />
+        <id column="alarm04"   property="alarm04" />
+        <id column="alarm05"   property="alarm05" />
+        <id column="alarm06"   property="alarm06" />
+        <id column="alarm07"   property="alarm07" />
+        <id column="alarm08"   property="alarm08" />
+        <id column="alarm09"   property="alarm09" />
+        <id column="alarm10"   property="alarm10" />
+        <id column="alarm11"   property="alarm11" />
+        <id column="alarm12"   property="alarm12" />
+        <id column="alarm13"   property="alarm13" />
+        <id column="alarm14"   property="alarm14" />
+        <id column="alarm15"   property="alarm15" />
+        <id column="alarm16"   property="alarm16" />
+        <id column="store_time"   property="storeTime" />
+        <id column="application_code"   property="applicationCode" />
+        <id column="tenant_code"   property="tenantCode" />
+    </resultMap>
+
+    <sql id="eventSecCtlPowerColumns">
+		id, u_event_id, device_id, region_no, rec_time, fld01, fld02, fld03, fld04, fld05, fld06, fld07, fld08, fld09, fld10, fld11, fld12, fld13, fld14, fld15, fld16, alarm01, alarm02, alarm03, alarm04, alarm05, alarm06, alarm07, alarm08, alarm09, alarm10, alarm11, alarm12, alarm13, alarm14, alarm15, alarm16, store_time, application_code, tenant_code
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="uEventId!= null and uEventId!= ''" >
+            and u_event_id LIKE CONCAT(#{uEventId},'%')
+        </if>
+        <if test="deviceId!= null and deviceId!= ''" >
+            and device_id LIKE CONCAT(#{deviceId},'%')
+        </if>
+        <if test="regionNo!= null and regionNo!= ''" >
+            and region_no LIKE CONCAT(#{regionNo},'%')
+        </if>
+        <if test="recTime!= null and recTime!= ''">
+            and rec_time = #{recTime}
+        </if>
+        <if test="fld01!= null and fld01!= ''" >
+            and fld01 LIKE CONCAT(#{fld01},'%')
+        </if>
+        <if test="fld02!= null and fld02!= ''" >
+            and fld02 LIKE CONCAT(#{fld02},'%')
+        </if>
+        <if test="fld03!= null and fld03!= ''" >
+            and fld03 LIKE CONCAT(#{fld03},'%')
+        </if>
+        <if test="fld04!= null and fld04!= ''" >
+            and fld04 LIKE CONCAT(#{fld04},'%')
+        </if>
+        <if test="fld05!= null and fld05!= ''" >
+            and fld05 LIKE CONCAT(#{fld05},'%')
+        </if>
+        <if test="fld06!= null and fld06!= ''" >
+            and fld06 LIKE CONCAT(#{fld06},'%')
+        </if>
+        <if test="fld07!= null and fld07!= ''" >
+            and fld07 LIKE CONCAT(#{fld07},'%')
+        </if>
+        <if test="fld08!= null and fld08!= ''" >
+            and fld08 LIKE CONCAT(#{fld08},'%')
+        </if>
+        <if test="fld09!= null and fld09!= ''" >
+            and fld09 LIKE CONCAT(#{fld09},'%')
+        </if>
+        <if test="fld10!= null and fld10!= ''" >
+            and fld10 LIKE CONCAT(#{fld10},'%')
+        </if>
+        <if test="fld11!= null and fld11!= ''" >
+            and fld11 LIKE CONCAT(#{fld11},'%')
+        </if>
+        <if test="fld12!= null and fld12!= ''" >
+            and fld12 LIKE CONCAT(#{fld12},'%')
+        </if>
+        <if test="fld13!= null and fld13!= ''" >
+            and fld13 LIKE CONCAT(#{fld13},'%')
+        </if>
+        <if test="fld14!= null and fld14!= ''" >
+            and fld14 LIKE CONCAT(#{fld14},'%')
+        </if>
+        <if test="fld15!= null and fld15!= ''" >
+            and fld15 LIKE CONCAT(#{fld15},'%')
+        </if>
+        <if test="fld16!= null and fld16!= ''" >
+            and fld16 LIKE CONCAT(#{fld16},'%')
+        </if>
+        <if test="alarm01!= null and alarm01!= ''" >
+            and alarm01 LIKE CONCAT(#{alarm01},'%')
+        </if>
+        <if test="alarm02!= null and alarm02!= ''" >
+            and alarm02 LIKE CONCAT(#{alarm02},'%')
+        </if>
+        <if test="alarm03!= null and alarm03!= ''" >
+            and alarm03 LIKE CONCAT(#{alarm03},'%')
+        </if>
+        <if test="alarm04!= null and alarm04!= ''" >
+            and alarm04 LIKE CONCAT(#{alarm04},'%')
+        </if>
+        <if test="alarm05!= null and alarm05!= ''" >
+            and alarm05 LIKE CONCAT(#{alarm05},'%')
+        </if>
+        <if test="alarm06!= null and alarm06!= ''" >
+            and alarm06 LIKE CONCAT(#{alarm06},'%')
+        </if>
+        <if test="alarm07!= null and alarm07!= ''" >
+            and alarm07 LIKE CONCAT(#{alarm07},'%')
+        </if>
+        <if test="alarm08!= null and alarm08!= ''" >
+            and alarm08 LIKE CONCAT(#{alarm08},'%')
+        </if>
+        <if test="alarm09!= null and alarm09!= ''" >
+            and alarm09 LIKE CONCAT(#{alarm09},'%')
+        </if>
+        <if test="alarm10!= null and alarm10!= ''" >
+            and alarm10 LIKE CONCAT(#{alarm10},'%')
+        </if>
+        <if test="alarm11!= null and alarm11!= ''" >
+            and alarm11 LIKE CONCAT(#{alarm11},'%')
+        </if>
+        <if test="alarm12!= null and alarm12!= ''" >
+            and alarm12 LIKE CONCAT(#{alarm12},'%')
+        </if>
+        <if test="alarm13!= null and alarm13!= ''" >
+            and alarm13 LIKE CONCAT(#{alarm13},'%')
+        </if>
+        <if test="alarm14!= null and alarm14!= ''" >
+            and alarm14 LIKE CONCAT(#{alarm14},'%')
+        </if>
+        <if test="alarm15!= null and alarm15!= ''" >
+            and alarm15 LIKE CONCAT(#{alarm15},'%')
+        </if>
+        <if test="alarm16!= null and alarm16!= ''" >
+            and alarm16 LIKE CONCAT(#{alarm16},'%')
+        </if>
+        <if test="storeTime!= null and storeTime!= ''">
+            and store_time = #{storeTime}
+        </if>
+        <if test="applicationCode!= null and applicationCode!= ''" >
+            and application_code LIKE CONCAT(#{applicationCode},'%')
+        </if>
+        <if test="tenantCode!= null and tenantCode!= ''" >
+            and tenant_code LIKE CONCAT(#{tenantCode},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="eventSecCtlPowerResultMap">
+        SELECT
+        <include refid="eventSecCtlPowerColumns"/>
+        FROM as_event_sec_ctl_power
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultMap="eventSecCtlPowerResultMap">
+        SELECT
+        <include refid="eventSecCtlPowerColumns"/>
+        FROM as_event_sec_ctl_power
+        WHERE 1=1
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="eventSecCtlPowerResultMap">
+        SELECT
+        <include refid="eventSecCtlPowerColumns"/>
+        FROM as_event_sec_ctl_power
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <insert id="insert">
+        INSERT INTO as_event_sec_ctl_power
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uEventId != null">
+                u_event_id,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="regionNo != null">
+                region_no,
+            </if>
+            <if test="recTime != null">
+                rec_time,
+            </if>
+            <if test="fld01 != null">
+                fld01,
+            </if>
+            <if test="fld02 != null">
+                fld02,
+            </if>
+            <if test="fld03 != null">
+                fld03,
+            </if>
+            <if test="fld04 != null">
+                fld04,
+            </if>
+            <if test="fld05 != null">
+                fld05,
+            </if>
+            <if test="fld06 != null">
+                fld06,
+            </if>
+            <if test="fld07 != null">
+                fld07,
+            </if>
+            <if test="fld08 != null">
+                fld08,
+            </if>
+            <if test="fld09 != null">
+                fld09,
+            </if>
+            <if test="fld10 != null">
+                fld10,
+            </if>
+            <if test="fld11 != null">
+                fld11,
+            </if>
+            <if test="fld12 != null">
+                fld12,
+            </if>
+            <if test="fld13 != null">
+                fld13,
+            </if>
+            <if test="fld14 != null">
+                fld14,
+            </if>
+            <if test="fld15 != null">
+                fld15,
+            </if>
+            <if test="fld16 != null">
+                fld16,
+            </if>
+            <if test="alarm01 != null">
+                alarm01,
+            </if>
+            <if test="alarm02 != null">
+                alarm02,
+            </if>
+            <if test="alarm03 != null">
+                alarm03,
+            </if>
+            <if test="alarm04 != null">
+                alarm04,
+            </if>
+            <if test="alarm05 != null">
+                alarm05,
+            </if>
+            <if test="alarm06 != null">
+                alarm06,
+            </if>
+            <if test="alarm07 != null">
+                alarm07,
+            </if>
+            <if test="alarm08 != null">
+                alarm08,
+            </if>
+            <if test="alarm09 != null">
+                alarm09,
+            </if>
+            <if test="alarm10 != null">
+                alarm10,
+            </if>
+            <if test="alarm11 != null">
+                alarm11,
+            </if>
+            <if test="alarm12 != null">
+                alarm12,
+            </if>
+            <if test="alarm13 != null">
+                alarm13,
+            </if>
+            <if test="alarm14 != null">
+                alarm14,
+            </if>
+            <if test="alarm15 != null">
+                alarm15,
+            </if>
+            <if test="alarm16 != null">
+                alarm16,
+            </if>
+            <if test="storeTime != null">
+                store_time,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="uEventId != null">
+                #{uEventId},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId},
+            </if>
+            <if test="regionNo != null">
+                #{regionNo},
+            </if>
+            <if test="recTime != null">
+                #{recTime},
+            </if>
+            <if test="fld01 != null">
+                #{fld01},
+            </if>
+            <if test="fld02 != null">
+                #{fld02},
+            </if>
+            <if test="fld03 != null">
+                #{fld03},
+            </if>
+            <if test="fld04 != null">
+                #{fld04},
+            </if>
+            <if test="fld05 != null">
+                #{fld05},
+            </if>
+            <if test="fld06 != null">
+                #{fld06},
+            </if>
+            <if test="fld07 != null">
+                #{fld07},
+            </if>
+            <if test="fld08 != null">
+                #{fld08},
+            </if>
+            <if test="fld09 != null">
+                #{fld09},
+            </if>
+            <if test="fld10 != null">
+                #{fld10},
+            </if>
+            <if test="fld11 != null">
+                #{fld11},
+            </if>
+            <if test="fld12 != null">
+                #{fld12},
+            </if>
+            <if test="fld13 != null">
+                #{fld13},
+            </if>
+            <if test="fld14 != null">
+                #{fld14},
+            </if>
+            <if test="fld15 != null">
+                #{fld15},
+            </if>
+            <if test="fld16 != null">
+                #{fld16},
+            </if>
+            <if test="alarm01 != null">
+                #{alarm01},
+            </if>
+            <if test="alarm02 != null">
+                #{alarm02},
+            </if>
+            <if test="alarm03 != null">
+                #{alarm03},
+            </if>
+            <if test="alarm04 != null">
+                #{alarm04},
+            </if>
+            <if test="alarm05 != null">
+                #{alarm05},
+            </if>
+            <if test="alarm06 != null">
+                #{alarm06},
+            </if>
+            <if test="alarm07 != null">
+                #{alarm07},
+            </if>
+            <if test="alarm08 != null">
+                #{alarm08},
+            </if>
+            <if test="alarm09 != null">
+                #{alarm09},
+            </if>
+            <if test="alarm10 != null">
+                #{alarm10},
+            </if>
+            <if test="alarm11 != null">
+                #{alarm11},
+            </if>
+            <if test="alarm12 != null">
+                #{alarm12},
+            </if>
+            <if test="alarm13 != null">
+                #{alarm13},
+            </if>
+            <if test="alarm14 != null">
+                #{alarm14},
+            </if>
+            <if test="alarm15 != null">
+                #{alarm15},
+            </if>
+            <if test="alarm16 != null">
+                #{alarm16},
+            </if>
+            <if test="storeTime != null">
+                #{storeTime},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" >
+        UPDATE as_event_sec_ctl_power
+        <set>
+            <if test="id != null">
+                id =  #{id},
+            </if>
+            <if test="uEventId != null">
+                u_event_id =  #{uEventId},
+            </if>
+            <if test="deviceId != null">
+                device_id =  #{deviceId},
+            </if>
+            <if test="regionNo != null">
+                region_no =  #{regionNo},
+            </if>
+            <if test="recTime != null">
+                rec_time =  #{recTime},
+            </if>
+            <if test="fld01 != null">
+                fld01 =  #{fld01},
+            </if>
+            <if test="fld02 != null">
+                fld02 =  #{fld02},
+            </if>
+            <if test="fld03 != null">
+                fld03 =  #{fld03},
+            </if>
+            <if test="fld04 != null">
+                fld04 =  #{fld04},
+            </if>
+            <if test="fld05 != null">
+                fld05 =  #{fld05},
+            </if>
+            <if test="fld06 != null">
+                fld06 =  #{fld06},
+            </if>
+            <if test="fld07 != null">
+                fld07 =  #{fld07},
+            </if>
+            <if test="fld08 != null">
+                fld08 =  #{fld08},
+            </if>
+            <if test="fld09 != null">
+                fld09 =  #{fld09},
+            </if>
+            <if test="fld10 != null">
+                fld10 =  #{fld10},
+            </if>
+            <if test="fld11 != null">
+                fld11 =  #{fld11},
+            </if>
+            <if test="fld12 != null">
+                fld12 =  #{fld12},
+            </if>
+            <if test="fld13 != null">
+                fld13 =  #{fld13},
+            </if>
+            <if test="fld14 != null">
+                fld14 =  #{fld14},
+            </if>
+            <if test="fld15 != null">
+                fld15 =  #{fld15},
+            </if>
+            <if test="fld16 != null">
+                fld16 =  #{fld16},
+            </if>
+            <if test="alarm01 != null">
+                alarm01 =  #{alarm01},
+            </if>
+            <if test="alarm02 != null">
+                alarm02 =  #{alarm02},
+            </if>
+            <if test="alarm03 != null">
+                alarm03 =  #{alarm03},
+            </if>
+            <if test="alarm04 != null">
+                alarm04 =  #{alarm04},
+            </if>
+            <if test="alarm05 != null">
+                alarm05 =  #{alarm05},
+            </if>
+            <if test="alarm06 != null">
+                alarm06 =  #{alarm06},
+            </if>
+            <if test="alarm07 != null">
+                alarm07 =  #{alarm07},
+            </if>
+            <if test="alarm08 != null">
+                alarm08 =  #{alarm08},
+            </if>
+            <if test="alarm09 != null">
+                alarm09 =  #{alarm09},
+            </if>
+            <if test="alarm10 != null">
+                alarm10 =  #{alarm10},
+            </if>
+            <if test="alarm11 != null">
+                alarm11 =  #{alarm11},
+            </if>
+            <if test="alarm12 != null">
+                alarm12 =  #{alarm12},
+            </if>
+            <if test="alarm13 != null">
+                alarm13 =  #{alarm13},
+            </if>
+            <if test="alarm14 != null">
+                alarm14 =  #{alarm14},
+            </if>
+            <if test="alarm15 != null">
+                alarm15 =  #{alarm15},
+            </if>
+            <if test="alarm16 != null">
+                alarm16 =  #{alarm16},
+            </if>
+            <if test="storeTime != null">
+                store_time =  #{storeTime},
+            </if>
+            <if test="applicationCode != null">
+                application_code =  #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code =  #{tenantCode},
+            </if>
+        </set>
+        WHERE id =  #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM  as_event_sec_ctl_power
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        DELETE FROM  as_event_sec_ctl_power
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+</mapper>

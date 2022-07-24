@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AlarmTerminalMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="alarmTerminalResultMap" type="com.aswl.as.ibrs.api.module.AlarmTerminal">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="code"   property="code" />
+			<id column="address"   property="address" />
+			<id column="ip"   property="ip" />
+			<id column="port"   property="port" />
+			<id column="user_name"   property="userName" />
+			<id column="password"   property="password" />
+			<id column="status"   property="status" />
+			<id column="connect_status"   property="connectStatus" />
+			<id column="region_id"   property="regionId" />
+			<id column="purchase_date"   property="purchaseDate" />
+			<id column="guarantee_time"   property="guaranteeTime" />
+			<id column="remark"   property="remark" />
+			<id column="create_date"   property="createDate" />
+			<id column="create_by"   property="createBy" />
+			<id column="create_name"   property="createName" />
+			<id column="update_date"   property="updateDate" />
+			<id column="update_by"   property="updateBy" />
+			<id column="update_name"   property="updateName" />
+			<id column="org_code"   property="orgCode" />
+			<id column="region_code"   property="regionCode" />
+			<id column="del_flag"   property="delFlag" />
+			<id column="del_date"   property="delDate" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="alarmTerminalColumns">
+		id, name, code, address, ip, port, user_name, password, status, connect_status, region_id, purchase_date, guarantee_time, remark, create_date, create_by, create_name, update_date, update_by, update_name, org_code, region_code, del_flag, del_date, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					and t1.name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="code  != null and code != ''" >
+					and t1.code like CONCAT('%',#{code},'%')
+				</if>
+				<if test="address  != null and address != ''" >
+					and t1.address like CONCAT('%',#{address},'%')
+				</if>
+				<if test="ip  != null and ip != ''" >
+					and t1.ip like CONCAT('%',#{ip},'%')
+				</if>
+				<if test="port  != null and port != ''">
+					and t1.port = #{port}
+				</if>
+				<if test="userName  != null and userName != ''" >
+					and t1.user_name like CONCAT('%',#{userName},'%')
+				</if>
+				<if test="password  != null and password != ''" >
+					and t1.password like CONCAT('%',#{password},'%')
+				</if>
+				<if test="status  != null and status != ''">
+					and t1.status = #{status}
+				</if>
+				<if test="connectStatus  != null and connectStatus != ''">
+					and t1.connect_status = #{connectStatus}
+				</if>
+				<if test="regionId  != null and regionId != ''" >
+					and t1.region_id like CONCAT('%',#{regionId},'%')
+				</if>
+				<if test="purchaseDate  != null and purchaseDate != ''">
+					and t1.purchase_date = #{purchaseDate}
+				</if>
+				<if test="guaranteeTime  != null and guaranteeTime != ''">
+					and t1.guarantee_time = #{guaranteeTime}
+				</if>
+				<if test="remark  != null and remark != ''" >
+					and t1.remark like CONCAT('%',#{remark},'%')
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and t1.create_date = #{createDate}
+				</if>
+				<if test="createBy  != null and createBy != ''" >
+					and t1.create_by like CONCAT('%',#{createBy},'%')
+				</if>
+				<if test="createName  != null and createName != ''" >
+					and t1.create_name like CONCAT('%',#{createName},'%')
+				</if>
+				<if test="updateDate  != null and updateDate != ''">
+					and t1.update_date = #{updateDate}
+				</if>
+				<if test="updateBy  != null and updateBy != ''" >
+					and t1.update_by like CONCAT('%',#{updateBy},'%')
+				</if>
+				<if test="updateName  != null and updateName != ''" >
+					and t1.update_name like CONCAT('%',#{updateName},'%')
+				</if>
+				<if test="orgCode  != null and orgCode != ''" >
+					and t1.org_code like CONCAT('%',#{orgCode},'%')
+				</if>
+				<if test="regionCode  != null and regionCode != ''" >
+					and t1.region_code like CONCAT('%',#{regionCode},'%')
+				</if>
+				<if test="delFlag  != null and delFlag != ''">
+					and t1.del_flag = #{delFlag}
+				</if>
+				<if test="delDate  != null and delDate != ''">
+					and t1.del_date = #{delDate}
+				</if>
+				<if test="applicationCode  != null and applicationCode != ''" >
+					and t1.application_code like CONCAT('%',#{applicationCode},'%')
+				</if>
+				<if test="tenantCode  != null and tenantCode != ''" >
+					and t1.tenant_code like CONCAT('%',#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="alarmTerminalResultMap">
+		SELECT
+		<include refid="alarmTerminalColumns"/>
+		FROM as_alarm_terminal
+		WHERE id = #{id} and del_flag = 0
+	</select>
+
+	<select id="findList" resultType="com.aswl.as.ibrs.api.vo.AlarmTerminalVo">
+		SELECT
+		t1.id as id,
+		t1.name as name,
+		t1.code as code,
+		t1.address as address,
+		t1.ip as ip,
+		t1.port as port,
+		t1.user_name as userName,
+		t1.password as password,
+		t1.status as status,
+		t1.connect_status as connectStatus,
+		t1.region_id as regionId,
+		t1.purchase_date as purchaseDate,
+		t1.guarantee_time as guaranteeTime,
+		t1.remark as remark,
+		t1.create_date,
+		t2.region_name as regionName
+		FROM as_alarm_terminal t1
+		LEFT JOIN as_region t2
+		ON t1.region_id=t2.id
+		WHERE t1.del_flag = 0
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="alarmTerminalResultMap">
+		SELECT
+		<include refid="alarmTerminalColumns"/>
+		FROM as_alarm_terminal
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_alarm_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="code != null">
+                    code,
+                </if>
+                <if test="address != null">
+                    address,
+                </if>
+                <if test="ip != null">
+                    ip,
+                </if>
+                <if test="port != null">
+                    port,
+                </if>
+                <if test="userName != null">
+                    user_name,
+                </if>
+                <if test="password != null">
+                    password,
+                </if>
+                <if test="status != null">
+                    status,
+                </if>
+                <if test="connectStatus != null">
+                    connect_status,
+                </if>
+                <if test="regionId != null">
+                    region_id,
+                </if>
+                <if test="purchaseDate != null">
+                    purchase_date,
+                </if>
+                <if test="guaranteeTime != null">
+                    guarantee_time,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="createBy != null">
+                    create_by,
+                </if>
+                <if test="createName != null">
+                    create_name,
+                </if>
+                <if test="updateDate != null">
+                    update_date,
+                </if>
+                <if test="updateBy != null">
+                    update_by,
+                </if>
+                <if test="updateName != null">
+                    update_name,
+                </if>
+                <if test="orgCode != null">
+                    org_code,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+                <if test="delFlag != null">
+                    del_flag,
+                </if>
+                <if test="delDate != null">
+                    del_date,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+                <if test="address != null">
+                    #{address},
+                </if>
+                <if test="ip != null">
+                    #{ip},
+                </if>
+                <if test="port != null">
+                    #{port},
+                </if>
+                <if test="userName != null">
+                    #{userName},
+                </if>
+                <if test="password != null">
+                    #{password},
+                </if>
+                <if test="status != null">
+                    #{status},
+                </if>
+                <if test="connectStatus != null">
+                    #{connectStatus},
+                </if>
+                <if test="regionId != null">
+                    #{regionId},
+                </if>
+                <if test="purchaseDate != null">
+                    #{purchaseDate},
+                </if>
+                <if test="guaranteeTime != null">
+                    #{guaranteeTime},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="createBy != null">
+                    #{createBy},
+                </if>
+                <if test="createName != null">
+                    #{createName},
+                </if>
+                <if test="updateDate != null">
+                    #{updateDate},
+                </if>
+                <if test="updateBy != null">
+                    #{updateBy},
+                </if>
+                <if test="updateName != null">
+                    #{updateName},
+                </if>
+                <if test="orgCode != null">
+                    #{orgCode},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+                <if test="delFlag != null">
+                    #{delFlag},
+                </if>
+                <if test="delDate != null">
+                    #{delDate},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_alarm_terminal
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="code != null">
+					code =  #{code},
+				</if>
+				<if test="address != null">
+					address =  #{address},
+				</if>
+				<if test="ip != null">
+					ip =  #{ip},
+				</if>
+				<if test="port != null">
+					port =  #{port},
+				</if>
+				<if test="userName != null">
+					user_name =  #{userName},
+				</if>
+				<if test="password != null">
+					password =  #{password},
+				</if>
+				<if test="status != null">
+					status =  #{status},
+				</if>
+				<if test="connectStatus != null">
+					connect_status =  #{connectStatus},
+				</if>
+				<if test="regionId != null">
+					region_id =  #{regionId},
+				</if>
+				<if test="purchaseDate != null">
+					purchase_date =  #{purchaseDate},
+				</if>
+				<if test="guaranteeTime != null">
+					guarantee_time =  #{guaranteeTime},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="createBy != null">
+					create_by =  #{createBy},
+				</if>
+				<if test="createName != null">
+					create_name =  #{createName},
+				</if>
+				<if test="updateDate != null">
+					update_date =  #{updateDate},
+				</if>
+				<if test="updateBy != null">
+					update_by =  #{updateBy},
+				</if>
+				<if test="updateName != null">
+					update_name =  #{updateName},
+				</if>
+				<if test="orgCode != null">
+					org_code =  #{orgCode},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="delFlag != null">
+					del_flag =  #{delFlag},
+				</if>
+				<if test="delDate != null">
+					del_date =  #{delDate},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		UPDATE as_alarm_terminal SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		UPDATE as_alarm_terminal SET
+		del_flag = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

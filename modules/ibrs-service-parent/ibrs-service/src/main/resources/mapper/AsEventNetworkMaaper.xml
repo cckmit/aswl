@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AsEventNetworkMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="eventNetworkResultMap" type="com.aswl.as.ibrs.api.module.EventNetwork">
+        <id column="id"  property="id" />
+        <id column="device_id"  property="deviceId" />
+        <id column="region_no"  property="regionNo" />
+        <id column="network_state"  property="networkState" />
+        <id column="store_time"  property="storeTime" />
+        <id column="application_code"  property="applicationCode" />
+        <id column="tenant_code"  property="tenantCode" />
+    </resultMap>
+
+    <sql id="eventNetworkColumns">
+		id, device_id, region_no, network_state, store_time, application_code, tenant_code,
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+
+        <if test="deviceId  != null and deviceId != ''" >
+            and device_id like CONCAT('%',#{deviceId},'%')
+        </if>
+        <if test="regionNo  != null and regionNo != ''" >
+            and region_no like CONCAT('%',#{regionNo},'%')
+        </if>
+        <if test="networkState  != null and networkState != ''">
+            and network_state = #{networkState}
+        </if>
+        <if test="storeTime  != null and storeTime != ''">
+            and store_time = #{storeTime}
+        </if>
+        <if test="applicationCode  != null and applicationCode != ''" >
+            and application_code like CONCAT('%',#{applicationCode},'%')
+        </if>
+        <if test="tenantCode  != null and tenantCode != ''" >
+            and tenant_code like CONCAT('%',#{tenantCode},'%')
+        </if>
+    </sql>
+
+    <select id="get" resultMap="eventNetworkResultMap">
+        SELECT
+        <include refid="eventNetworkColumns"/>
+        FROM as_event_network
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="eventNetworkResultMap">
+        SELECT
+        <include refid="eventNetworkColumns"/>
+        FROM as_event_network
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="eventNetworkResultMap">
+        SELECT
+        <include refid="eventNetworkColumns"/>
+        FROM as_event_network
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_event_network
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                id,
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                device_id,
+            </if>
+            <if test="regionNo != null and regionNo!=''">
+                region_no,
+            </if>
+            <if test="networkState != null and networkState!=''">
+                network_state,
+            </if>
+            <if test="storeTime != null and storeTime!=''">
+                store_time,
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                application_code,
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id!=''">
+                #{id},
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                #{deviceId},
+            </if>
+            <if test="regionNo != null and regionNo!=''">
+                #{regionNo},
+            </if>
+            <if test="networkState != null and networkState!=''">
+                #{networkState},
+            </if>
+            <if test="storeTime != null and storeTime!=''">
+                #{storeTime,jdbcType=TIMESTAMP, javaType=java.util.Date},
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" >
+        UPDATE as_event_network
+        <set>
+            <if test="id != null and id!=''">
+                id =  #{id},
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                device_id =  #{deviceId},
+            </if>
+            <if test="regionNo != null and regionNo!=''">
+                region_no =  #{regionNo},
+            </if>
+            <if test="networkState != null and networkState!=''">
+                network_state =  #{networkState},
+            </if>
+            <if test="storeTime != null and storeTime!=''">
+                store_time =  #{storeTime},
+            </if>
+            <if test="applicationCode != null and applicationCode!=''">
+                application_code =  #{applicationCode},
+            </if>
+            <if test="tenantCode != null and tenantCode!=''">
+                tenant_code =  #{tenantCode},
+            </if>
+        </set>
+        where id =  #{id}
+    </update>
+
+    <delete id="delete">
+		UPDATE as_event_network SET
+		del_flag = 1
+		WHERE ID =  #{id}
+	</delete>
+
+    <delete id="deleteAll">
+        UPDATE as_event_network SET
+        del_flag = 1
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+
+
+    <select id="findOffDevice" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM
+        as_event_network n
+        LEFT JOIN as_device d on n.device_id = d.id <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+        WHERE  n.network_state IN(0,2,3)
+        <if test="regionCode!=null and regionCode!=''">
+            AND d.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND d.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findOnlineDevice" resultType="java.lang.Integer">
+        SELECT COUNT(*) AS count
+        FROM as_event_network n
+        LEFT JOIN as_device d on n.device_id = d.id <!-- 以后有其它需求可以直接写出来，不用判断了  -->
+        WHERE n.network_state=1
+        <if test="regionCode!=null and regionCode!=''">
+            AND d.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND d.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND d.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+   <select id="findBoxCounts" resultType="java.lang.Integer">
+    SELECT
+     COUNT(*)
+     FROM as_device t1
+    LEFT JOIN as_device_model t2
+    ON t1.device_model_id=t2.id
+    LEFT JOIN as_device_type t3
+    ON t2.device_type=t3.device_type
+    LEFT JOIN as_device_kind t4
+    ON t4.id=t3.device_kind_id
+    WHERE 1=1
+    <if test="kind!=null and kind!=''">
+        AND t4.type=#{kind}
+    </if>
+    <if test="regionCode!=null and regionCode!=''">
+        AND t1.region_code LIKE CONCAT(#{regionCode},'%')
+    </if>
+    <if test="tenantCode != null and tenantCode != ''">
+        AND t1.tenant_code = #{tenantCode}
+    </if>
+       <if test="projectId  != null and projectId != ''" >
+           AND t1.project_id IN
+           <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+               #{item}
+           </foreach>
+       </if>
+   </select>
+
+   <select id="findOnLineBoxCounts" resultType="java.lang.Integer">
+    SELECT
+     COUNT(*)
+     FROM as_device t1
+    LEFT JOIN as_device_model t2
+    ON t1.device_model_id=t2.id
+    LEFT JOIN as_device_type t3
+    ON t2.device_type=t3.device_type
+    LEFT JOIN as_device_kind t4
+    ON t4.id=t3.device_kind_id
+    LEFT JOIN as_event_network t5
+    ON t5.device_id=t1.id
+    WHERE 1=1
+    AND t5.network_state=1
+    <if test="kind!=null and kind!=''">
+        AND t4.type=#{kind}
+    </if>
+    <if test="regionCode!=null and regionCode!=''">
+        AND t1.region_code LIKE CONCAT(#{regionCode},'%')
+    </if>
+    <if test="tenantCode != null and tenantCode != ''">
+        AND t1.tenant_code = #{tenantCode}
+    </if>
+       <if test="projectId  != null and projectId != ''" >
+           AND t1.project_id IN
+           <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+               #{item}
+           </foreach>
+       </if>
+   </select>
+
+    <select id="findOffDeviceBox" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM
+        as_event_network as n LEFT JOIN as_device as a on n.device_id = a.id
+        LEFT JOIN as_device_model as m on a.device_model_id = m.id
+        LEFT JOIN as_device_type as t on m.device_type = t.device_type
+        LEFT JOIN as_device_kind as k on t.device_kind_id = k.id
+        WHERE (n.network_state IN(0,2,3))
+        <if test="regionCode!=null and regionCode!=''">
+            AND a.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="kind != null and kind != ''">
+            AND k.type = #{kind}
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findOnlineDeviceBox" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM
+        as_event_network as n LEFT JOIN as_device as a on n.device_id = a.id
+        LEFT JOIN as_device_model as m on a.device_model_id = m.id
+        LEFT JOIN as_device_type as t on m.device_type = t.device_type
+        LEFT JOIN as_device_kind as k on t.device_kind_id = k.id
+        WHERE n.network_state = 1
+        <if test="regionCode!=null and regionCode!=''">
+            AND a.region_code like CONCAT(#{regionCode},'%')
+        </if>
+        <if test="kind != null and kind != ''">
+            AND k.type = #{kind}
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND a.tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId  != null and projectId != ''" >
+            AND a.project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="debug!= null and debug !=''">
+            AND a.debug =1
+        </if>
+    </select>
+</mapper>

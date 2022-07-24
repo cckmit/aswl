@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ElectricUnitDeviceMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="electricUnitDeviceResultMap" type="com.aswl.as.ibrs.api.module.ElectricUnitDevice">
+			<id column="id"   property="id" />
+			<id column="unit_id"   property="unitId" />
+			<id column="device_id"   property="deviceId" />
+	</resultMap>
+
+	<sql id="electricUnitDeviceColumns">
+		id, unit_id, device_id
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="unitId!= null and unitId!= ''" >
+					and unit_id LIKE CONCAT(#{unitId},'%')
+				</if>
+				<if test="deviceId!= null and deviceId!= ''" >
+					and device_id LIKE CONCAT(#{deviceId},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="electricUnitDeviceResultMap">
+		SELECT
+		<include refid="electricUnitDeviceColumns"/>
+		FROM as_electric_unit_device
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="electricUnitDeviceResultMap">
+		SELECT
+		<include refid="electricUnitDeviceColumns"/>
+		FROM as_electric_unit_device
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="electricUnitDeviceResultMap">
+		SELECT
+		<include refid="electricUnitDeviceColumns"/>
+		FROM as_electric_unit_device
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_electric_unit_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="unitId != null">
+                    unit_id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="unitId != null">
+                    #{unitId},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+        </trim>
+	</insert>
+	<update id="update" >
+		UPDATE as_electric_unit_device
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="unitId != null">
+					unit_id =  #{unitId},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_electric_unit_device
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_electric_unit_device
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteByUnitId">
+		delete from as_electric_unit_device
+        where unit_id = #{unitId}
+	</delete>
+	<delete id="deleteByDeviceId">
+		delete from as_electric_unit_device
+        where device_id = #{deviceId}	
+	</delete>
+
+	<insert id="insertBatch">
+		INSERT INTO as_electric_unit_device (
+		id,
+		unit_id,
+		device_id)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.id}, #{item.unitId}, #{item.deviceId})
+		</foreach>
+	</insert>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ReportDownloadRecordMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="reportDownloadRecordResultMap" type="com.aswl.as.ibrs.api.module.ReportDownloadRecord">
+			<id column="id"   property="id" />
+			<id column="report_his_info_id"   property="reportHisInfoId" />
+			<id column="user_id"   property="userId" />
+			<id column="user_name"   property="userName" />
+			<id column="user_identifier"   property="userIdentifier" />
+			<id column="download_date"   property="downloadDate" />
+	</resultMap>
+
+	<sql id="reportDownloadRecordColumns">
+		id, report_his_info_id, user_id, user_name, user_identifier, download_date
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="reportHisInfoId!= null and reportHisInfoId!= ''" >
+					and report_his_info_id LIKE CONCAT(#{reportHisInfoId},'%')
+				</if>
+				<if test="userId!= null and userId!= ''" >
+					and user_id LIKE CONCAT(#{userId},'%')
+				</if>
+				<if test="userName!= null and userName!= ''" >
+					and user_name LIKE CONCAT(#{userName},'%')
+				</if>
+				<if test="userIdentifier!= null and userIdentifier!= ''" >
+					and user_identifier LIKE CONCAT(#{userIdentifier},'%')
+				</if>
+				<if test="downloadDate!= null and downloadDate!= ''">
+					and download_date = #{downloadDate}
+				</if>
+	</sql>
+
+	<select id="get" resultMap="reportDownloadRecordResultMap">
+		SELECT
+		<include refid="reportDownloadRecordColumns"/>
+		FROM as_report_download_record
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="reportDownloadRecordResultMap">
+		SELECT
+		<include refid="reportDownloadRecordColumns"/>
+		FROM as_report_download_record
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="reportDownloadRecordResultMap">
+		SELECT
+		<include refid="reportDownloadRecordColumns"/>
+		FROM as_report_download_record
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_report_download_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="reportHisInfoId != null">
+					report_his_info_id,
+                </if>
+                <if test="userId != null">
+                    user_id,
+                </if>
+                <if test="userName != null">
+                    user_name,
+                </if>
+                <if test="userIdentifier != null">
+                    user_identifier,
+                </if>
+                <if test="downloadDate != null">
+                    download_date,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="reportHisInfoId != null">
+                    #{reportHisInfoId},
+                </if>
+                <if test="userId != null">
+                    #{userId},
+                </if>
+                <if test="userName != null">
+                    #{userName},
+                </if>
+                <if test="userIdentifier != null">
+                    #{userIdentifier},
+                </if>
+                <if test="downloadDate != null">
+                    #{downloadDate},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_report_download_record
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="reportHisInfoId != null">
+					report_his_info_id =  #{reportHisInfoId},
+				</if>
+				<if test="userId != null">
+					user_id =  #{userId},
+				</if>
+				<if test="userName != null">
+					user_name =  #{userName},
+				</if>
+				<if test="userIdentifier != null">
+					user_identifier =  #{userIdentifier},
+				</if>
+				<if test="downloadDate != null">
+					download_date =  #{downloadDate},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_report_download_record
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_report_download_record
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

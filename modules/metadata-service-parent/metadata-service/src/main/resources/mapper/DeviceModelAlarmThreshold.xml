@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.aswl.as.metadata.mapper.DeviceModelAlarmThresholdMapper">
+	<resultMap id="DeviceModelAlarmThresholdResultMap" type="com.aswl.as.ibrs.api.module.DeviceModelAlarmThreshold">
+		<id property="id" column="id" />
+		<result property="eventMetadataModelId" column="event_metadata_model_id" />
+		<result property="maxValue" column="max_value" />
+		<result property="minValue" column="min_value" />
+		<result property="statusValue" column="status_value" />
+	</resultMap>
+
+	<!-- 定义可重用的SQL代码段，可以包含在其他语句中 -->
+	<sql id="base_column">
+		 id
+		 ,event_metadata_model_id
+		 ,max_value
+		 ,min_value
+		 ,status_value
+	</sql>
+	
+	<!-- 定义可重用的WHERE SQL公共代码段，可以包含在其他语句中 -->
+	<sql id="where_column">
+		<if test="id != null and id != ''">
+			AND id = #{id,jdbcType=VARCHAR}
+		</if>
+		<if test="eventMetadataModelId != null and eventMetadataModelId != ''">
+			AND event_metadata_model_id = #{eventMetadataModelId,jdbcType=VARCHAR}
+		</if>
+		<if test="maxValue != null and maxValue != ''">
+			AND max_value = #{maxValue,jdbcType=DOUBLE}
+		</if>
+		<if test="minValue != null and minValue != ''">
+			AND min_value = #{minValue,jdbcType=DOUBLE}
+		</if>
+		<if test="statusValue != null and statusValue != ''">
+			AND status_value = #{statusValue,jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="find" resultMap="DeviceModelAlarmThresholdResultMap">
+	
+		SELECT	<include refid="base_column" />
+		FROM	as_device_model_alarm_threshold
+		WHERE	id=#{id,jdbcType=VARCHAR}
+	
+	</select>
+	
+	<select id="findByPk" resultMap="DeviceModelAlarmThresholdResultMap">
+	
+		SELECT	<include refid="base_column" />
+		FROM	as_device_model_alarm_threshold
+		WHERE	id=#{id,jdbcType=VARCHAR}
+		  
+	</select>
+
+	<select id="findByPage" resultMap="DeviceModelAlarmThresholdResultMap">
+	
+		SELECT	<include refid="base_column" />
+		FROM	as_device_model_alarm_threshold
+		<where>
+			<include refid="where_column" />
+		</where>
+		
+	</select>
+	
+	<select id="findStatusValueByCode" resultMap="DeviceModelAlarmThresholdResultMap">
+		<![CDATA[
+			SELECT
+				  admat.id
+				 ,admat.event_metadata_model_id
+				 ,admat.max_value
+				 ,admat.min_value
+				 ,admat.status_value
+			FROM
+				as_device_model_alarm_threshold admat
+			LEFT JOIN as_event_uc_metadata_model aeumm ON admat.event_metadata_model_id = aeumm.id
+			LEFT JOIN as_event_uc_metadata aeum ON aeumm.event_metadata_id = aeum.id
+			WHERE
+				aeum.fld_code = #{fldCode}
+			AND aeum.tab_code = #{tabCode}
+			AND admat.max_value > #{statusValue}
+			AND admat.min_value <= #{statusValue}
+			AND aeumm.device_model_id = #{deviceModelId}
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.aswl.as.ibrs.api.module.DeviceModelAlarmThreshold">
+	
+		INSERT INTO as_device_model_alarm_threshold
+				(id
+				,event_metadata_model_id
+				,max_value
+				,min_value
+				,status_value
+				)
+		VALUES	(#{id,jdbcType=VARCHAR}
+				,#{eventMetadataModelId}
+				,#{maxValue}
+				,#{minValue}
+				,#{statusValue}
+				)
+				
+	</insert>
+	
+	<update id="update" parameterType="com.aswl.as.ibrs.api.module.DeviceModelAlarmThreshold">
+	
+		UPDATE	as_device_model_alarm_threshold
+		<set>
+			<if test="id != null ">
+				id = #{id,jdbcType=VARCHAR},
+			</if>
+			<if test="eventMetadataModelId != null ">
+				event_metadata_model_id = #{eventMetadataModelId,jdbcType=VARCHAR},
+			</if>
+			<if test="maxValue != null ">
+				max_value = #{maxValue,jdbcType=DOUBLE},
+			</if>
+			<if test="minValue != null ">
+				min_value = #{minValue,jdbcType=DOUBLE},
+			</if>
+			<if test="statusValue != null ">
+				status_value = #{statusValue,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE	id = #{id,jdbcType=VARCHAR}
+		  
+	</update>
+	
+	<delete id="deleteByPk">
+	
+		DELETE	FROM as_device_model_alarm_threshold
+		WHERE	id = #{id,jdbcType=VARCHAR}
+		  
+	</delete>
+	
+	<delete id="delete">
+	
+		DELETE	FROM as_device_model_alarm_threshold
+		WHERE	id
+		   IN
+    	<foreach item="deviceModelAlarmThresholdId" index="index" collection="array" open="(" separator="," close=")">
+	  		#{deviceModelAlarmThresholdId} 
+		</foreach>
+		  
+	</delete>
+</mapper> 

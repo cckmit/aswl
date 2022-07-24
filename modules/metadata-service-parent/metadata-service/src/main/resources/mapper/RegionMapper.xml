@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.metadata.mapper.RegionMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="regionResultMap" type="com.aswl.as.ibrs.api.module.Region">
+        <id column="id" property="id"/>
+        <id column="region_name" property="regionName"/>
+        <id column="parent_id" property="parentId"/>
+        <id column="full_name" property="fullName"/>
+        <id column="description" property="description"/>
+        <id column="region_code" property="regionCode"/>
+        <id column="latitude" property="latitude"/>
+        <id column="longitude" property="longitude"/>
+        <id column="ip_part_begin" property="ipPartBegin"/>
+        <id column="ip_part_end" property="ipPartEnd"/>
+        <id column="ip_part_begin2" property="ipPartBegin2"/>
+        <id column="ip_part_end2" property="ipPartEnd2"/>
+        <id column="creator" property="creator"/>
+        <id column="create_name" property="createName"/>
+        <id column="create_date" property="createDate"/>
+        <id column="modifier" property="modifier"/>
+        <id column="update_name" property="updateName"/>
+        <id column="modify_date" property="modifyDate"/>
+        <id column="sys_org_code" property="sysOrgCode"/>
+        <id column="sys_region_code" property="sysRegionCode"/>
+        <id column="sort" property="sort"/>
+        <id column="del_flag" property="delFlag"/>
+        <id column="application_code" property="applicationCode"/>
+        <id column="tenant_code" property="tenantCode"/>
+        <id column="project_id" property="projectId"/>
+    </resultMap>
+
+    <resultMap id="deviceKindModel" type="com.aswl.as.ibrs.api.vo.KindVo">
+        <result property="label" column="deviceKindName"/>
+        <result property="value" column="type"/>
+        <collection property="children" ofType="com.aswl.as.ibrs.api.vo.TypeVo">
+            <result property="label" column="deviceTypeName"/>
+            <result property="value" column="deviceTypeName"/>
+            <collection property="children" ofType="com.aswl.as.ibrs.api.vo.ModelVo">
+                <result property="label" column="deviceModelName"/>
+                <result property="value" column="deviceModelName"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="regionColumns">
+		id, region_name, parent_id, full_name, description, region_code, latitude, longitude, creator, create_name, create_date, modifier, update_name, modify_date, sys_org_code, sys_region_code, sort, del_flag, application_code, tenant_code,project_id,ip_part_begin,ip_part_end,ip_part_begin2,ip_part_end2
+	</sql>
+    <!-- where 条件 -->
+
+    <sql id="whereColumnList">
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="regionName  != null and regionName != ''">
+            and region_name like CONCAT('%',#{regionName},'%')
+        </if>
+        <if test="parentId  != null and parentId != ''">
+            and parent_id like CONCAT('%',#{parentId},'%')
+        </if>
+        <if test="fullName  != null and fullName != ''">
+            and full_name like CONCAT('%',#{fullName},'%')
+        </if>
+        <if test="description  != null and description != ''">
+            and description like CONCAT('%',#{description},'%')
+        </if>
+        <if test="regionCode  != null and regionCode != ''">
+            and region_code = #{regionCode}
+        </if>
+        <if test="latitude  != null and latitude != ''">
+            and latitude = #{latitude}
+        </if>
+        <if test="longitude  != null and longitude != ''">
+            and longitude = #{longitude}
+        </if>
+        <if test="creator  != null and creator != ''">
+            and creator like CONCAT('%',#{creator},'%')
+        </if>
+        <if test="createName  != null and createName != ''">
+            and create_name like CONCAT('%',#{createName},'%')
+        </if>
+        <if test="createDate  != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        <if test="modifier  != null and modifier != ''">
+            and modifier like CONCAT('%',#{modifier},'%')
+        </if>
+        <if test="updateName  != null and updateName != ''">
+            and update_name like CONCAT('%',#{updateName},'%')
+        </if>
+        <if test="modifyDate  != null and modifyDate != ''">
+            and modify_date = #{modifyDate}
+        </if>
+        <if test="sysOrgCode  != null and sysOrgCode != ''">
+            and sys_org_code like CONCAT('%',#{sysOrgCode},'%')
+        </if>
+        <if test="sysRegionCode  != null and sysRegionCode != ''">
+            and sys_region_code like CONCAT('%',#{sysRegionCode},'%')
+        </if>
+        <if test="tenantCode!=null and tenantCode!='' ">
+            AND tenant_code = #{tenantCode}
+        </if>
+        <if test="projectId !=null and projectId !='' ">
+            AND project_id IN
+            <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="get" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE id = #{id} and del_flag = 0
+    </select>
+
+    <select id="findList" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE del_flag = 0
+        <include refid="whereColumnList"/>
+    </select>
+
+
+    <select id="findListById" resultMap="regionResultMap">
+        SELECT
+        <include refid="regionColumns"/>
+        FROM as_region
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO as_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="regionName != null">
+                region_name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="fullName != null">
+                full_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="regionCode != null">
+                region_code,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="ipPartBegin != null">
+                ip_part_begin,
+            </if>
+            <if test="ipPartEnd != null">
+                ip_part_end,
+            </if>
+            <if test="ipPartBegin2 != null">
+                ip_part_begin2,
+            </if>
+            <if test="ipPartEnd2 != null">
+                ip_part_end2,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="updateName != null">
+                update_name,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="sysOrgCode != null">
+                sys_org_code,
+            </if>
+            <if test="sysRegionCode != null">
+                sys_region_code,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+            <if test="projectId !=null ">
+                project_id,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="regionName != null">
+                #{regionName},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="fullName != null">
+                #{fullName},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="regionCode != null">
+                #{regionCode},
+            </if>
+            <if test="latitude != null">
+                #{latitude},
+            </if>
+            <if test="longitude != null">
+                #{longitude},
+            </if>
+            <if test="ipPartBegin != null">
+                #{ipPartBegin},
+            </if>
+            <if test="ipPartEnd != null">
+                #{ipPartEnd},
+            </if>
+            <if test="ipPartBegin2 != null">
+                #{ipPartBegin2},
+            </if>
+            <if test="ipPartEnd2 != null">
+                #{ipPartEnd2},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="createName != null">
+                #{createName},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="updateName != null">
+                #{updateName},
+            </if>
+            <if test="modifyDate != null ">
+                #{modifyDate},
+            </if>
+            <if test="sysOrgCode != null">
+                #{sysOrgCode},
+            </if>
+            <if test="sysRegionCode != null">
+                #{sysRegionCode},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+            <if test="projectId != null">
+                #{projectId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE as_region
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="regionName != null">
+                region_name = #{regionName},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="fullName != null">
+                full_name = #{fullName},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="regionCode != null">
+                region_code = #{regionCode},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="ipPartBegin != null">
+                ip_part_begin= #{ipPartBegin},
+            </if>
+            <if test="ipPartEnd != null">
+                ip_part_end= #{ipPartEnd},
+            </if>
+            <if test="ipPartBegin2 != null">
+                ip_part_begin2= #{ipPartBegin2},
+            </if>
+            <if test="ipPartEnd2 != null">
+                ip_part_end2= #{ipPartEnd2},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="createName != null">
+                create_name = #{createName},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="updateName != null">
+                update_name = #{updateName},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+            <if test="sysOrgCode != null">
+                sys_org_code = #{sysOrgCode},
+            </if>
+            <if test="sysRegionCode != null">
+                sys_region_code = #{sysRegionCode},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="applicationCode != null">
+                application_code = #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM  as_region
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM as_region
+        WHERE id in
+        <foreach item="item" index="index" collection="array" open="("
+                 separator="," close=")">#{item}
+        </foreach>
+    </delete>
+
+    <select id="findByRegionCode" resultMap="regionResultMap">
+        SELECT <include refid="regionColumns"/>
+        FROM as_region
+        where del_flag = 0
+        and region_code = #{regionCode}
+    </select>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.EventstatuMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="asEventNetworkMap" type="com.aswl.as.ibrs.api.module.EventAlarm">
+        <id column="id"  property="id" />
+        <id column="device_id"  property="deviceId" />
+        <id column="region_no"  property="regionNo" />
+       <!-- <id column="network_state"  property="networkState" />-->
+        <id column="store_time"  property="storeTime" />
+        <id column="application_code"  property="applicationCode" />
+        <id column="tenant_code"  property="tenantCode" />
+    </resultMap>
+
+    <!-- 获取统计报表列表 -->
+    <select id="findEventstatu"
+            resultType="map">
+
+select COUNT(*) AS reportbox,sum(case when a.network_state='1' then 1 else 0 end) as online,
+sum(case when a.network_state='0' then 1 else 0 end) as offline from as_event_network a LEFT JOIN as_device b on a.device_id=b.id LEFT JOIN as_device_model c on
+b.device_model_id=c.id LEFT JOIN as_device_type d on c.device_type=d.device_type LEFT JOIN as_device_kind e on d.device_kind_id=e.id where e.type='2'
+</select>
+
+    <!-- 获取告警级别报表数据 -->
+    <select id="findAlarmlevel"
+            resultType="map">
+select COUNT(*) AS reportbox,sum(case when a.network_state='1' then 1 else 0 end) as online,
+sum(case when a.network_state='0' then 1 else 0 end) as offline from as_event_network a LEFT JOIN as_device b on a.device_id=b.id LEFT JOIN as_device_model c on
+b.device_model_id=c.id LEFT JOIN as_device_type d on c.device_type=d.device_type LEFT JOIN as_device_kind e on d.device_kind_id=e.id where e.type='2'
+     </select>
+
+    <!-- 获取告警类型报表数据 -->
+    <select id="findAlarmtype"
+            resultType="map">
+select COUNT(*) AS reportbox,sum(case when a.network_state='1' then 1 else 0 end) as online,
+sum(case when a.network_state='0' then 1 else 0 end) as offline from as_event_network a LEFT JOIN as_device b on a.device_id=b.id LEFT JOIN as_device_model c on
+b.device_model_id=c.id LEFT JOIN as_device_type d on c.device_type=d.device_type LEFT JOIN as_device_kind e on d.device_kind_id=e.id where e.type='2'
+</select>
+
+    <!-- 获取故障维护报表数据 -->
+    <select id="findFaultmaintain"
+            resultType="map">
+select COUNT(*) AS reportbox,sum(case when a.network_state='1' then 1 else 0 end) as online,
+sum(case when a.network_state='0' then 1 else 0 end) as offline from as_event_network a LEFT JOIN as_device b on a.device_id=b.id LEFT JOIN as_device_model c on
+b.device_model_id=c.id LEFT JOIN as_device_type d on c.device_type=d.device_type LEFT JOIN as_device_kind e on d.device_kind_id=e.id where e.type='2'
+
+     </select>
+
+
+
+</mapper>

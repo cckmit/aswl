@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.asos.modules.ibrs.mapper.AsContentMalfunctionMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.aswl.as.asos.modules.ibrs.entity.AsContentMalfunction">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="category_tree_id" jdbcType="VARCHAR" property="categoryTreeId" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="showcase_text" jdbcType="VARCHAR" property="showcaseText" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="del_flag" jdbcType="BIT" property="delFlag" />
+        <result column="is_showcase" jdbcType="BIT" property="isShowcase" />
+        <result column="clicks" jdbcType="INTEGER" property="clicks" />
+
+        <result column="likes" jdbcType="INTEGER" property="likes" />
+
+        <result column="is_release" jdbcType="BIT" property="isRelease" />
+
+        <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
+
+        <result column="other_url" jdbcType="VARCHAR" property="otherUrl" />
+
+    </resultMap>
+
+
+    <!--  外连表获取数量 -->
+    <select id="countMalfunctions" resultType="java.lang.Integer" >
+        select count(1)
+        from as_content_malfunction m
+        left join as_category_tree t on m.category_tree_id=t.id
+        where m.del_flag='0'
+        <if test="title != null and title !=''">
+            and m.title like concat('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="isRelease != null">
+            and m.is_release=#{isRelease}
+        </if>
+        <if test="categoryTreeId != null and categoryTreeId !=''">
+            and m.category_tree_id=#{categoryTreeId}
+        </if>
+        <if test="nodeCode != null and nodeCode !=''">
+            and t.node_code like CONCAT(#{nodeCode},'%')
+        </if>
+        <if test="createDateStart != null">
+            and m.create_date >= #{createDateStart}
+        </if>
+        <if test="createDateEnd != null">
+            <![CDATA[ and m.create_date <= #{createDateEnd} ]]>
+        </if>
+        <if test="isShowcase != null">
+            and m.is_showcase=#{isShowcase}
+        </if>
+
+        <if test="otherUrl != null and otherUrl !=''">
+            and p.other_url=#{otherUrl}
+        </if>
+
+    </select>
+
+    <!-- 外连表获取数据 -->
+    <select id="queryMalfunctions" resultMap="BaseResultMap" >
+        select
+
+        m.id as id, m.category_tree_id as category_tree_id, m.title as title, m.author as author, m.sort as sort, m.showcase_text as showcase_text, m.modifier as modifier,
+        m.modify_date as modify_date,m.creator as creator, m.create_date as create_date, m.del_flag as del_flag, m.is_showcase as is_showcase, m.clicks as clicks,m.likes as likes, m.is_release as is_release,
+        t.node_name as node_name,m.content as content ,m.other_url as other_url
+
+        from as_content_malfunction m
+        left join as_category_tree t on m.category_tree_id=t.id
+        where m.del_flag='0'
+        <if test="title != null and title !=''">
+            and m.title like concat('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="isRelease != null">
+            and m.is_release=#{isRelease}
+        </if>
+        <if test="categoryTreeId != null and categoryTreeId !=''">
+            and m.category_tree_id=#{categoryTreeId}
+        </if>
+        <if test="nodeCode != null and nodeCode !=''">
+            and t.node_code like CONCAT(#{nodeCode},'%')
+        </if>
+        <if test="createDateStart != null">
+            and m.create_date >= #{createDateStart}
+        </if>
+        <if test="createDateEnd != null">
+            <![CDATA[ and m.create_date <= #{createDateEnd} ]]>
+        </if>
+        <if test="isShowcase != null">
+            and m.is_showcase=#{isShowcase}
+        </if>
+
+        <if test="otherUrl != null and otherUrl !=''">
+            and p.other_url=#{otherUrl}
+        </if>
+
+        <!-- 排序 -->
+        <choose>
+            <when test="sidx != null and sidx != ''">
+                order by m.${sidx} ${order}
+            </when>
+            <otherwise>
+                order by m.sort desc
+            </otherwise>
+        </choose>
+
+        <if test="limit1 != null">
+            limit #{limit1},#{limit2}
+        </if>
+
+    </select>
+
+
+</mapper>

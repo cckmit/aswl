@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.AssetsInfoDetailMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="assetsInfoDetailResultMap" type="com.aswl.as.ibrs.api.module.AssetsInfoDetail">
+			<id column="id"   property="id" />
+			<id column="assets_info_id"   property="assetsInfoId" />
+			<id column="name"   property="name" />
+			<id column="basic_no"   property="basicNo" />
+			<id column="status"   property="status" />
+			<id column="remark"   property="remark" />
+			<id column="application_code"   property="applicationCode" />
+			<id column="tenant_code"   property="tenantCode" />
+	</resultMap>
+
+	<sql id="assetsInfoDetailColumns">
+		id, assets_info_id, name, basic_no, status, remark, application_code, tenant_code
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="assetsInfoId!= null and assetsInfoId!= ''" >
+					and assets_info_id LIKE CONCAT(#{assetsInfoId},'%')
+				</if>
+				<if test="name!= null and name!= ''" >
+					and name LIKE CONCAT(#{name},'%')
+				</if>
+				<if test="basicNo!= null and basicNo!= ''" >
+					and basic_no LIKE CONCAT(#{basicNo},'%')
+				</if>
+				<if test="status!= null and status!= ''">
+					and status = #{status}
+				</if>
+				<if test="remark!= null and remark!= ''" >
+					and remark LIKE CONCAT(#{remark},'%')
+				</if>
+				<if test="applicationCode!= null and applicationCode!= ''" >
+					and application_code LIKE CONCAT(#{applicationCode},'%')
+				</if>
+				<if test="tenantCode!= null and tenantCode!= ''" >
+					and tenant_code LIKE CONCAT(#{tenantCode},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="assetsInfoDetailResultMap">
+		SELECT
+		<include refid="assetsInfoDetailColumns"/>
+		FROM as_assets_info_detail
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="assetsInfoDetailResultMap">
+		SELECT
+		<include refid="assetsInfoDetailColumns"/>
+		FROM as_assets_info_detail
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="assetsInfoDetailResultMap">
+		SELECT
+		<include refid="assetsInfoDetailColumns"/>
+		FROM as_assets_info_detail
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_assets_info_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="assetsInfoId != null">
+                    assets_info_id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="basicNo != null">
+                    basic_no,
+                </if>
+                <if test="status != null">
+                    status,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="applicationCode != null">
+                    application_code,
+                </if>
+                <if test="tenantCode != null">
+                    tenant_code,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="assetsInfoId != null">
+                    #{assetsInfoId},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="basicNo != null">
+                    #{basicNo},
+                </if>
+                <if test="status != null">
+                    #{status},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="applicationCode != null">
+                    #{applicationCode},
+                </if>
+                <if test="tenantCode != null">
+                    #{tenantCode},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_assets_info_detail
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="assetsInfoId != null">
+					assets_info_id =  #{assetsInfoId},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="basicNo != null">
+					basic_no =  #{basicNo},
+				</if>
+				<if test="status != null">
+					status =  #{status},
+				</if>
+				<if test="remark != null">
+					remark =  #{remark},
+				</if>
+				<if test="applicationCode != null">
+					application_code =  #{applicationCode},
+				</if>
+				<if test="tenantCode != null">
+					tenant_code =  #{tenantCode},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_assets_info_detail
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_assets_info_detail
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+    <delete id="deleteByAssetsInfoId">
+	DELETE FROM  as_assets_info_detail
+	WHERE assets_info_id = #{assetsInfoId}	
+	</delete>
+</mapper>

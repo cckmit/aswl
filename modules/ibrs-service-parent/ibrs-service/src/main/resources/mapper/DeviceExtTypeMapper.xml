@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.DeviceExtTypeMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="deviceExtTypeResultMap" type="com.aswl.as.ibrs.api.module.DeviceExtType">
+			<id column="id"   property="id" />
+			<id column="name"   property="name" />
+			<id column="code"   property="code" />
+			<id column="io_type"   property="ioType" />
+			<id column="manufacturer"   property="manufacturer" />
+			<id column="response_time"   property="responseTime" />
+			<id column="create_date"   property="createDate" />
+			<id column="create"   property="create" />
+			<id column="create_name"   property="createName" />
+			<id column="modify_date"   property="modifyDate" />
+			<id column="modifier"   property="modifier" />
+			<id column="update_name"   property="updateName" />
+	</resultMap>
+
+	<sql id="deviceExtTypeColumns">
+		id, name, code, io_type, manufacturer, response_time, create_date, `create`, create_name, modify_date, modifier, update_name
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="name  != null and name != ''" >
+					and name like CONCAT('%',#{name},'%')
+				</if>
+				<if test="code  != null and code != ''" >
+					and code like CONCAT('%',#{code},'%')
+				</if>
+				<if test="ioType  != null and ioType != ''">
+					and io_type = #{ioType}
+				</if>
+				<if test="manufacturer  != null and manufacturer != ''" >
+					and manufacturer like CONCAT('%',#{manufacturer},'%')
+				</if>
+				<if test="responseTime  != null and responseTime != ''">
+					and response_time = #{responseTime}
+				</if>
+				<if test="createDate  != null and createDate != ''">
+					and create_date = #{createDate}
+				</if>
+				<if test="create  != null and create != ''" >
+					and create like CONCAT('%',#{create},'%')
+				</if>
+				<if test="createName  != null and createName != ''" >
+					and create_name like CONCAT('%',#{createName},'%')
+				</if>
+				<if test="modifyDate  != null and modifyDate != ''">
+					and modify_date = #{modifyDate}
+				</if>
+				<if test="modifier  != null and modifier != ''" >
+					and modifier like CONCAT('%',#{modifier},'%')
+				</if>
+				<if test="updateName  != null and updateName != ''" >
+					and update_name like CONCAT('%',#{updateName},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="deviceExtTypeResultMap">
+		SELECT
+		<include refid="deviceExtTypeColumns"/>
+		FROM as_device_ext_type
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="deviceExtTypeResultMap">
+		SELECT
+		<include refid="deviceExtTypeColumns"/>
+		FROM as_device_ext_type
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="deviceExtTypeResultMap">
+		SELECT
+		<include refid="deviceExtTypeColumns"/>
+		FROM as_device_ext_type
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<insert id="insert">
+        INSERT INTO as_device_ext_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="code != null">
+                    code,
+                </if>
+                <if test="ioType != null">
+                    io_type,
+                </if>
+                <if test="manufacturer != null">
+                    manufacturer,
+                </if>
+                <if test="responseTime != null">
+                    response_time,
+                </if>
+                <if test="createDate != null">
+                    create_date,
+                </if>
+                <if test="create != null">
+                    create,
+                </if>
+                <if test="createName != null">
+                    create_name,
+                </if>
+                <if test="modifyDate != null">
+                    modify_date,
+                </if>
+                <if test="modifier != null">
+                    modifier,
+                </if>
+                <if test="updateName != null">
+                    update_name,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="code != null">
+                    #{code},
+                </if>
+                <if test="ioType != null">
+                    #{ioType},
+                </if>
+                <if test="manufacturer != null">
+                    #{manufacturer},
+                </if>
+                <if test="responseTime != null">
+                    #{responseTime},
+                </if>
+                <if test="createDate != null">
+                    #{createDate},
+                </if>
+                <if test="create != null">
+                    #{create},
+                </if>
+                <if test="createName != null">
+                    #{createName},
+                </if>
+                <if test="modifyDate != null">
+                    #{modifyDate},
+                </if>
+                <if test="modifier != null">
+                    #{modifier},
+                </if>
+                <if test="updateName != null">
+                    #{updateName},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_device_ext_type
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="name != null">
+					name =  #{name},
+				</if>
+				<if test="code != null">
+					code =  #{code},
+				</if>
+				<if test="ioType != null">
+					io_type =  #{ioType},
+				</if>
+				<if test="manufacturer != null">
+					manufacturer =  #{manufacturer},
+				</if>
+				<if test="responseTime != null">
+					response_time =  #{responseTime},
+				</if>
+				<if test="createDate != null">
+					create_date =  #{createDate},
+				</if>
+				<if test="create != null">
+					create =  #{create},
+				</if>
+				<if test="createName != null">
+					create_name =  #{createName},
+				</if>
+				<if test="modifyDate != null">
+					modify_date =  #{modifyDate},
+				</if>
+				<if test="modifier != null">
+					modifier =  #{modifier},
+				</if>
+				<if test="updateName != null">
+					update_name =  #{updateName},
+				</if>
+		</set>
+		where id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_device_ext_type
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM as_device_ext_type
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ExamineStatisticsMapper">
+    <sql id="columns">
+        id,examine_standard_id as examineStandardId,examine_year as examineYear,examine_month_period as examineMonthPeriod,
+        store_time as storeTime,application_code as applicationCode,tenant_code as tenantCode
+    </sql>
+
+
+
+    <select id="findByStandardId" resultType="com.aswl.as.ibrs.api.module.ExamineStatistics">
+        SELECT <include refid="columns"/>
+        FROM as_examine_statistics WHERE examine_standard_id = #{standardId} order by store_time desc limit 1
+    </select>
+
+    <insert id="insert">
+        INSERT INTO as_examine_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="examineStandardId != null">
+                examine_standard_id,
+            </if>
+            <if test="examineYear != null">
+                examine_year,
+            </if>
+            <if test="examineMonthPeriod != null">
+                examine_month_period,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="storeTime != null">
+                store_time,
+            </if>
+            <if test="applicationCode != null">
+                application_code,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="examineStandardId != null">
+                #{examineStandardId},
+            </if>
+            <if test="examineYear != null">
+                #{examineYear},
+            </if>
+            <if test="examineMonthPeriod != null">
+                #{examineMonthPeriod},
+            </if>
+            <if test="projectId != null">
+                #{projectId},
+            </if>
+            <if test="storeTime != null">
+                #{storeTime},
+            </if>
+            <if test="applicationCode != null">
+                #{applicationCode},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="batchInsert">
+        INSERT INTO as_examine_statistics
+            (
+            id,
+            examine_standard_id,
+            examine_year,
+            examine_month_period,
+            project_id,
+            store_time,
+            application_code,
+            tenant_code
+            )
+        VALUES
+        <foreach collection="Statistics" separator="," item="item">
+            (
+            #{item.id},
+            #{item.examineStandardId},
+            #{item.examineYear},
+            #{item.examineMonthPeriod},
+            #{item.projectId},
+            #{item.storeTime},
+            #{item.applicationCode},
+            #{item.tenantCode}
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="periodTotalScope" resultType="com.aswl.as.ibrs.api.dto.PeriodScopeDto">
+        SELECT <!-- CONCAT(DATE_FORMAT(#{periodStart},'%Y-%m'),'至',DATE_FORMAT(#{periodEnd},'%Y-%m')) as period , -->
+        concat(#{periodStart},'至',#{periodEnd}) as period,
+        concat('总分:',100-COALESCE(SUM(t1.deduct_score_total),0)) as totalScope,
+        concat('总金额:',COALESCE(sum(t1.deduct_fee_total),0)) as totalFee
+        FROM
+        as_examine_statistics_deduct as t1 LEFT JOIN as_examine_statistics as t2 on t1.examine_statistics_id = t2.id
+        LEFT JOIN as_examine_standard as t3 on t2.examine_standard_id = t3.id
+        where 1 = 1
+        <if test="standardId != null and standardId != ''">
+            AND t3.id = #{standardId}
+        </if>
+        <if test="periodStart != null and periodEnd != null">
+            AND t1.store_time between #{periodStart} and #{periodEnd}
+        </if>
+    </select>
+
+    <select id="periodLabelScope" resultType="com.aswl.as.ibrs.api.dto.LabelScopeDto">
+        SELECT
+        t2.title as labelTitle ,
+        COALESCE(SUM(t1.deduct_score_total),0) as labelScope,
+        COALESCE(SUM(t1.deduct_fee_total),0) as labelFee
+        FROM
+        as_examine_statistics_deduct as t1 LEFT JOIN as_examine_base_lib as t2
+        on t1.examine_base_lib_id = t2.id LEFT JOIN as_examine_item as t3
+        on t2.id = t3.examine_base_lib_id
+        where 1 = 1
+        <if test="standardId != null and standardId != ''">
+            AND t3.examine_standard_id = #{standardId}
+        </if>
+        <if test="periodStart != null and periodEnd != ''">
+            AND t1.store_time between #{periodStart} and #{periodEnd}
+        </if>
+        group by t2.id
+    </select>
+
+    <select id="getByStandardIDAndYear" resultType="com.aswl.as.ibrs.api.module.ExamineStatistics">
+        SELECT a.* FROM as_examine_statistics a 
+        LEFT JOIN as_region b
+        ON a.project_id =b.project_id
+        WHERE 1 =1
+        <if test="standardId!= null and standardId!=''">
+            AND a.examine_standard_id = #{standardId}
+        </if>
+       <if test="year!= null and year!='' ">
+           AND a.examine_year = #{year}
+       </if>
+       <if test="regionCode!= null and regionCode!='' ">
+           AND b.region_code LIKE CONCAT(#{regionCode},'%')
+       </if>
+       GROUP BY a.id
+    </select>
+
+    <select id="findById" resultType="com.aswl.as.ibrs.api.module.ExamineStatistics">
+        SELECT <include refid="columns"/>
+        FROM as_examine_statistics WHERE id = #{statisticsId}
+    </select>
+</mapper>

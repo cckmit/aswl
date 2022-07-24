@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aswl.as.ibrs.mapper.ElectricStatisticsMapper">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="electricStatisticsResultMap" type="com.aswl.as.ibrs.api.module.ElectricStatistics">
+			<id column="id"   property="id" />
+			<id column="device_id"   property="deviceId" />
+			<id column="region_code"   property="regionCode" />
+			<id column="statistics_date"   property="statisticsDate" />
+			<id column="electric_total"   property="electricTotal" />
+			<id column="electric_total_last_day"   property="electricTotalLastDay" />
+			<id column="electric_day"   property="electricDay" />
+			<id column="device_model_id"   property="deviceModelId" />
+			<id column="project_id"   property="projectId" />
+	</resultMap>
+
+	<sql id="electricStatisticsColumns">
+		id, device_id, region_code, statistics_date, electric_total, electric_total_last_day, electric_day, device_model_id, project_id
+	</sql>
+	<!-- where 条件 -->
+
+	<sql id="whereColumnList">
+
+				<if test="deviceId!= null and deviceId!= ''" >
+					and device_id LIKE CONCAT(#{deviceId},'%')
+				</if>
+				<if test="regionCode!= null and regionCode!= ''" >
+					and region_code LIKE CONCAT(#{regionCode},'%')
+				</if>
+				<if test="statisticsDate!= null and statisticsDate!= ''">
+					and statistics_date = #{statisticsDate,jdbcType=DATE}
+				</if>
+				<if test="electricTotal!= null and electricTotal!= ''">
+					and electric_total = #{electricTotal}
+				</if>
+				<if test="electricTotalLastDay!= null and electricTotalLastDay!= ''">
+					and electric_total_last_day = #{electricTotalLastDay}
+				</if>
+				<if test="electricDay!= null and electricDay!= ''">
+					and electric_day = #{electricDay}
+				</if>
+				<if test="deviceModelId!= null and deviceModelId!= ''" >
+					and device_model_id LIKE CONCAT(#{deviceModelId},'%')
+				</if>
+				<if test="projectId!= null and projectId!= ''" >
+					and project_id LIKE CONCAT(#{projectId},'%')
+				</if>
+	</sql>
+
+	<select id="get" resultMap="electricStatisticsResultMap">
+		SELECT
+		<include refid="electricStatisticsColumns"/>
+		FROM as_electric_statistics
+		WHERE id = #{id}
+	</select>
+
+	<select id="findList" resultMap="electricStatisticsResultMap">
+		SELECT
+		<include refid="electricStatisticsColumns"/>
+		FROM as_electric_statistics
+		WHERE 1=1
+		<include refid="whereColumnList"/>
+	</select>
+
+
+	<select id="findListById" resultMap="electricStatisticsResultMap">
+		SELECT
+		<include refid="electricStatisticsColumns"/>
+		FROM as_electric_statistics
+		WHERE id IN
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<insert id="insert">
+        INSERT INTO as_electric_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="deviceId != null">
+                    device_id,
+                </if>
+                <if test="regionCode != null">
+                    region_code,
+                </if>
+                <if test="statisticsDate != null">
+                    statistics_date,
+                </if>
+                <if test="electricTotal != null">
+                    electric_total,
+                </if>
+				<if test="electricTotalLastDay!= null">
+					electric_total_last_day,
+				</if>
+                <if test="electricDay != null">
+                    electric_day,
+                </if>
+                <if test="deviceModelId != null">
+                    device_model_id,
+                </if>
+                <if test="projectId != null">
+                    project_id,
+                </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id},
+                </if>
+                <if test="deviceId != null">
+                    #{deviceId},
+                </if>
+                <if test="regionCode != null">
+                    #{regionCode},
+                </if>
+                <if test="statisticsDate != null">
+                    #{statisticsDate,jdbcType=DATE},
+                </if>
+                <if test="electricTotal != null">
+                    #{electricTotal},
+                </if>
+				<if test="electricTotalLastDay!= null">
+					#{electricTotalLastDay},
+				</if>
+                <if test="electricDay != null">
+                    #{electricDay},
+                </if>
+                <if test="deviceModelId != null">
+                    #{deviceModelId},
+                </if>
+                <if test="projectId != null">
+                    #{projectId},
+                </if>
+        </trim>
+	</insert>
+
+	<update id="update" >
+		UPDATE as_electric_statistics
+		<set>
+				<if test="id != null">
+					id =  #{id},
+				</if>
+				<if test="deviceId != null">
+					device_id =  #{deviceId},
+				</if>
+				<if test="regionCode != null">
+					region_code =  #{regionCode},
+				</if>
+				<if test="statisticsDate != null">
+					statistics_date =  #{statisticsDate},
+				</if>
+				<if test="electricTotal != null">
+					electric_total =  #{electricTotal},
+				</if>
+				<if test="electricTotalLastDay!= null">
+					electric_total_last_day = #{electricTotalLastDay},
+				</if>
+				<if test="electricDay != null">
+					electric_day =  #{electricDay},
+				</if>
+				<if test="deviceModelId != null">
+					device_model_id =  #{deviceModelId},
+				</if>
+				<if test="projectId != null">
+					project_id =  #{projectId},
+				</if>
+		</set>
+		WHERE id =  #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM  as_electric_statistics
+		WHERE ID =  #{id}
+	</delete>
+
+	<delete id="deleteAll">
+		DELETE FROM  as_electric_statistics
+		WHERE id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">#{item}
+		</foreach>
+	</delete>
+	
+	 <select id="findLastRecord" resultMap="electricStatisticsResultMap">
+        SELECT
+        <include refid="electricStatisticsColumns"/>
+        FROM
+          as_electric_statistics
+        WHERE
+          device_id = #{deviceId}
+        order by
+          statistics_date
+        desc
+          limit 1
+    </select>
+
+    <select id="findTodayRecord" resultMap="electricStatisticsResultMap">
+        SELECT <include refid="electricStatisticsColumns"/>
+        FROM
+          as_electric_statistics
+        WHERE
+          device_id = #{deviceId}
+        AND
+          statistics_date = DATE_FORMAT(#{date},'%Y-%m-%d')
+    </select>
+	
+	<select id="getElectricNum" resultType="java.util.Map">
+	 SELECT 
+	IFNULL(SUM(a.electric_day),0) AS counts FROM as_electric_statistics a
+	JOIN as_electric_unit_device b
+	ON a.device_id =b.device_id
+	LEFT JOIN as_device d
+	ON a.device_id = d.id	
+	WHERE 1=1
+	<if test="regionCode!=null and regionCode !=''">
+	AND a.region_code LIKE CONCAT(#{regionCode},'%')
+	</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND a.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	<if test="tenantCode != null and tenantCode != ''">
+	AND d.tenant_code = #{tenantCode}
+	</if>
+	<if test="unitId != null and unitId !=''">
+	and (b.unit_id in  (${unitId}))
+	</if>
+	<if test="type =='day'">
+	 and date(a.statistics_date) = CURDATE()		
+	</if>
+	<if test="type == 'month'">
+	  AND  year(a.statistics_date)=year(NOW()) AND DATE_FORMAT(a.statistics_date, '%Y-%m') = DATE_FORMAT(NOW(),'%Y-%m')
+	</if>
+	<if test="type == 'quarter'">
+		AND year(a.statistics_date)=year(NOW()) AND quarter(a.statistics_date) = quarter(NOW())
+	</if>
+	<if test="type == 'year'">
+		AND  year(a.statistics_date)=year(NOW())
+	</if>	
+	</select>
+	
+	<select id="getElectricContrast" resultType="java.util.Map">
+		SELECT
+		<if test="timeUnit == 'day'">
+			CONCAT(DATE_FORMAT(a.statistics_date,'%Y-%m-%d'),'日')
+		</if>
+		<if test="timeUnit == 'month'">
+			CONCAT(DATE_FORMAT(a.statistics_date,'%Y-%m'),'月')
+		</if> as `date`,
+		IFNULL(SUM(a.electric_day),0) AS electricNum
+		FROM as_electric_statistics a
+		JOIN as_electric_unit_device b
+		ON a.device_id =b.device_id
+		LEFT JOIN as_device d
+		ON a.device_id = d.id
+		where 1 = 1
+		<if test="regionCode!=null and regionCode !=''">
+			AND a.region_code LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND a.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND d.tenant_code = #{tenantCode}
+		</if>
+		<if test="unitId != null and unitId !=''">
+			and (b.unit_id in  (${unitId}))
+		</if>
+		<if test="timeUnit == 'day'">
+			and DATE_FORMAT(a.statistics_date,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d') GROUP BY DATE_FORMAT(a.statistics_date,'%Y-%m-%d');
+		</if>
+		<if test="timeUnit == 'month'">
+			and DATE_FORMAT(a.statistics_date,'%Y-%m') BETWEEN DATE_FORMAT(#{startTime},'%Y-%m') and DATE_FORMAT(#{endTime},'%Y-%m') GROUP BY DATE_FORMAT(a.statistics_date,'%Y-%m');
+		</if>	
+	</select>
+	<select id="getUnitElectricContrast" resultType="com.aswl.as.ibrs.api.vo.UnitElectricStatisticsVo">
+		SELECT
+		unit.id,
+		unit.name,
+		IFNULL(temp.electricNum,0) AS electricNum ,
+		IFNULL(temp.electricPrice,0) AS electricPrice
+		FROM (SELECT id,name,tenant_code,project_id FROM as_electric_supply_unit WHERE 1 = 1
+		  <if test="projectId != null and projectId != ''">
+			  AND project_id IN
+			  <foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				  #{item}
+			  </foreach>
+		  </if>
+		) unit
+		LEFT JOIN (
+		SELECT 
+		 a.name,
+		 a.id,
+		 IFNULL(SUM(c.electric_day),0) AS electricNum,
+		a.electric_price AS electricPrice
+		 FROM as_electric_supply_unit a
+		LEFT JOIN as_electric_unit_device b
+		ON a.id =b.unit_id
+		LEFT JOIN as_electric_statistics c
+		ON b.device_id =c.device_id
+		WHERE 1=1
+		<if test="regionCode!=null and regionCode !=''">
+			AND c.region_code LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND c.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND a.tenant_code = #{tenantCode}
+		</if>
+		<if test="unitId != null and unitId !=''">
+			and (b.unit_id in  (${unitId}))
+		</if>
+		<if test="startTime != null and endTime !=''">
+			and c.statistics_date BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d')
+		</if>
+		group by a.id ) AS temp
+		ON unit.id = temp.id
+		<if test="tenantCode != null and tenantCode != ''">
+			WHERE unit.tenant_code = #{tenantCode}
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND unit.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+	<select id="getElectricByTime" resultType="com.aswl.as.ibrs.api.vo.UnitElectricStatisticsVo">
+		SELECT
+		IFNULL(SUM(a.electric_day),0) AS electricNum,
+		c.electric_price AS electricPrice
+		FROM as_electric_statistics a
+		JOIN as_electric_unit_device b
+		ON a.device_id =b.device_id
+		LEFT JOIN as_electric_supply_unit c
+		ON c.id =b.unit_id
+		WHERE 1 = 1
+		<if test="regionCode!=null and regionCode !=''">
+			AND a.region_code LIKE CONCAT(#{regionCode},'%')
+		</if>
+		<if test="projectId  != null and projectId != ''" >
+			AND a.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="tenantCode != null and tenantCode != ''">
+			AND c.tenant_code = #{tenantCode}
+		</if>
+		<if test="startTime != null and endTime !=''">
+			and a.statistics_date BETWEEN DATE_FORMAT(#{startTime},'%Y-%m-%d') and DATE_FORMAT(#{endTime},'%Y-%m-%d')
+		</if>
+		
+	</select>
+	<select id="exportUnitElectric" resultType="com.aswl.as.ibrs.api.vo.UnitElectricStatisticsVo">
+		
+	SELECT 
+	 a1.name,
+	 ifnull(temp.electricNum,0)AS electricNum ,
+	 ifnull(temp.electricFee,0)AS electricFee,
+	 temp.month
+	 FROM as_electric_supply_unit a1 LEFT JOIN (
+	SELECT
+	a.id,
+	a.name,
+	a.electric_price AS electricPrice ,
+	SUM(c.electric_day) AS electricNum ,
+	a.electric_price*SUM(c.electric_day) AS electricFee,
+	DATE_FORMAT(c.statistics_date,'%m') AS MONTH
+	FROM as_electric_supply_unit a
+	LEFT JOIN as_electric_unit_device b
+	ON a.id = b.unit_id
+	LEFT JOIN as_electric_statistics c
+	ON c.device_id = b.device_id
+	WHERE 1=1
+	AND a.id IN (${unitId})
+	AND DATE_FORMAT(c.statistics_date,'%Y') = #{queryYear}
+	<if test="regionCode!=null and regionCode !=''">
+	  AND c.region_code LIKE CONCAT(#{regionCode},'%')
+	</if> 
+	GROUP BY a.id,DATE_FORMAT(c.statistics_date,'%m')
+	ORDER BY a.name,DATE_FORMAT(c.statistics_date,'%m')
+	)AS temp
+	ON a1.id = temp.id
+	WHERE 1=1 
+	 AND a1.id IN  (${unitId})
+		<if test="projectId  != null and projectId != ''" >
+			AND a1.project_id IN
+			<foreach collection="projectId.split(',')" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	<if test="tenantCode != null and tenantCode != ''">
+		AND a1.tenant_code = #{tenantCode}
+	</if>		
+	</select>
+</mapper>
