@@ -27,7 +27,7 @@ spring:
   # 使用consul作为注册中心
   cloud:
     consul:
-      host: ${CONSUL_HOST:120.24.102.159}
+      host: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}
   rabbitmq:
     host: ${RABBIT_HOST:localhost}

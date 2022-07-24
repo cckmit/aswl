@@ -6,7 +6,7 @@ spring:
   cloud:
     # 使用consul作为注册中心
     consul:
-      host: ${CONSUL_HOST:120.24.102.159}
+      host: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}
       discovery:
         health-check-path: /asos/actuator/health
